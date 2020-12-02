@@ -1,14 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-full.svg"
+      alt="Pan mózg"
+      src="~assets/pan-mozg.jpg"
     >
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'PageIndex'
 }
 </script>
