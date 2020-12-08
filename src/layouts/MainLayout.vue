@@ -40,7 +40,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="flex flex-center">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -60,12 +60,12 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
   data () {
     return {
       leftDrawerOpen: true,
       essentialLinks: linksData
     }
-  }
+  },
+  components: { EssentialLink }
 }
 </script>

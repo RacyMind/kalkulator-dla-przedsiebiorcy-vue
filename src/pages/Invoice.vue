@@ -1,25 +1,49 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page
+    class="q-pa-md full-width"
+    style="max-width:800px;"
+  >
     <q-form>
-      <div class="row">
-        <div class="col-6">
-          <q-input
-            dense
-            label="Kwota*"
-            v-model="amount"
-            autofocus/>
-          <div class="q-gutter-sm">
-            <q-radio v-model="typeAmount" val="net" label="netto" />
-            <q-radio v-model="typeAmount" val="gross" label="brutto" />
+      <div class="q-pa-md full-width">
+        <SectionHeader>
+          <q-icon name="o_description" />
+          Wypełnij formularz
+        </SectionHeader>
+        <div class="row justify-between">
+          <div class="col-6 q-pr-sm">
+            <q-input
+              v-model="amount"
+              label="Kwota*"
+              autofocus
+            />
+            <div class="q-gutter-sm">
+              <q-radio
+                v-model="typeAmount"
+                val="net"
+                label="netto"
+              />
+              <q-radio
+                v-model="typeAmount"
+                val="gross"
+                label="brutto"
+              />
+            </div>
+          </div>
+          <div class="col-6 q-pl-sm">
+            <q-select
+              v-model="rate"
+              :options="vatValues"
+              label="Stawka podatku VAT*"
+            />
           </div>
         </div>
-        <div class="col-6">
-          <q-select filled v-model="rate" :options="vatValues" label="Stawka podatku VAT" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <q-btn color="primary" label="Oblicz" />
+        <div class="row q-mt-sm">
+          <div class="col-6">
+            <q-btn
+              color="primary"
+              label="Oblicz"
+            />
+          </div>
         </div>
       </div>
     </q-form>
@@ -27,6 +51,8 @@
 </template>
 
 <script>
+import SectionHeader from 'components/SectionHeader'
+
 export default {
   data () {
     return {
@@ -55,6 +81,9 @@ export default {
         }
       ]
     }
+  },
+  components: {
+    SectionHeader
   }
 }
 </script>

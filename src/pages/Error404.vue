@@ -5,7 +5,9 @@
         404
       </div>
 
-      <div class="text-h2" style="opacity:.4">
+      <div
+        class="text-h2"
+        style="opacity:.4">
         Oops. Nothing here...
       </div>
 

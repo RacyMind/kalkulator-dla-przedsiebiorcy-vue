@@ -1,10 +1,11 @@
 <template>
-  <div>aa</div>
+  <div>
+    <slot />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Menu'
 }
 </script>
 

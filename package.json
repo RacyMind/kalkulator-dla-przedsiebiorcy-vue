@@ -6,7 +6,7 @@
   "author": "Łuasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
+    "lint": "eslint --fix --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
