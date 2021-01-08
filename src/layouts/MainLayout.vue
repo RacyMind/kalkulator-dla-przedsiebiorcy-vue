@@ -40,7 +40,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container class="flex flex-center">
+    <q-page-container class="flex flex-center bg-teal-1">
       <router-view />
     </q-page-container>
   </q-layout>

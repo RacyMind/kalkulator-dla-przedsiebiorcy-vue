@@ -3,87 +3,44 @@
     class="q-pa-md full-width"
     style="max-width:800px;"
   >
-    <q-form>
-      <div class="q-pa-md full-width">
-        <SectionHeader>
-          <q-icon name="o_description" />
-          Wypełnij formularz
-        </SectionHeader>
-        <div class="row justify-between">
-          <div class="col-6 q-pr-sm">
-            <q-input
-              v-model="amount"
-              label="Kwota*"
-              autofocus
-            />
-            <div class="q-gutter-sm">
-              <q-radio
-                v-model="typeAmount"
-                val="net"
-                label="netto"
-              />
-              <q-radio
-                v-model="typeAmount"
-                val="gross"
-                label="brutto"
-              />
-            </div>
-          </div>
-          <div class="col-6 q-pl-sm">
-            <q-select
-              v-model="rate"
-              :options="vatValues"
-              label="Stawka podatku VAT*"
-            />
-          </div>
-        </div>
-        <div class="row q-mt-sm">
-          <div class="col-6">
-            <q-btn
-              color="primary"
-              label="Oblicz"
-            />
-          </div>
-        </div>
-      </div>
-    </q-form>
+    <div class="full-width bg-white">
+    <SectionHeader>
+      <q-icon name="o_description" />
+      Wypełnij formularz
+    </SectionHeader>
+    <InvoiceForm
+    class="q-my-lg q-px-md"
+    />
+      <Advert />
+      <SectionHeader>
+        <q-icon name="o_credit_card" />
+        Podsumowanie
+      </SectionHeader>
+      <InvoiceTable />
+    </div>
   </q-page>
 </template>
 
 <script>
 import SectionHeader from 'components/SectionHeader'
+import InvoiceForm from 'components/invoice/InvoiceForm'
+import InvoiceTable from 'components/invoice/InvoiceTable'
+import Advert from 'components/Advert'
 
 export default {
-  data () {
-    return {
-      amount: null,
-      typeAmount: {
-        type: String,
-        default: 'net'
-      },
-      rate: null,
-      vatValues: [
-        {
-          label: '0%',
-          value: 0
-        },
-        {
-          label: '5%',
-          value: 5
-        },
-        {
-          label: '8%',
-          value: 8
-        },
-        {
-          label: '23%',
-          value: 23
-        }
-      ]
-    }
-  },
   components: {
-    SectionHeader
+    SectionHeader,
+    InvoiceForm,
+    InvoiceTable,
+    Advert
   }
 }
 </script>
+<style>
+.text-brand {
+  color: #ed6d13;
+}
+.bg-brand {
+  background: #ed6d13;
+}
+</style>
