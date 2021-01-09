@@ -24,7 +24,7 @@
         - zł
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
