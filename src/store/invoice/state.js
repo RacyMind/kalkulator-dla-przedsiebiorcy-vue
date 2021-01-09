@@ -1,5 +1,7 @@
 export default function () {
   return {
-    amount: null
+    amount: null,
+    typeAmount: 'net',
+    rate: null
   }
 }
