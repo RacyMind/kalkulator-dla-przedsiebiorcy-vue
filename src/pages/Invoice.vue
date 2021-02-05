@@ -4,13 +4,13 @@
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
-    <SectionHeader>
-      <q-icon name="o_description" />
-      Wypełnij formularz
-    </SectionHeader>
-    <InvoiceForm
-    class="q-my-lg q-px-md"
-    />
+      <SectionHeader>
+        <q-icon name="o_description" />
+        Wypełnij formularz
+      </SectionHeader>
+      <InvoiceForm
+        class="q-my-lg q-px-md"
+      />
       <Advert />
       <SectionHeader>
         <q-icon name="o_credit_card" />
