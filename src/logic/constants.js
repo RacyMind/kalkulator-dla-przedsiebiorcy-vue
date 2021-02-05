@@ -17,4 +17,7 @@ export default {
       value: 23,
     },
   ],
+  COLORS: {
+    INVOICE: '#ed6d13',
+  },
 }
