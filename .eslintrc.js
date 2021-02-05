@@ -48,25 +48,91 @@ module.exports = {
   },
 
   // add your custom rules here
+
   rules: {
-    // allow async-await
-    'generator-star-spacing': 'off',
-    // allow paren-less arrow functions
-    'arrow-parens': 'off',
-    'one-var': 'off',
-
-    'import/first': 'off',
-    'import/named': 'error',
-    'import/namespace': 'error',
-    'import/default': 'error',
-    'import/export': 'error',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'prefer-promise-reject-errors': 'off',
-
-
-    // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'max-len': 0,
+    // TODO: Remove when https://github.com/babel/babel-eslint/issues/530 is fixed
+    'template-curly-spacing': 'off',
+    // TODO: Remove when https://github.com/babel/babel-eslint/issues/530 is fixed
+    indent: 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'warn',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-unreachable': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'vue/no-unused-components': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-useless-concat': 0,
+    'no-param-reassign': 0,
+    semi: ['error', 'never'],
+    'no-shadow': 0,
+    'no-alert': 0,
+    'import/prefer-default-export': 0,
+    'import/no-extraneous-dependencies': 0,
+    'prefer-destructuring': 0,
+    'prefer-spread': 0,
+    'no-lonely-if': 0,
+    'no-plusplus': 0,
+    'comma-dangle': [
+      'error',
+      'always-multiline',
+    ],
+    "vue/html-indent": ["error", 2, {
+      "attribute": 1,
+      "baseIndent": 1,
+      "closeBracket": 0,
+      "alignAttributesVertically": true,
+      "ignores": []
+    }],
+    "vue/multiline-html-element-content-newline": ["error", {
+      "ignoreWhenEmpty": true,
+      "allowEmptyLines": false
+    }],
+    "vue/max-attributes-per-line": 1,
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+    ],
+    'prefer-promise-reject-errors': 0,
+    'vue/no-v-html': 'off',
+    'func-names': 0,
+    'vue/order-in-components': [
+      'error',
+      {
+        order: [
+          'el',
+          'name',
+          'parent',
+          'functional',
+          [
+            'comments',
+            'delimiters',
+          ],
+          'extends',
+          'mixins',
+          'inheritAttrs',
+          'model',
+          [
+            'props',
+            'propsData',
+          ],
+          'asyncData',
+          'data',
+          'head',
+          'LIFECYCLE_HOOKS',
+          'computed',
+          'watch',
+          'methods',
+          [
+            'components',
+            'directives',
+            'filters',
+          ],
+          [
+            'render',
+            'template',
+          ],
+          'renderError',
+        ],
+      },
+    ],
   },
 }

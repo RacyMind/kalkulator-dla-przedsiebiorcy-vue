@@ -54,8 +54,8 @@ const linksData = [
     title: 'Faktura VAT',
     caption: 'Przeliczanie kwoty z netto na brutto i z brutto na netto',
     icon: '',
-    link: '/faktura-vat'
-  }
+    link: '/faktura-vat',
+  },
 ]
 
 export default {
@@ -63,9 +63,9 @@ export default {
   data () {
     return {
       leftDrawerOpen: true,
-      essentialLinks: linksData
+      essentialLinks: linksData,
     }
   },
-  components: { EssentialLink }
+  components: { EssentialLink },
 }
 </script>

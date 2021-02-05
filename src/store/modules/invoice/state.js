@@ -1,7 +1,7 @@
 export default function () {
   return {
-    amount: null,
-    typeAmount: 'net',
-    rate: null
+    net: null,
+    gross: null,
+    tax: null,
   }
 }

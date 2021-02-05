@@ -12,7 +12,7 @@ requireModule.keys().forEach((fileName) => {
 
   if (!modules[moduleName]) {
     modules[moduleName] = {
-      namespaced: true
+      namespaced: true,
     }
   }
 

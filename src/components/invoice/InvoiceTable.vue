@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        - zł
+        {{ net | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Kwota podatku
       </div>
       <div>
-        - zł
+        {{ tax | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-red-8 text-white text-weight-bold">
@@ -21,15 +21,22 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        - zł
+        {{ gross | pln }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'Table'
+  computed: {
+    ...mapGetters({
+      net: 'invoice/net',
+      tax: 'invoice/tax',
+      gross: 'invoice/gross',
+    }),
+  },
 }
 </script>
 

@@ -32,8 +32,8 @@ export default {
     SectionHeader,
     InvoiceForm,
     InvoiceTable,
-    Advert
-  }
+    Advert,
+  },
 }
 </script>
 <style>

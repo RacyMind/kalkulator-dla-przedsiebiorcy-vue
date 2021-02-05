@@ -1,5 +1,5 @@
 <template>
-  <q-form>
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-6 q-pr-sm">
         <q-input
@@ -7,6 +7,7 @@
           label="Kwota*"
           autofocus
           color="brand"
+          required
         />
         <div class="q-gutter-sm">
           <q-radio
@@ -27,14 +28,17 @@
         <q-select
           v-model="rate"
           :options="$constants.VAT_VALUES"
+          emit-value
           label="Stawka podatku VAT*"
           color="brand"
+          required
         />
       </div>
     </div>
     <div class="row q-mt-sm">
       <div class="col-12">
         <q-btn
+          type="submit"
           class="full-width"
           color="brand"
           size="lg"
@@ -46,19 +50,33 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import Invoice from 'src/logic/Invoice'
 export default {
   data () {
     return {
+      amount: null,
+      typeAmount: 'net',
+      rate: 23,
     }
   },
-  computed: {
-    ...mapGetters({
-      amount: 'invoice/amount',
-      typeAmount: 'invoice/typeAmount',
-      rate: 'invoice/rate'
-    })
-  }
+  methods: {
+    save () {
+      const invoice = new Invoice()
+      invoice.rateTax = Number(this.rate) / 100
+      if (this.typeAmount === 'net') {
+        invoice.net = Number(this.amount)
+        invoice.calculateTaxAmount()
+        invoice.calculateGross()
+      } else {
+        invoice.gross = Number(this.amount)
+        invoice.calculateNet()
+        invoice.calculateTaxAmount()
+      }
+      this.$store.commit('invoice/SET_NET', invoice.net)
+      this.$store.commit('invoice/SET_TAX', invoice.taxAmount)
+      this.$store.commit('invoice/SET_GROSS', invoice.gross)
+    },
+  },
 }
 </script>
 
