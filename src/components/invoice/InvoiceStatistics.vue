@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="q-pa-md">
     <PieChart
       v-if="net && tax"
-      clss="pieChart"
+      class="pieChart"
       :chart-data="data"/>
-    <p v-else>Brak danych</p>
+    <span v-else>Brak danych</span>
   </div>
 </template>
 

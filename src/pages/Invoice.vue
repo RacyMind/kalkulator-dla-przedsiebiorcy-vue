@@ -18,7 +18,7 @@
       </SectionHeader>
       <InvoiceTable />
       <SectionHeader>
-        <q-icon name="o_credit_card" />
+        <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
       <InvoiceStatistics />
