@@ -17,6 +17,11 @@
         Podsumowanie
       </SectionHeader>
       <InvoiceTable />
+      <SectionHeader>
+        <q-icon name="o_pie_chart" />
+        Wykres
+      </SectionHeader>
+      <InvoiceStatistics />
     </div>
   </q-page>
 </template>
@@ -25,6 +30,7 @@
 import SectionHeader from 'components/SectionHeader'
 import InvoiceForm from 'components/invoice/InvoiceForm'
 import InvoiceTable from 'components/invoice/InvoiceTable'
+import InvoiceStatistics from 'components/invoice/InvoiceStatistics'
 import Advert from 'components/Advert'
 
 export default {
@@ -32,6 +38,7 @@ export default {
     SectionHeader,
     InvoiceForm,
     InvoiceTable,
+    InvoiceStatistics,
     Advert,
   },
 }
