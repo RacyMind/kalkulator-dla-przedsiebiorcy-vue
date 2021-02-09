@@ -4,6 +4,9 @@
       <div class="col-6 q-pr-sm">
         <q-input
           v-model="amount"
+          type="number"
+          min="0"
+          step="0.01"
           label="Kwota*"
           autofocus
           color="brand"
@@ -79,7 +82,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

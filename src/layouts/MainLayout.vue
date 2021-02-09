@@ -56,6 +56,12 @@ const linksData = [
     icon: '',
     link: '/faktura-vat',
   },
+  {
+    title: 'Odsetki',
+    caption: 'Oblicza odsetki za każdy dzień',
+    icon: '',
+    link: '/odsetki',
+  },
 ]
 
 export default {
