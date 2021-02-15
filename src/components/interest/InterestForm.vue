@@ -1,7 +1,7 @@
 <template>
   <q-form @submit.prevent="save">
     <div class="row justify-between">
-      <div class="col-6 q-pr-sm">
+      <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
           v-model="amount"
           type="number"
@@ -13,7 +13,7 @@
           required
         />
       </div>
-      <div class="col-6 q-pl-sm">
+      <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
           v-model="rate"
           type="number"
@@ -25,18 +25,19 @@
         />
         <q-toggle
           v-model="isBasicRate"
+          class="q-mt-sm"
           label="odsetki ustawowe"
           color="red-8"
         />
       </div>
     </div>
     <div class="row justify-between">
-      <div class="col-6 q-pr-sm">
+      <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="date"
+          v-model="startDate"
           color="brand"
           mask="date"
-          label="Termin zapłaty"
+          label="Termin zapłaty*"
           required
           :rules="['date']">
           <template v-slot:append>
@@ -44,14 +45,43 @@
               name="event"
               class="cursor-pointer">
               <q-popup-proxy
-                ref="qDateProxy"
+                ref="qDateProxy1"
                 transition-show="scale"
                 transition-hide="scale">
                 <q-date
-                  v-model="date"
+                  v-model="startDate"
                   :locale="$constants.LOCALE_DATE"
                   color="red-8"
-                  @input="() => $refs.qDateProxy.hide()"
+                  @input="() => $refs.qDateProxy1.hide()"
+                >
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      <div class="col-12 col-md-6 q-pl-md-sm">
+        <q-input
+          v-model="endDate"
+          class="q-pb-none"
+          color="brand"
+          mask="date"
+          label="Data zapłaty*"
+          required
+          :rules="['date']">
+          <template v-slot:append>
+            <q-icon
+              name="event"
+              class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy2"
+                transition-show="scale"
+                transition-hide="scale">
+                <q-date
+                  v-model="endDate"
+                  :locale="$constants.LOCALE_DATE"
+                  color="red-8"
+                  @input="() => $refs.qDateProxy2.hide()"
                 >
                 </q-date>
               </q-popup-proxy>
@@ -60,7 +90,7 @@
         </q-input>
       </div>
     </div>
-    <div class="row q-mt-sm">
+    <div class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
@@ -81,8 +111,13 @@ export default {
       amount: null,
       rate: null,
       isBasicRate: false,
-      date: null,
+      startDate: null,
+      endDate: null,
     }
+  },
+  created () {
+    this.rate = this.$constants.BASIC_INTEREST_RATE
+    this.isBasicRate = true
   },
   watch: {
     isBasicRate: function (val) {
@@ -91,9 +126,7 @@ export default {
       }
     },
     rate: function (val) {
-      if (val !== 13) {
-        this.isBasicRate = false
-      }
+      this.isBasicRate = Number(val) === 13
     },
   },
 }

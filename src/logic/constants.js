@@ -20,10 +20,10 @@ export default {
   BASIC_INTEREST_RATE: 13,
   LOCALE_DATE: {
     /* starting with Sunday */
-    days: 'Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado'.split('_'),
-    daysShort: 'Dom_Lun_Mar_Mié_Jue_Vie_Sáb'.split('_'),
-    months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
-    monthsShort: 'Ene_Feb_Mar_Abr_May_Jun_Jul_Ago_Sep_Oct_Nov_Dic'.split('_'),
+    days: 'Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota_Niedziela'.split('_'),
+    daysShort: 'pon._wt._śr._czw._pt._sob._niedz.'.split('_'),
+    months: 'Styczeń_Luty_Marzec_Kwiecień_Maj_Czerwiec_Lipiec_Sierpień_Wrzesień_Październik_Listopad_Grudzień'.split('_'),
+    monthsShort: 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
     firstDayOfWeek: 1,
   },
   COLORS: {

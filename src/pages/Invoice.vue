@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width"
+    class="q-pa-md full-width c-invoice"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
@@ -43,11 +43,3 @@ export default {
   },
 }
 </script>
-<style>
-.text-brand {
-  color: #ed6d13;
-}
-.bg-brand {
-  background: #ed6d13;
-}
-</style>
