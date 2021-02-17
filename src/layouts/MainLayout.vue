@@ -1,6 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header
+      class="bg-red-8"
+      elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -10,12 +12,9 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
         <q-toolbar-title>
-          Quasar App
+          Kalkulator dla przedsiębiorcy
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -23,14 +22,14 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      content-class="bg-grey-1"
+      content-class="bg-grey-2"
     >
       <q-list>
         <q-item-label
           header
           class="text-grey-8"
         >
-          Essential Links
+          Moduły
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -40,7 +39,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container class="flex flex-center bg-teal-1">
+    <q-page-container class="flex flex-center q-mt-md bg-teal-1">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -52,13 +51,13 @@ import EssentialLink from 'components/EssentialLink.vue'
 const linksData = [
   {
     title: 'Faktura VAT',
-    caption: 'Przeliczanie kwoty z netto na brutto i z brutto na netto',
+    caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
     icon: '',
     link: '/faktura-vat',
   },
   {
     title: 'Odsetki',
-    caption: 'Oblicza odsetki za każdy dzień',
+    caption: 'Moduł oblicza odsetki za każdy dzień',
     icon: '',
     link: '/odsetki',
   },

@@ -17,13 +17,11 @@
             v-model="typeAmount"
             val="net"
             label="netto"
-            color="red-8"
           />
           <q-radio
             v-model="typeAmount"
             val="gross"
             label="brutto"
-            color="red-8"
           />
         </div>
       </div>
