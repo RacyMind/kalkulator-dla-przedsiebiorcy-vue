@@ -2,7 +2,7 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Wynagrodzenie netto
+        Kwota
       </div>
       <div>
         {{ net | pln }}
@@ -10,15 +10,23 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Kwota podatku
+        Odsetki
       </div>
       <div>
-        {{ tax | pln }}
+        {{ interest | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div>
+        Liczba dni
+      </div>
+      <div>
+        {{ days }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-red-8 text-white text-weight-bold">
       <div>
-        Wynagrodzenie brutto
+        Suma kwoty i odsetek
       </div>
       <div>
         {{ gross | pln }}
@@ -32,10 +40,15 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      net: 'invoice/net',
-      tax: 'invoice/tax',
-      gross: 'invoice/gross',
+      net: 'interest/net',
+      interest: 'interest/interest',
+      gross: 'interest/gross',
+      days: 'interest/days',
     }),
   },
 }
 </script>
+
+<style scoped>
+
+</style>

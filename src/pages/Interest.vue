@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-invoice"
+    class="q-pa-md full-width c-interest"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
@@ -8,7 +8,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <InvoiceForm
+      <InterestForm
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -16,29 +16,29 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <InvoiceTable />
+      <InterestTable />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <InvoiceStatistics />
+      <InterestStatistics />
     </div>
   </q-page>
 </template>
 
 <script>
 import SectionHeader from 'components/SectionHeader'
-import InvoiceForm from 'components/invoice/InvoiceForm'
-import InvoiceTable from 'components/invoice/InvoiceTable'
-import InvoiceStatistics from 'components/invoice/InvoiceStatistics'
+import InterestForm from 'components/interest/InterestForm'
+import InterestTable from 'components/interest/InterestTable'
+import InterestStatistics from 'components/interest/InterestStatistics'
 import Advert from 'components/Advert'
 
 export default {
   components: {
     SectionHeader,
-    InvoiceForm,
-    InvoiceTable,
-    InvoiceStatistics,
+    InterestForm,
+    InterestTable,
+    InterestStatistics,
     Advert,
   },
 }

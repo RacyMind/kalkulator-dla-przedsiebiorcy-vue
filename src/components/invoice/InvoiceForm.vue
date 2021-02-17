@@ -1,30 +1,33 @@
 <template>
   <q-form @submit.prevent="save">
     <div class="row justify-between">
-      <div class="col-6 q-pr-sm">
+      <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
           v-model="amount"
+          type="number"
+          min="0"
+          step="0.01"
           label="Kwota*"
           autofocus
           color="brand"
           required
         />
-        <div class="q-gutter-sm">
+        <div class="q-mt-sm block">
           <q-radio
             v-model="typeAmount"
             val="net"
             label="netto"
-            color="brand"
+            color="red-8"
           />
           <q-radio
             v-model="typeAmount"
             val="gross"
             label="brutto"
-            color="brand"
+            color="red-8"
           />
         </div>
       </div>
-      <div class="col-6 q-pl-sm">
+      <div class="col-12 col-md-6 q-pl-md-sm">
         <q-select
           v-model="rate"
           :options="$constants.VAT_VALUES"
@@ -35,7 +38,7 @@
         />
       </div>
     </div>
-    <div class="row q-mt-sm">
+    <div class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
@@ -59,6 +62,11 @@ export default {
       rate: 23,
     }
   },
+  created () {
+    this.$store.commit('invoice/SET_NET', null)
+    this.$store.commit('invoice/SET_TAX', null)
+    this.$store.commit('invoice/SET_GROSS', null)
+  },
   methods: {
     save () {
       const invoice = new Invoice()
@@ -79,7 +87,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
