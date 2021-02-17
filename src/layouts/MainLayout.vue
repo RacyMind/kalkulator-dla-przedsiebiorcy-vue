@@ -50,6 +50,12 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
+    title: 'Umowa o dzieło',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o dzieło',
+    icon: '',
+    link: '/umowa-o-dzielo',
+  },
+  {
     title: 'Faktura VAT',
     caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
     icon: '',
