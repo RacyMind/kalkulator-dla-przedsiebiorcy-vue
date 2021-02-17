@@ -62,6 +62,11 @@ export default {
       rate: 23,
     }
   },
+  created () {
+    this.$store.commit('invoice/SET_NET', null)
+    this.$store.commit('invoice/SET_TAX', null)
+    this.$store.commit('invoice/SET_GROSS', null)
+  },
   methods: {
     save () {
       const invoice = new Invoice()

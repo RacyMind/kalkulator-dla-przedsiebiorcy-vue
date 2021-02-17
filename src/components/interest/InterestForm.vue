@@ -19,7 +19,7 @@
           type="number"
           min="0"
           step="0.01"
-          label="Odsetki (%) *"
+          label="Odsetki* (%)"
           color="brand"
           required
         />
@@ -105,6 +105,9 @@
 </template>
 
 <script>
+import Interest from 'src/logic/Interest'
+import differenceInDays from 'date-fns/differenceInDays'
+
 export default {
   data () {
     return {
@@ -118,6 +121,11 @@ export default {
   created () {
     this.rate = this.$constants.BASIC_INTEREST_RATE
     this.isBasicRate = true
+
+    this.$store.commit('interest/SET_NET', null)
+    this.$store.commit('interest/SET_INTEREST', null)
+    this.$store.commit('interest/SET_GROSS', null)
+    this.$store.commit('interest/SET_DAYS', 0)
   },
   watch: {
     isBasicRate: function (val) {
@@ -127,6 +135,24 @@ export default {
     },
     rate: function (val) {
       this.isBasicRate = Number(val) === 13
+    },
+  },
+  methods: {
+    save () {
+      const interest = new Interest()
+      interest.net = Number(this.amount)
+      interest.rateInterest = Number(this.rate) / 100
+      interest.days = differenceInDays(
+        new Date(this.endDate),
+        new Date(this.startDate),
+      )
+      interest.calculateInterest()
+      interest.calculateGross()
+
+      this.$store.commit('interest/SET_NET', interest.net)
+      this.$store.commit('interest/SET_INTEREST', interest.interest)
+      this.$store.commit('interest/SET_GROSS', interest.gross)
+      this.$store.commit('interest/SET_DAYS', interest.days)
     },
   },
 }

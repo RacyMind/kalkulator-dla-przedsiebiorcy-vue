@@ -28,5 +28,6 @@ export default {
   },
   COLORS: {
     INVOICE: '#ed6d13',
+    INTEREST: '#ed9113',
   },
 }
