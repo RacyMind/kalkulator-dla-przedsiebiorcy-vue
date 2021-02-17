@@ -27,7 +27,6 @@
           v-model="isBasicRate"
           class="q-mt-sm"
           label="odsetki ustawowe"
-          color="red-8"
         />
       </div>
     </div>
@@ -51,7 +50,6 @@
                 <q-date
                   v-model="startDate"
                   :locale="$constants.LOCALE_DATE"
-                  color="red-8"
                   @input="() => $refs.qDateProxy1.hide()"
                 >
                 </q-date>
@@ -80,7 +78,6 @@
                 <q-date
                   v-model="endDate"
                   :locale="$constants.LOCALE_DATE"
-                  color="red-8"
                   @input="() => $refs.qDateProxy2.hide()"
                 >
                 </q-date>
