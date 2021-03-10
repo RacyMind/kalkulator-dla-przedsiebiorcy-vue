@@ -18,6 +18,15 @@ export default {
     },
   ],
   BASIC_INTEREST_RATE: 13,
+  AMOUNT_TYPES: {
+    NET: 'net',
+    GROSS: 'gross',
+  },
+  CONTRACT_WORK: {
+    EXPENSES_20: 0.2,
+    EXPENSES_50: 0.5,
+    AMOUNT_TAX_THRESHOLD: 85528,
+  },
   LOCALE_DATE: {
     /* starting with Sunday */
     days: 'Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota_Niedziela'.split('_'),
