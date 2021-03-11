@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="save">
+  <q-form @submit.prevent="calculate">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import ContractWork from 'src/logic/ContractWork'
 export default {
   data () {
     return {
@@ -67,6 +68,44 @@ export default {
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.expenses = this.$constants.CONTRACT_WORK.EXPENSES_20
+  },
+  methods: {
+    calculate () {
+      const contractWork = new ContractWork()
+      contractWork.rateExpenses = Number(this.expenses)
+      if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
+        ContractWork.net = Number(this.amount)
+        contractWork.calculateGross()
+
+        if (contractWork.gross <= 200) {
+          contractWork.rateExpenses = 0
+        }
+
+        contractWork.calculateExpenses()
+        contractWork.calculateGross()
+        contractWork.calculateBasisForTax()
+        contractWork.calculateTaxAmount()
+        contractWork.gross = contractWork.net + contractWork.taxAmount
+      }
+      if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
+        contractWork.gross = Number(this.amount)
+
+        if (contractWork.gross <= 200) {
+          contractWork.rateExpenses = 0
+        }
+
+        contractWork.calculateExpenses()
+        contractWork.calculateBasisForTax()
+        contractWork.calculateTaxAmount()
+        contractWork.calculateNet()
+      }
+
+      this.$store.commit('contractWork/SET_NET', contractWork.net)
+      this.$store.commit('contractWork/SET_TAX', contractWork.taxAmount)
+      this.$store.commit('contractWork/SET_GROSS', contractWork.gross)
+      this.$store.commit('contractWork/SET_BASIS_FOR_TAX', contractWork.basisForTax)
+      this.$store.commit('contractWork/SET_EXPENSES', contractWork.expenses)
+    },
   },
 }
 </script>

@@ -2,7 +2,7 @@ import constants from 'src/logic/constants'
 
 class ContractWork {
   /**
-   * @Kwota netto
+   * Kwota netto
    * @type {number}
    */
   net = 0
@@ -75,7 +75,7 @@ class ContractWork {
   }
 
   /**
-   * Oblicza kwotę brutto
+   // * Oblicza kwotę brutto
    */
   calculateGross () {
     const gross = this.net / (1 - this.rateTax * (1 - this.rateExpenses
