@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-invoice"
+    class="q-pa-md full-width c-contractWork"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
@@ -8,7 +8,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <InvoiceForm
+      <ContractWorkForm
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -16,33 +16,36 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <InvoiceTable />
+      <ContractWorkTable />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <InvoiceStatistics />
+      <ContractWorkStatistics />
     </div>
   </q-page>
 </template>
 
 <script>
 import SectionHeader from 'components/SectionHeader'
-import InvoiceForm from 'components/invoice/InvoiceForm'
-import InvoiceTable from 'components/invoice/InvoiceTable'
-import InvoiceStatistics from 'components/invoice/InvoiceStatistics'
 import Advert from 'components/Advert'
-
+import ContractWorkForm from 'components/contractWork/ContractWorkForm'
+import ContractWorkTable from 'components/contractWork/ContractWorkTable'
+import ContractWorkStatistics from 'components/contractWork/ContractWorkStatistics'
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
   },
   components: {
     SectionHeader,
-    InvoiceForm,
-    InvoiceTable,
-    InvoiceStatistics,
     Advert,
+    ContractWorkForm,
+    ContractWorkTable,
+    ContractWorkStatistics,
   },
 }
 </script>
+
+<style scoped>
+
+</style>

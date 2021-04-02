@@ -34,6 +34,9 @@ import InterestStatistics from 'components/interest/InterestStatistics'
 import Advert from 'components/Advert'
 
 export default {
+  created () {
+    this.$store.commit('app/SET_MODULE_TITLE', 'Odsetki')
+  },
   components: {
     SectionHeader,
     InterestForm,

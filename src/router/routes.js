@@ -7,6 +7,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'faktura-vat', component: () => import('pages/Invoice.vue') },
       { path: 'odsetki', component: () => import('pages/Interest.vue') },
+      { path: 'umowa-o-dzielo', component: () => import('pages/ContractWork.vue') },
     ],
   },
 

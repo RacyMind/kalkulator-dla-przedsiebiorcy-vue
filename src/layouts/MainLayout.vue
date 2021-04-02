@@ -13,7 +13,14 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
         <q-toolbar-title>
-          Kalkulator dla przedsiębiorcy
+          <div class="row justify-between">
+            <div v-if="moduleTitle">
+              {{ moduleTitle }}
+            </div>
+            <div class="xs-hide">
+              Kalkulator dla przedsiębiorcy
+            </div>
+          </div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -47,8 +54,15 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import { mapGetters } from 'vuex'
 
 const linksData = [
+  {
+    title: 'Umowa o dzieło',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o dzieło',
+    icon: '',
+    link: '/umowa-o-dzielo',
+  },
   {
     title: 'Faktura VAT',
     caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
@@ -64,12 +78,16 @@ const linksData = [
 ]
 
 export default {
-  name: 'MainLayout',
   data () {
     return {
       leftDrawerOpen: true,
       essentialLinks: linksData,
     }
+  },
+  computed: {
+    ...mapGetters({
+      moduleTitle: 'app/moduleTitle',
+    }),
   },
   components: { EssentialLink },
 }
