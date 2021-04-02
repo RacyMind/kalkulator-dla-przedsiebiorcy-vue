@@ -34,6 +34,9 @@ import InvoiceStatistics from 'components/invoice/InvoiceStatistics'
 import Advert from 'components/Advert'
 
 export default {
+  created () {
+    this.$store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+  },
   components: {
     SectionHeader,
     InvoiceForm,

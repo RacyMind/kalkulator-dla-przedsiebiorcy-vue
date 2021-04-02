@@ -45,7 +45,7 @@ class ContractWork {
    * Stawka podatku
    * @type {number}
    */
-  rateTax = 0
+  rateTax = constants.CONTRACT_WORK.RATE_TAX
 
   /**
    * Oblicza koszty uzyskania przychodu
@@ -64,7 +64,7 @@ class ContractWork {
    * Oblicza podstawę opodatkowania
    */
   calculateBasisForTax () {
-    this.basisForTax = this.gross - this.expenses
+    this.basisForTax = Math.round(this.gross - this.expenses)
   }
 
   /**

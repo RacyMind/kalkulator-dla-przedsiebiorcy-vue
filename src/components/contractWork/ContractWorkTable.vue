@@ -24,6 +24,14 @@
         {{ basisForTax | pln }}
       </div>
     </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        Zaliczka na podatek
+      </div>
+      <div>
+        {{ tax | pln }}
+      </div>
+    </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
         Wynagrodzenie brutto

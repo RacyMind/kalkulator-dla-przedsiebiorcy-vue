@@ -25,6 +25,7 @@ export default {
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
+    RATE_TAX: 0.17,
     AMOUNT_TAX_THRESHOLD: 85528,
   },
   LOCALE_DATE: {

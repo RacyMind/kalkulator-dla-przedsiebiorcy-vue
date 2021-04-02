@@ -7,7 +7,7 @@
           type="number"
           min="0"
           step="0.01"
-          label="Kwota*"
+          label="Wynagrodzenie*"
           autofocus
           color="brand"
           required
@@ -27,7 +27,7 @@
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <div class="q-mt-sm block">
-          <div>Koszty przychodu*</div>
+          <div>Koszty uzyskania przychodu*</div>
           <q-radio
             v-model="expenses"
             :val="$constants.CONTRACT_WORK.EXPENSES_20"
@@ -68,13 +68,19 @@ export default {
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.expenses = this.$constants.CONTRACT_WORK.EXPENSES_20
+
+    this.$store.commit('contractWork/SET_NET', null)
+    this.$store.commit('contractWork/SET_TAX', null)
+    this.$store.commit('contractWork/SET_GROSS', null)
+    this.$store.commit('contractWork/SET_BASIS_FOR_TAX', null)
+    this.$store.commit('contractWork/SET_EXPENSES', null)
   },
   methods: {
     calculate () {
       const contractWork = new ContractWork()
       contractWork.rateExpenses = Number(this.expenses)
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        ContractWork.net = Number(this.amount)
+        contractWork.net = Number(this.amount)
         contractWork.calculateGross()
 
         if (contractWork.gross <= 200) {
@@ -100,6 +106,17 @@ export default {
         contractWork.calculateNet()
       }
 
+      if (contractWork.gross <= 200) {
+        this.$q.notify({
+          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
+        })
+      }
+      if (contractWork.rateExpenses === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
+        this.$q.notify({
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł`,
+        })
+      }
+
       this.$store.commit('contractWork/SET_NET', contractWork.net)
       this.$store.commit('contractWork/SET_TAX', contractWork.taxAmount)
       this.$store.commit('contractWork/SET_GROSS', contractWork.gross)
@@ -109,7 +126,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

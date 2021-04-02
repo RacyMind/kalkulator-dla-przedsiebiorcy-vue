@@ -33,7 +33,9 @@ import ContractWorkForm from 'components/contractWork/ContractWorkForm'
 import ContractWorkTable from 'components/contractWork/ContractWorkTable'
 import ContractWorkStatistics from 'components/contractWork/ContractWorkStatistics'
 export default {
-
+  created () {
+    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
+  },
   components: {
     SectionHeader,
     Advert,
