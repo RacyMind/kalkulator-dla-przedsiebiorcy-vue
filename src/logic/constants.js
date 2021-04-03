@@ -17,6 +17,9 @@ export default {
       value: 23,
     },
   ],
+  TAX_RATES: {
+    FIRST_RATE: 17,
+  },
   BASIC_INTEREST_RATE: 13,
   AMOUNT_TYPES: {
     NET: 'net',
@@ -25,9 +28,22 @@ export default {
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
-    RATE_TAX: 0.17,
     AMOUNT_TAX_THRESHOLD: 85528,
   },
+  CONTRACT_OF_MANDATE: {
+    ACCIDENT_RATE: 1.67,
+  },
+  ZUS: {
+    EMPLOYEE: {
+      RATE_PENSION: 9.76,
+      RATE_RENT: 1.5,
+      RATE_SICK: 2.45,
+    },
+    EMPLOYER: {
+      RATE_PENSION: 9.76,
+    },
+  },
+
   LOCALE_DATE: {
     /* starting with Sunday */
     days: 'Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota_Niedziela'.split('_'),

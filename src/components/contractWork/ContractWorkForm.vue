@@ -81,29 +81,11 @@ export default {
       contractWork.rateExpenses = Number(this.expenses)
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         contractWork.net = Number(this.amount)
-        contractWork.calculateGross()
-
-        if (contractWork.gross <= 200) {
-          contractWork.rateExpenses = 0
-        }
-
-        contractWork.calculateExpenses()
-        contractWork.calculateGross()
-        contractWork.calculateBasisForTax()
-        contractWork.calculateTaxAmount()
-        contractWork.gross = contractWork.net + contractWork.taxAmount
+        contractWork.calculateForNetAmount()
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
         contractWork.gross = Number(this.amount)
-
-        if (contractWork.gross <= 200) {
-          contractWork.rateExpenses = 0
-        }
-
-        contractWork.calculateExpenses()
-        contractWork.calculateBasisForTax()
-        contractWork.calculateTaxAmount()
-        contractWork.calculateNet()
+        contractWork.calculateForGrossAmount()
       }
 
       if (contractWork.gross <= 200) {
@@ -113,7 +95,7 @@ export default {
       }
       if (contractWork.rateExpenses === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
         this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł`,
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł.`,
         })
       }
 

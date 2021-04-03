@@ -29,9 +29,9 @@
 <script>
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
-import ContractOfMandateForm from 'components/contractOfMandate/ContractWorkForm'
-import ContractOfMandateEmployeeTable from 'components/contractWork/ContractOfMandateEmployeeTable'
-import ContractOfMandateEmployeeStatistics from 'components/contractWork/ContractOfMandateEmployeeStatistics'
+import ContractOfMandateForm from 'components/contractOfMandate/ContractOfMandateForm'
+import ContractOfMandateEmployeeTable from 'components/contractOfMandate/ContractOfMandateEmployeeTable'
+import ContractOfMandateEmployeeStatistics from 'components/contractOfMandate/ContractOfMandateEmployeeStatistics'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
