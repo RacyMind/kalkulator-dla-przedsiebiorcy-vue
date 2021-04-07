@@ -88,7 +88,7 @@ export default {
         contractWork.calculateForGrossAmount()
       }
 
-      if (contractWork.gross <= 200) {
+      if (contractWork.gross <= this.$constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
           message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
         })

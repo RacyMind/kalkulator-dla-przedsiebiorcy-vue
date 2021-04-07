@@ -148,7 +148,7 @@ export default {
         contractWork.net = Number(this.amount)
         contractWork.calculateGross()
 
-        if (contractWork.gross <= 200) {
+        if (contractWork.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
           contractWork.rateExpenses = 0
         }
 
@@ -161,7 +161,7 @@ export default {
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
         contractWork.gross = Number(this.amount)
 
-        if (contractWork.gross <= 200) {
+        if (contractWork.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
           contractWork.rateExpenses = 0
         }
 

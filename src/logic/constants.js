@@ -29,18 +29,27 @@ export default {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
     AMOUNT_TAX_THRESHOLD: 85528,
+    LUMP_SUM_UP_TO_AMOUNT: 200,
   },
   CONTRACT_OF_MANDATE: {
     ACCIDENT_RATE: 1.67,
+    LUMP_SUM_UP_TO_AMOUNT: 200,
+  },
+  US: {
+    EMPLOYEE: {
+      HEALTH_RATE: 7.75,
+    },
   },
   ZUS: {
     EMPLOYEE: {
-      RATE_PENSION: 9.76,
-      RATE_RENT: 1.5,
-      RATE_SICK: 2.45,
+      PENSION_RATE: 9.76,
+      RENT_RATE: 1.5,
+      SICK_RATE: 2.45,
+      HEALTH_RATE: 9,
     },
     EMPLOYER: {
-      RATE_PENSION: 9.76,
+      PENSION_RATE: 9.76,
+      RENT_RATE: 6.5,
     },
   },
 

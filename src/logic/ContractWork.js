@@ -96,7 +96,7 @@ class ContractWork {
   calculateForNetAmount () {
     this.calculateGross()
 
-    if (this.gross <= 200) {
+    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
       this.rateExpenses = 0
     }
 
@@ -111,7 +111,7 @@ class ContractWork {
    * Obliczenia dla kwoty brutto
    */
   calculateForGrossAmount () {
-    if (this.gross <= 200) {
+    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
       this.rateExpenses = 0
     }
 

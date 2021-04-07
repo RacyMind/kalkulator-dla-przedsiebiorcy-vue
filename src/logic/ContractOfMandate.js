@@ -88,7 +88,7 @@ class ContractOfMandate {
   calculateTaxAmount () {
     this.taxAmount = this.basisForTax * this.rateTax
 
-    if (this.gross > 200) {
+    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
       this.taxAmount -= this.USHealthEmployee
     }
 
@@ -111,7 +111,7 @@ class ContractOfMandate {
   calculateBasisForTax () {
     let basisForTax
 
-    if (this.gross > 200) {
+    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
       basisForTax = this.gross - this.expenses -
       (this.ZUSPensionEmployee + this.ZUSRentEmployee + this.ZUSSickEmployee)
     } else {
@@ -136,7 +136,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki emerytalnej dla pracownika
    */
   calclulateZUSPensionEmployee () {
-    const ZUSPensionEmployee = constants.ZUS.EMPLOYEE.RATE_PENSION / 100 * this.gross
+    const ZUSPensionEmployee = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.gross
 
     this.ZUSPensionEmployee = parseFloat(ZUSPensionEmployee.toFixed(2))
   }
@@ -145,7 +145,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki emerytalnej dla pracodawcy
    */
   calclulateZUSPensionEmployer () {
-    const ZUSPensionEmployer = (constants.ZUS.EMPLOYER.RATE_PENSION / 100) * this.gross
+    const ZUSPensionEmployer = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.gross
 
     this.ZUSPensionEmployer = parseFloat(ZUSPensionEmployer.toFixed(2))
   }
@@ -154,7 +154,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki rentowej dla pracownika
    */
   calclulateZUSRentEmployee () {
-    const ZUSRentEmployee = (constants.ZUS.EMPLOYEE.RATE_RENT / 100) * this.gross
+    const ZUSRentEmployee = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.gross
 
     this.ZUSRentEmployee = parseFloat(ZUSRentEmployee.toFixed(2))
   }
@@ -163,18 +163,58 @@ class ContractOfMandate {
    * Oblicza kwote skladki chorobowej dla pracownika
    */
   calclulateZUSSickEmployee () {
-    this.ZUSSickEmployee = round((rateZUSSickEmployee / 100) * this.gross, 2)
+    const ZUSSickEmployee = (constants.ZUS.EMPLOYEE.SICK_RATE / 100) * this.gross
 
-    this.net = parseFloat(net.toFixed(2))
+    this.ZUSSickEmployee = parseFloat(ZUSSickEmployee.toFixed(2))
   }
 
   /**
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calclulateZUSRentEmployer () {
-    this.ZUSRentEmployer = round((rateZUSRentEmployer / 100) * this.gross, 2)
+    const ZUSRentEmployer = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.gross
 
-    this.net = parseFloat(net.toFixed(2))
+    this.ZUSRentEmployer = parseFloat(ZUSRentEmployer.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote skladki zdrowotnej dla ZUS
+   */
+  calclulateZUSHealthEmployee () {
+    const ZUSHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
+      (this.gross - (this.ZUSPensionEmployee +
+        this.ZUSRentEmployee + this.ZUSSickEmployee))
+
+    this.ZUSHealthEmployee = parseFloat(ZUSHealthEmployee.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote skladki zdrowotnej dla US
+   */
+  calclulateUSHealthEmployee () {
+    let USHealthEmployee
+
+    if (this.gross <= constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+      USHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
+        (this.gross - (this.ZUSPensionEmployee +
+          this.ZUSRentEmployee + this.ZUSSickEmployee))
+    } else {
+       USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
+        (this.gross - (this.ZUSPensionEmployee +
+          this.ZUSRentEmployee + this.ZUSSickEmployee))
+
+      this.USHealthEmployee = parseFloat(USHealthEmployee.toFixed(2))
+    }
+  }
+
+  /**
+   * Oblicza kwote skladki rentowej dla pracodawcy
+   */
+  calclulateZUSAccidentEmployer () {
+    const ZUSAccidentEmployer = this.rateZUSAccidentEmployer *
+      this.gross
+
+    this.ZUSRentEmployer = parseFloat(ZUSAccidentEmployer.toFixed(2))
   }
 }
 export default ContractOfMandate
