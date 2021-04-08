@@ -32,6 +32,7 @@ export default {
     LUMP_SUM_UP_TO_AMOUNT: 200,
   },
   CONTRACT_OF_MANDATE: {
+    EXPENSES_RATE: 0.2,
     ACCIDENT_RATE: 1.67,
     LUMP_SUM_UP_TO_AMOUNT: 200,
   },

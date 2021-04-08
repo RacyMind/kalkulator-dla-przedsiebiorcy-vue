@@ -99,13 +99,14 @@
 </template>
 
 <script>
-import ContractWork from 'src/logic/ContractWork'
+import ContractOfMandate from 'src/logic/ContractOfMandate'
+
 export default {
   data () {
     return {
+      contractOfMandate: null,
       amount: null,
       amountType: null,
-      expenses: null,
       young: false,
       student: false,
       health: true,
@@ -119,11 +120,11 @@ export default {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.CONTRACT_OF_MANDATE.ACCIDENT_RATE
 
-    this.$store.commit('contractWork/SET_NET', null)
-    this.$store.commit('contractWork/SET_TAX', null)
-    this.$store.commit('contractWork/SET_GROSS', null)
-    this.$store.commit('contractWork/SET_BASIS_FOR_TAX', null)
-    this.$store.commit('contractWork/SET_EXPENSES', null)
+    this.$store.commit('contractOfMandate/SET_NET', null)
+    this.$store.commit('contractOfMandate/SET_TAX', null)
+    this.$store.commit('contractOfMandate/SET_GROSS', null)
+    this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', null)
+    this.$store.commit('contractOfMandate/SET_EXPENSES', null)
   },
   watch: {
     student: function (val) {
@@ -142,51 +143,74 @@ export default {
   },
   methods: {
     calculate () {
-      const contractWork = new ContractWork()
-      contractWork.rateExpenses = Number(this.expenses)
+      this.contractOfMandate = new ContractOfMandate()
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        contractWork.net = Number(this.amount)
-        contractWork.calculateGross()
-
-        if (contractWork.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-          contractWork.rateExpenses = 0
-        }
-
-        contractWork.calculateExpenses()
-        contractWork.calculateGross()
-        contractWork.calculateBasisForTax()
-        contractWork.calculateTaxAmount()
-        contractWork.gross = contractWork.net + contractWork.taxAmount
+        this.contractOfMandate.net = Number(this.amount)
+        this.calculateForNetAmount()
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
-        contractWork.gross = Number(this.amount)
-
-        if (contractWork.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-          contractWork.rateExpenses = 0
-        }
-
-        contractWork.calculateExpenses()
-        contractWork.calculateBasisForTax()
-        contractWork.calculateTaxAmount()
-        contractWork.calculateNet()
+        this.calculateForGrossAmount()
       }
 
-      if (contractWork.gross <= 200) {
+      if (this.contractOfMandate.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
           message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
         })
       }
-      if (contractWork.rateExpenses === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
-        this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł`,
-        })
+
+      this.$store.commit('contractOfMandate/SET_NET', this.contractOfMandate.net)
+      this.$store.commit('contractOfMandate/SET_TAX', this.contractOfMandate.taxAmount)
+      this.$store.commit('contractOfMandate/SET_GROSS', this.contractOfMandate.gross)
+      this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', this.contractOfMandate.basisForTax)
+      this.$store.commit('contractOfMandate/SET_EXPENSES', this.contractOfMandate.expenses)
+    },
+
+    calculateForNetAmount () {
+      // TO DO
+    },
+    calculateForGrossAmount () {
+      this.contractOfMandate.gross = Number(this.amount)
+
+      if (this.contractOfMandate.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+        this.contractOfMandate.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
       }
 
-      this.$store.commit('contractWork/SET_NET', contractWork.net)
-      this.$store.commit('contractWork/SET_TAX', contractWork.taxAmount)
-      this.$store.commit('contractWork/SET_GROSS', contractWork.gross)
-      this.$store.commit('contractWork/SET_BASIS_FOR_TAX', contractWork.basisForTax)
-      this.$store.commit('contractWork/SET_EXPENSES', contractWork.expenses)
+      if (this.accident) {
+        this.contractOfMandate.rateZUSAccidentEmployer = Number(this.accident) / 100
+        this.contractOfMandate.calculateZUSEmployerAccident()
+      }
+
+      if (this.pension) {
+        this.contractOfMandate.calculateZUSEmployeePension()
+        this.contractOfMandate.calculateZUSEmployerPension()
+      }
+
+      if (this.rent) {
+        this.contractOfMandate.calculateZUSEmployeeRent()
+        this.contractOfMandate.calculateZUSEmployerRent()
+      }
+
+      if (this.sick) {
+        this.contractOfMandate.calculateZUSEmployeeSick()
+      }
+
+      this.contractOfMandate.calculateExpenses()
+
+      if (this.health) {
+        this.contractOfMandate.calculateZUSEmployeeHealth()
+        this.contractOfMandate.calculateUSEmployeeHealth()
+      }
+
+      this.contractOfMandate.calculateBasisForTax()
+      this.contractOfMandate.calculateTaxAmount()
+
+      if (this.young) {
+        this.contractOfMandate.taxAmount = 0
+        this.contractOfMandate.basisForTax = 0
+        this.contractOfMandate.expenses = 0
+      }
+
+      this.contractOfMandate.calculateNetAmount()
     },
   },
 }
