@@ -14,10 +14,10 @@ export default {
   SET_EXPENSES (state, expenses) {
     state.expenses = expenses
   },
-  SET_ZUS_EMPLOYEE (state, zusEmployee) {
-    state.zusEmployee = zusEmployee
+  SET_EMPLOYEE_ZUS (state, employeeZus) {
+    state.employeeZus = employeeZus
   },
-  SET_ZUS_EMPLOYER (state, zusEmployer) {
-    state.zusEmployer = zusEmployer
+  SET_EMPLOYER_ZUS (state, employerZus) {
+    state.employerZus = employerZus
   },
 }

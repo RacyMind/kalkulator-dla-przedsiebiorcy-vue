@@ -125,6 +125,17 @@ export default {
     this.$store.commit('contractOfMandate/SET_GROSS', null)
     this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', null)
     this.$store.commit('contractOfMandate/SET_EXPENSES', null)
+    this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', {
+      health: null,
+      sick: null,
+      rent: null,
+      pension: null,
+    })
+    this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', {
+      accident: null,
+      rent: null,
+      pension: null,
+    })
   },
   watch: {
     student: function (val) {
@@ -163,6 +174,8 @@ export default {
       this.$store.commit('contractOfMandate/SET_GROSS', this.contractOfMandate.gross)
       this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', this.contractOfMandate.basisForTax)
       this.$store.commit('contractOfMandate/SET_EXPENSES', this.contractOfMandate.expenses)
+      this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', this.contractOfMandate.employeeZus)
+      this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
     },
 
     calculateForNetAmount () {

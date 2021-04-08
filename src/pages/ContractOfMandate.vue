@@ -22,6 +22,17 @@
         Wykres dla pracownika
       </SectionHeader>
       <ContractOfMandateEmployeeStatistics />
+      <Advert />
+      <SectionHeader>
+        <q-icon name="o_credit_card" />
+        Podsumowanie dla pracodawcy
+      </SectionHeader>
+      <ContractOfMandateEmployerTable />
+      <SectionHeader>
+        <q-icon name="o_pie_chart" />
+        Wykres dla pracodawcy
+      </SectionHeader>
+      <ContractOfMandateEmployerStatistics />
     </div>
   </q-page>
 </template>
@@ -32,6 +43,8 @@ import Advert from 'components/Advert'
 import ContractOfMandateForm from 'components/contractOfMandate/ContractOfMandateForm'
 import ContractOfMandateEmployeeTable from 'components/contractOfMandate/ContractOfMandateEmployeeTable'
 import ContractOfMandateEmployeeStatistics from 'components/contractOfMandate/ContractOfMandateEmployeeStatistics'
+import ContractOfMandateEmployerTable from 'components/contractOfMandate/ContractOfMandateEmployerTable'
+import ContractOfMandateEmployerStatistics from 'components/contractOfMandate/ContractOfMandateEmployerStatistics'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
@@ -42,6 +55,8 @@ export default {
     ContractOfMandateForm,
     ContractOfMandateEmployeeTable,
     ContractOfMandateEmployeeStatistics,
+    ContractOfMandateEmployerTable,
+    ContractOfMandateEmployerStatistics,
   },
 }
 </script>

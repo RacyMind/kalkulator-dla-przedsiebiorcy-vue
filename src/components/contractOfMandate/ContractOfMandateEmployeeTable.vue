@@ -36,8 +36,8 @@
       <div>
         Składki ZUS
       </div>
-      <div>
-        {{ basisForTax | pln }}
+      <div class="text-weight-bold">
+        {{ zusTotal | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ tax | pln }}
+        {{ employeeZus.health | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ tax | pln }}
+        {{ employeeZus.sick | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ tax | pln }}
+        {{ employeeZus.rent | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ tax | pln }}
+        {{ employeeZus.pension | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -93,7 +93,17 @@ export default {
       basisForTax: 'contractOfMandate/basisForTax',
       expenses: 'contractOfMandate/expenses',
       tax: 'contractOfMandate/tax',
+      employeeZus: 'contractOfMandate/employeeZus',
     }),
+    zusTotal () {
+      if (!this.employeeZus.health && !this.employeeZus.sick &&
+        !this.employeeZus.rent && !this.employeeZus.pension) {
+        return null
+      }
+
+      return this.employeeZus.health + this.employeeZus.sick +
+        this.employeeZus.rent + this.employeeZus.pension
+    },
   },
 }
 </script>
