@@ -156,8 +156,8 @@ export default {
     calculate () {
       this.contractOfMandate = new ContractOfMandate()
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        this.contractOfMandate.net = Number(this.amount)
-        this.calculateForNetAmount()
+        const min = Number(this.amount)
+        this.calculateForNetAmount(min, 1.7 * min, 100)
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
         this.calculateForGrossAmount()
@@ -178,8 +178,61 @@ export default {
       this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
     },
 
-    calculateForNetAmount () {
-      // TO DO
+    calculateForNetAmount (min, max, scale) {
+      const net = Number(this.amount)
+
+      for (let iterator = max; iterator >= min; iterator -= scale) {
+        this.contractOfMandate.gross = iterator
+
+        if (this.contractOfMandate.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+          this.contractOfMandate.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+        }
+
+        if (this.accident) {
+          this.contractOfMandate.rateZUSAccidentEmployer = Number(this.accident) / 100
+          this.contractOfMandate.calculateZUSEmployerAccident()
+        }
+
+        if (this.pension) {
+          this.contractOfMandate.calculateZUSEmployeePension()
+          this.contractOfMandate.calculateZUSEmployerPension()
+        }
+
+        if (this.rent) {
+          this.contractOfMandate.calculateZUSEmployeeRent()
+          this.contractOfMandate.calculateZUSEmployerRent()
+        }
+
+        if (this.sick) {
+          this.contractOfMandate.calculateZUSEmployeeSick()
+        }
+
+        this.contractOfMandate.calculateExpenses()
+
+        if (this.health) {
+          this.contractOfMandate.calculateZUSEmployeeHealth()
+          this.contractOfMandate.calculateUSEmployeeHealth()
+        }
+
+        this.contractOfMandate.calculateBasisForTax()
+        this.contractOfMandate.calculateTaxAmount()
+
+        if (this.young) {
+          this.contractOfMandate.taxAmount = 0
+          this.contractOfMandate.basisForTax = 0
+          this.contractOfMandate.expenses = 0
+        }
+
+        this.contractOfMandate.calculateNetAmount()
+
+        if (Math.abs(this.contractOfMandate.net - net) <= 0.0005) {
+          return
+        }
+        if (Math.abs(this.contractOfMandate.net - net) <= scale) {
+          return this.calculateForNetAmount(this.contractOfMandate.net - scale, this.contractOfMandate.gross + scale, scale / 10)
+        }
+      }
+      return null
     },
     calculateForGrossAmount () {
       this.contractOfMandate.gross = Number(this.amount)
