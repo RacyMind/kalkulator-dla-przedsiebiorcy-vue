@@ -1,0 +1,109 @@
+<template>
+  <div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div>
+        Wynagrodzenie netto
+      </div>
+      <div>
+        {{ net | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        Koszty przychodu
+      </div>
+      <div>
+        {{ expenses | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div>
+        Podstawa opodatkowania
+      </div>
+      <div>
+        {{ basisForTax | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        Zaliczka na podatek
+      </div>
+      <div>
+        {{ tax | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div>
+        Składki ZUS
+      </div>
+      <div class="text-weight-bold">
+        {{ zusTotal | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div class="q-pl-sm">
+        Składka zdrowotna
+      </div>
+      <div>
+        {{ employeeZus.health | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div class="q-pl-sm">
+        Składka chorobowa
+      </div>
+      <div>
+        {{ employeeZus.sick | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div class="q-pl-sm">
+        Składka rentowa
+      </div>
+      <div>
+        {{ employeeZus.rent | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div class="q-pl-sm">
+        Składka emerytalna
+      </div>
+      <div>
+        {{ employeeZus.pension | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
+      <div>
+        Wynagrodzenie brutto
+      </div>
+      <div>
+        {{ gross | pln }}
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      net: 'contractOfEmployment/net',
+      gross: 'contractOfEmployment/gross',
+      basisForTax: 'contractOfEmployment/basisForTax',
+      expenses: 'contractOfEmployment/expenses',
+      tax: 'contractOfEmployment/tax',
+      employeeZus: 'contractOfEmployment/employeeZus',
+    }),
+    zusTotal () {
+      if (!this.employeeZus.health && !this.employeeZus.sick &&
+        !this.employeeZus.rent && !this.employeeZus.pension) {
+        return null
+      }
+
+      return this.employeeZus.health + this.employeeZus.sick +
+        this.employeeZus.rent + this.employeeZus.pension
+    },
+  },
+}
+</script>
