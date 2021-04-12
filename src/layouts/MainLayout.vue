@@ -58,6 +58,12 @@ import { mapGetters } from 'vuex'
 
 const linksData = [
   {
+    title: 'Umowa zlecenie',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy umowie zlecenie',
+    icon: '',
+    link: '/umowa-zlecenie',
+  },
+  {
     title: 'Umowa o dzieło',
     caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o dzieło',
     icon: '',

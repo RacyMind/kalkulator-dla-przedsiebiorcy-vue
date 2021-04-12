@@ -45,7 +45,7 @@ class ContractWork {
    * Stawka podatku
    * @type {number}
    */
-  rateTax = constants.CONTRACT_WORK.RATE_TAX
+  rateTax = constants.TAX_RATES.FIRST_RATE / 100
 
   /**
    * Oblicza koszty uzyskania przychodu
@@ -75,7 +75,7 @@ class ContractWork {
   }
 
   /**
-   // * Oblicza kwotę brutto
+   * Oblicza kwotę brutto
    */
   calculateGross () {
     const gross = this.net / (1 - this.rateTax * (1 - this.rateExpenses
@@ -88,6 +88,37 @@ class ContractWork {
    */
   calculateNet () {
     this.net = this.gross - this.taxAmount
+  }
+
+  /**
+   * Obliczenia dla kwoty netto
+   */
+  calculateForNetAmount () {
+    this.calculateGross()
+
+    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
+      this.rateExpenses = 0
+    }
+
+    this.calculateExpenses()
+    this.calculateGross()
+    this.calculateBasisForTax()
+    this.calculateTaxAmount()
+    this.gross = this.net + this.taxAmount
+  }
+
+  /**
+   * Obliczenia dla kwoty brutto
+   */
+  calculateForGrossAmount () {
+    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
+      this.rateExpenses = 0
+    }
+
+    this.calculateExpenses()
+    this.calculateBasisForTax()
+    this.calculateTaxAmount()
+    this.calculateNet()
   }
 }
 export default ContractWork
