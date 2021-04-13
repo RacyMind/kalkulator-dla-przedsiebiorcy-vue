@@ -118,7 +118,7 @@ export default {
   },
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
-    this.accident = this.$constants.CONTRACT_OF_MANDATE.ACCIDENT_RATE
+    this.accident = this.$constants.ACCIDENT_RATE
 
     this.$store.commit('contractOfMandate/SET_NET', null)
     this.$store.commit('contractOfMandate/SET_TAX', null)
@@ -163,7 +163,7 @@ export default {
         this.calculateForGrossAmount()
       }
 
-      if (this.contractOfMandate.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.contractOfMandate.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
           message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
         })
@@ -184,12 +184,12 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfMandate.gross = iterator
 
-        if (this.contractOfMandate.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-          this.contractOfMandate.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+        if (this.contractOfMandate.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
+          this.contractOfMandate.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
         }
 
         if (this.accident) {
-          this.contractOfMandate.rateZUSAccidentEmployer = Number(this.accident) / 100
+          this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
           this.contractOfMandate.calculateZUSEmployerAccident()
         }
 
@@ -237,12 +237,12 @@ export default {
     calculateForGrossAmount () {
       this.contractOfMandate.gross = Number(this.amount)
 
-      if (this.contractOfMandate.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-        this.contractOfMandate.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+      if (this.contractOfMandate.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
+        this.contractOfMandate.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
       }
 
       if (this.accident) {
-        this.contractOfMandate.rateZUSAccidentEmployer = Number(this.accident) / 100
+        this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
         this.contractOfMandate.calculateZUSEmployerAccident()
       }
 

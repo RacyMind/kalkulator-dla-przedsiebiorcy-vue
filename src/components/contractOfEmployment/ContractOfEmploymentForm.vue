@@ -86,7 +86,7 @@ export default {
   },
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
-    this.accident = this.$constants.CONTRACT_WORK.ACCIDENT_RATE
+    this.accident = this.$constants.ACCIDENT_RATE
 
     this.$store.commit('contractOfEmployment/SET_NET', null)
     this.$store.commit('contractOfEmployment/SET_TAX', null)
@@ -108,9 +108,16 @@ export default {
   methods: {
     calculate () {
       this.contractOfEmployment = new ContractOfEmployment()
+
+      if (this.workInLivePlace) {
+        this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
+      } else {
+        this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
+      }
+
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
-        this.calculateForNetAmount(min, 1.7 * min, 100)
+        this.calculateForNetAmount(min, 2 * min, 100)
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
         this.calculateForGrossAmount()

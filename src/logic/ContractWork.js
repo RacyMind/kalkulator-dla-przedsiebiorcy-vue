@@ -33,28 +33,28 @@ class ContractWork {
    * Stawka kosztow uzyskania przychodu
    * @type {number}
    */
-  rateExpenses = 0
+  expensesRate = 0
 
   /**
    * Maksymalne koszty przy 50% kosztow przychodu
    * @type {number}
    */
-  maxExpenses = constants.CONTRACT_WORK.AMOUNT_TAX_THRESHOLD / 2
+  maxExpenses = constants.AMOUNT_OF_TAX_THRESHOLD / 2
 
   /**
    * Stawka podatku
    * @type {number}
    */
-  rateTax = constants.TAX_RATES.FIRST_RATE / 100
+  taxRate = constants.TAX_RATES.FIRST_RATE / 100
 
   /**
    * Oblicza koszty uzyskania przychodu
    */
   calculateExpenses () {
-    let expenses = (this.gross * this.rateExpenses).toFixed(2)
+    let expenses = (this.gross * this.expensesRate).toFixed(2)
     expenses = parseFloat(expenses)
 
-    if (this.rateExpenses === 0.5 && expenses > this.maxExpenses) {
+    if (this.expensesRate === 0.5 && expenses > this.maxExpenses) {
       expenses = this.maxExpenses
     }
     this.expenses = expenses
@@ -71,14 +71,14 @@ class ContractWork {
    * Oblicza kwotę podatku
    */
   calculateTaxAmount () {
-    this.taxAmount = Math.round(this.basisForTax * this.rateTax)
+    this.taxAmount = Math.round(this.basisForTax * this.taxRate)
   }
 
   /**
    * Oblicza kwotę brutto
    */
   calculateGross () {
-    const gross = this.net / (1 - this.rateTax * (1 - this.rateExpenses
+    const gross = this.net / (1 - this.taxRate * (1 - this.expensesRate
     ))
     this.gross = parseFloat(gross.toFixed(2))
   }
@@ -96,8 +96,8 @@ class ContractWork {
   calculateForNetAmount () {
     this.calculateGross()
 
-    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
-      this.rateExpenses = 0
+    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+      this.expensesRate = 0
     }
 
     this.calculateExpenses()
@@ -111,8 +111,8 @@ class ContractWork {
    * Obliczenia dla kwoty brutto
    */
   calculateForGrossAmount () {
-    if (this.gross <= constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
-      this.rateExpenses = 0
+    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+      this.expensesRate = 0
     }
 
     this.calculateExpenses()

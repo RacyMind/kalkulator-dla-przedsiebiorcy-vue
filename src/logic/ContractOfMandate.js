@@ -15,7 +15,7 @@ class ContractOfMandate {
    * Stawka podatku
    * @type {number}
    */
-  rateTax = constants.TAX_RATES.FIRST_RATE / 100
+  taxRate = constants.TAX_RATES.FIRST_RATE / 100
   /**
    * Kwota podatku
    * @type {number}
@@ -35,7 +35,7 @@ class ContractOfMandate {
    * Stawka kosztow uzyskania przychodu
    * @type {number}
    */
-  rateExpenses = 0
+  expensesRate = 0
   /**
    * Kwota skladki zdrowotnej pracownika dla potrzeb urzedu skarbowego
    * @type {number}
@@ -45,7 +45,7 @@ class ContractOfMandate {
    * Stawka procentowa skladki wypadkowej
    * @type {number}
    */
-  rateZUSAccidentEmployer = 0
+  zusAccidentEmployerRate = 0
 
   /**
    * Skłądki ZUS dla pracownika
@@ -72,9 +72,9 @@ class ContractOfMandate {
    * Oblicza podatek dochodowy
    */
   calculateTaxAmount () {
-    this.taxAmount = this.basisForTax * this.rateTax
+    this.taxAmount = this.basisForTax * this.taxRate
 
-    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+    if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
       this.taxAmount -= this.USHealthEmployee
     }
 
@@ -86,7 +86,7 @@ class ContractOfMandate {
    */
   calculateExpenses () {
     const expenses = (this.gross - (this.employeeZus.pension +
-      this.employeeZus.rent + this.employeeZus.sick)) * this.rateExpenses
+      this.employeeZus.rent + this.employeeZus.sick)) * this.expensesRate
 
     this.expenses = parseFloat(expenses.toFixed(2))
   }
@@ -97,7 +97,7 @@ class ContractOfMandate {
   calculateBasisForTax () {
     let basisForTax
 
-    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+    if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
       basisForTax = this.gross - this.expenses -
         (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
     } else {
@@ -180,7 +180,7 @@ class ContractOfMandate {
   calculateUSEmployeeHealth () {
     let USHealthEmployee
 
-    if (this.gross <= constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
       USHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
         (this.gross - (this.employeeZus.pension +
           this.employeeZus.rent + this.employeeZus.sick))
@@ -197,7 +197,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calculateZUSEmployerAccident () {
-    const accident = this.rateZUSAccidentEmployer *
+    const accident = this.zusAccidentEmployerRate *
       this.gross
 
     this.employerZus.accident = parseFloat(accident.toFixed(2))

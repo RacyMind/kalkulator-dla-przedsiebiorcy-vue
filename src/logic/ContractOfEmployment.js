@@ -12,10 +12,15 @@ class ContractOfEmployment {
    */
   gross = 0
   /**
-   * Stawka podatku
+   * Stawka podatku dla 1. progu
    * @type {number}
    */
-  rateTax = constants.TAX_RATES.FIRST_RATE / 100
+  firstTaxRate = constants.TAX_RATES.FIRST_RATE / 100
+  /**
+   * Stawka podatku dla 2. progu
+   * @type {number}
+   */
+  secondTaxRate = constants.TAX_RATES.SECOND_RATE / 100
   /**
    * Kwota podatku
    * @type {number}
@@ -35,7 +40,7 @@ class ContractOfEmployment {
    * Stawka kosztow uzyskania przychodu
    * @type {number}
    */
-  rateExpenses = 0
+  expensesRate = 0
   /**
    * Kwota skladki zdrowotnej pracownika dla potrzeb urzedu skarbowego
    * @type {number}
@@ -45,7 +50,13 @@ class ContractOfEmployment {
    * Stawka procentowa skladki wypadkowej
    * @type {number}
    */
-  rateZUSAccidentEmployer = 0
+  zusAccidentEmployerRate = 0
+
+  /**
+   * Wolna kwota od podatku
+   * @type {number}
+   */
+  freeAmount = constants.FREE_AMOUNT_FOR_TAX
 
   /**
    * Skłądki ZUS dla pracownika
@@ -66,43 +77,35 @@ class ContractOfEmployment {
     rent: 0,
     accident: 0,
     pension: 0,
+    fp: 0,
+    fgsp: 0,
   }
 
   /**
    * Oblicza podatek dochodowy
    */
   calculateTaxAmount () {
-    this.taxAmount = this.basisForTax * this.rateTax
+    if (this.gross <= constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.taxAmount = this.basisForTax * this.firstTaxRate - this.USHealthEmployee - this.freeAmount
+    } else {
+      this.taxAmount = constants.AMOUNT_OF_TAX_THRESHOLD * this.firstTaxRate +
+        (this.basisForTax - constants.AMOUNT_OF_TAX_THRESHOLD) * this.secondTaxRate -
+        this.USHealthEmployee - this.freeAmount
+    }
 
-    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-      this.taxAmount -= this.USHealthEmployee
+    if (this.taxAmount < 0) {
+      this.taxAmount = 0
     }
 
     this.taxAmount = Math.round(this.taxAmount)
   }
 
   /**
-   * Oblicza koszty uzyskania przychodu
-   */
-  calculateExpenses () {
-    const expenses = (this.gross - (this.employeeZus.pension +
-      this.employeeZus.rent + this.employeeZus.sick)) * this.rateExpenses
-
-    this.expenses = parseFloat(expenses.toFixed(2))
-  }
-
-  /**
    * Oblicza podstawe do obliczenia podatku
    */
   calculateBasisForTax () {
-    let basisForTax
-
-    if (this.gross > constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-      basisForTax = this.gross - this.expenses -
-        (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
-    } else {
-      basisForTax = this.gross
-    }
+    const basisForTax = this.gross - this.expenses -
+      (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
 
     this.basisForTax = parseFloat(basisForTax.toFixed(2))
   }
@@ -180,14 +183,14 @@ class ContractOfEmployment {
   calculateUSEmployeeHealth () {
     let USHealthEmployee
 
-    if (this.gross <= constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+    if (this.gross <= constants.CONTRACT_OF_EMPLOYMENT.LUMP_SUM_UP_TO_AMOUNT) {
       USHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
         (this.gross - (this.employeeZus.pension +
           this.employeeZus.rent + this.employeeZus.sick))
     } else {
-       USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
-         (this.gross - (this.employeeZus.pension +
-           this.employeeZus.rent + this.employeeZus.sick))
+      USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
+        (this.gross - (this.employeeZus.pension +
+          this.employeeZus.rent + this.employeeZus.sick))
     }
 
     this.USHealthEmployee = parseFloat(USHealthEmployee.toFixed(2))
@@ -197,10 +200,30 @@ class ContractOfEmployment {
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calculateZUSEmployerAccident () {
-    const accident = this.rateZUSAccidentEmployer *
+    const accident = this.zusAccidentEmployerRate *
       this.gross
 
     this.employerZus.accident = parseFloat(accident.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote skladki na FP dla pracodawcy
+   */
+  calculateZUSEmployerFP () {
+    const fp = constants.ZUS.EMPLOYER.FP *
+      this.gross
+
+    this.employerZus.fp = parseFloat(fp.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote skladki na FGSP dla pracodawcy
+   */
+  calculateZUSEmployerFGSP () {
+    const fgsp = constants.ZUS.EMPLOYER.FGSP *
+      this.gross
+
+    this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
   }
 }
 export default ContractOfEmployment
