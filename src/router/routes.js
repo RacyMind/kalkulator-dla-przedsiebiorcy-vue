@@ -10,6 +10,7 @@ const routes = [
       { path: 'umowa-o-dzielo', component: () => import('pages/ContractWork.vue') },
       { path: 'umowa-zlecenie', component: () => import('pages/ContractOfMandate.vue') },
       { path: 'umowa-o-prace', component: () => import('pages/ContractOfEmployment') },
+      { path: 'samozatrudnienie', component: () => import('pages/SelfEmployment') },
     ],
   },
 

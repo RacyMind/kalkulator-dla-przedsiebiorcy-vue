@@ -24,6 +24,7 @@ export default {
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
+    LINEAR_RATE: 19,
   },
   FREE_AMOUNT_FOR_TAX: 46.33,
   BASIC_INTEREST_RATE: 13,
@@ -45,6 +46,9 @@ export default {
     EMPLOYEE: {
       HEALTH_RATE: 7.75,
     },
+    OWNER: {
+      HEALTH_RATE: 7.75,
+    },
   },
   ZUS: {
     EMPLOYEE: {
@@ -58,6 +62,16 @@ export default {
       RENT_RATE: 6.5,
       FP_RATE: 2.45,
       FGSP_RATE: 1,
+    },
+    OWNER: {
+      PENSION_RATE: 19.52,
+      RENT_RATE: 8,
+      SICK_RATE: 2.45,
+      HEALTH_RATE: 9,
+      FP_RATE: 2.45,
+      BASIS_AMOUNT_FOR_HEALTH: 4242.38,
+      BIG_AMOUNT: 3155.40,
+      SMALL_AMOUNT: 840,
     },
   },
 
@@ -75,5 +89,6 @@ export default {
     CONTRACT_WORK: '#ed4913',
     CONTRACT_OF_MANDATE: '#e84034',
     CONTRACT_OF_EMPLOYMENT: '#b82324',
+    SELF_EMPLOYMENT: '#a31718',
   },
 }

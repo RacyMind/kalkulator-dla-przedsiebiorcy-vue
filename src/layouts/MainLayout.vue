@@ -58,6 +58,12 @@ import { mapGetters } from 'vuex'
 
 const linksData = [
   {
+    title: 'Samozatrudnienie',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
+    icon: '',
+    link: '/samozatrudnienie',
+  },
+  {
     title: 'Umowa o pracę',
     caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
     icon: '',
