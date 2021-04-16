@@ -92,6 +92,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
+          :disable="!amount"
         />
       </div>
     </div>

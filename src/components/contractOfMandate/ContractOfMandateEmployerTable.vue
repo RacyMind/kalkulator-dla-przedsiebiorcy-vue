@@ -60,16 +60,21 @@ export default {
       employerZus: 'contractOfMandate/employerZus',
     }),
     zusTotal () {
-      if (!this.employerZus.accident && !this.employerZus.rent &&
-        !this.employerZus.pension) {
+      if (this.isZusEmpty(this.employerZus)) {
         return null
       }
-
-      return this.employerZus.accident + this.employerZus.rent +
-        this.employerZus.pension
+      return Object.values(this.employerZus).reduce((current, sum) => current + sum)
     },
     totalAmount () {
       return this.gross + this.zusTotal
+    },
+  },
+  methods: {
+    isZusEmpty (zus) {
+      if (!zus.accident && !zus.rent && !zus.pension) {
+        return true
+      }
+      return false
     },
   },
 }

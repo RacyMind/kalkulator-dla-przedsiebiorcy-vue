@@ -45,20 +45,26 @@
           min="0"
           step="0.01"
           label="Składka wypadkowa (w %)*"
-          autofocus
           color="brand"
           required
+        />
+        <q-toggle
+          v-model="fp"
+          class="q-mt-sm"
+          label="Składka na Fundusz Pracy"
         />
       </div>
     </div>
     <div class="row q-mt-lg">
       <div class="col-12">
+        {{ accident.length }}
         <q-btn
           type="submit"
           class="full-width"
           color="brand"
           size="lg"
           label="Oblicz"
+          :disable="!amount"
         />
       </div>
     </div>
@@ -74,13 +80,14 @@ export default {
       contractOfEmployment: null,
       amount: null,
       amountType: null,
-      young: false,
       workInLivePlace: false,
       student: false,
       health: true,
       sick: true,
       rent: true,
       pension: true,
+      young: false,
+      fp: true,
       accident: 0,
     }
   },
@@ -103,6 +110,8 @@ export default {
       accident: null,
       rent: null,
       pension: null,
+      fp: null,
+      fgsp: null,
     })
   },
   methods: {
@@ -114,6 +123,8 @@ export default {
       } else {
         this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
       }
+
+      this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
 
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
@@ -144,35 +155,18 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
 
-        if (this.contractOfEmployment.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-          this.contractOfEmployment.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
-        }
+        this.contractOfEmployment.calculateZUSEmployerAccident()
 
-        if (this.accident) {
-          this.contractOfEmployment.rateZUSAccidentEmployer = Number(this.accident) / 100
-          this.contractOfEmployment.calculateZUSEmployerAccident()
-        }
+        this.contractOfEmployment.calculateZUSEmployeePension()
+        this.contractOfEmployment.calculateZUSEmployerPension()
 
-        if (this.pension) {
-          this.contractOfEmployment.calculateZUSEmployeePension()
-          this.contractOfEmployment.calculateZUSEmployerPension()
-        }
+        this.contractOfEmployment.calculateZUSEmployeeRent()
+        this.contractOfEmployment.calculateZUSEmployerRent()
 
-        if (this.rent) {
-          this.contractOfEmployment.calculateZUSEmployeeRent()
-          this.contractOfEmployment.calculateZUSEmployerRent()
-        }
+        this.contractOfEmployment.calculateZUSEmployeeSick()
 
-        if (this.sick) {
-          this.contractOfEmployment.calculateZUSEmployeeSick()
-        }
-
-        this.contractOfEmployment.calculateExpenses()
-
-        if (this.health) {
-          this.contractOfEmployment.calculateZUSEmployeeHealth()
-          this.contractOfEmployment.calculateUSEmployeeHealth()
-        }
+        this.contractOfEmployment.calculateZUSEmployeeHealth()
+        this.contractOfEmployment.calculateUSEmployeeHealth()
 
         this.contractOfEmployment.calculateBasisForTax()
         this.contractOfEmployment.calculateTaxAmount()
@@ -184,6 +178,11 @@ export default {
         }
 
         this.contractOfEmployment.calculateNetAmount()
+
+        if (this.fp) {
+          this.contractOfEmployment.calculateZUSEmployerFGSP()
+          this.contractOfEmployment.calculateZUSEmployerFP()
+        }
 
         if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
           return
@@ -197,35 +196,18 @@ export default {
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
 
-      if (this.contractOfEmployment.gross > this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
-        this.contractOfEmployment.rateExpenses = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
-      }
+      this.contractOfEmployment.calculateZUSEmployerAccident()
 
-      if (this.accident) {
-        this.contractOfEmployment.rateZUSAccidentEmployer = Number(this.accident) / 100
-        this.contractOfEmployment.calculateZUSEmployerAccident()
-      }
+      this.contractOfEmployment.calculateZUSEmployeePension()
+      this.contractOfEmployment.calculateZUSEmployerPension()
 
-      if (this.pension) {
-        this.contractOfEmployment.calculateZUSEmployeePension()
-        this.contractOfEmployment.calculateZUSEmployerPension()
-      }
+      this.contractOfEmployment.calculateZUSEmployeeRent()
+      this.contractOfEmployment.calculateZUSEmployerRent()
 
-      if (this.rent) {
-        this.contractOfEmployment.calculateZUSEmployeeRent()
-        this.contractOfEmployment.calculateZUSEmployerRent()
-      }
+      this.contractOfEmployment.calculateZUSEmployeeSick()
 
-      if (this.sick) {
-        this.contractOfEmployment.calculateZUSEmployeeSick()
-      }
-
-      this.contractOfEmployment.calculateExpenses()
-
-      if (this.health) {
-        this.contractOfEmployment.calculateZUSEmployeeHealth()
-        this.contractOfEmployment.calculateUSEmployeeHealth()
-      }
+      this.contractOfEmployment.calculateZUSEmployeeHealth()
+      this.contractOfEmployment.calculateUSEmployeeHealth()
 
       this.contractOfEmployment.calculateBasisForTax()
       this.contractOfEmployment.calculateTaxAmount()
@@ -237,6 +219,11 @@ export default {
       }
 
       this.contractOfEmployment.calculateNetAmount()
+
+      if (this.fp) {
+        this.contractOfEmployment.calculateZUSEmployerFGSP()
+        this.contractOfEmployment.calculateZUSEmployerFP()
+      }
     },
   },
 }

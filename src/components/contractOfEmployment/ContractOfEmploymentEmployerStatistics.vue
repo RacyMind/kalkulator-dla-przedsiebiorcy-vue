@@ -27,12 +27,16 @@ export default {
             this.employerZus.accident.toFixed(2),
             this.employerZus.rent.toFixed(2),
             this.employerZus.pension.toFixed(2),
+            this.employerZus.fp.toFixed(2),
+            this.employerZus.fgsp.toFixed(2),
           ],
           backgroundColor: [
             colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -30),
+            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -20),
             colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -10),
+            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 0),
             colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 10),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 30),
+            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 20),
           ],
         }],
         labels: [
@@ -40,6 +44,8 @@ export default {
           'Składka wypadkowa',
           'Składka rentowa',
           'Składka emerytalna',
+          'Składka na Fundusz Pracy',
+          'Składka na FGŚP',
         ],
       }
     },

@@ -95,6 +95,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
+          :disable="!amount || !rate || !startDate || !endDate"
         />
       </div>
     </div>

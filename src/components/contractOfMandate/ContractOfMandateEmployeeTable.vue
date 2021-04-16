@@ -96,13 +96,19 @@ export default {
       employeeZus: 'contractOfMandate/employeeZus',
     }),
     zusTotal () {
-      if (!this.employeeZus.health && !this.employeeZus.sick &&
-        !this.employeeZus.rent && !this.employeeZus.pension) {
+      if (this.isZusEmpty(this.employeeZus)) {
         return null
       }
-
-      return this.employeeZus.health + this.employeeZus.sick +
-        this.employeeZus.rent + this.employeeZus.pension
+      return Object.values(this.employeeZus).reduce((current, sum) => current + sum)
+    },
+  },
+  methods: {
+    isZusEmpty (zus) {
+      if (!zus.health && !zus.rent &&
+        !zus.pension && !zus.sick) {
+        return true
+      }
+      return false
     },
   },
 }

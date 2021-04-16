@@ -40,6 +40,22 @@
         {{ employerZus.pension | pln }}
       </div>
     </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div class="q-pl-sm">
+        Składka na Fundusz Pracy
+      </div>
+      <div>
+        {{ employerZus.fp | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div class="q-pl-sm">
+        Składka na FGŚP
+      </div>
+      <div>
+        {{ employerZus.fgsp | pln }}
+      </div>
+    </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
         Suma kosztów pracodawcy
@@ -60,16 +76,22 @@ export default {
       employerZus: 'contractOfEmployment/employerZus',
     }),
     zusTotal () {
-      if (!this.employerZus.accident && !this.employerZus.rent &&
-        !this.employerZus.pension) {
+      if (this.isZusEmpty(this.employerZus)) {
         return null
       }
-
-      return this.employerZus.accident + this.employerZus.rent +
-        this.employerZus.pension
+      return Object.values(this.employerZus).reduce((current, sum) => current + sum)
     },
     totalAmount () {
       return this.gross + this.zusTotal
+    },
+  },
+  methods: {
+    isZusEmpty (zus) {
+      if (!zus.accident && !zus.rent &&
+        !zus.pension && !zus.fp && !zus.fgsp) {
+        return true
+      }
+      return false
     },
   },
 }

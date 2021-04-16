@@ -210,7 +210,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki na FP dla pracodawcy
    */
   calculateZUSEmployerFP () {
-    const fp = constants.ZUS.EMPLOYER.FP *
+    const fp = constants.ZUS.EMPLOYER.FP_RATE / 100 *
       this.gross
 
     this.employerZus.fp = parseFloat(fp.toFixed(2))
@@ -220,7 +220,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki na FGSP dla pracodawcy
    */
   calculateZUSEmployerFGSP () {
-    const fgsp = constants.ZUS.EMPLOYER.FGSP *
+    const fgsp = constants.ZUS.EMPLOYER.FGSP_RATE / 100 *
       this.gross
 
     this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))

@@ -16,9 +16,9 @@ import { colors } from 'quasar'
 export default {
   computed: {
     ...mapGetters({
-      net: 'ContractOfEmployment/net',
-      tax: 'ContractOfEmployment/tax',
-      employeeZus: 'ContractOfEmployment/employeeZus',
+      net: 'contractOfEmployment/net',
+      tax: 'contractOfEmployment/tax',
+      employeeZus: 'contractOfEmployment/employeeZus',
     }),
     data () {
       return {
