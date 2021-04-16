@@ -197,7 +197,7 @@ class ContractOfEmployment {
   }
 
   /**
-   * Oblicza kwote skladki rentowej dla pracodawcy
+   * Oblicza kwote skladki wypadkowej dla pracodawcy
    */
   calculateZUSEmployerAccident () {
     const accident = this.zusAccidentEmployerRate *

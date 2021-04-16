@@ -12,30 +12,6 @@
           color="brand"
           required
         />
-        <div class="q-mt-sm block">
-          <div class="row">
-            <q-radio
-              v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.NET"
-              label="netto"
-            />
-            <q-radio
-              v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.GROSS"
-              label="brutto"
-            />
-          </div>
-          <q-toggle
-            v-model="young"
-            class="q-mt-sm"
-            label="Zerowy PIT dla młodych"
-          />
-          <q-toggle
-            v-model="workInLivePlace"
-            class="q-mt-sm"
-            label=" Praca w miejscu zamieszkania"
-          />
-        </div>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
@@ -57,7 +33,6 @@
     </div>
     <div class="row q-mt-lg">
       <div class="col-12">
-        {{ accident.length }}
         <q-btn
           type="submit"
           class="full-width"
@@ -79,7 +54,6 @@ export default {
     return {
       selfEmployment: null,
       amount: null,
-      amountType: null,
       workInLivePlace: false,
       student: false,
       health: true,
@@ -92,7 +66,6 @@ export default {
     }
   },
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.ACCIDENT_RATE
 
     this.$store.commit('selfEmployment/SET_NET', null)
@@ -100,14 +73,10 @@ export default {
     this.$store.commit('selfEmployment/SET_GROSS', null)
     this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', null)
     this.$store.commit('selfEmployment/SET_EXPENSES', null)
-    this.$store.commit('selfEmployment/SET_EMPLOYEE_ZUS', {
+    this.$store.commit('selfEmployment/SET_ZUS', {
+      accident: null,
       health: null,
       sick: null,
-      rent: null,
-      pension: null,
-    })
-    this.$store.commit('selfEmployment/SET_EMPLOYER_ZUS', {
-      accident: null,
       rent: null,
       pension: null,
       fp: null,
@@ -126,17 +95,11 @@ export default {
 
       this.selfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
 
-      if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        const min = Number(this.amount)
-        this.calculateForNetAmount(min, 2 * min, 100)
-      }
-      if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
-        this.calculateForGrossAmount()
-      }
+        this.calculateAmount()
 
-      if (this.selfEmployment.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.selfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
         })
       }
 
@@ -145,85 +108,26 @@ export default {
       this.$store.commit('selfEmployment/SET_GROSS', this.selfEmployment.gross)
       this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', this.selfEmployment.basisForTax)
       this.$store.commit('selfEmployment/SET_EXPENSES', this.selfEmployment.expenses)
-      this.$store.commit('selfEmployment/SET_EMPLOYEE_ZUS', this.selfEmployment.employeeZus)
-      this.$store.commit('selfEmployment/SET_EMPLOYER_ZUS', this.selfEmployment.employerZus)
+      this.$store.commit('selfEmployment/SET_ZUS', this.selfEmployment.zus)
     },
-
-    calculateForNetAmount (min, max, scale) {
-      const net = Number(this.amount)
-
-      for (let iterator = max; iterator >= min; iterator -= scale) {
-        this.selfEmployment.gross = iterator
-
-        this.selfEmployment.calculateZUSEmployerAccident()
-
-        this.selfEmployment.calculateZUSEmployeePension()
-        this.selfEmployment.calculateZUSEmployerPension()
-
-        this.selfEmployment.calculateZUSEmployeeRent()
-        this.selfEmployment.calculateZUSEmployerRent()
-
-        this.selfEmployment.calculateZUSEmployeeSick()
-
-        this.selfEmployment.calculateZUSEmployeeHealth()
-        this.selfEmployment.calculateUSEmployeeHealth()
-
-        this.selfEmployment.calculateBasisForTax()
-        this.selfEmployment.calculateTaxAmount()
-
-        if (this.young) {
-          this.selfEmployment.taxAmount = 0
-          this.selfEmployment.basisForTax = 0
-          this.selfEmployment.expenses = 0
-        }
-
-        this.selfEmployment.calculateNetAmount()
-
-        if (this.fp) {
-          this.selfEmployment.calculateZUSEmployerFGSP()
-          this.selfEmployment.calculateZUSEmployerFP()
-        }
-
-        if (Math.abs(this.selfEmployment.net - net) <= 0.0005) {
-          return
-        }
-        if (Math.abs(this.selfEmployment.net - net) <= scale) {
-          return this.calculateForNetAmount(this.selfEmployment.net - scale, this.selfEmployment.gross + scale, scale / 10)
-        }
-      }
-      return null
-    },
-    calculateForGrossAmount () {
+    calculateAmount () {
       this.selfEmployment.gross = Number(this.amount)
 
-      this.selfEmployment.calculateZUSEmployerAccident()
-
-      this.selfEmployment.calculateZUSEmployeePension()
-      this.selfEmployment.calculateZUSEmployerPension()
-
-      this.selfEmployment.calculateZUSEmployeeRent()
-      this.selfEmployment.calculateZUSEmployerRent()
-
-      this.selfEmployment.calculateZUSEmployeeSick()
-
-      this.selfEmployment.calculateZUSEmployeeHealth()
-      this.selfEmployment.calculateUSEmployeeHealth()
-
+      this.selfEmployment.calculateZUSAccident()
+      this.selfEmployment.calculateZUSPension()
+      this.selfEmployment.calculateZUSRent()
+      this.selfEmployment.calculateZUSSick()
+      this.selfEmployment.calculateZUSHealth()
+      this.selfEmployment.calculateUSHealth()
       this.selfEmployment.calculateBasisForTax()
       this.selfEmployment.calculateTaxAmount()
 
-      if (this.young) {
-        this.selfEmployment.taxAmount = 0
-        this.selfEmployment.basisForTax = 0
-        this.selfEmployment.expenses = 0
+      if (this.fp) {
+        this.selfEmployment.calculateZUSFGSP()
+        this.selfEmployment.calculateZUSFP()
       }
 
       this.selfEmployment.calculateNetAmount()
-
-      if (this.fp) {
-        this.selfEmployment.calculateZUSEmployerFGSP()
-        this.selfEmployment.calculateZUSEmployerFP()
-      }
     },
   },
 }

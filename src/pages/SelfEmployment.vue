@@ -1,8 +1,7 @@
 <template>
   <q-page
     class="q-pa-md full-width c-selfEmployment"
-    style="max-width:800px;"
-  >
+    style="max-width:800px;">
     <div class="full-width bg-white">
       <SectionHeader>
         <q-icon name="o_description" />
@@ -42,7 +41,6 @@ export default {
     selfEmploymentForm,
     selfEmploymentTable,
     selfEmploymentStatistics,
-x,
   },
 }
 </script>

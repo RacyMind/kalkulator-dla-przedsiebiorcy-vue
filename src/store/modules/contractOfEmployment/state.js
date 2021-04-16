@@ -15,6 +15,8 @@ export default function () {
       accident: null,
       rent: null,
       pension: null,
+      fp: null,
+      fgsp: null,
     },
   }
 }

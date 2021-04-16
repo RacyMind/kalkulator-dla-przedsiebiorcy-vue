@@ -57,7 +57,6 @@
     </div>
     <div class="row q-mt-lg">
       <div class="col-12">
-        {{ accident.length }}
         <q-btn
           type="submit"
           class="full-width"
@@ -81,11 +80,6 @@ export default {
       amount: null,
       amountType: null,
       workInLivePlace: false,
-      student: false,
-      health: true,
-      sick: true,
-      rent: true,
-      pension: true,
       young: false,
       fp: true,
       accident: 0,
@@ -134,9 +128,9 @@ export default {
         this.calculateForGrossAmount()
       }
 
-      if (this.contractOfEmployment.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.contractOfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
         })
       }
 

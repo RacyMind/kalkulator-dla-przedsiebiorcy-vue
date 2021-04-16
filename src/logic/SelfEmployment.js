@@ -50,7 +50,7 @@ class SelfEmployment {
    * Stawka procentowa skladki wypadkowej
    * @type {number}
    */
-  zusAccidentEmployerRate = 0
+  zusAccidentRate = 0
 
   /**
    * Wolna kwota od podatku
@@ -59,23 +59,14 @@ class SelfEmployment {
   freeAmount = constants.FREE_AMOUNT_FOR_TAX
 
   /**
-   * Skłądki ZUS dla pracownika
-   * @type {{health: number, pension: number, sick: number, rent: number}}
+   * Skłądki ZUS dla właściciela
+   * @type {{fgsp: number, health: number, pension: number, fp: number, sick: number, rent: number, accident: number}}
    */
-  employeeZus = {
+  zus = {
+    accident: 0,
     health: 0,
     sick: 0,
     rent: 0,
-    pension: 0,
-  }
-
-  /**
-   * Skłądki ZUS dla pracodawcy
-   * @type {{pension: number, rent: number, accident: number}}
-   */
-  employerZus = {
-    rent: 0,
-    accident: 0,
     pension: 0,
     fp: 0,
     fgsp: 0,
@@ -105,7 +96,7 @@ class SelfEmployment {
    */
   calculateBasisForTax () {
     const basisForTax = this.gross - this.expenses -
-      (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
+      (this.zus.pension + this.zus.rent + this.zus.sick)
 
     this.basisForTax = parseFloat(basisForTax.toFixed(2))
   }
@@ -115,115 +106,97 @@ class SelfEmployment {
    */
   calculateNetAmount () {
     const net = this.gross - this.taxAmount -
-      (this.employeeZus.pension + this.employeeZus.rent +
-        this.employeeZus.sick + this.employeeZus.health)
+      (this.zus.pension + this.zus.rent +
+        this.zus.sick + this.zus.health)
 
     this.net = parseFloat(net.toFixed(2))
   }
 
   /**
-   * Oblicza kwote skladki emerytalnej dla pracownika
+   * Oblicza kwote skladki emerytalnej
    */
-  calculateZUSEmployeePension () {
-    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.gross
+  calculateZUSPension () {
+    const pension = constants.ZUS.OWNER.PENSION_RATE / 100 * this.gross
 
-    this.employeeZus.pension = parseFloat(pension.toFixed(2))
+    this.zus.pension = parseFloat(pension.toFixed(2))
   }
 
   /**
-   * Oblicza kwote skladki emerytalnej dla pracodawcy
+   * Oblicza kwote skladki rentowej
    */
-  calculateZUSEmployerPension () {
-    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.gross
+  calculateZUSRent () {
+    const rent = (constants.ZUS.OWNER.RENT_RATE / 100) * this.gross
 
-    this.employerZus.pension = parseFloat(pension.toFixed(2))
+    this.zus.rent = parseFloat(rent.toFixed(2))
   }
 
   /**
-   * Oblicza kwote skladki rentowej dla pracownika
+   * Oblicza kwote skladki chorobowej
    */
-  calculateZUSEmployeeRent () {
-    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.gross
+  calculateZUSSick () {
+    const sick = (constants.ZUS.OWNER.SICK_RATE / 100) * this.gross
 
-    this.employeeZus.rent = parseFloat(rent.toFixed(2))
-  }
-
-  /**
-   * Oblicza kwote skladki rentowej dla pracodawcy
-   */
-  calculateZUSEmployerRent () {
-    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.gross
-
-    this.employerZus.rent = parseFloat(rent.toFixed(2))
-  }
-
-  /**
-   * Oblicza kwote skladki chorobowej dla pracownika
-   */
-  calculateZUSEmployeeSick () {
-    const sick = (constants.ZUS.EMPLOYEE.SICK_RATE / 100) * this.gross
-
-    this.employeeZus.sick = parseFloat(sick.toFixed(2))
+    this.zus.sick = parseFloat(sick.toFixed(2))
   }
 
   /**
    * Oblicza kwote skladki zdrowotnej dla ZUS
    */
-  calculateZUSEmployeeHealth () {
-    const health = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
-      (this.gross - (this.employeeZus.pension +
-        this.employeeZus.rent + this.employeeZus.sick))
+  calculateZUSHealth () {
+    const health = (constants.ZUS.OWNER.HEALTH_RATE / 100) *
+      (this.gross - (this.zus.pension +
+        this.zus.rent + this.zus.sick))
 
-    this.employeeZus.health = parseFloat(health.toFixed(2))
+    this.zus.health = parseFloat(health.toFixed(2))
   }
 
   /**
    * Oblicza kwote skladki zdrowotnej dla US
    */
-  calculateUSEmployeeHealth () {
+  calculateUSHealth () {
     let USHealthEmployee
 
     if (this.gross <= constants.CONTRACT_OF_EMPLOYMENT.LUMP_SUM_UP_TO_AMOUNT) {
-      USHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
-        (this.gross - (this.employeeZus.pension +
-          this.employeeZus.rent + this.employeeZus.sick))
+      USHealthEmployee = (constants.ZUS.OWNER.HEALTH_RATE / 100) *
+        (this.gross - (this.zus.pension +
+          this.zus.rent + this.zus.sick))
     } else {
-      USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
-        (this.gross - (this.employeeZus.pension +
-          this.employeeZus.rent + this.employeeZus.sick))
+      USHealthEmployee = (constants.US.OWNER.HEALTH_RATE / 100) *
+        (this.gross - (this.zus.pension +
+          this.zus.rent + this.zus.sick))
     }
 
     this.USHealthEmployee = parseFloat(USHealthEmployee.toFixed(2))
   }
 
   /**
-   * Oblicza kwote skladki rentowej dla pracodawcy
+   * Oblicza kwote skladki wypadkowej
    */
-  calculateZUSEmployerAccident () {
-    const accident = this.zusAccidentEmployerRate *
+  calculateZUSAccident () {
+    const accident = this.zusAccidentRate *
       this.gross
 
-    this.employerZus.accident = parseFloat(accident.toFixed(2))
+    this.zus.accident = parseFloat(accident.toFixed(2))
   }
 
   /**
    * Oblicza kwote skladki na FP dla pracodawcy
    */
-  calculateZUSEmployerFP () {
-    const fp = constants.ZUS.EMPLOYER.FP_RATE / 100 *
+  calculateZUSFP () {
+    const fp = constants.ZUS.OWNER.FP_RATE / 100 *
       this.gross
 
-    this.employerZus.fp = parseFloat(fp.toFixed(2))
+    this.zus.fp = parseFloat(fp.toFixed(2))
   }
 
   /**
    * Oblicza kwote skladki na FGSP dla pracodawcy
    */
-  calculateZUSEmployerFGSP () {
-    const fgsp = constants.ZUS.EMPLOYER.FGSP_RATE / 100 *
+  calculateZUSFGSP () {
+    const fgsp = constants.ZUS.OWNER.FGSP_RATE / 100 *
       this.gross
 
-    this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
+    this.zus.fgsp = parseFloat(fgsp.toFixed(2))
   }
 }
 export default SelfEmployment
