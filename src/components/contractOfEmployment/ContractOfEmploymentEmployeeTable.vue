@@ -88,12 +88,12 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      net: 'contractOfMandate/net',
-      gross: 'contractOfMandate/gross',
-      basisForTax: 'contractOfMandate/basisForTax',
-      expenses: 'contractOfMandate/expenses',
-      tax: 'contractOfMandate/tax',
-      employeeZus: 'contractOfMandate/employeeZus',
+      net: 'contractOfEmployment/net',
+      gross: 'contractOfEmployment/gross',
+      basisForTax: 'contractOfEmployment/basisForTax',
+      expenses: 'contractOfEmployment/expenses',
+      tax: 'contractOfEmployment/tax',
+      employeeZus: 'contractOfEmployment/employeeZus',
     }),
     zusTotal () {
       if (this.isZusEmpty(this.employeeZus)) {

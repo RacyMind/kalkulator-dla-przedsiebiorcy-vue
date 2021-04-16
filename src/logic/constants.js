@@ -17,25 +17,30 @@ export default {
       value: 23,
     },
   ],
-  TAX_RATES: {
-    FIRST_RATE: 17,
-  },
-  BASIC_INTEREST_RATE: 13,
   AMOUNT_TYPES: {
     NET: 'net',
     GROSS: 'gross',
   },
+  TAX_RATES: {
+    FIRST_RATE: 17,
+    SECOND_RATE: 32,
+  },
+  FREE_AMOUNT_FOR_TAX: 46.33,
+  BASIC_INTEREST_RATE: 13,
+  AMOUNT_OF_TAX_THRESHOLD: 85528,
+  LUMP_SUM_UP_TO_AMOUNT: 200,
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
-    AMOUNT_TAX_THRESHOLD: 85528,
-    LUMP_SUM_UP_TO_AMOUNT: 200,
   },
   CONTRACT_OF_MANDATE: {
     EXPENSES_RATE: 0.2,
-    ACCIDENT_RATE: 1.67,
-    LUMP_SUM_UP_TO_AMOUNT: 200,
   },
+  CONTRACT_OF_EMPLOYMENT: {
+    EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
+    EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE: 300,
+  },
+  ACCIDENT_RATE: 1.67,
   US: {
     EMPLOYEE: {
       HEALTH_RATE: 7.75,
@@ -51,13 +56,15 @@ export default {
     EMPLOYER: {
       PENSION_RATE: 9.76,
       RENT_RATE: 6.5,
+      FP_RATE: 2.45,
+      FGSP_RATE: 1,
     },
   },
 
   LOCALE_DATE: {
     /* starting with Sunday */
-    days: 'Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota_Niedziela'.split('_'),
-    daysShort: 'pon._wt._śr._czw._pt._sob._niedz.'.split('_'),
+    days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
+    daysShort: 'niedz._pon._wt._śr._czw._pt._sob.'.split('_'),
     months: 'Styczeń_Luty_Marzec_Kwiecień_Maj_Czerwiec_Lipiec_Sierpień_Wrzesień_Październik_Listopad_Grudzień'.split('_'),
     monthsShort: 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
     firstDayOfWeek: 1,
@@ -67,5 +74,6 @@ export default {
     INTEREST: '#ed9113',
     CONTRACT_WORK: '#ed4913',
     CONTRACT_OF_MANDATE: '#e84034',
+    CONTRACT_OF_EMPLOYMENT: '#b82324',
   },
 }

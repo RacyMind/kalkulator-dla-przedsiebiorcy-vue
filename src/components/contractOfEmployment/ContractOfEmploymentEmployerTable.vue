@@ -40,6 +40,22 @@
         {{ employerZus.pension | pln }}
       </div>
     </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div class="q-pl-sm">
+        Składka na Fundusz Pracy
+      </div>
+      <div>
+        {{ employerZus.fp | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div class="q-pl-sm">
+        Składka na FGŚP
+      </div>
+      <div>
+        {{ employerZus.fgsp | pln }}
+      </div>
+    </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
         Suma kosztów pracodawcy
@@ -56,8 +72,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      employerZus: 'contractOfMandate/employerZus',
+      gross: 'contractOfEmployment/gross',
+      employerZus: 'contractOfEmployment/employerZus',
     }),
     zusTotal () {
       if (this.isZusEmpty(this.employerZus)) {
@@ -71,7 +87,8 @@ export default {
   },
   methods: {
     isZusEmpty (zus) {
-      if (!zus.accident && !zus.rent && !zus.pension) {
+      if (!zus.accident && !zus.rent &&
+        !zus.pension && !zus.fp && !zus.fgsp) {
         return true
       }
       return false

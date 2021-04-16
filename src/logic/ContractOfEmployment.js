@@ -1,6 +1,6 @@
 import constants from 'src/logic/constants'
 
-class ContractOfMandate {
+class ContractOfEmployment {
   /**
    * Kwota netto
    * @type {number}
@@ -12,10 +12,15 @@ class ContractOfMandate {
    */
   gross = 0
   /**
-   * Stawka podatku
+   * Stawka podatku dla 1. progu
    * @type {number}
    */
-  taxRate = constants.TAX_RATES.FIRST_RATE / 100
+  firstTaxRate = constants.TAX_RATES.FIRST_RATE / 100
+  /**
+   * Stawka podatku dla 2. progu
+   * @type {number}
+   */
+  secondTaxRate = constants.TAX_RATES.SECOND_RATE / 100
   /**
    * Kwota podatku
    * @type {number}
@@ -48,6 +53,12 @@ class ContractOfMandate {
   zusAccidentEmployerRate = 0
 
   /**
+   * Wolna kwota od podatku
+   * @type {number}
+   */
+  freeAmount = constants.FREE_AMOUNT_FOR_TAX
+
+  /**
    * Skłądki ZUS dla pracownika
    * @type {{health: number, pension: number, sick: number, rent: number}}
    */
@@ -66,43 +77,35 @@ class ContractOfMandate {
     rent: 0,
     accident: 0,
     pension: 0,
+    fp: 0,
+    fgsp: 0,
   }
 
   /**
    * Oblicza podatek dochodowy
    */
   calculateTaxAmount () {
-    this.taxAmount = this.basisForTax * this.taxRate
+    if (this.gross <= constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.taxAmount = this.basisForTax * this.firstTaxRate - this.USHealthEmployee - this.freeAmount
+    } else {
+      this.taxAmount = constants.AMOUNT_OF_TAX_THRESHOLD * this.firstTaxRate +
+        (this.basisForTax - constants.AMOUNT_OF_TAX_THRESHOLD) * this.secondTaxRate -
+        this.USHealthEmployee - this.freeAmount
+    }
 
-    if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
-      this.taxAmount -= this.USHealthEmployee
+    if (this.taxAmount < 0) {
+      this.taxAmount = 0
     }
 
     this.taxAmount = Math.round(this.taxAmount)
   }
 
   /**
-   * Oblicza koszty uzyskania przychodu
-   */
-  calculateExpenses () {
-    const expenses = (this.gross - (this.employeeZus.pension +
-      this.employeeZus.rent + this.employeeZus.sick)) * this.expensesRate
-
-    this.expenses = parseFloat(expenses.toFixed(2))
-  }
-
-  /**
    * Oblicza podstawe do obliczenia podatku
    */
   calculateBasisForTax () {
-    let basisForTax
-
-    if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
-      basisForTax = this.gross - this.expenses -
-        (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
-    } else {
-      basisForTax = this.gross
-    }
+    const basisForTax = this.gross - this.expenses -
+      (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
 
     this.basisForTax = parseFloat(basisForTax.toFixed(2))
   }
@@ -180,14 +183,14 @@ class ContractOfMandate {
   calculateUSEmployeeHealth () {
     let USHealthEmployee
 
-    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+    if (this.gross <= constants.CONTRACT_OF_EMPLOYMENT.LUMP_SUM_UP_TO_AMOUNT) {
       USHealthEmployee = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
         (this.gross - (this.employeeZus.pension +
           this.employeeZus.rent + this.employeeZus.sick))
     } else {
-       USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
-         (this.gross - (this.employeeZus.pension +
-           this.employeeZus.rent + this.employeeZus.sick))
+      USHealthEmployee = (constants.US.EMPLOYEE.HEALTH_RATE / 100) *
+        (this.gross - (this.employeeZus.pension +
+          this.employeeZus.rent + this.employeeZus.sick))
     }
 
     this.USHealthEmployee = parseFloat(USHealthEmployee.toFixed(2))
@@ -202,5 +205,25 @@ class ContractOfMandate {
 
     this.employerZus.accident = parseFloat(accident.toFixed(2))
   }
+
+  /**
+   * Oblicza kwote skladki na FP dla pracodawcy
+   */
+  calculateZUSEmployerFP () {
+    const fp = constants.ZUS.EMPLOYER.FP_RATE / 100 *
+      this.gross
+
+    this.employerZus.fp = parseFloat(fp.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote skladki na FGSP dla pracodawcy
+   */
+  calculateZUSEmployerFGSP () {
+    const fgsp = constants.ZUS.EMPLOYER.FGSP_RATE / 100 *
+      this.gross
+
+    this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
+  }
 }
-export default ContractOfMandate
+export default ContractOfEmployment

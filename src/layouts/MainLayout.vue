@@ -36,7 +36,7 @@
           header
           class="text-grey-8"
         >
-          Moduły
+          Narzędzia
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -57,6 +57,12 @@ import EssentialLink from 'components/EssentialLink.vue'
 import { mapGetters } from 'vuex'
 
 const linksData = [
+  {
+    title: 'Umowa o pracę',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
+    icon: '',
+    link: '/umowa-o-prace',
+  },
   {
     title: 'Umowa zlecenie',
     caption: 'Moduł oblicza składowe wynagrodzenia przy umowie zlecenie',

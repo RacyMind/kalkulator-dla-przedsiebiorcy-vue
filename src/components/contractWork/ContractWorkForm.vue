@@ -49,6 +49,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
+          :disable="!amount"
         />
       </div>
     </div>
@@ -78,7 +79,7 @@ export default {
   methods: {
     calculate () {
       const contractWork = new ContractWork()
-      contractWork.rateExpenses = Number(this.expenses)
+      contractWork.expensesRate = Number(this.expenses)
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         contractWork.net = Number(this.amount)
         contractWork.calculateForNetAmount()
@@ -88,12 +89,12 @@ export default {
         contractWork.calculateForGrossAmount()
       }
 
-      if (contractWork.gross <= this.$constants.CONTRACT_WORK.LUMP_SUM_UP_TO_AMOUNT) {
+      if (contractWork.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
           message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
         })
       }
-      if (contractWork.rateExpenses === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
+      if (contractWork.expensesRate === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
         this.$q.notify({
           message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł.`,
         })
