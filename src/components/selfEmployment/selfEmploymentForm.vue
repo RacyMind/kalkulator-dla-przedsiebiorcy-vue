@@ -47,29 +47,31 @@
           color="brand"
           required
         />
-        <q-toggle
-          v-model="fullTimeJob"
-          class="q-mt-sm"
-          label=" Praca na etacie"
-        />
-        <q-toggle
-          v-model="aid"
-          :disable="fullTimeJob"
-          class="q-mt-sm"
-          label="Ulga przy składkach ZUS"
-        />
-        <q-toggle
-          v-model="fp"
-          :disable="aid || fullTimeJob"
-          class="q-mt-sm"
-          label="Składka na Fundusz Pracy"
-        />
-        <q-toggle
-          v-model="sick"
-          :disable="fullTimeJob"
-          class="q-mt-sm"
-          label="Składka chorobowa"
-        />
+        <div class="column">
+          <q-toggle
+            v-model="fullTimeJob"
+            class="q-mt-sm"
+            label=" Praca na etacie"
+          />
+          <q-toggle
+            v-model="aid"
+            :disable="fullTimeJob"
+            class="q-mt-sm"
+            label="Ulga przy składkach ZUS"
+          />
+          <q-toggle
+            v-model="fp"
+            :disable="aid || fullTimeJob"
+            class="q-mt-sm"
+            label="Składka na Fundusz Pracy"
+          />
+          <q-toggle
+            v-model="sick"
+            :disable="fullTimeJob"
+            class="q-mt-sm"
+            label="Składka chorobowa"
+          />
+        </div>
       </div>
     </div>
     <div class="row q-mt-lg">

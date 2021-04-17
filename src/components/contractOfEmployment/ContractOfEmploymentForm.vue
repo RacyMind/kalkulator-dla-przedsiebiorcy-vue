@@ -38,21 +38,23 @@
         </div>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="accident"
-          type="number"
-          class="full-width"
-          min="0"
-          step="0.01"
-          label="Składka wypadkowa (w %)*"
-          color="brand"
-          required
-        />
-        <q-toggle
-          v-model="fp"
-          class="q-mt-sm"
-          label="Składka na Fundusz Pracy"
-        />
+        <div class="column">
+          <q-input
+            v-model="accident"
+            type="number"
+            class="full-width"
+            min="0"
+            step="0.01"
+            label="Składka wypadkowa (w %)*"
+            color="brand"
+            required
+          />
+          <q-toggle
+            v-model="fp"
+            class="q-mt-sm"
+            label="Składka na Fundusz Pracy"
+          />
+        </div>
       </div>
     </div>
     <div class="row q-mt-lg">
