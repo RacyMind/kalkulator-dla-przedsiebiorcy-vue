@@ -2,7 +2,7 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Wynagrodzenie netto
+        Kwota netto
       </div>
       <div>
         {{ net | pln }}
@@ -18,7 +18,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Wynagrodzenie brutto
+        Kwota brutto
       </div>
       <div>
         {{ gross | pln }}

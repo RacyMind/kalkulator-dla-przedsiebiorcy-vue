@@ -26,7 +26,7 @@ export default {
           backgroundColor: [colors.lighten(this.$constants.COLORS.INVOICE, -20), colors.lighten(this.$constants.COLORS.INVOICE, 20)],
         }],
         labels: [
-          'Wynagrodzenie netto',
+          'Kwota netto',
           'Kwota podatku',
         ],
       }

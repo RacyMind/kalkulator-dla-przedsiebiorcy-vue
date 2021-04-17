@@ -140,13 +140,13 @@ export default {
   },
   watch: {
     student: function (val) {
-      this.health = false
-      this.sick = false
-      this.rent = false
-      this.pension = false
-      this.accident = 0
-
       if (val) {
+        this.health = false
+        this.sick = false
+        this.rent = false
+        this.pension = false
+        this.accident = 0
+
         this.$q.notify({
           message: 'Dla studenta / ucznia nie odprowadza się składek ZUS.',
         })

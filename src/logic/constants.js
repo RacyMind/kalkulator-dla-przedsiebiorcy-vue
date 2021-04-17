@@ -17,6 +17,10 @@ export default {
       value: 23,
     },
   ],
+  DEFAULT_VAT_VALUE: {
+    label: '23%',
+    value: 23,
+  },
   AMOUNT_TYPES: {
     NET: 'net',
     GROSS: 'gross',
@@ -25,6 +29,11 @@ export default {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
     LINEAR_RATE: 19,
+  },
+  TAX_TYPES: {
+    GENERAL: 'general',
+    LINEAR: 'linear',
+    LUMP_SUM: 'lumpSum',
   },
   FREE_AMOUNT_FOR_TAX: 46.33,
   BASIC_INTEREST_RATE: 13,

@@ -29,7 +29,6 @@
         <q-select
           v-model="rate"
           :options="$constants.VAT_VALUES"
-          emit-value
           label="Stawka podatku VAT*"
           color="brand"
           required
@@ -58,10 +57,12 @@ export default {
     return {
       amount: null,
       typeAmount: 'net',
-      rate: 23,
+      rate: null,
     }
   },
   created () {
+    this.rate = this.$constants.DEFAULT_VAT_VALUE
+
     this.$store.commit('invoice/SET_NET', null)
     this.$store.commit('invoice/SET_TAX', null)
     this.$store.commit('invoice/SET_GROSS', null)
@@ -69,7 +70,7 @@ export default {
   methods: {
     save () {
       const invoice = new Invoice()
-      invoice.rateTax = Number(this.rate) / 100
+      invoice.rateTax = Number(this.rate.value) / 100
       if (this.typeAmount === 'net') {
         invoice.net = Number(this.amount)
         invoice.calculateTaxAmount()
