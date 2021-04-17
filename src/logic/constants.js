@@ -30,6 +30,40 @@ export default {
     SECOND_RATE: 32,
     LINEAR_RATE: 19,
   },
+  TAX_RATES_FOR_LAMP_SUM: [
+    {
+      label: '2%',
+      value: 2,
+    },
+    {
+      label: '3%',
+      value: 3,
+    },
+    {
+      label: '5,5%',
+      value: 5.5,
+    },
+    {
+      label: '8,5%',
+      value: 8.5,
+    },
+    {
+      label: '10%',
+      value: 10,
+    },
+    {
+      label: '12.5%',
+      value: 12.5,
+    },
+    {
+      label: '15%',
+      value: 15,
+    },
+    {
+      label: '17%',
+      value: 17,
+    },
+  ],
   TAX_TYPES: {
     GENERAL: 'general',
     LINEAR: 'linear',

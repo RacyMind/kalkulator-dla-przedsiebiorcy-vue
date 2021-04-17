@@ -26,7 +26,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Zaliczka na podatek
+        Zaliczka na podatek dochodowy
       </div>
       <div>
         {{ tax | pln }}

@@ -28,6 +28,13 @@
           color="brand"
           required
         />
+        <q-select
+          v-if="taxType.value === $constants.TAX_TYPES.LUMP_SUM"
+          v-model="taxRateForLumpSum"
+          :options="$constants.TAX_RATES_FOR_LAMP_SUM"
+          label="Stawka ryczałtu ewidencjonowanego"
+          color="brand"
+        />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
@@ -90,6 +97,7 @@ export default {
       amount: null,
       expenses: 0,
       taxType: null,
+      taxRateForLumpSum: null,
       sick: false,
       fp: true,
       accident: 0,
@@ -103,6 +111,7 @@ export default {
       value: this.$constants.TAX_TYPES.GENERAL,
       label: 'Zasady ogólne',
     }
+    this.taxRateForLumpSum = this.$constants.TAX_RATES_FOR_LAMP_SUM[0]
 
     this.$store.commit('selfEmployment/SET_NET', null)
     this.$store.commit('selfEmployment/SET_TAX', null)
@@ -116,7 +125,6 @@ export default {
       rent: null,
       pension: null,
       fp: null,
-      fgsp: null,
     })
   },
   computed: {
@@ -157,9 +165,20 @@ export default {
 
       this.selfEmployment.gross = Number(this.amount)
       this.selfEmployment.expenses = Number(this.expenses)
-      this.selfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
+      this.selfEmployment.zusAccidentRate = Number(this.accident) / 100
+      this.selfEmployment.taxType = this.taxType.value
 
-        this.calculateAmount()
+      if (this.taxType.value === this.$constants.TAX_TYPES.LUMP_SUM) {
+        this.selfEmployment.taxRateForLumpSum = Number(this.taxRateForLumpSum.value) / 100
+      }
+
+      if (this.aid) {
+        this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
+      } else {
+        this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
+      }
+
+      this.calculateAmount()
 
       if (this.selfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
@@ -179,9 +198,6 @@ export default {
         this.selfEmployment.calculateZUSAccident()
         this.selfEmployment.calculateZUSPension()
         this.selfEmployment.calculateZUSRent()
-
-        this.selfEmployment.calculateZUSHealth()
-        this.selfEmployment.calculateUSHealth()
       }
 
       if (this.sick) {
@@ -189,9 +205,11 @@ export default {
       }
 
       if (this.fp) {
-        this.selfEmployment.calculateZUSFGSP()
         this.selfEmployment.calculateZUSFP()
       }
+
+      this.selfEmployment.calculateZUSHealth()
+      this.selfEmployment.calculateUSHealth()
 
       this.selfEmployment.calculateBasisForTax()
       this.selfEmployment.calculateTaxAmount()
