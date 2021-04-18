@@ -14,4 +14,11 @@ export default {
   SET_EXPENSES (state, expenses) {
     state.expenses = expenses
   },
+  CLEAR_DATA (state) {
+    state.net = null
+    state.gross = null
+    state.basisForTax = null
+    state.expenses = null
+    state.tax = null
+  },
 }

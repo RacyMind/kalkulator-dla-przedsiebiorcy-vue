@@ -37,16 +37,6 @@
         />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="accident"
-          type="number"
-          class="full-width"
-          min="0"
-          step="0.01"
-          label="Składka wypadkowa (w %)*"
-          color="brand"
-          required
-        />
         <div class="column">
           <q-toggle
             v-model="fullTimeJob"
@@ -57,21 +47,38 @@
             v-model="aid"
             :disable="fullTimeJob"
             class="q-mt-sm"
-            label="Ulga przy składkach ZUS"
+            label="Ulga na start"
+          />
+          <q-toggle
+            v-model="smallZus"
+            :disable="fullTimeJob || aid"
+            class="q-mt-sm"
+            label="Mały ZUS"
           />
           <q-toggle
             v-model="fp"
-            :disable="aid || fullTimeJob"
+            :disable="smallZus || fullTimeJob || aid"
             class="q-mt-sm"
             label="Składka na Fundusz Pracy"
           />
           <q-toggle
             v-model="sick"
-            :disable="fullTimeJob"
+            :disable="fullTimeJob || aid"
             class="q-mt-sm"
             label="Składka chorobowa"
           />
         </div>
+        <q-input
+          v-model="accident"
+          :disable="fullTimeJob || aid"
+          type="number"
+          class="full-width"
+          min="0"
+          step="0.01"
+          label="Składka wypadkowa (w %)*"
+          color="brand"
+          required
+        />
       </div>
     </div>
     <div class="row q-mt-lg">
@@ -103,6 +110,7 @@ export default {
       sick: false,
       fp: true,
       accident: 0,
+      smallZus: false,
       aid: false,
       fullTimeJob: false,
     }
@@ -115,19 +123,7 @@ export default {
     }
     this.taxRateForLumpSum = this.$constants.TAX_RATES_FOR_LAMP_SUM[0]
 
-    this.$store.commit('selfEmployment/SET_NET', null)
-    this.$store.commit('selfEmployment/SET_TAX', null)
-    this.$store.commit('selfEmployment/SET_GROSS', null)
-    this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', null)
-    this.$store.commit('selfEmployment/SET_EXPENSES', null)
-    this.$store.commit('selfEmployment/SET_ZUS', {
-      accident: null,
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-      fp: null,
-    })
+    this.$store.commit('selfEmployment/CLEAR_DATA')
   },
   computed: {
     taxTypes () {
@@ -151,11 +147,17 @@ export default {
     fullTimeJob: function (val) {
       if (val) {
         this.aid = false
+        this.smallZus = false
         this.fp = false
         this.sick = false
       }
     },
     aid: function (val) {
+      if (val) {
+        this.fp = false
+      }
+    },
+    smallZus: function (val) {
       if (val) {
         this.fp = false
       }
@@ -174,7 +176,7 @@ export default {
         this.selfEmployment.taxRateForLumpSum = Number(this.taxRateForLumpSum.value) / 100
       }
 
-      if (this.aid) {
+      if (this.smallZus) {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
       } else {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
@@ -196,7 +198,7 @@ export default {
       this.$store.commit('selfEmployment/SET_ZUS', this.selfEmployment.zus)
     },
     calculateAmount () {
-      if (!this.fullTimeJob) {
+      if (!this.fullTimeJob && !this.aid) {
         this.selfEmployment.calculateZUSAccident()
         this.selfEmployment.calculateZUSPension()
         this.selfEmployment.calculateZUSRent()

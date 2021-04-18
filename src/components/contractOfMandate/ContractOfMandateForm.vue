@@ -121,22 +121,7 @@ export default {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.ACCIDENT_RATE
 
-    this.$store.commit('contractOfMandate/SET_NET', null)
-    this.$store.commit('contractOfMandate/SET_TAX', null)
-    this.$store.commit('contractOfMandate/SET_GROSS', null)
-    this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', null)
-    this.$store.commit('contractOfMandate/SET_EXPENSES', null)
-    this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', {
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-    })
-    this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', {
-      accident: null,
-      rent: null,
-      pension: null,
-    })
+    this.$store.commit('contractOfMandate/CLEAR_DATA')
   },
   watch: {
     student: function (val) {

@@ -17,4 +17,19 @@ export default {
   SET_ZUS (state, zus) {
     state.zus = zus
   },
+  CLEAR_DATA (state) {
+    state.net = null
+    state.gross = null
+    state.basisForTax = null
+    state.expenses = null
+    state.tax = null
+    state.zus = {
+      accident: null,
+      health: null,
+      sick: null,
+      rent: null,
+      pension: null,
+      fp: null,
+    }
+  },
 }

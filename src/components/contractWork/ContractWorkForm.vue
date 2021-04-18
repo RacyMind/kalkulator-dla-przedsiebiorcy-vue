@@ -70,11 +70,7 @@ export default {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.expenses = this.$constants.CONTRACT_WORK.EXPENSES_20
 
-    this.$store.commit('contractWork/SET_NET', null)
-    this.$store.commit('contractWork/SET_TAX', null)
-    this.$store.commit('contractWork/SET_GROSS', null)
-    this.$store.commit('contractWork/SET_BASIS_FOR_TAX', null)
-    this.$store.commit('contractWork/SET_EXPENSES', null)
+    this.$store.commit('contractWork/CLEAR_DATA')
   },
   methods: {
     calculate () {

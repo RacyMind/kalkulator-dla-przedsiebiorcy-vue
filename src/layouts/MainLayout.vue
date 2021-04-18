@@ -18,7 +18,7 @@
               {{ moduleTitle }}
             </div>
             <div class="xs-hide">
-              Kalkulator dla przedsiębiorcy
+              Kalkulator finansowy
             </div>
           </div>
         </q-toolbar-title>
