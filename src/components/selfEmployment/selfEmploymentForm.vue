@@ -184,7 +184,7 @@ export default {
 
       this.calculateAmount()
 
-      if (this.selfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+      if (this.selfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD && this.selfEmployment.taxType !== this.$constants.TAX_TYPES.LINEAR) {
         this.$q.notify({
           message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
         })

@@ -104,7 +104,7 @@ class ContractOfMandate {
       basisForTax = this.gross
     }
 
-    this.basisForTax = parseFloat(basisForTax.toFixed(2))
+    this.basisForTax = Math.round(basisForTax)
   }
 
   /**

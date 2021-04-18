@@ -107,7 +107,7 @@ class ContractOfEmployment {
     const basisForTax = this.gross - this.expenses -
       (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
 
-    this.basisForTax = parseFloat(basisForTax.toFixed(2))
+    this.basisForTax = Math.round(basisForTax)
   }
 
   /**

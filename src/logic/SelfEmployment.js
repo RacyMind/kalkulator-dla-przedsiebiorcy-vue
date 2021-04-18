@@ -133,12 +133,15 @@ class SelfEmployment {
     if (this.taxType === constants.TAX_TYPES.LUMP_SUM) {
       basisForTax = this.gross - this.expenses -
         (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
+    } else if (this.taxType === constants.TAX_TYPES.LINEAR) {
+      basisForTax = this.gross -
+        (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
     } else {
       basisForTax = this.gross - this.expenses -
-        (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident + this.zus.fp)
+        (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
     }
 
-    this.basisForTax = parseFloat(basisForTax.toFixed(2))
+    this.basisForTax = Math.round(basisForTax)
   }
 
   /**
