@@ -93,6 +93,7 @@ export default {
       HEALTH_RATE: 7.75,
     },
   },
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
   ZUS: {
     EMPLOYEE: {
       PENSION_RATE: 9.76,
