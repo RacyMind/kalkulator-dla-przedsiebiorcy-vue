@@ -246,5 +246,36 @@ class ContractOfEmployment {
 
     this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
   }
+
+  calculateForGrossAmount (young, fp) {
+    this.calculateZUSEmployerAccident()
+
+    this.calculateZUSEmployeePension()
+    this.calculateZUSEmployerPension()
+
+    this.calculateZUSEmployeeRent()
+    this.calculateZUSEmployerRent()
+
+    this.calculateZUSEmployeeSick()
+
+    this.calculateZUSEmployeeHealth()
+    this.calculateUSEmployeeHealth()
+
+    this.calculateBasisForTax()
+    this.calculateTaxAmount()
+
+    if (young) {
+      this.taxAmount = 0
+      this.basisForTax = 0
+      this.expenses = 0
+    }
+
+    this.calculateNetAmount()
+
+    if (fp) {
+      this.calculateZUSEmployerFGSP()
+      this.calculateZUSEmployerFP()
+    }
+  }
 }
 export default ContractOfEmployment

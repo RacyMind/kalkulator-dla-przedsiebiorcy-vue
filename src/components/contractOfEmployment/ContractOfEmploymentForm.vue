@@ -57,18 +57,6 @@
         </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-12">
-        <q-select
-          v-model="period"
-          :options="periods"
-          label="Pokaż dla*"
-          color="brand"
-          required
-        />
-      </div>
-    </div>
     <div class="row q-mt-lg">
       <div class="col-12">
         <q-btn
@@ -97,24 +85,11 @@ export default {
       young: false,
       fp: true,
       accident: 0,
-      periods: null,
-      period: null,
     }
   },
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.ACCIDENT_RATE
-    this.periods = [
-      {
-        label: 'jednego miesiąca',
-        value: this.$constants.PERIODS.MONTH,
-      },
-      {
-        label: 'jednego roku',
-        value: this.$constants.PERIODS.YEAR,
-      },
-    ]
-    this.period = this.periods[0]
 
     this.$store.commit('contractOfEmployment/CLEAR_DATA')
   },
@@ -128,19 +103,10 @@ export default {
         this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
       }
 
-      if (this.period.value === this.$constants.PERIODS.YEAR) {
-        this.contractOfEmployment.expenses *= 12
-        this.contractOfEmployment.freeAmount *= 12
-      }
-
       this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
 
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        let min = Number(this.amount)
-
-        if (this.period.value === this.$constants.PERIODS.YEAR) {
-          min = Number(this.amount) * 12
-        }
+        const min = Number(this.amount)
 
         this.calculateForNetAmount(min, 2 * min, 100)
       }
@@ -164,43 +130,12 @@ export default {
     },
 
     calculateForNetAmount (min, max, scale) {
-      let net = Number(this.amount)
-
-      if (this.period.value === this.$constants.PERIODS.YEAR) {
-        net = Number(this.amount) * 12
-      }
+      const net = Number(this.amount)
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
 
-        this.contractOfEmployment.calculateZUSEmployerAccident()
-
-        this.contractOfEmployment.calculateZUSEmployeePension()
-        this.contractOfEmployment.calculateZUSEmployerPension()
-
-        this.contractOfEmployment.calculateZUSEmployeeRent()
-        this.contractOfEmployment.calculateZUSEmployerRent()
-
-        this.contractOfEmployment.calculateZUSEmployeeSick()
-
-        this.contractOfEmployment.calculateZUSEmployeeHealth()
-        this.contractOfEmployment.calculateUSEmployeeHealth()
-
-        this.contractOfEmployment.calculateBasisForTax()
-        this.contractOfEmployment.calculateTaxAmount()
-
-        if (this.young) {
-          this.contractOfEmployment.taxAmount = 0
-          this.contractOfEmployment.basisForTax = 0
-          this.contractOfEmployment.expenses = 0
-        }
-
-        this.contractOfEmployment.calculateNetAmount()
-
-        if (this.fp) {
-          this.contractOfEmployment.calculateZUSEmployerFGSP()
-          this.contractOfEmployment.calculateZUSEmployerFP()
-        }
+        this.contractOfEmployment.calculateForGrossAmount(this.young, this.fp)
 
         if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
           return
@@ -214,38 +149,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
 
-      if (this.period.value === this.$constants.PERIODS.YEAR) {
-        this.contractOfEmployment.gross = Number(this.amount) * 12
-      }
-
-      this.contractOfEmployment.calculateZUSEmployerAccident()
-
-      this.contractOfEmployment.calculateZUSEmployeePension()
-      this.contractOfEmployment.calculateZUSEmployerPension()
-
-      this.contractOfEmployment.calculateZUSEmployeeRent()
-      this.contractOfEmployment.calculateZUSEmployerRent()
-
-      this.contractOfEmployment.calculateZUSEmployeeSick()
-
-      this.contractOfEmployment.calculateZUSEmployeeHealth()
-      this.contractOfEmployment.calculateUSEmployeeHealth()
-
-      this.contractOfEmployment.calculateBasisForTax()
-      this.contractOfEmployment.calculateTaxAmount()
-
-      if (this.young) {
-        this.contractOfEmployment.taxAmount = 0
-        this.contractOfEmployment.basisForTax = 0
-        this.contractOfEmployment.expenses = 0
-      }
-
-      this.contractOfEmployment.calculateNetAmount()
-
-      if (this.fp) {
-        this.contractOfEmployment.calculateZUSEmployerFGSP()
-        this.contractOfEmployment.calculateZUSEmployerFP()
-      }
+      this.contractOfEmployment.calculateForGrossAmount(this.young, this.fp)
     },
   },
 }

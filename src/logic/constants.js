@@ -25,10 +25,6 @@ export default {
     NET: 'net',
     GROSS: 'gross',
   },
-  PERIODS: {
-    MONTH: 'month',
-    YEAR: 'year',
-  },
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
