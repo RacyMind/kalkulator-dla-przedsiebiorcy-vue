@@ -25,6 +25,10 @@ export default {
     NET: 'net',
     GROSS: 'gross',
   },
+  PERIODS: {
+    MONTH: 'month',
+    YEAR: 'year',
+  },
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
@@ -104,8 +108,8 @@ export default {
     EMPLOYER: {
       PENSION_RATE: 9.76,
       RENT_RATE: 6.5,
-      FP_RATE: 2.45,
-      FGSP_RATE: 1,
+      FP_RATE: 1,
+      FGSP_RATE: 1.45,
     },
     OWNER: {
       PENSION_RATE: 19.52,

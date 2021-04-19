@@ -57,6 +57,18 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <q-select
+          v-model="period"
+          :options="periods"
+          label="Pokaż dla*"
+          color="brand"
+          required
+        />
+      </div>
+    </div>
     <div class="row q-mt-lg">
       <div class="col-12">
         <q-btn
@@ -85,11 +97,24 @@ export default {
       young: false,
       fp: true,
       accident: 0,
+      periods: null,
+      period: null,
     }
   },
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.ACCIDENT_RATE
+    this.periods = [
+      {
+        label: 'jednego miesiąca',
+        value: this.$constants.PERIODS.MONTH,
+      },
+      {
+        label: 'jednego roku',
+        value: this.$constants.PERIODS.YEAR,
+      },
+    ]
+    this.period = this.periods[0]
 
     this.$store.commit('contractOfEmployment/CLEAR_DATA')
   },
@@ -103,10 +128,20 @@ export default {
         this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
       }
 
+      if (this.period.value === this.$constants.PERIODS.YEAR) {
+        this.contractOfEmployment.expenses *= 12
+        this.contractOfEmployment.freeAmount *= 12
+      }
+
       this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
 
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        const min = Number(this.amount)
+        let min = Number(this.amount)
+
+        if (this.period.value === this.$constants.PERIODS.YEAR) {
+          min = Number(this.amount) * 12
+        }
+
         this.calculateForNetAmount(min, 2 * min, 100)
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
@@ -129,7 +164,11 @@ export default {
     },
 
     calculateForNetAmount (min, max, scale) {
-      const net = Number(this.amount)
+      let net = Number(this.amount)
+
+      if (this.period.value === this.$constants.PERIODS.YEAR) {
+        net = Number(this.amount) * 12
+      }
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
@@ -174,6 +213,10 @@ export default {
     },
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
+
+      if (this.period.value === this.$constants.PERIODS.YEAR) {
+        this.contractOfEmployment.gross = Number(this.amount) * 12
+      }
 
       this.contractOfEmployment.calculateZUSEmployerAccident()
 
