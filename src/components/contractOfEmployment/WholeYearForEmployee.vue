@@ -64,15 +64,7 @@ export default {
           label: 'Skł. emerytalna',
           required: true,
           align: 'left',
-          field: row => row.sick,
-          format: val => `${helpers.formatCurrency(val)}`,
-        },
-        {
-          name: 'pension',
-          label: 'Skł. chorobowa',
-          required: true,
-          align: 'left',
-          field: row => row.sick,
+          field: row => row.pension,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
