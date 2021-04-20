@@ -19,6 +19,8 @@ import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 export default {
   data () {
     return {
+      totalBasisForTax: 0,
+      totalBasicAmountForRentAndPension: 0,
       columns: [
         {
           name: 'month',
@@ -94,6 +96,7 @@ export default {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',
       basisForTax: 'contractOfEmployment/basisForTax',
+      expenses: 'contractOfEmployment/expenses',
     }),
   },
   methods: {
@@ -114,8 +117,10 @@ export default {
     },
     getResultForOneMonth () {
       const model = new ContractOfEmployment()
+      const currentBasisForTax = this.totalBasisForTax
 
       model.gross = this.gross
+      model.expenses = this.expenses
 
       model.calculateZUSEmployeePension()
 
@@ -127,7 +132,36 @@ export default {
       model.calculateUSEmployeeHealth()
 
       model.calculateBasisForTax()
-      model.calculateTaxAmount()
+
+      const newTotalBasisForTax = currentBasisForTax + model.basisForTax
+
+      this.totalBasisForTax += model.basisForTax
+      this.totalBasicAmountForRentAndPension += model.gross
+
+      if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+        model.calculateTaxBySecondTaxRate()
+
+        model.taxAmount = model.taxAmount - model.USHealthEmployee
+      } else {
+        if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+          model.calculateTaxByFirstTaxRate()
+
+          model.taxAmount = model.taxAmount - model.USHealthEmployee - model.freeAmount
+        } else {
+          const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
+          const basisForTax = model.basisForTax
+          model.basisForTax = basisForFirstRateTax
+          model.calculateTaxByFirstTaxRate()
+          const firstRateTaxAmount = model.taxAmount
+
+          model.basisForTax = Math.abs(basisForTax - basisForFirstRateTax)
+          model.calculateTaxBySecondTaxRate()
+
+          model.taxAmount = firstRateTaxAmount + model.taxAmount - model.USHealthEmployee - model.freeAmount
+        }
+      }
+
+      model.taxAmount = Math.round(model.taxAmount)
 
       if (!this.basisForTax) {
         model.taxAmount = 0

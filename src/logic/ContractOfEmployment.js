@@ -32,6 +32,11 @@ class ContractOfEmployment {
    */
   basisForTax = 0
   /**
+   * Podstawa do obliczenia skladki rentowej i emerytalnej
+   * @type {number}
+   */
+  basicAmountForRentAndPension = 0
+  /**
    * Koszty uzyskania przychodu
    * @type {number}
    */
@@ -98,6 +103,20 @@ class ContractOfEmployment {
     }
 
     this.taxAmount = Math.round(this.taxAmount)
+  }
+
+  /**
+   * Oblicza podatek dochodowy dla 1. progu
+   */
+  calculateTaxByFirstTaxRate () {
+    this.taxAmount = this.basisForTax * this.firstTaxRate
+  }
+
+  /**
+   * Oblicza podatek dochodowy dla 2. progu
+   */
+  calculateTaxBySecondTaxRate () {
+    this.taxAmount = this.basisForTax * this.secondTaxRate
   }
 
   /**
