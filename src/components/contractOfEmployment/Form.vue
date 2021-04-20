@@ -135,7 +135,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
 
-        this.contractOfEmployment.calculateForGrossAmount(this.young, this.fp)
+        this.contractOfEmployment.calculateAll(this.young, this.fp)
 
         if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
           return
@@ -149,7 +149,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
 
-      this.contractOfEmployment.calculateForGrossAmount(this.young, this.fp)
+      this.contractOfEmployment.calculateAll(this.young, this.fp)
     },
   },
 }

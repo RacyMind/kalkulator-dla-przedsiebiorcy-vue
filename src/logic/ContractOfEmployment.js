@@ -247,7 +247,7 @@ class ContractOfEmployment {
     this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
   }
 
-  calculateForGrossAmount (young, fp) {
+  calculateAll (young, fp) {
     this.calculateZUSEmployerAccident()
 
     this.calculateZUSEmployeePension()
