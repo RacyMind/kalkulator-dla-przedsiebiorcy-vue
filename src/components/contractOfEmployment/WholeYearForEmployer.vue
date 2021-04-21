@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 1600px; max-width: 80vw;">
     <q-table
-      title=" Podsumowanie dla pracownika"
+      title=" Podsumowanie dla pracodawcy"
       :data="data"
       :columns="columns"
       row-key="name"
@@ -20,10 +20,6 @@
 </template>
 
 <script>
-/**
- * TO DO
- * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
- */
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 import ContractOfEmployment from 'src/logic/ContractOfEmployment'
@@ -50,11 +46,11 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'sick',
-          label: 'Skł. chorobowa',
+          name: 'accident',
+          label: 'Skł. wypadkowa',
           required: true,
           align: 'left',
-          field: row => row.sick,
+          field: row => row.accident,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
@@ -74,27 +70,27 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'health',
-          label: 'Skł. zdrowotna',
+          name: 'fp',
+          label: 'Skł. na Fundusz Pracy',
           required: true,
           align: 'left',
-          field: row => row.health,
+          field: row => row.fp,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'taxAmount',
-          label: 'Podatek',
+          name: 'fgsp',
+          label: 'Skł. na FGŚP',
           required: true,
           align: 'left',
-          field: row => row.taxAmount,
+          field: row => row.fgsp,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'net',
-          label: 'Netto',
+          name: 'totalAmount',
+          label: 'Suma kosztów pracodawcy',
           required: true,
           align: 'left',
-          field: row => row.net,
+          field: row => row.totalAmount,
           format: val => `${helpers.formatCurrency(val)}`,
         },
       ],
@@ -107,8 +103,7 @@ export default {
   computed: {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',
-      basisForTax: 'contractOfEmployment/basisForTax',
-      expenses: 'contractOfEmployment/expenses',
+      employerZus: 'contractOfEmployment/employerZus',
     }),
   },
   methods: {
@@ -117,11 +112,11 @@ export default {
         month: 'Cały rok',
         gross: 0,
         pension: 0,
-        sick: 0,
+        accident: 0,
         rent: 0,
-        health: 0,
-        taxAmount: 0,
-        net: 0,
+        fp: 0,
+        fgsp: 0,
+        totalAmount: 0,
       }
 
       for (let i = 0; i < 12; i++) {
@@ -131,31 +126,29 @@ export default {
           month: this.$constants.LOCALE_DATE.months[i],
           gross: result.gross,
           pension: result.pension,
-          sick: result.sick,
+          accident: result.accident,
           rent: result.rent,
-          health: result.health,
-          taxAmount: result.taxAmount,
-          net: result.net,
+          fp: result.fp,
+          fgsp: result.fgsp,
+          totalAmount: result.totalAmount,
         }
 
         total.gross += result.gross
         total.pension += result.pension
-        total.sick += result.sick
+        total.accident += result.accident
         total.rent += result.rent
-        total.health += result.health
-        total.taxAmount += result.taxAmount
-        total.net += result.net
+        total.fp += result.fp
+        total.fgsp += result.fgsp
+        total.totalAmount += result.totalAmount
       }
 
       this.data.push(total)
     },
     getResultForOneMonth () {
       const model = new ContractOfEmployment()
-      const currentBasisForTax = this.totalBasisForTax
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
 
       model.gross = this.gross
-      model.expenses = this.expenses
       model.basicAmountForRentAndPension = model.gross
 
       const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
@@ -170,59 +163,29 @@ export default {
 
       this.totalBasicAmountForRentAndPension += model.gross
 
-      model.calculateZUSEmployeePension()
-      model.calculateZUSEmployeeRent()
-      model.calculateZUSEmployeeSick()
-      model.calculateZUSEmployeeHealth()
-      model.calculateUSEmployeeHealth()
+      model.employerZus.accident = this.employerZus.accident
+      model.calculateZUSEmployerPension()
+      model.calculateZUSEmployerRent()
 
-      model.calculateBasisForTax()
-
-      const newTotalBasisForTax = currentBasisForTax + model.basisForTax
-
-      this.totalBasisForTax += model.basisForTax
-
-      if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-        model.calculateTaxBySecondTaxRate()
-
-        model.taxAmount = model.taxAmount - model.USHealthEmployee
-      } else {
-        if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-          model.calculateTaxByFirstTaxRate()
-
-          model.taxAmount = model.taxAmount - model.USHealthEmployee - model.freeAmount
-        } else {
-          const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
-          const basisForTax = model.basisForTax
-          model.basisForTax = basisForFirstRateTax
-          model.calculateTaxByFirstTaxRate()
-          const firstRateTaxAmount = model.taxAmount
-
-          model.basisForTax = Math.abs(basisForTax - basisForFirstRateTax)
-          model.calculateTaxBySecondTaxRate()
-
-          model.taxAmount = firstRateTaxAmount + model.taxAmount - model.USHealthEmployee - model.freeAmount
-        }
+      if (this.employerZus.fp) {
+        model.calculateZUSEmployerFGSP()
+        model.calculateZUSEmployerFP()
       }
 
-      model.taxAmount = Math.round(model.taxAmount)
+      console.log('model.employerZus.accident', model.employerZus.accident)
 
-      if (!this.basisForTax) {
-        model.taxAmount = 0
-        model.basisForTax = 0
-        model.expenses = 0
-      }
-
-      model.calculateNetAmount()
+      const totalAmount = model.gross + model.employerZus.rent +
+        model.employerZus.pension + model.employerZus.accident +
+        model.employerZus.fp + model.employerZus.fgsp
 
       return {
-        rent: model.employeeZus.rent,
-        pension: model.employeeZus.pension,
-        sick: model.employeeZus.sick,
-        health: model.employeeZus.health,
-        taxAmount: model.taxAmount,
-        net: model.net,
         gross: model.gross,
+        rent: model.employerZus.rent,
+        pension: model.employerZus.pension,
+        accident: model.employerZus.accident,
+        fp: model.employerZus.fp,
+        fgsp: model.employerZus.fgsp,
+        totalAmount: totalAmount,
       }
     },
   },

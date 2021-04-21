@@ -104,8 +104,8 @@ export default {
     EMPLOYER: {
       PENSION_RATE: 9.76,
       RENT_RATE: 6.5,
-      FP_RATE: 1,
-      FGSP_RATE: 1.45,
+      FP_RATE: 2.45,
+      FGSP_RATE: 0.1,
     },
     OWNER: {
       PENSION_RATE: 19.52,

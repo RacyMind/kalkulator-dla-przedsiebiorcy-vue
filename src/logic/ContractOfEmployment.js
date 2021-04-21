@@ -144,12 +144,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki emerytalnej dla pracownika
    */
   calculateZUSEmployeePension () {
-    let basicAmount = this.gross
-
-    if (this.gross > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      basicAmount = constants.LIMIT_BASIC_AMOUNT_FOR_ZUS
-    }
-    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * basicAmount
+    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.basicAmountForRentAndPension
 
     this.employeeZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -158,13 +153,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki emerytalnej dla pracodawcy
    */
   calculateZUSEmployerPension () {
-    let basicAmount = this.gross
-
-    if (this.gross > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      basicAmount = constants.LIMIT_BASIC_AMOUNT_FOR_ZUS
-    }
-
-    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * basicAmount
+    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -173,12 +162,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki rentowej dla pracownika
    */
   calculateZUSEmployeeRent () {
-    let basicAmount = this.gross
-
-    if (this.gross > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      basicAmount = constants.LIMIT_BASIC_AMOUNT_FOR_ZUS
-    }
-    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * basicAmount
+    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employeeZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -187,12 +171,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calculateZUSEmployerRent () {
-    let basicAmount = this.gross
-
-    if (this.gross > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      basicAmount = constants.LIMIT_BASIC_AMOUNT_FOR_ZUS
-    }
-    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * basicAmount
+    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -267,6 +246,12 @@ class ContractOfEmployment {
   }
 
   calculateAll (young, fp) {
+    this.basicAmountForRentAndPension = this.gross
+
+    if (this.basicAmountForRentAndPension > constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.basicAmountForRentAndPension = constants.AMOUNT_OF_TAX_THRESHOLD
+    }
+
     this.calculateZUSEmployerAccident()
 
     this.calculateZUSEmployeePension()

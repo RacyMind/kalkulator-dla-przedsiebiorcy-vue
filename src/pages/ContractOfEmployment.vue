@@ -20,6 +20,7 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
+            :disable="!gross"
             outline
             @click="openEmployeeModal = true"
           />
@@ -33,8 +34,20 @@
       <EmployeeStatistics />
       <Advert />
       <SectionHeader>
-        <q-icon name="o_credit_card" />
-        Podsumowanie dla pracodawcy
+        <div class="row justify-between">
+          <div>
+            <q-icon name="o_credit_card" />
+            Podsumowanie dla pracodawcy
+          </div>
+          <q-btn
+            color="white"
+            size="sm"
+            label="pokaż cały rok"
+            :disable="!gross"
+            outline
+            @click="openEmployerModal = true"
+          />
+        </div>
       </SectionHeader>
       <EmployerTable />
       <SectionHeader>
@@ -44,6 +57,9 @@
       <EmployerStatistics />
       <q-dialog v-model="openEmployeeModal">
         <WholeYearForEmployee />
+      </q-dialog>
+      <q-dialog v-model="openEmployerModal">
+        <WholeYearForEmployer />
       </q-dialog>
     </div>
   </q-page>
@@ -58,17 +74,26 @@ import EmployeeStatistics from 'components/contractOfEmployment/EmployeeStatisti
 import EmployerTable from 'components/contractOfEmployment/EmployerTable'
 import EmployerStatistics from 'components/contractOfEmployment/EmployerStatistics'
 import WholeYearForEmployee from 'components/contractOfEmployment/WholeYearForEmployee'
+import WholeYearForEmployer from 'components/contractOfEmployment/WholeYearForEmployer'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       openEmployeeModal: false,
+      openEmployerModal: false,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o pracę')
   },
+  computed: {
+    ...mapGetters({
+      gross: 'contractOfEmployment/gross',
+    }),
+  },
   components: {
     WholeYearForEmployee,
+    WholeYearForEmployer,
     SectionHeader,
     Advert,
     Form,
