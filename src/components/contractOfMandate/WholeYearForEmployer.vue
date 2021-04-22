@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 1600px; max-width: 80vw;">
+  <q-card style="width: auto; max-width: 90vw;">
     <q-table
       title=" Podsumowanie dla pracodawcy"
       :data="data"
