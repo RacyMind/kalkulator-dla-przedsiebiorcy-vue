@@ -12,5 +12,6 @@ export default function () {
       pension: null,
       accident: null,
     },
+    taxType: null,
   }
 }

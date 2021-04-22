@@ -125,13 +125,34 @@ class SelfEmployment {
   }
 
   /**
+   * Oblicza podatek dochodowy dla 1. progu
+   */
+  calculateTaxByFirstTaxRate () {
+    this.taxAmount = this.basisForTax * this.firstTaxRate
+  }
+
+  /**
+   * Oblicza podatek dochodowy dla 2. progu
+   */
+  calculateTaxBySecondTaxRate () {
+    this.taxAmount = this.basisForTax * this.secondTaxRate
+  }
+
+  /**
+   * Oblicza liniowy podatek dochodowy
+   */
+  calculateTaxByLinearTaxRate () {
+    this.taxAmount = this.basisForTax * this.linearTaxRate
+  }
+
+  /**
    * Oblicza podstawe do obliczenia podatku
    */
   calculateBasisForTax () {
     let basisForTax
 
     if (this.taxType === constants.TAX_TYPES.LUMP_SUM) {
-      basisForTax = this.gross - this.expenses -
+      basisForTax = this.gross -
         (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
     } else if (this.taxType === constants.TAX_TYPES.LINEAR) {
       basisForTax = this.gross -
@@ -139,6 +160,10 @@ class SelfEmployment {
     } else {
       basisForTax = this.gross - this.expenses -
         (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
+    }
+
+    if (basisForTax < 0) {
+      basisForTax = 0
     }
 
     this.basisForTax = Math.round(basisForTax)

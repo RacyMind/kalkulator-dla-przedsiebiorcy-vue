@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 1600px; max-width: 80vw;">
     <q-table
-      title=" Podsumowanie dla pracownika"
+      title=" Podsumowanie"
       :data="data"
       :columns="columns"
       row-key="name"
@@ -27,6 +27,7 @@
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 import ContractOfEmployment from 'src/logic/ContractOfEmployment'
+import SelfEmployment from 'src/logic/SelfEmployment'
 
 export default {
   data () {
@@ -82,6 +83,22 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
+          name: 'accident',
+          label: 'Skł. wypadkowa',
+          required: true,
+          align: 'left',
+          field: row => row.accident,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'fp',
+          label: 'Skł. na Fundusz Pracy',
+          required: true,
+          align: 'left',
+          field: row => row.fp,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
           name: 'taxAmount',
           label: 'Podatek',
           required: true,
@@ -106,9 +123,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gross: 'contractOfEmployment/gross',
-      basisForTax: 'contractOfEmployment/basisForTax',
-      expenses: 'contractOfEmployment/expenses',
+      gross: 'selfEmployment/gross',
+      expenses: 'selfEmployment/expenses',
+      zus: 'selfEmployment/zus',
+      taxType: 'selfEmployment/taxType',
+      tax: 'selfEmployment/tax',
     }),
   },
   methods: {
@@ -120,6 +139,8 @@ export default {
         sick: 0,
         rent: 0,
         health: 0,
+        accident: 0,
+        fp: 0,
         taxAmount: 0,
         net: 0,
       }
@@ -134,6 +155,8 @@ export default {
           sick: result.sick,
           rent: result.rent,
           health: result.health,
+          accident: result.accident,
+          fp: result.fp,
           taxAmount: result.taxAmount,
           net: result.net,
         }
@@ -143,6 +166,8 @@ export default {
         total.sick += result.sick
         total.rent += result.rent
         total.health += result.health
+        total.accident += result.accident
+        total.fp += result.fp
         total.taxAmount += result.taxAmount
         total.net += result.net
       }
@@ -150,31 +175,29 @@ export default {
       this.data.push(total)
     },
     getResultForOneMonth () {
-      const model = new ContractOfEmployment()
+      const model = new SelfEmployment()
       const currentBasisForTax = this.totalBasisForTax
-      const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
-
       model.gross = this.gross
       model.expenses = this.expenses
-      model.basicAmountForRentAndPension = model.gross
+      model.taxType = this.taxType
 
-      const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
-
-      if (currentBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-        model.basicAmountForRentAndPension = 0
-      } else {
-        if (newBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-          model.basicAmountForRentAndPension = this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - currentBasicAmountForRentAndPension
-        }
+      if (this.zus.accident) {
+        model.zus.accident = this.zus.accident
       }
-
-      this.totalBasicAmountForRentAndPension += model.gross
-
-      model.calculateZUSEmployeePension()
-      model.calculateZUSEmployeeRent()
-      model.calculateZUSEmployeeSick()
-      model.calculateZUSEmployeeHealth()
-      model.calculateUSEmployeeHealth()
+      if (this.zus.pension) {
+        model.zus.pension = this.zus.pension
+      }
+      if (this.zus.rent) {
+        model.zus.rent = this.zus.rent
+      }
+      if (this.zus.sick) {
+        model.zus.sick = this.zus.sick
+      }
+      if (this.zus.fp) {
+        model.zus.fp = this.zus.fp
+      }
+      model.zus.health = this.zus.health
+      model.calculateUSHealth()
 
       model.calculateBasisForTax()
 
@@ -182,48 +205,57 @@ export default {
 
       this.totalBasisForTax += model.basisForTax
 
-      if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-        model.calculateTaxBySecondTaxRate()
-
-        model.taxAmount = model.taxAmount - model.USHealthEmployee
-      } else {
-        if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-          model.calculateTaxByFirstTaxRate()
-
-          model.taxAmount = model.taxAmount - model.USHealthEmployee - model.freeAmount
-        } else {
-          const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
-          const basisForTax = model.basisForTax
-          model.basisForTax = basisForFirstRateTax
-          model.calculateTaxByFirstTaxRate()
-          const firstRateTaxAmount = model.taxAmount
-
-          model.basisForTax = Math.abs(basisForTax - basisForFirstRateTax)
+      if (this.taxType === this.$constants.TAX_TYPES.GENERAL) {
+        if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
           model.calculateTaxBySecondTaxRate()
 
-          model.taxAmount = firstRateTaxAmount + model.taxAmount - model.USHealthEmployee - model.freeAmount
+          model.taxAmount = model.taxAmount - model.USHealth
+        } else {
+          if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+            model.calculateTaxByFirstTaxRate()
+
+            model.taxAmount = model.taxAmount - model.USHealth - model.freeAmount
+          } else {
+            const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
+            const basisForTax = model.basisForTax
+            model.basisForTax = basisForFirstRateTax
+            model.calculateTaxByFirstTaxRate()
+            const firstRateTaxAmount = model.taxAmount
+
+            model.basisForTax = Math.abs(basisForTax - basisForFirstRateTax)
+            model.calculateTaxBySecondTaxRate()
+
+            model.taxAmount = firstRateTaxAmount + model.taxAmount - model.USHealth - model.freeAmount
+          }
         }
       }
+      if (this.taxType === this.$constants.TAX_TYPES.LINEAR) {
+        model.calculateTaxByLinearTaxRate()
 
-      model.taxAmount = Math.round(model.taxAmount)
-
-      if (!this.basisForTax) {
-        model.taxAmount = 0
-        model.basisForTax = 0
-        model.expenses = 0
+        model.taxAmount = this.tax
+      }
+      if (this.taxType === this.$constants.TAX_TYPES.LUMP_SUM) {
+        model.taxAmount = this.tax
       }
 
       if (model.taxAmount < 0) {
         model.taxAmount = 0
       }
 
+      console.log('model.basisForTax', model.basisForTax)
+      console.log('model.taxAmount', model.taxAmount)
+
+      model.taxAmount = Math.round(model.taxAmount)
+
       model.calculateNetAmount()
 
       return {
-        rent: model.employeeZus.rent,
-        pension: model.employeeZus.pension,
-        sick: model.employeeZus.sick,
-        health: model.employeeZus.health,
+        rent: model.zus.rent,
+        pension: model.zus.pension,
+        sick: model.zus.sick,
+        health: model.zus.health,
+        accident: model.zus.accident,
+        fp: model.zus.fp,
         taxAmount: model.taxAmount,
         net: model.net,
         gross: model.gross,

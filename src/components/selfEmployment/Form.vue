@@ -192,6 +192,7 @@ export default {
 
       this.$store.commit('selfEmployment/SET_NET', this.selfEmployment.net)
       this.$store.commit('selfEmployment/SET_TAX', this.selfEmployment.taxAmount)
+      this.$store.commit('selfEmployment/SET_TAX_TYPE', this.selfEmployment.taxType)
       this.$store.commit('selfEmployment/SET_GROSS', this.selfEmployment.gross)
       this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', this.selfEmployment.basisForTax)
       this.$store.commit('selfEmployment/SET_EXPENSES', this.selfEmployment.expenses)
