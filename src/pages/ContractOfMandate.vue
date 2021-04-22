@@ -13,8 +13,20 @@
       />
       <Advert />
       <SectionHeader>
-        <q-icon name="o_credit_card" />
-        Podsumowanie dla pracownika
+        <div class="row justify-between">
+          <div>
+            <q-icon name="o_credit_card" />
+            Podsumowanie dla pracownika
+          </div>
+          <q-btn
+            color="white"
+            size="sm"
+            label="pokaż cały rok"
+            :disable="!gross"
+            outline
+            @click="openEmployeeModal = true"
+          />
+        </div>
       </SectionHeader>
       <EmployeeTable />
       <SectionHeader>
@@ -25,7 +37,20 @@
       <Advert />
       <SectionHeader>
         <q-icon name="o_credit_card" />
-        Podsumowanie dla pracodawcy
+        <div class="row justify-between">
+          <div>
+            <q-icon name="o_credit_card" />
+            Podsumowanie dla pracodawcy
+          </div>
+          <q-btn
+            color="white"
+            size="sm"
+            label="pokaż cały rok"
+            :disable="!gross"
+            outline
+            @click="openEmployerModal = true"
+          />
+        </div>
       </SectionHeader>
       <EmployerTable />
       <SectionHeader>
@@ -33,6 +58,13 @@
         Wykres dla pracodawcy
       </SectionHeader>
       <EmployerStatistics />
+
+      <q-dialog v-model="openEmployeeModal">
+        <WholeYearForEmployee />
+      </q-dialog>
+      <q-dialog v-model="openEmployerModal">
+        <WholeYearForEmployer />
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -45,9 +77,23 @@ import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
 import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics'
 import EmployerTable from 'components/contractOfMandate/EmployerTable'
 import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
+import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
+import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
+import { mapGetters } from 'vuex'
 export default {
+  data () {
+    return {
+      openEmployeeModal: false,
+      openEmployerModal: false,
+    }
+  },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
+  },
+  computed: {
+    ...mapGetters({
+      gross: 'contractOfMandate/gross',
+    }),
   },
   components: {
     SectionHeader,
@@ -57,6 +103,8 @@ export default {
     EmployeeStatistics,
     EmployerTable,
     EmployerStatistics,
+    WholeYearForEmployer,
+    WholeYearForEmployee,
   },
 }
 </script>

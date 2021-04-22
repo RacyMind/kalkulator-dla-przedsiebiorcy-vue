@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 1600px; max-width: 80vw;">
     <q-table
-      title=" Podsumowanie dla pracodawcy"
+      title=" Podsumowanie dla pracownika"
       :data="data"
       :columns="columns"
       row-key="name"
@@ -20,9 +20,13 @@
 </template>
 
 <script>
+/**
+ * TO DO
+ * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
+ */
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import ContractOfEmployment from 'src/logic/ContractOfEmployment'
+import ContractOfMandate from 'src/logic/ContractOfMandate'
 
 export default {
   data () {
@@ -46,11 +50,11 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'accident',
-          label: 'Skł. wypadkowa',
+          name: 'sick',
+          label: 'Skł. chorobowa',
           required: true,
           align: 'left',
-          field: row => row.accident,
+          field: row => row.sick,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
@@ -70,27 +74,27 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'fp',
-          label: 'Skł. na Fundusz Pracy',
+          name: 'health',
+          label: 'Skł. zdrowotna',
           required: true,
           align: 'left',
-          field: row => row.fp,
+          field: row => row.health,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'fgsp',
-          label: 'Skł. na FGŚP',
+          name: 'taxAmount',
+          label: 'Podatek',
           required: true,
           align: 'left',
-          field: row => row.fgsp,
+          field: row => row.taxAmount,
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'totalAmount',
-          label: 'Suma kosztów pracodawcy',
+          name: 'net',
+          label: 'Netto',
           required: true,
           align: 'left',
-          field: row => row.totalAmount,
+          field: row => row.net,
           format: val => `${helpers.formatCurrency(val)}`,
         },
       ],
@@ -102,8 +106,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gross: 'contractOfEmployment/gross',
-      employerZus: 'contractOfEmployment/employerZus',
+      gross: 'contractOfMandate/gross',
+      basisForTax: 'contractOfMandate/basisForTax',
+      employeeZus: 'contractOfMandate/employeeZus',
     }),
   },
   methods: {
@@ -112,11 +117,11 @@ export default {
         month: 'Cały rok',
         gross: 0,
         pension: 0,
-        accident: 0,
+        sick: 0,
         rent: 0,
-        fp: 0,
-        fgsp: 0,
-        totalAmount: 0,
+        health: 0,
+        taxAmount: 0,
+        net: 0,
       }
 
       for (let i = 0; i < 12; i++) {
@@ -126,30 +131,34 @@ export default {
           month: this.$constants.LOCALE_DATE.months[i],
           gross: result.gross,
           pension: result.pension,
-          accident: result.accident,
+          sick: result.sick,
           rent: result.rent,
-          fp: result.fp,
-          fgsp: result.fgsp,
-          totalAmount: result.totalAmount,
+          health: result.health,
+          taxAmount: result.taxAmount,
+          net: result.net,
         }
 
         total.gross += result.gross
         total.pension += result.pension
-        total.accident += result.accident
+        total.sick += result.sick
         total.rent += result.rent
-        total.fp += result.fp
-        total.fgsp += result.fgsp
-        total.totalAmount += result.totalAmount
+        total.health += result.health
+        total.taxAmount += result.taxAmount
+        total.net += result.net
       }
 
       this.data.push(total)
     },
     getResultForOneMonth () {
-      const model = new ContractOfEmployment()
+      const model = new ContractOfMandate()
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
 
       model.gross = this.gross
       model.basicAmountForRentAndPension = model.gross
+
+      if (model.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
+        model.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+      }
 
       const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
 
@@ -163,27 +172,43 @@ export default {
 
       this.totalBasicAmountForRentAndPension += model.gross
 
-      model.employerZus.accident = this.employerZus.accident
-      model.calculateZUSEmployerPension()
-      model.calculateZUSEmployerRent()
-
-      if (this.employerZus.fp) {
-        model.calculateZUSEmployerFGSP()
-        model.calculateZUSEmployerFP()
+      if (this.employeeZus.pension) {
+        model.calculateZUSEmployeePension()
+      }
+      if (this.employeeZus.rent) {
+        model.calculateZUSEmployeeRent()
+      }
+      if (this.employeeZus.sick) {
+        model.calculateZUSEmployeeSick()
       }
 
-      const totalAmount = model.gross + model.employerZus.rent +
-        model.employerZus.pension + model.employerZus.accident +
-        model.employerZus.fp + model.employerZus.fgsp
+      model.calculateExpenses()
+
+      if (this.employeeZus.health) {
+        model.calculateZUSEmployeeHealth()
+        model.calculateUSEmployeeHealth()
+      }
+
+      model.calculateBasisForTax()
+
+      model.calculateTaxAmount()
+
+      if (!this.basisForTax) {
+        model.taxAmount = 0
+        model.basisForTax = 0
+        model.expenses = 0
+      }
+
+      model.calculateNetAmount()
 
       return {
+        rent: model.employeeZus.rent,
+        pension: model.employeeZus.pension,
+        sick: model.employeeZus.sick,
+        health: model.employeeZus.health,
+        taxAmount: model.taxAmount,
+        net: model.net,
         gross: model.gross,
-        rent: model.employerZus.rent,
-        pension: model.employerZus.pension,
-        accident: model.employerZus.accident,
-        fp: model.employerZus.fp,
-        fgsp: model.employerZus.fgsp,
-        totalAmount: totalAmount,
       }
     },
   },

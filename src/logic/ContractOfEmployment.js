@@ -245,6 +245,11 @@ class ContractOfEmployment {
     this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
   }
 
+  /**
+   * Oblicza wszystkie skladowe
+   * @param young
+   * @param fp
+   */
   calculateAll (young, fp) {
     this.basicAmountForRentAndPension = this.gross
 

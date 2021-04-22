@@ -141,6 +141,11 @@ export default {
   methods: {
     calculate () {
       this.contractOfMandate = new ContractOfMandate()
+
+      if (this.accident) {
+        this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
+      }
+
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
         this.calculateForNetAmount(min, 1.7 * min, 100)
@@ -170,46 +175,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfMandate.gross = iterator
 
-        if (this.contractOfMandate.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
-          this.contractOfMandate.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
-        }
-
-        if (this.accident) {
-          this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
-          this.contractOfMandate.calculateZUSEmployerAccident()
-        }
-
-        if (this.pension) {
-          this.contractOfMandate.calculateZUSEmployeePension()
-          this.contractOfMandate.calculateZUSEmployerPension()
-        }
-
-        if (this.rent) {
-          this.contractOfMandate.calculateZUSEmployeeRent()
-          this.contractOfMandate.calculateZUSEmployerRent()
-        }
-
-        if (this.sick) {
-          this.contractOfMandate.calculateZUSEmployeeSick()
-        }
-
-        this.contractOfMandate.calculateExpenses()
-
-        if (this.health) {
-          this.contractOfMandate.calculateZUSEmployeeHealth()
-          this.contractOfMandate.calculateUSEmployeeHealth()
-        }
-
-        this.contractOfMandate.calculateBasisForTax()
-        this.contractOfMandate.calculateTaxAmount()
-
-        if (this.young) {
-          this.contractOfMandate.taxAmount = 0
-          this.contractOfMandate.basisForTax = 0
-          this.contractOfMandate.expenses = 0
-        }
-
-        this.contractOfMandate.calculateNetAmount()
+        this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young)
 
         if (Math.abs(this.contractOfMandate.net - net) <= 0.0005) {
           return
@@ -223,46 +189,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfMandate.gross = Number(this.amount)
 
-      if (this.contractOfMandate.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
-        this.contractOfMandate.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
-      }
-
-      if (this.accident) {
-        this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
-        this.contractOfMandate.calculateZUSEmployerAccident()
-      }
-
-      if (this.pension) {
-        this.contractOfMandate.calculateZUSEmployeePension()
-        this.contractOfMandate.calculateZUSEmployerPension()
-      }
-
-      if (this.rent) {
-        this.contractOfMandate.calculateZUSEmployeeRent()
-        this.contractOfMandate.calculateZUSEmployerRent()
-      }
-
-      if (this.sick) {
-        this.contractOfMandate.calculateZUSEmployeeSick()
-      }
-
-      this.contractOfMandate.calculateExpenses()
-
-      if (this.health) {
-        this.contractOfMandate.calculateZUSEmployeeHealth()
-        this.contractOfMandate.calculateUSEmployeeHealth()
-      }
-
-      this.contractOfMandate.calculateBasisForTax()
-      this.contractOfMandate.calculateTaxAmount()
-
-      if (this.young) {
-        this.contractOfMandate.taxAmount = 0
-        this.contractOfMandate.basisForTax = 0
-        this.contractOfMandate.expenses = 0
-      }
-
-      this.contractOfMandate.calculateNetAmount()
+      this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young)
     },
   },
 }

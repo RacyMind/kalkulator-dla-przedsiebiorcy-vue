@@ -22,7 +22,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import ContractOfEmployment from 'src/logic/ContractOfEmployment'
+import ContractOfMandate from 'src/logic/ContractOfMandate'
 
 export default {
   data () {
@@ -70,22 +70,6 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
-          name: 'fp',
-          label: 'Skł. na Fundusz Pracy',
-          required: true,
-          align: 'left',
-          field: row => row.fp,
-          format: val => `${helpers.formatCurrency(val)}`,
-        },
-        {
-          name: 'fgsp',
-          label: 'Skł. na FGŚP',
-          required: true,
-          align: 'left',
-          field: row => row.fgsp,
-          format: val => `${helpers.formatCurrency(val)}`,
-        },
-        {
           name: 'totalAmount',
           label: 'Suma kosztów pracodawcy',
           required: true,
@@ -102,8 +86,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gross: 'contractOfEmployment/gross',
-      employerZus: 'contractOfEmployment/employerZus',
+      gross: 'contractOfMandate/gross',
+      employerZus: 'contractOfMandate/employerZus',
     }),
   },
   methods: {
@@ -114,8 +98,6 @@ export default {
         pension: 0,
         accident: 0,
         rent: 0,
-        fp: 0,
-        fgsp: 0,
         totalAmount: 0,
       }
 
@@ -128,8 +110,6 @@ export default {
           pension: result.pension,
           accident: result.accident,
           rent: result.rent,
-          fp: result.fp,
-          fgsp: result.fgsp,
           totalAmount: result.totalAmount,
         }
 
@@ -137,15 +117,13 @@ export default {
         total.pension += result.pension
         total.accident += result.accident
         total.rent += result.rent
-        total.fp += result.fp
-        total.fgsp += result.fgsp
         total.totalAmount += result.totalAmount
       }
 
       this.data.push(total)
     },
     getResultForOneMonth () {
-      const model = new ContractOfEmployment()
+      const model = new ContractOfMandate()
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
 
       model.gross = this.gross
@@ -164,25 +142,21 @@ export default {
       this.totalBasicAmountForRentAndPension += model.gross
 
       model.employerZus.accident = this.employerZus.accident
-      model.calculateZUSEmployerPension()
-      model.calculateZUSEmployerRent()
-
-      if (this.employerZus.fp) {
-        model.calculateZUSEmployerFGSP()
-        model.calculateZUSEmployerFP()
+      if (this.employerZus.pension) {
+        model.calculateZUSEmployerPension()
+      }
+      if (this.employerZus.rent) {
+        model.calculateZUSEmployerRent()
       }
 
       const totalAmount = model.gross + model.employerZus.rent +
-        model.employerZus.pension + model.employerZus.accident +
-        model.employerZus.fp + model.employerZus.fgsp
+        model.employerZus.pension + model.employerZus.accident
 
       return {
         gross: model.gross,
         rent: model.employerZus.rent,
         pension: model.employerZus.pension,
         accident: model.employerZus.accident,
-        fp: model.employerZus.fp,
-        fgsp: model.employerZus.fgsp,
         totalAmount: totalAmount,
       }
     },

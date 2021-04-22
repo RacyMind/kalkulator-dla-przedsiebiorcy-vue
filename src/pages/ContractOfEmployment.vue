@@ -55,6 +55,7 @@
         Wykres dla pracodawcy
       </SectionHeader>
       <EmployerStatistics />
+
       <q-dialog v-model="openEmployeeModal">
         <WholeYearForEmployee />
       </q-dialog>
