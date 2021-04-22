@@ -8,7 +8,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <ContractWorkForm
+      <Form
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -16,12 +16,12 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <ContractWorkTable />
+      <Table />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <ContractWorkStatistics />
+      <Statistics />
     </div>
   </q-page>
 </template>
@@ -29,9 +29,9 @@
 <script>
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
-import ContractWorkForm from 'components/contractWork/ContractWorkForm'
-import ContractWorkTable from 'components/contractWork/ContractWorkTable'
-import ContractWorkStatistics from 'components/contractWork/ContractWorkStatistics'
+import Form from 'components/contractWork/Form'
+import Table from 'components/contractWork/Table'
+import Statistics from 'components/contractWork/Statistics'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
@@ -39,13 +39,9 @@ export default {
   components: {
     SectionHeader,
     Advert,
-    ContractWorkForm,
-    ContractWorkTable,
-    ContractWorkStatistics,
+    Form,
+    Table,
+    Statistics,
   },
 }
 </script>
-
-<style scoped>
-
-</style>

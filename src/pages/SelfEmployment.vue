@@ -7,7 +7,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <selfEmploymentForm
+      <Form
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -15,12 +15,12 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <selfEmploymentTable />
+      <Table />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <selfEmploymentStatistics />
+      <Statistics />
     </div>
   </q-page>
 </template>
@@ -28,9 +28,9 @@
 <script>
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
-import selfEmploymentForm from 'components/selfEmployment/selfEmploymentForm'
-import selfEmploymentTable from 'components/selfEmployment/selfEmploymentTable'
-import selfEmploymentStatistics from 'components/selfEmployment/selfEmploymentStatistics'
+import Form from 'components/selfEmployment/Form'
+import Table from 'components/selfEmployment/Table'
+import Statistics from 'components/selfEmployment/Statistics'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Samozatrudnienie')
@@ -38,13 +38,9 @@ export default {
   components: {
     SectionHeader,
     Advert,
-    selfEmploymentForm,
-    selfEmploymentTable,
-    selfEmploymentStatistics,
+    Form,
+    Table,
+    Statistics,
   },
 }
 </script>
-
-<style scoped>
-
-</style>
