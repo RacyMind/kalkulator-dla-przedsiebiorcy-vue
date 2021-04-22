@@ -27,7 +27,7 @@ export default {
         }],
         labels: [
           'Wynagrodzenie netto',
-          'Zaliczka na podatek',
+          'Zaliczka na podatek dochodowy',
         ],
       }
     },

@@ -32,6 +32,11 @@ class ContractOfEmployment {
    */
   basisForTax = 0
   /**
+   * Podstawa do obliczenia skladki rentowej i emerytalnej
+   * @type {number}
+   */
+  basicAmountForRentAndPension = 0
+  /**
    * Koszty uzyskania przychodu
    * @type {number}
    */
@@ -89,7 +94,7 @@ class ContractOfEmployment {
       this.taxAmount = this.basisForTax * this.firstTaxRate - this.USHealthEmployee - this.freeAmount
     } else {
       this.taxAmount = constants.AMOUNT_OF_TAX_THRESHOLD * this.firstTaxRate +
-        (this.basisForTax - constants.AMOUNT_OF_TAX_THRESHOLD) * this.secondTaxRate -
+        ((this.basisForTax - constants.AMOUNT_OF_TAX_THRESHOLD) * this.secondTaxRate) -
         this.USHealthEmployee - this.freeAmount
     }
 
@@ -101,13 +106,27 @@ class ContractOfEmployment {
   }
 
   /**
+   * Oblicza podatek dochodowy dla 1. progu
+   */
+  calculateTaxByFirstTaxRate () {
+    this.taxAmount = this.basisForTax * this.firstTaxRate
+  }
+
+  /**
+   * Oblicza podatek dochodowy dla 2. progu
+   */
+  calculateTaxBySecondTaxRate () {
+    this.taxAmount = this.basisForTax * this.secondTaxRate
+  }
+
+  /**
    * Oblicza podstawe do obliczenia podatku
    */
   calculateBasisForTax () {
     const basisForTax = this.gross - this.expenses -
       (this.employeeZus.pension + this.employeeZus.rent + this.employeeZus.sick)
 
-    this.basisForTax = parseFloat(basisForTax.toFixed(2))
+    this.basisForTax = Math.round(basisForTax)
   }
 
   /**
@@ -125,7 +144,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki emerytalnej dla pracownika
    */
   calculateZUSEmployeePension () {
-    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.gross
+    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.basicAmountForRentAndPension
 
     this.employeeZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -134,7 +153,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki emerytalnej dla pracodawcy
    */
   calculateZUSEmployerPension () {
-    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.gross
+    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -143,7 +162,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki rentowej dla pracownika
    */
   calculateZUSEmployeeRent () {
-    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.gross
+    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employeeZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -152,7 +171,7 @@ class ContractOfEmployment {
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calculateZUSEmployerRent () {
-    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.gross
+    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -197,7 +216,7 @@ class ContractOfEmployment {
   }
 
   /**
-   * Oblicza kwote skladki rentowej dla pracodawcy
+   * Oblicza kwote skladki wypadkowej dla pracodawcy
    */
   calculateZUSEmployerAccident () {
     const accident = this.zusAccidentEmployerRate *
@@ -224,6 +243,48 @@ class ContractOfEmployment {
       this.gross
 
     this.employerZus.fgsp = parseFloat(fgsp.toFixed(2))
+  }
+
+  /**
+   * Oblicza wszystkie skladowe
+   * @param young
+   * @param fp
+   */
+  calculateAll (young, fp) {
+    this.basicAmountForRentAndPension = this.gross
+
+    if (this.basicAmountForRentAndPension > constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.basicAmountForRentAndPension = constants.AMOUNT_OF_TAX_THRESHOLD
+    }
+
+    this.calculateZUSEmployerAccident()
+
+    this.calculateZUSEmployeePension()
+    this.calculateZUSEmployerPension()
+
+    this.calculateZUSEmployeeRent()
+    this.calculateZUSEmployerRent()
+
+    this.calculateZUSEmployeeSick()
+
+    this.calculateZUSEmployeeHealth()
+    this.calculateUSEmployeeHealth()
+
+    this.calculateBasisForTax()
+    this.calculateTaxAmount()
+
+    if (young) {
+      this.taxAmount = 0
+      this.basisForTax = 0
+      this.expenses = 0
+    }
+
+    this.calculateNetAmount()
+
+    if (fp) {
+      this.calculateZUSEmployerFGSP()
+      this.calculateZUSEmployerFP()
+    }
   }
 }
 export default ContractOfEmployment

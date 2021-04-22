@@ -38,26 +38,27 @@
         </div>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="accident"
-          type="number"
-          class="full-width"
-          min="0"
-          step="0.01"
-          label="Składka wypadkowa (w %)*"
-          color="brand"
-          required
-        />
-        <q-toggle
-          v-model="fp"
-          class="q-mt-sm"
-          label="Składka na Fundusz Pracy"
-        />
+        <div class="column">
+          <q-input
+            v-model="accident"
+            type="number"
+            class="full-width"
+            min="0"
+            step="0.01"
+            label="Składka wypadkowa (w %)*"
+            color="brand"
+            required
+          />
+          <q-toggle
+            v-model="fp"
+            class="q-mt-sm"
+            label="Składka na Fundusz Pracy"
+          />
+        </div>
       </div>
     </div>
     <div class="row q-mt-lg">
       <div class="col-12">
-        {{ accident.length }}
         <q-btn
           type="submit"
           class="full-width"
@@ -81,11 +82,6 @@ export default {
       amount: null,
       amountType: null,
       workInLivePlace: false,
-      student: false,
-      health: true,
-      sick: true,
-      rent: true,
-      pension: true,
       young: false,
       fp: true,
       accident: 0,
@@ -95,24 +91,7 @@ export default {
     this.amountType = this.$constants.AMOUNT_TYPES.NET
     this.accident = this.$constants.ACCIDENT_RATE
 
-    this.$store.commit('contractOfEmployment/SET_NET', null)
-    this.$store.commit('contractOfEmployment/SET_TAX', null)
-    this.$store.commit('contractOfEmployment/SET_GROSS', null)
-    this.$store.commit('contractOfEmployment/SET_BASIS_FOR_TAX', null)
-    this.$store.commit('contractOfEmployment/SET_EXPENSES', null)
-    this.$store.commit('contractOfEmployment/SET_EMPLOYEE_ZUS', {
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-    })
-    this.$store.commit('contractOfEmployment/SET_EMPLOYER_ZUS', {
-      accident: null,
-      rent: null,
-      pension: null,
-      fp: null,
-      fgsp: null,
-    })
+    this.$store.commit('contractOfEmployment/CLEAR_DATA')
   },
   methods: {
     calculate () {
@@ -128,15 +107,16 @@ export default {
 
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
+
         this.calculateForNetAmount(min, 2 * min, 100)
       }
       if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
         this.calculateForGrossAmount()
       }
 
-      if (this.contractOfEmployment.gross <= this.$constants.CONTRACT_OF_MANDATE.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.contractOfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
         })
       }
 
@@ -155,34 +135,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
 
-        this.contractOfEmployment.calculateZUSEmployerAccident()
-
-        this.contractOfEmployment.calculateZUSEmployeePension()
-        this.contractOfEmployment.calculateZUSEmployerPension()
-
-        this.contractOfEmployment.calculateZUSEmployeeRent()
-        this.contractOfEmployment.calculateZUSEmployerRent()
-
-        this.contractOfEmployment.calculateZUSEmployeeSick()
-
-        this.contractOfEmployment.calculateZUSEmployeeHealth()
-        this.contractOfEmployment.calculateUSEmployeeHealth()
-
-        this.contractOfEmployment.calculateBasisForTax()
-        this.contractOfEmployment.calculateTaxAmount()
-
-        if (this.young) {
-          this.contractOfEmployment.taxAmount = 0
-          this.contractOfEmployment.basisForTax = 0
-          this.contractOfEmployment.expenses = 0
-        }
-
-        this.contractOfEmployment.calculateNetAmount()
-
-        if (this.fp) {
-          this.contractOfEmployment.calculateZUSEmployerFGSP()
-          this.contractOfEmployment.calculateZUSEmployerFP()
-        }
+        this.contractOfEmployment.calculateAll(this.young, this.fp)
 
         if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
           return
@@ -196,34 +149,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
 
-      this.contractOfEmployment.calculateZUSEmployerAccident()
-
-      this.contractOfEmployment.calculateZUSEmployeePension()
-      this.contractOfEmployment.calculateZUSEmployerPension()
-
-      this.contractOfEmployment.calculateZUSEmployeeRent()
-      this.contractOfEmployment.calculateZUSEmployerRent()
-
-      this.contractOfEmployment.calculateZUSEmployeeSick()
-
-      this.contractOfEmployment.calculateZUSEmployeeHealth()
-      this.contractOfEmployment.calculateUSEmployeeHealth()
-
-      this.contractOfEmployment.calculateBasisForTax()
-      this.contractOfEmployment.calculateTaxAmount()
-
-      if (this.young) {
-        this.contractOfEmployment.taxAmount = 0
-        this.contractOfEmployment.basisForTax = 0
-        this.contractOfEmployment.expenses = 0
-      }
-
-      this.contractOfEmployment.calculateNetAmount()
-
-      if (this.fp) {
-        this.contractOfEmployment.calculateZUSEmployerFGSP()
-        this.contractOfEmployment.calculateZUSEmployerFP()
-      }
+      this.contractOfEmployment.calculateAll(this.young, this.fp)
     },
   },
 }

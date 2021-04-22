@@ -8,31 +8,63 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <ContractOfMandateForm
+      <Form
         class="q-my-lg q-px-md"
       />
       <Advert />
       <SectionHeader>
-        <q-icon name="o_credit_card" />
-        Podsumowanie dla pracownika
+        <div class="row justify-between">
+          <div>
+            <q-icon name="o_credit_card" />
+            Podsumowanie dla pracownika
+          </div>
+          <q-btn
+            color="white"
+            size="sm"
+            label="pokaż cały rok"
+            :disable="!gross"
+            outline
+            @click="openEmployeeModal = true"
+          />
+        </div>
       </SectionHeader>
-      <ContractOfMandateEmployeeTable />
+      <EmployeeTable />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <ContractOfMandateEmployeeStatistics />
+      <EmployeeStatistics />
       <Advert />
       <SectionHeader>
         <q-icon name="o_credit_card" />
-        Podsumowanie dla pracodawcy
+        <div class="row justify-between">
+          <div>
+            <q-icon name="o_credit_card" />
+            Podsumowanie dla pracodawcy
+          </div>
+          <q-btn
+            color="white"
+            size="sm"
+            label="pokaż cały rok"
+            :disable="!gross"
+            outline
+            @click="openEmployerModal = true"
+          />
+        </div>
       </SectionHeader>
-      <ContractOfMandateEmployerTable />
+      <EmployerTable />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracodawcy
       </SectionHeader>
-      <ContractOfMandateEmployerStatistics />
+      <EmployerStatistics />
+
+      <q-dialog v-model="openEmployeeModal">
+        <WholeYearForEmployee />
+      </q-dialog>
+      <q-dialog v-model="openEmployerModal">
+        <WholeYearForEmployer />
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -40,27 +72,39 @@
 <script>
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
-import ContractOfMandateForm from 'components/contractOfMandate/ContractOfMandateForm'
-import ContractOfMandateEmployeeTable from 'components/contractOfMandate/ContractOfMandateEmployeeTable'
-import ContractOfMandateEmployeeStatistics from 'components/contractOfMandate/ContractOfMandateEmployeeStatistics'
-import ContractOfMandateEmployerTable from 'components/contractOfMandate/ContractOfMandateEmployerTable'
-import ContractOfMandateEmployerStatistics from 'components/contractOfMandate/ContractOfMandateEmployerStatistics'
+import Form from 'components/contractOfMandate/Form'
+import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
+import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics'
+import EmployerTable from 'components/contractOfMandate/EmployerTable'
+import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
+import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
+import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
+import { mapGetters } from 'vuex'
 export default {
+  data () {
+    return {
+      openEmployeeModal: false,
+      openEmployerModal: false,
+    }
+  },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
+  },
+  computed: {
+    ...mapGetters({
+      gross: 'contractOfMandate/gross',
+    }),
   },
   components: {
     SectionHeader,
     Advert,
-    ContractOfMandateForm,
-    ContractOfMandateEmployeeTable,
-    ContractOfMandateEmployeeStatistics,
-    ContractOfMandateEmployerTable,
-    ContractOfMandateEmployerStatistics,
+    Form,
+    EmployeeTable,
+    EmployeeStatistics,
+    EmployerTable,
+    EmployerStatistics,
+    WholeYearForEmployer,
+    WholeYearForEmployee,
   },
 }
 </script>
-
-<style scoped>
-
-</style>

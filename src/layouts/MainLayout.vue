@@ -18,7 +18,7 @@
               {{ moduleTitle }}
             </div>
             <div class="xs-hide">
-              Kalkulator dla przedsiębiorcy
+              Kalkulator finansowy
             </div>
           </div>
         </q-toolbar-title>
@@ -57,6 +57,12 @@ import EssentialLink from 'components/EssentialLink.vue'
 import { mapGetters } from 'vuex'
 
 const linksData = [
+  {
+    title: 'Samozatrudnienie',
+    caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
+    icon: '',
+    link: '/samozatrudnienie',
+  },
   {
     title: 'Umowa o pracę',
     caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',

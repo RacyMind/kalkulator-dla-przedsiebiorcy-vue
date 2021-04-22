@@ -17,6 +17,10 @@ export default {
       value: 23,
     },
   ],
+  DEFAULT_VAT_VALUE: {
+    label: '23%',
+    value: 23,
+  },
   AMOUNT_TYPES: {
     NET: 'net',
     GROSS: 'gross',
@@ -24,8 +28,48 @@ export default {
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
+    LINEAR_RATE: 19,
   },
-  FREE_AMOUNT_FOR_TAX: 46.33,
+  TAX_RATES_FOR_LAMP_SUM: [
+    {
+      label: '2%',
+      value: 2,
+    },
+    {
+      label: '3%',
+      value: 3,
+    },
+    {
+      label: '5,5%',
+      value: 5.5,
+    },
+    {
+      label: '8,5%',
+      value: 8.5,
+    },
+    {
+      label: '10%',
+      value: 10,
+    },
+    {
+      label: '12.5%',
+      value: 12.5,
+    },
+    {
+      label: '15%',
+      value: 15,
+    },
+    {
+      label: '17%',
+      value: 17,
+    },
+  ],
+  TAX_TYPES: {
+    GENERAL: 'general',
+    LINEAR: 'linear',
+    LUMP_SUM: 'lumpSum',
+  },
+  FREE_AMOUNT_FOR_TAX: 525.12 / 12,
   BASIC_INTEREST_RATE: 13,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
   LUMP_SUM_UP_TO_AMOUNT: 200,
@@ -45,7 +89,11 @@ export default {
     EMPLOYEE: {
       HEALTH_RATE: 7.75,
     },
+    OWNER: {
+      HEALTH_RATE: 7.75,
+    },
   },
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
   ZUS: {
     EMPLOYEE: {
       PENSION_RATE: 9.76,
@@ -57,7 +105,17 @@ export default {
       PENSION_RATE: 9.76,
       RENT_RATE: 6.5,
       FP_RATE: 2.45,
-      FGSP_RATE: 1,
+      FGSP_RATE: 0.1,
+    },
+    OWNER: {
+      PENSION_RATE: 19.52,
+      RENT_RATE: 8,
+      SICK_RATE: 2.45,
+      HEALTH_RATE: 9,
+      FP_RATE: 2.45,
+      BASIS_AMOUNT_FOR_HEALTH: 4242.38,
+      BIG_AMOUNT: 3155.40,
+      SMALL_AMOUNT: 840,
     },
   },
 
@@ -75,5 +133,6 @@ export default {
     CONTRACT_WORK: '#ed4913',
     CONTRACT_OF_MANDATE: '#e84034',
     CONTRACT_OF_EMPLOYMENT: '#b82324',
+    SELF_EMPLOYMENT: '#a31718',
   },
 }

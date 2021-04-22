@@ -10,7 +10,23 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Kwota podatku
+        Koszty przychodu
+      </div>
+      <div>
+        {{ expenses | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div>
+        Podstawa opodatkowania
+      </div>
+      <div>
+        {{ basisForTax | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        Zaliczka na podatek dochodowy
       </div>
       <div>
         {{ tax | pln }}
@@ -26,15 +42,17 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
   computed: {
     ...mapGetters({
-      net: 'invoice/net',
-      tax: 'invoice/tax',
-      gross: 'invoice/gross',
+      net: 'contractWork/net',
+      gross: 'contractWork/gross',
+      basisForTax: 'contractWork/basisForTax',
+      expenses: 'contractWork/expenses',
+      tax: 'contractWork/tax',
     }),
   },
 }

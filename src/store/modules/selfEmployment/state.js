@@ -5,18 +5,13 @@ export default function () {
     basisForTax: null,
     expenses: null,
     tax: null,
-    employeeZus: {
+    zus: {
       health: null,
       sick: null,
       rent: null,
       pension: null,
-    },
-    employerZus: {
       accident: null,
-      rent: null,
-      pension: null,
-      fp: null,
-      fgsp: null,
     },
+    taxType: null,
   }
 }

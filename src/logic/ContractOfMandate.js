@@ -27,6 +27,11 @@ class ContractOfMandate {
    */
   basisForTax = 0
   /**
+   * Podstawa do obliczenia skladki rentowej i emerytalnej
+   * @type {number}
+   */
+  basicAmountForRentAndPension = 0
+  /**
    * Koszty uzyskania przychodu
    * @type {number}
    */
@@ -104,7 +109,7 @@ class ContractOfMandate {
       basisForTax = this.gross
     }
 
-    this.basisForTax = parseFloat(basisForTax.toFixed(2))
+    this.basisForTax = Math.round(basisForTax)
   }
 
   /**
@@ -122,7 +127,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki emerytalnej dla pracownika
    */
   calculateZUSEmployeePension () {
-    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.gross
+    const pension = constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * this.basicAmountForRentAndPension
 
     this.employeeZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -131,7 +136,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki emerytalnej dla pracodawcy
    */
   calculateZUSEmployerPension () {
-    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.gross
+    const pension = (constants.ZUS.EMPLOYER.PENSION_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.pension = parseFloat(pension.toFixed(2))
   }
@@ -140,7 +145,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki rentowej dla pracownika
    */
   calculateZUSEmployeeRent () {
-    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.gross
+    const rent = (constants.ZUS.EMPLOYEE.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employeeZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -149,7 +154,7 @@ class ContractOfMandate {
    * Oblicza kwote skladki rentowej dla pracodawcy
    */
   calculateZUSEmployerRent () {
-    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.gross
+    const rent = (constants.ZUS.EMPLOYER.RENT_RATE / 100) * this.basicAmountForRentAndPension
 
     this.employerZus.rent = parseFloat(rent.toFixed(2))
   }
@@ -201,6 +206,60 @@ class ContractOfMandate {
       this.gross
 
     this.employerZus.accident = parseFloat(accident.toFixed(2))
+  }
+
+  /**
+   * Oblicza wszystkie skladowe
+   *
+   * @param accident
+   * @param pension
+   * @param rent
+   * @param sick
+   * @param health
+   * @param young
+   */
+  calculateAll (accident, pension, rent, sick, health, young) {
+    this.basicAmountForRentAndPension = this.gross
+
+    if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
+      this.expensesRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+    }
+
+    if (accident) {
+      this.calculateZUSEmployerAccident()
+    }
+
+    if (pension) {
+      this.calculateZUSEmployeePension()
+      this.calculateZUSEmployerPension()
+    }
+
+    if (rent) {
+      this.calculateZUSEmployeeRent()
+      this.calculateZUSEmployerRent()
+    }
+
+    if (sick) {
+      this.calculateZUSEmployeeSick()
+    }
+
+    this.calculateExpenses()
+
+    if (health) {
+      this.calculateZUSEmployeeHealth()
+      this.calculateUSEmployeeHealth()
+    }
+
+    this.calculateBasisForTax()
+    this.calculateTaxAmount()
+
+    if (young) {
+      this.taxAmount = 0
+      this.basisForTax = 0
+      this.expenses = 0
+    }
+
+    this.calculateNetAmount()
   }
 }
 export default ContractOfMandate

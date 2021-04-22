@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="advert full-width bg-dark text-white">
-      Advert
-    </div>
   </div>
 </template>
 

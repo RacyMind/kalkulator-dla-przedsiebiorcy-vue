@@ -14,11 +14,11 @@ export default {
   SET_EXPENSES (state, expenses) {
     state.expenses = expenses
   },
-  SET_EMPLOYEE_ZUS (state, employeeZus) {
-    state.employeeZus = employeeZus
+  SET_ZUS (state, zus) {
+    state.zus = zus
   },
-  SET_EMPLOYER_ZUS (state, employerZus) {
-    state.employerZus = employerZus
+  SET_TAX_TYPE (state, taxType) {
+    state.taxType = taxType
   },
   CLEAR_DATA (state) {
     state.net = null
@@ -26,16 +26,14 @@ export default {
     state.basisForTax = null
     state.expenses = null
     state.tax = null
-    state.employeeZus = {
+    state.taxType = null
+    state.zus = {
+      accident: null,
       health: null,
       sick: null,
       rent: null,
       pension: null,
-    }
-    state.employerZus = {
-      accident: null,
-      rent: null,
-      pension: null,
+      fp: null,
     }
   },
 }

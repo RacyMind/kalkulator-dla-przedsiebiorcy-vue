@@ -26,7 +26,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Zaliczka na podatek
+        Zaliczka na podatek dochodowy
       </div>
       <div>
         {{ tax | pln }}
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ employeeZus.health | pln }}
+        {{ zus.health | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ employeeZus.sick | pln }}
+        {{ zus.sick | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ employeeZus.rent | pln }}
+        {{ zus.rent | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,23 @@
         Składka emerytalna
       </div>
       <div>
-        {{ employeeZus.pension | pln }}
+        {{ zus.pension | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div class="q-pl-sm">
+        Składka wypakowa
+      </div>
+      <div>
+        {{ zus.accident | pln }}
+      </div>
+    </div>
+    <div class="row justify-between q-px-md q-py-sm">
+      <div class="q-pl-sm">
+        Składka na Fundusz Pracy
+      </div>
+      <div>
+        {{ zus.fp | pln }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -88,24 +104,24 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      net: 'contractOfEmployment/net',
-      gross: 'contractOfEmployment/gross',
-      basisForTax: 'contractOfEmployment/basisForTax',
-      expenses: 'contractOfEmployment/expenses',
-      tax: 'contractOfEmployment/tax',
-      employeeZus: 'contractOfEmployment/employeeZus',
+      net: 'selfEmployment/net',
+      gross: 'selfEmployment/gross',
+      basisForTax: 'selfEmployment/basisForTax',
+      expenses: 'selfEmployment/expenses',
+      tax: 'selfEmployment/tax',
+      zus: 'selfEmployment/zus',
     }),
     zusTotal () {
-      if (this.isZusEmpty(this.employeeZus)) {
+      if (this.isZusEmpty(this.zus)) {
         return null
       }
-      return Object.values(this.employeeZus).reduce((current, sum) => current + sum)
+      return Object.values(this.zus).reduce((current, sum) => current + sum)
     },
   },
   methods: {
     isZusEmpty (zus) {
       if (!zus.health && !zus.rent &&
-        !zus.pension && !zus.sick) {
+        !zus.pension && !zus.sick && !zus.fp) {
         return true
       }
       return false

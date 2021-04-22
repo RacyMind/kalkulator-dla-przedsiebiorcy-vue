@@ -8,7 +8,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <InvoiceForm
+      <Form
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -16,21 +16,21 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <InvoiceTable />
+      <Table />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <InvoiceStatistics />
+      <Statistics />
     </div>
   </q-page>
 </template>
 
 <script>
 import SectionHeader from 'components/SectionHeader'
-import InvoiceForm from 'components/invoice/InvoiceForm'
-import InvoiceTable from 'components/invoice/InvoiceTable'
-import InvoiceStatistics from 'components/invoice/InvoiceStatistics'
+import Form from 'components/invoice/Form'
+import Table from 'components/invoice/Table'
+import Statistics from 'components/invoice/Statistics'
 import Advert from 'components/Advert'
 
 export default {
@@ -39,9 +39,9 @@ export default {
   },
   components: {
     SectionHeader,
-    InvoiceForm,
-    InvoiceTable,
-    InvoiceStatistics,
+    Form,
+    Table,
+    Statistics,
     Advert,
   },
 }

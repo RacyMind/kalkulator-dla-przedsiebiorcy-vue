@@ -8,7 +8,7 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <InterestForm
+      <Form
         class="q-my-lg q-px-md"
       />
       <Advert />
@@ -16,21 +16,21 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <InterestTable />
+      <Table />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <InterestStatistics />
+      <Statistics />
     </div>
   </q-page>
 </template>
 
 <script>
 import SectionHeader from 'components/SectionHeader'
-import InterestForm from 'components/interest/InterestForm'
-import InterestTable from 'components/interest/InterestTable'
-import InterestStatistics from 'components/interest/InterestStatistics'
+import Form from 'components/interest/Form'
+import Table from 'components/interest/Table'
+import Statistics from 'components/interest/Statistics'
 import Advert from 'components/Advert'
 
 export default {
@@ -39,9 +39,9 @@ export default {
   },
   components: {
     SectionHeader,
-    InterestForm,
-    InterestTable,
-    InterestStatistics,
+    Form,
+    Table,
+    Statistics,
     Advert,
   },
 }
