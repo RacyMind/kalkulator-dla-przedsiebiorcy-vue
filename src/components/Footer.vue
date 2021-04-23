@@ -3,7 +3,8 @@
     <div>
       <q-btn
         class="q-mb-sm"
-        color="teal-7">
+        color="teal-7"
+        @click="openModal = true">
         <q-icon
           name="o_favorite_border"
           class="q-mr-sm" />
@@ -19,15 +20,24 @@
         </a>
       </div>
     </div>
+
+    <q-dialog v-model="openModal">
+      <SupportProject />
+    </q-dialog>
   </div>
 </template>
 
 <script>
+import SupportProject from 'components/SupportProject'
 export default {
   data () {
     return {
       year: new Date().getFullYear(),
+      openModal: false,
     }
+  },
+  components: {
+    SupportProject,
   },
 }
 </script>
