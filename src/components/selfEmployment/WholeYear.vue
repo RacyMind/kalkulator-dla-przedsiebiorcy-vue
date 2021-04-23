@@ -26,7 +26,6 @@
  */
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 import SelfEmployment from 'src/logic/SelfEmployment'
 
 export default {

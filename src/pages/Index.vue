@@ -16,9 +16,9 @@
       </div>
       <div class="column">
         <Menu />
+        <Footer />
       </div>
     </div>
-    <Footer />
   </q-page>
 </template>
 
