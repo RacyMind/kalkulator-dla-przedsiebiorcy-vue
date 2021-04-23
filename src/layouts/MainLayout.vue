@@ -93,6 +93,12 @@ const linksData = [
     icon: '',
     link: '/odsetki',
   },
+  {
+    title: 'Kursy walut',
+    caption: 'Moduł pokazuje kursy walut',
+    icon: '',
+    link: '/kursy-walut',
+  },
 ]
 
 export default {

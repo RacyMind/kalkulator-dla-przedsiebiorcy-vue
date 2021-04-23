@@ -134,5 +134,6 @@ export default {
     CONTRACT_OF_MANDATE: '#e84034',
     CONTRACT_OF_EMPLOYMENT: '#b82324',
     SELF_EMPLOYMENT: '#a31718',
+    EXCHANGE_RATES: '#ed9113',
   },
 }
