@@ -119,6 +119,59 @@ export default {
     },
   },
 
+  MENU: {
+    BUSINESS: [
+      {
+        title: 'Samozatrudnienie',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
+        className: 'c-selfEmployment',
+        link: '/samozatrudnienie',
+      },
+      {
+        title: 'Faktura VAT',
+        caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
+        className: 'c-invoice',
+        link: '/faktura-vat',
+      },
+
+    ],
+    WORK: [
+      {
+        title: 'Umowa o pracę',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
+        className: 'c-contractOfEmployment',
+        link: '/umowa-o-prace',
+      },
+      {
+        title: 'Umowa zlecenie',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie zlecenie',
+        className: 'c-contractOfMandate',
+        link: '/umowa-zlecenie',
+      },
+      {
+        title: 'Umowa o dzieło',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o dzieło',
+        className: 'c-contractWork',
+        link: '/umowa-o-dzielo',
+      },
+    ],
+    PERCENTAGE: [
+      {
+        title: 'Odsetki',
+        caption: 'Moduł oblicza odsetki za każdy dzień',
+        className: 'c-interest',
+        link: '/odsetki',
+      },
+    ],
+    CURRENCIES: [
+      {
+        title: 'Kursy walut',
+        caption: 'Moduł pokazuje kursy walut',
+        className: 'c-exchangeRates',
+        link: '/kursy-walut',
+      },
+    ],
+  },
   LOCALE_DATE: {
     /* starting with Sunday */
     days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
@@ -128,12 +181,12 @@ export default {
     firstDayOfWeek: 1,
   },
   COLORS: {
-    INVOICE: '#ed6d13',
-    INTEREST: '#ed9113',
-    CONTRACT_WORK: '#ed4913',
-    CONTRACT_OF_MANDATE: '#e84034',
-    CONTRACT_OF_EMPLOYMENT: '#b82324',
+    INVOICE: '#CB4135',
+    INTEREST: '#edb113',
+    CONTRACT_WORK: '#FF9E8D',
+    CONTRACT_OF_MANDATE: '#FF8356',
+    CONTRACT_OF_EMPLOYMENT: '#ed6d13',
     SELF_EMPLOYMENT: '#a31718',
-    EXCHANGE_RATES: '#ed9113',
+    EXCHANGE_RATES: '#BB4985',
   },
 }

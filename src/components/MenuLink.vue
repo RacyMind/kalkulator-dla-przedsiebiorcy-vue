@@ -3,15 +3,18 @@
     clickable
     exact
     :to="link"
+    :class="className"
+    class="q-pa-none"
+    style="border-bottom: 1px solid white"
   >
     <q-item-section
-      v-if="icon"
-      avatar
+      style="max-width:25px"
     >
-      <q-icon :name="icon" />
+      <div
+        class="s-bg bg-module"></div>
     </q-item-section>
 
-    <q-item-section>
+    <q-item-section class="q-py-sm">
       <q-item-label>{{ title }}</q-item-label>
       <q-item-label caption>
         {{ caption }}
@@ -22,7 +25,6 @@
 
 <script>
 export default {
-  name: 'EssentialLink',
   props: {
     title: {
       type: String,
@@ -39,10 +41,17 @@ export default {
       default: '',
     },
 
-    icon: {
+    className: {
       type: String,
       default: '',
     },
   },
 }
 </script>
+<style lang="scss">
+.s-bg{
+  width:100%;
+  height: 100%;
+  display: inline-block;
+}
+</style>

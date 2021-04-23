@@ -38,6 +38,7 @@
         <WholeYear />
       </q-dialog>
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -48,6 +49,7 @@ import Form from 'components/selfEmployment/Form'
 import Table from 'components/selfEmployment/Table'
 import Statistics from 'components/selfEmployment/Statistics'
 import WholeYear from 'components/selfEmployment/WholeYear'
+import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 export default {
   data () {
@@ -70,6 +72,7 @@ export default {
     Table,
     Statistics,
     WholeYear,
+    Footer,
   },
 }
 </script>

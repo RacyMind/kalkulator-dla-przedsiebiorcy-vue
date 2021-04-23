@@ -6,6 +6,7 @@
       :columns="columns"
       row-key="name"
       hide-bottom
+      :loading="isLoading"
       :pagination="{rowsPerPage: 999}">
     </q-table>
   </div>
@@ -59,6 +60,7 @@ export default {
     ...mapGetters({
       rates: 'exchangeRates/rates',
       date: 'exchangeRates/date',
+      isLoading: 'exchangeRates/isLoading',
     }),
   },
 }

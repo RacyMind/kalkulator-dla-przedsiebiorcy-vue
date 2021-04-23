@@ -23,6 +23,7 @@
       </SectionHeader>
       <Statistics />
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -32,6 +33,7 @@ import Form from 'components/invoice/Form'
 import Table from 'components/invoice/Table'
 import Statistics from 'components/invoice/Statistics'
 import Advert from 'components/Advert'
+import Footer from 'components/Footer'
 
 export default {
   created () {
@@ -43,6 +45,7 @@ export default {
     Table,
     Statistics,
     Advert,
+    Footer,
   },
 }
 </script>

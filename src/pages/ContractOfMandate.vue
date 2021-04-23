@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-contractWork"
+    class="q-pa-md full-width c-contractOfMandate"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
@@ -65,6 +65,7 @@
         <WholeYearForEmployer />
       </q-dialog>
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -78,6 +79,7 @@ import EmployerTable from 'components/contractOfMandate/EmployerTable'
 import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
 import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
+import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 export default {
   data () {
@@ -104,6 +106,7 @@ export default {
     EmployerStatistics,
     WholeYearForEmployer,
     WholeYearForEmployee,
+    Footer,
   },
 }
 </script>

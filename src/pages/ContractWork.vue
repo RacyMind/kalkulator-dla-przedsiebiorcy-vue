@@ -23,6 +23,7 @@
       </SectionHeader>
       <Statistics />
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -32,6 +33,7 @@ import Advert from 'components/Advert'
 import Form from 'components/contractWork/Form'
 import Table from 'components/contractWork/Table'
 import Statistics from 'components/contractWork/Statistics'
+import Footer from 'components/Footer'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
@@ -42,6 +44,7 @@ export default {
     Form,
     Table,
     Statistics,
+    Footer,
   },
 }
 </script>

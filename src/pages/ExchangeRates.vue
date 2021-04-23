@@ -11,6 +11,7 @@
       <Advert />
       <Table />
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -18,6 +19,7 @@
 import SectionHeader from 'components/SectionHeader'
 import Table from 'components/exchangeRates/Table'
 import Advert from 'components/Advert'
+import Footer from 'components/Footer'
 
 export default {
   created () {
@@ -27,6 +29,7 @@ export default {
     SectionHeader,
     Table,
     Advert,
+    Footer,
   },
 }
 </script>

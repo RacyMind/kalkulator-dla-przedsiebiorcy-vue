@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
   loadLatestExchangeRates ({ commit }) {
-    commit('SET_LOADING', false)
+    commit('SET_LOADING', true)
     axios.get('http://api.nbp.pl/api/exchangerates/tables/a/')
       .then(function (response) {
         commit('SET_DATE', response.data[0].effectiveDate)
@@ -10,9 +10,8 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      .finally(function (error) {
-        console.log(error)
-        commit('SET_LOADING', true)
+      .finally(function () {
+        commit('SET_LOADING', false)
       })
   },
 }

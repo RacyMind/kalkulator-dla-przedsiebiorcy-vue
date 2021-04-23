@@ -63,6 +63,7 @@
         <WholeYearForEmployer />
       </q-dialog>
     </div>
+    <Footer />
   </q-page>
 </template>
 
@@ -76,6 +77,7 @@ import EmployerTable from 'components/contractOfEmployment/EmployerTable'
 import EmployerStatistics from 'components/contractOfEmployment/EmployerStatistics'
 import WholeYearForEmployee from 'components/contractOfEmployment/WholeYearForEmployee'
 import WholeYearForEmployer from 'components/contractOfEmployment/WholeYearForEmployer'
+import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 export default {
   data () {
@@ -102,6 +104,7 @@ export default {
     EmployeeStatistics,
     EmployerTable,
     EmployerStatistics,
+    Footer,
   },
 }
 </script>
