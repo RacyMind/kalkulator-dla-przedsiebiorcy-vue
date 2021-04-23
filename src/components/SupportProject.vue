@@ -4,7 +4,7 @@
       <p class="text-justify">
         Cześć! Kalkulator finansowy (poprzednio kalkulator dla przedsiębiorcy) rozwijam hobbystycznie w tak zwanych „po
         godzinach”. W ramach projektu rozwijam swoją i Twoją wiedzę księgową. Jeżeli uważasz to narzędzie za
-        wartościowe, możesz postawić mi wirtualną kawę :)
+        wartościowe, postaw mi wirtualną kawę :)
       </p>
       <q-btn
         label="Postaw mi kawę"
