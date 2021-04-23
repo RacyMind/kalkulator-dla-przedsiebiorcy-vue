@@ -36,7 +36,6 @@
       <EmployeeStatistics />
       <Advert />
       <SectionHeader>
-        <q-icon name="o_credit_card" />
         <div class="row justify-between">
           <div>
             <q-icon name="o_credit_card" />

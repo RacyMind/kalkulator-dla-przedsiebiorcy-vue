@@ -120,6 +120,12 @@ export default {
   },
   created () {
     this.setData()
+
+    if (this.taxType === this.$constants.TAX_TYPES.GENERAL && this.totalBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.$q.notify({
+        message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+      })
+    }
   },
   computed: {
     ...mapGetters({

@@ -83,6 +83,12 @@ export default {
   },
   created () {
     this.setData()
+
+    if (this.totalBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+      this.$q.notify({
+        message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+      })
+    }
   },
   computed: {
     ...mapGetters({

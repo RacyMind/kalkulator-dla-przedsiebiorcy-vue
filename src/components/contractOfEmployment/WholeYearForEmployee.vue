@@ -103,6 +103,18 @@ export default {
   },
   created () {
     this.setData()
+
+    if (this.totalBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.$q.notify({
+        message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+      })
+    }
+
+    if (this.totalBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+      this.$q.notify({
+        message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+      })
+    }
   },
   computed: {
     ...mapGetters({
