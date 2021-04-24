@@ -10,7 +10,7 @@
           class="q-mr-sm" />
         Wesprzyj projekt
       </q-btn>
-      <div style="font-size: 12px;">
+      <div style="font-size: 0.75rem;">
         &copy; 2011-{{year}} Kalkulator finansowy<br>
         Wersja {{ $constants.APP.VERSION }}<br>
         Stworzone przez <a

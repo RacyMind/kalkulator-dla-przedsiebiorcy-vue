@@ -3,3 +3,9 @@
     <slot />
   </div>
 </template>
+
+<style lang="scss">
+.sectionHeader.text-h6{
+  font-size: 1.15rem;
+}
+</style>
