@@ -26,6 +26,7 @@ export default {
           label: 'Nazwa waluty',
           required: true,
           align: 'left',
+          style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
           field: row => row.currency,
           format: val => `${val}`,
         },
