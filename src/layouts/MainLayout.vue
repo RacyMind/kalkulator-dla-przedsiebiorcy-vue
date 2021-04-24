@@ -27,7 +27,6 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
       content-class="bg-grey-2"
     >
@@ -49,7 +48,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      leftDrawerOpen: true,
+      leftDrawerOpen: false,
     }
   },
   computed: {
