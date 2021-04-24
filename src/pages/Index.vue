@@ -9,7 +9,7 @@
           style="width:100px;height:auto;"
         >
         <div
-          class="text-primary q-ml-sm"
+          class="text-primary q-ml-sm q-r-sm"
           style="font-size:26px;">
           Kalkulator finansowy
         </div>

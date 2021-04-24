@@ -1,7 +1,7 @@
 {
   "name": "kalkulator-dla-przedsiebiorcy-vue",
   "version": "3.0.0",
-  "description": "Kalkulator finansowy jest podręcznym, bezpłatnym programem, dzięki któremu w łatwy sposób wyliczysz wszystkie składowe wynagrodzenia przy różnych formach zatrudnienia. Kalkulator zawiera zestawienia przydatne dla przedsiębiorcy, jak i dla pracownika.\n",
+  "description": "Aplikacja Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń",
   "productName": "Kalkulator finansowy",
   "author": "Łuasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,

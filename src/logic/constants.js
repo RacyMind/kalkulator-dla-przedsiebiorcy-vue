@@ -182,6 +182,12 @@ export default {
         className: 'c-changeLogs',
         link: '/historia-zmian',
       },
+      {
+        title: 'O aplikacji',
+        caption: '',
+        className: 'c-aboutApp',
+        link: 'https://kalkulatorfinansowy.app',
+      },
     ],
   },
   LOCALE_DATE: {
