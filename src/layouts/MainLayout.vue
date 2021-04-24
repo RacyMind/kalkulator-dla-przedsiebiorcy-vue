@@ -18,7 +18,7 @@
               {{ moduleTitle }}
             </div>
             <div class="xs-hide">
-              Kalkulator finansowy
+              {{ $constants.APP.NAME }}
             </div>
           </div>
         </q-toolbar-title>

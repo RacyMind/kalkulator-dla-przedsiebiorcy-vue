@@ -1,5 +1,5 @@
 <template>
-  <div class="text-teal-7 q-py-md text-center">
+  <div class="text-teal-7 q-pt-lg q-pb-sm text-center">
     <div>
       <q-btn
         class="q-mb-sm"
@@ -12,7 +12,8 @@
       </q-btn>
       <div style="font-size: 12px;">
         &copy; 2011-{{year}} Kalkulator finansowy<br>
-        by <a
+        Wersja {{ $constants.APP.VERSION }}<br>
+        Stworzone przez <a
           href="https://www.linkedin.com/in/%C5%82ukasz-socha-30083841/"
           class="text-teal-7"
           target="_blank">

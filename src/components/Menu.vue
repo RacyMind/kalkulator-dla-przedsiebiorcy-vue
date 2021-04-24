@@ -44,6 +44,17 @@
       :key="link.title"
       v-bind="link"
     />
+    <h6
+      class="q-my-md"
+      style="margin-left: 32px;"
+    >
+      Aplikacja
+    </h6>
+    <MenuLink
+      v-for="link in $constants.MENU.APP"
+      :key="link.title"
+      v-bind="link"
+    />
   </div>
 </template>
 

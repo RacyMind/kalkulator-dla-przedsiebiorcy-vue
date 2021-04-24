@@ -1,4 +1,8 @@
 export default {
+  APP: {
+    NAME: 'Kalkulator finansowy',
+    VERSION: '3.0.0',
+  },
   VAT_VALUES: [
     {
       label: '0%',
@@ -171,6 +175,14 @@ export default {
         link: '/kursy-walut',
       },
     ],
+    APP: [
+      {
+        title: 'Historia zmian',
+        caption: 'Pokazuje historię zmian w aplikacji',
+        className: 'c-changeLogs',
+        link: '/historia-zmian',
+      },
+    ],
   },
   LOCALE_DATE: {
     /* starting with Sunday */
@@ -188,5 +200,6 @@ export default {
     CONTRACT_OF_EMPLOYMENT: '#ed6d13',
     SELF_EMPLOYMENT: '#a31718',
     EXCHANGE_RATES: '#BB4985',
+    CHANGES_LOGS: '#00A7D9',
   },
 }

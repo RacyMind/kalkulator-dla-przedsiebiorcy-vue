@@ -27,7 +27,10 @@
           style="width: 75%;max-width:180px"
           color="primary"
           outline
-          @click="facebook"/>
+          type="a"
+          target="_blank"
+          :href="`https://www.facebook.com/sharer/sharer.php?u=${url}`"
+        />
         <q-btn
           label="LinkedIn"
           no-caps
@@ -35,7 +38,10 @@
           style="width: 75%;max-width:180px"
           color="primary"
           outline
-          @click="linkedin"/>
+          type="a"
+          target="_blank"
+          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${$constants.APP.NAME}`"
+        />
         <q-btn
           label="Twitter"
           no-caps
@@ -43,7 +49,10 @@
           style="width: 75%;max-width:180px"
           color="primary"
           outline
-          @click="twitter"/>
+          type="a"
+          target="_blank"
+          :href="`http://twitter.com/share?url=${url}&text=${$constants.APP.NAME}&hashtags=wynagrodzenie,finanse,kalkulator`"
+        />
       </div>
       <p  class="q-mb-none text-justify">
         Dzięki za wsparcie! Kalkulator był, jest i będzie darmowy.
@@ -54,7 +63,11 @@
 
 <script>
 export default {
-  name: 'SupportProject',
+  data () {
+    return {
+      url: 'https://kalkulatorfinansowy.app',
+    }
+  },
 }
 </script>
 
