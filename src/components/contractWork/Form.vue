@@ -67,7 +67,7 @@ export default {
     }
   },
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.NET
+    this.amountType = this.$constants.AMOUNT_TYPES.GROSS
     this.expenses = this.$constants.CONTRACT_WORK.EXPENSES_20
 
     this.$store.commit('contractWork/CLEAR_DATA')

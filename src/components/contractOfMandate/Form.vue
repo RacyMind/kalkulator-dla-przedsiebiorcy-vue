@@ -118,7 +118,7 @@ export default {
     }
   },
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.NET
+    this.amountType = this.$constants.AMOUNT_TYPES.GROSS
     this.accident = this.$constants.ACCIDENT_RATE
 
     this.$store.commit('contractOfMandate/CLEAR_DATA')
