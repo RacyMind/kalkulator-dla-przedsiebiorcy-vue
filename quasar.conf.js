@@ -120,13 +120,15 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Kalkulator dla przedsiebiorcy',
-        short_name: 'Kalkulator dla przedsiebiorcy',
-        description: 'Kalkulator',
-        display: 'standalone',
+        name: 'Kalkulator finansowy',
+        short_name: 'Kalkulator finansowy',
+        version: '3.0.1',
+        description: 'Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń.',
+        display: 'fullscreen',
         orientation: 'portrait',
         background_color: '#ffffff',
-        theme_color: '#027be3',
+        theme_color: '#d12526',
+        start_url: '/app/',
         icons: [
           {
             src: 'icons/icon-128x128.png',
@@ -149,7 +151,7 @@ module.exports = function (/* ctx */) {
             type: 'image/png',
           },
           {
-            src: 'icons/icon-512x512.png',
+            src: 'icons/favicon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
