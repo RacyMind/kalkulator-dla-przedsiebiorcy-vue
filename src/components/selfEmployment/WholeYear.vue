@@ -247,9 +247,6 @@ export default {
         model.taxAmount = 0
       }
 
-      console.log('model.basisForTax', model.basisForTax)
-      console.log('model.taxAmount', model.taxAmount)
-
       model.taxAmount = Math.round(model.taxAmount)
 
       model.calculateNetAmount()
