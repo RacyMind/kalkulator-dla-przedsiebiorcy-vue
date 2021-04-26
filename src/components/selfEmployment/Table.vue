@@ -74,7 +74,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div class="q-pl-sm">
-        Składka wypakowa
+        Składka wypadkowa
       </div>
       <div>
         {{ zus.accident | pln }}
