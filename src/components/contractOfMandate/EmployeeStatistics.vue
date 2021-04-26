@@ -11,7 +11,6 @@
 <script>
 import PieChart from 'components/PieChart'
 import { mapGetters } from 'vuex'
-import { colors } from 'quasar'
 
 export default {
   computed: {
@@ -32,12 +31,12 @@ export default {
             this.employeeZus.pension.toFixed(2),
           ],
           backgroundColor: [
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -30),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -20),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, -10),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 0),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 10),
-            colors.lighten(this.$constants.COLORS.CONTRACT_OF_MANDATE, 20),
+            this.$constants.COLORS.CHART1,
+            this.$constants.COLORS.CHART2,
+            this.$constants.COLORS.CHART3,
+            this.$constants.COLORS.CHART4,
+            this.$constants.COLORS.CHART5,
+            this.$constants.COLORS.CHART6,
           ],
         }],
         labels: [

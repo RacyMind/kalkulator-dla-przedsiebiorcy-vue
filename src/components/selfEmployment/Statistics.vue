@@ -11,7 +11,6 @@
 <script>
 import PieChart from 'components/PieChart'
 import { mapGetters } from 'vuex'
-import { colors } from 'quasar'
 
 export default {
   computed: {
@@ -33,13 +32,13 @@ export default {
             this.zus.fp.toFixed(2),
           ],
           backgroundColor: [
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, -30),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, -20),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, -10),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, 0),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, 10),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, 20),
-            colors.lighten(this.$constants.COLORS.SELF_EMPLOYMENT, 30),
+            this.$constants.COLORS.CHART1,
+            this.$constants.COLORS.CHART2,
+            this.$constants.COLORS.CHART3,
+            this.$constants.COLORS.CHART4,
+            this.$constants.COLORS.CHART5,
+            this.$constants.COLORS.CHART6,
+            this.$constants.COLORS.CHART7,
           ],
         }],
         labels: [

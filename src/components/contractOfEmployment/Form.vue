@@ -81,7 +81,7 @@ export default {
       contractOfEmployment: null,
       amount: null,
       amountType: null,
-      workInLivePlace: false,
+      workInLivePlace: true,
       young: false,
       fp: true,
       accident: 0,

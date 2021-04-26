@@ -11,7 +11,6 @@
 <script>
 import PieChart from 'components/PieChart'
 import { mapGetters } from 'vuex'
-import { colors } from 'quasar'
 
 export default {
   computed: {
@@ -23,7 +22,10 @@ export default {
       return {
         datasets: [{
           data: [this.net.toFixed(2), this.interest.toFixed(2)],
-          backgroundColor: [colors.lighten(this.$constants.COLORS.INTEREST, -20), colors.lighten(this.$constants.COLORS.INTEREST, 20)],
+          backgroundColor: [
+            this.$constants.COLORS.CHART1,
+            this.$constants.COLORS.CHART2,
+          ],
         }],
         labels: [
           'Kwota',

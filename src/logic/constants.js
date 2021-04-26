@@ -207,5 +207,12 @@ export default {
     SELF_EMPLOYMENT: '#a31718',
     EXCHANGE_RATES: '#BB4985',
     CHANGES_LOGS: '#00A7D9',
+    CHART1: '#e32514',
+    CHART2: '#edb113',
+    CHART3: '#FF9E8D',
+    CHART4: '#ed6d13',
+    CHART5: '#BB4985',
+    CHART6: '#a31718',
+    CHART7: '#00A7D9',
   },
 }

@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.0.3',
+      publish_date: '2021-04-??',
+      content: '<ul><li>Praca w miejscu zamieszkania jest aktywna domyślnie.</li><li>Poprawiono kolory wykresów.</li></ul>',
+    },
+    {
       version: '3.0.2',
       publish_date: '2021-04-26',
       content: '<ul><li>Poprawiono nazewnictwo.</li><li>Poprawiono GA.</li></ul>',
@@ -13,7 +18,7 @@ export default {
     {
       version: '3.0.0',
       publish_date: '2021-04-24',
-      content: '<ul><li>Aplikacja na nowo napisana w VueJS</li><li>Poprawiono liczne błędy</li><li>Poprawiono UX</li><li>Dodano zestawienia roczne dla wynagrodzenia</li></ul>',
+      content: '<ul><li>Aplikacja na nowo napisana w VueJS.</li><li>Poprawiono liczne błędy.</li><li>Poprawiono UX.</li><li>Dodano zestawienia roczne dla wynagrodzenia.</li></ul>',
     },
   ],
 }
