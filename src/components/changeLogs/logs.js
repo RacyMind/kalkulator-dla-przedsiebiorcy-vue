@@ -1,9 +1,9 @@
 export default {
   LOGS: [
     {
-      version: '3.1.0',
-      publish_date: '2021-04-??',
-      content: '<ul><li>Poprawiono nazewnictwo.</li></ul>',
+      version: '3.0.2',
+      publish_date: '2021-04-26',
+      content: '<ul><li>Poprawiono nazewnictwo.</li><li>Poprawiono GA.</li></ul>',
     },
     {
       version: '3.0.1',
