@@ -43,7 +43,7 @@ export default {
         },
         {
           name: 'gross',
-          label: 'Brutto',
+          label: 'Przychód netto',
           required: true,
           align: 'left',
           field: row => row.gross,
@@ -107,7 +107,7 @@ export default {
         },
         {
           name: 'net',
-          label: 'Netto',
+          label: 'Dochód netto',
           required: true,
           align: 'left',
           field: row => row.net,

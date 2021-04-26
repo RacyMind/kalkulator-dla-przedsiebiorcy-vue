@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.1.0',
+      publish_date: '2021-04-??',
+      content: '<ul><li>Poprawiono nazewnictwo.</li></ul>',
+    },
+    {
       version: '3.0.1',
       publish_date: '2021-04-25',
       content: '<ul><li>Dodano PWA. Aplikację można  zainstalować w telefonie.</li></ul>',

@@ -43,7 +43,7 @@ export default {
           ],
         }],
         labels: [
-          'Wynagrodzenie netto',
+          'Dochód netto',
           'Zaliczka na podatek dochodowy',
           'Składka zdrowotna',
           'Składka chorobowa',

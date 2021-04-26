@@ -7,7 +7,7 @@
           type="number"
           min="0"
           step="0.01"
-          label="Wynagrodzenie*"
+          label="Przychód netto*"
           autofocus
           color="brand"
           required
@@ -17,7 +17,7 @@
           type="number"
           min="0"
           step="0.01"
-          label="Koszty przychodu do podatku dochodowego*"
+          label="Koszty netto*"
           color="brand"
           required
         />
