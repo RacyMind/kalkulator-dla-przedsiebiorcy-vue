@@ -40,6 +40,14 @@
         {{ employerZus.pension | pln }}
       </div>
     </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        PPK
+      </div>
+      <div>
+        {{ employerPpk | pln }}
+      </div>
+    </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
         Suma kosztów pracodawcy
@@ -58,6 +66,7 @@ export default {
     ...mapGetters({
       gross: 'contractOfMandate/gross',
       employerZus: 'contractOfMandate/employerZus',
+      employerPpk: 'contractOfMandate/employerPpk',
     }),
     zusTotal () {
       if (this.isZusEmpty(this.employerZus)) {
@@ -66,7 +75,7 @@ export default {
       return Object.values(this.employerZus).reduce((current, sum) => current + sum)
     },
     totalAmount () {
-      return this.gross + this.zusTotal
+      return this.gross + this.zusTotal + this.employerPpk
     },
   },
   methods: {

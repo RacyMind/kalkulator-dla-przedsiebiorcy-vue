@@ -17,6 +17,7 @@ export default {
     ...mapGetters({
       gross: 'contractOfMandate/gross',
       employerZus: 'contractOfMandate/employerZus',
+      employerPpk: 'contractOfMandate/employerPpk',
     }),
     data () {
       return {
@@ -26,12 +27,14 @@ export default {
             this.employerZus.accident.toFixed(2),
             this.employerZus.rent.toFixed(2),
             this.employerZus.pension.toFixed(2),
+            this.employerPpk.toFixed(2),
           ],
           backgroundColor: [
             this.$constants.COLORS.CHART1,
             this.$constants.COLORS.CHART2,
             this.$constants.COLORS.CHART3,
             this.$constants.COLORS.CHART4,
+            this.$constants.COLORS.CHART5,
           ],
         }],
         labels: [
@@ -39,6 +42,7 @@ export default {
           'Składka wypadkowa',
           'Składka rentowa',
           'Składka emerytalna',
+          'PPK',
         ],
       }
     },

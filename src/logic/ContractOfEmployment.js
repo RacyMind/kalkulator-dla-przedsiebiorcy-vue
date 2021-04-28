@@ -293,6 +293,7 @@ class ContractOfEmployment {
    * Oblicza wszystkie skladowe
    * @param young
    * @param fp
+   * @param ppk
    */
   calculateAll (young, fp, ppk) {
     this.basicAmountForRentAndPension = this.gross

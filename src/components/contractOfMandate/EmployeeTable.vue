@@ -72,6 +72,14 @@
         {{ employeeZus.pension | pln }}
       </div>
     </div>
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+      <div>
+        PPK
+      </div>
+      <div>
+        {{ employeePpk | pln }}
+      </div>
+    </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
         Wynagrodzenie brutto
@@ -94,6 +102,7 @@ export default {
       expenses: 'contractOfMandate/expenses',
       tax: 'contractOfMandate/tax',
       employeeZus: 'contractOfMandate/employeeZus',
+      employeePpk: 'contractOfMandate/employeePpk',
     }),
     zusTotal () {
       if (this.isZusEmpty(this.employeeZus)) {
