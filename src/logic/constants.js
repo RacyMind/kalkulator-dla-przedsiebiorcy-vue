@@ -194,6 +194,12 @@ export default {
         link: '/historia-zmian',
       },
       {
+        title: 'Formularz kontaktowy',
+        caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje.',
+        className: 'c-contact',
+        link: '/kontakt',
+      },
+      {
         title: 'O aplikacji',
         caption: '',
         className: 'c-aboutApp',
@@ -218,6 +224,7 @@ export default {
     SELF_EMPLOYMENT: '#a31718',
     EXCHANGE_RATES: '#BB4985',
     CHANGES_LOGS: '#00A7D9',
+    CONTACT: '#00A7D9',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#FF9E8D',

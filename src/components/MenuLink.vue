@@ -17,7 +17,7 @@
             class="s-bg bg-module"></div>
         </q-item-section>
 
-        <q-item-section class="q-py-sm">
+        <q-item-section class="q-py-sm q-pr-sm">
           <q-item-label>{{ title }}</q-item-label>
           <q-item-label caption>
             {{ caption }}
@@ -41,7 +41,7 @@
             class="s-bg bg-module"></div>
         </q-item-section>
 
-        <q-item-section class="q-py-sm">
+        <q-item-section class="q-py-sm q-pr-sm">
           <q-item-label>{{ title }}</q-item-label>
           <q-item-label caption>
             {{ caption }}
