@@ -17,6 +17,7 @@ export default {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',
       employerZus: 'contractOfEmployment/employerZus',
+      employerPpk: 'contractOfEmployment/employerPpk',
     }),
     data () {
       return {
@@ -28,6 +29,7 @@ export default {
             this.employerZus.pension.toFixed(2),
             this.employerZus.fp.toFixed(2),
             this.employerZus.fgsp.toFixed(2),
+            this.employerPpk.toFixed(2),
           ],
           backgroundColor: [
             this.$constants.COLORS.CHART1,
@@ -36,15 +38,17 @@ export default {
             this.$constants.COLORS.CHART4,
             this.$constants.COLORS.CHART5,
             this.$constants.COLORS.CHART6,
+            this.$constants.COLORS.CHART7,
           ],
         }],
         labels: [
-          'Wynagrodzenie brutto',
-          'Składka wypadkowa',
+          'Wynagrodzenie netto',
+          'Zaliczka na podatek dochodowy',
+          'Składka zdrowotna',
+          'Składka chorobowa',
           'Składka rentowa',
           'Składka emerytalna',
-          'Składka na Fundusz Pracy',
-          'Składka na FGŚP',
+          'PPK',
         ],
       }
     },

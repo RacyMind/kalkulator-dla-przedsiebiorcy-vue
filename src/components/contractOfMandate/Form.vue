@@ -74,11 +74,44 @@
                 class="full-width"
                 min="0"
                 step="0.01"
-                label="Składka wypadkowa (w %)*"
+                label="Składka wypadkowa (%)*"
                 autofocus
                 color="brand"
                 required
               />
+              <q-toggle
+                v-model="ppk"
+                class="q-mt-sm"
+                label="PPK"
+              />
+              <div
+                v-if="ppk"
+                class="row full-width">
+                <div class="col-6">
+                  <q-input
+                    v-model="employerPpkRate"
+                    type="number"
+                    class="full-width"
+                    :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
+                    :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                    step="0.01"
+                    label="Pracodawca (%)"
+                    color="brand"
+                  />
+                </div>
+                <div class="col-6 q-pl-md-sm">
+                  <q-input
+                    v-model="employeePpkRate"
+                    type="number"
+                    class="full-width"
+                    :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
+                    :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                    step="0.01"
+                    label="Pracownik (%)"
+                    color="brand"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -115,11 +148,16 @@ export default {
       rent: true,
       pension: true,
       accident: 0,
+      ppk: false,
+      employeePpkRate: 0,
+      employerPpkRate: 0,
     }
   },
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.GROSS
     this.accident = this.$constants.ACCIDENT_RATE
+    this.employerPpkRate = this.$constants.PPK.EMPLOYER.DEFAULT_RATE
+    this.employeePpkRate = this.$constants.PPK.EMPLOYEE.DEFAULT_RATE
 
     this.$store.commit('contractOfMandate/CLEAR_DATA')
   },
@@ -146,6 +184,11 @@ export default {
         this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
       }
 
+      if (this.ppk) {
+        this.contractOfMandate.employeePpkRate = Number(this.employeePpkRate) / 100
+        this.contractOfMandate.employerPpkRate = Number(this.employerPpkRate) / 100
+      }
+
       if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
         this.calculateForNetAmount(min, 1.7 * min, 100)
@@ -167,6 +210,8 @@ export default {
       this.$store.commit('contractOfMandate/SET_EXPENSES', this.contractOfMandate.expenses)
       this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', this.contractOfMandate.employeeZus)
       this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
+      this.$store.commit('contractOfMandate/SET_EMPLOYEE_PPK', this.contractOfMandate.employeePpk)
+      this.$store.commit('contractOfMandate/SET_EMPLOYER_PPK', this.contractOfMandate.employerPpk)
     },
 
     calculateForNetAmount (min, max, scale) {
@@ -175,7 +220,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfMandate.gross = iterator
 
-        this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young)
+        this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young, this.ppk)
 
         if (Math.abs(this.contractOfMandate.net - net) <= 0.0005) {
           return
@@ -189,7 +234,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfMandate.gross = Number(this.amount)
 
-      this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young)
+      this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young, this.ppk)
     },
   },
 }

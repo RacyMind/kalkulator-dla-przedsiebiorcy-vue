@@ -90,6 +90,14 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
+          name: 'ppk',
+          label: 'PPK',
+          required: true,
+          align: 'left',
+          field: row => row.ppk,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
           name: 'net',
           label: 'Netto',
           required: true,
@@ -121,6 +129,7 @@ export default {
       gross: 'contractOfEmployment/gross',
       basisForTax: 'contractOfEmployment/basisForTax',
       expenses: 'contractOfEmployment/expenses',
+      employeePpk: 'contractOfEmployment/employeePpk',
     }),
   },
   methods: {
@@ -133,6 +142,7 @@ export default {
         rent: 0,
         health: 0,
         taxAmount: 0,
+        ppk: 0,
         net: 0,
       }
 
@@ -147,6 +157,7 @@ export default {
           rent: result.rent,
           health: result.health,
           taxAmount: result.taxAmount,
+          ppk: result.ppk,
           net: result.net,
         }
 
@@ -156,6 +167,7 @@ export default {
         total.rent += result.rent
         total.health += result.health
         total.taxAmount += result.taxAmount
+        total.ppk += result.ppk
         total.net += result.net
       }
 
@@ -168,6 +180,7 @@ export default {
 
       model.gross = this.gross
       model.expenses = this.expenses
+      model.employeePpk = this.employeePpk
       model.basicAmountForRentAndPension = model.gross
 
       const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
@@ -237,6 +250,7 @@ export default {
         sick: model.employeeZus.sick,
         health: model.employeeZus.health,
         taxAmount: model.taxAmount,
+        ppk: model.employeePpk,
         net: model.net,
         gross: model.gross,
       }

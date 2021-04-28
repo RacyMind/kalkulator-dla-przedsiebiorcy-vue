@@ -87,6 +87,30 @@ class ContractOfEmployment {
   }
 
   /**
+   * Stawka PPK dla pracownika
+   * @type {number}
+   */
+  employeePpkRate = 0
+
+  /**
+   * Stawka PPK dla pracodawcy
+   * @type {number}
+   */
+  employerPpkRate = 0
+
+  /**
+   * Kwota PPK dla pracownika
+   * @type {number}
+   */
+  employeePpk = 0
+
+  /**
+   * Kwota PPK dla pracodawcy
+   * @type {number}
+   */
+  employerPpk = 0
+
+  /**
    * Oblicza podatek dochodowy
    */
   calculateTaxAmount () {
@@ -133,7 +157,7 @@ class ContractOfEmployment {
    * Oblicza kwote netto
    */
   calculateNetAmount () {
-    const net = this.gross - this.taxAmount -
+    const net = this.gross - this.taxAmount - this.employeePpk -
       (this.employeeZus.pension + this.employeeZus.rent +
         this.employeeZus.sick + this.employeeZus.health)
 
@@ -246,11 +270,32 @@ class ContractOfEmployment {
   }
 
   /**
+   * Oblicza kwote PPK dla pracownika
+   */
+  calculateEmployeePpk () {
+    const ppk = this.employeePpkRate *
+      this.gross
+
+    this.employeePpk = parseFloat(ppk.toFixed(2))
+  }
+
+  /**
+   * Oblicza kwote PPK dla pracodawcy
+   */
+  calculateEmployerPpk () {
+    const ppk = this.employerPpkRate *
+      this.gross
+
+    this.employerPpk = parseFloat(ppk.toFixed(2))
+  }
+
+  /**
    * Oblicza wszystkie skladowe
    * @param young
    * @param fp
+   * @param ppk
    */
-  calculateAll (young, fp) {
+  calculateAll (young, fp, ppk) {
     this.basicAmountForRentAndPension = this.gross
 
     if (this.basicAmountForRentAndPension > constants.AMOUNT_OF_TAX_THRESHOLD) {
@@ -277,6 +322,11 @@ class ContractOfEmployment {
       this.taxAmount = 0
       this.basisForTax = 0
       this.expenses = 0
+    }
+
+    if (ppk) {
+      this.calculateEmployeePpk()
+      this.calculateEmployerPpk()
     }
 
     this.calculateNetAmount()

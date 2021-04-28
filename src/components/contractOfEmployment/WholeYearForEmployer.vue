@@ -86,6 +86,14 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
+          name: 'ppk',
+          label: 'PPK',
+          required: true,
+          align: 'left',
+          field: row => row.ppk,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
           name: 'totalAmount',
           label: 'Suma kosztów pracodawcy',
           required: true,
@@ -110,6 +118,7 @@ export default {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',
       employerZus: 'contractOfEmployment/employerZus',
+      employerPpk: 'contractOfEmployment/employerPpk',
     }),
   },
   methods: {
@@ -122,6 +131,7 @@ export default {
         rent: 0,
         fp: 0,
         fgsp: 0,
+        ppk: 0,
         totalAmount: 0,
       }
 
@@ -136,6 +146,7 @@ export default {
           rent: result.rent,
           fp: result.fp,
           fgsp: result.fgsp,
+          ppk: result.ppk,
           totalAmount: result.totalAmount,
         }
 
@@ -145,6 +156,7 @@ export default {
         total.rent += result.rent
         total.fp += result.fp
         total.fgsp += result.fgsp
+        total.ppk += result.ppk
         total.totalAmount += result.totalAmount
       }
 
@@ -155,6 +167,7 @@ export default {
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
 
       model.gross = this.gross
+      model.employerPpk = this.employerPpk
       model.basicAmountForRentAndPension = model.gross
 
       const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
@@ -180,7 +193,7 @@ export default {
 
       const totalAmount = model.gross + model.employerZus.rent +
         model.employerZus.pension + model.employerZus.accident +
-        model.employerZus.fp + model.employerZus.fgsp
+        model.employerZus.fp + model.employerZus.fgsp + model.employerPpk
 
       return {
         gross: model.gross,
@@ -189,6 +202,7 @@ export default {
         accident: model.employerZus.accident,
         fp: model.employerZus.fp,
         fgsp: model.employerZus.fgsp,
+        ppk: model.employerPpk,
         totalAmount: totalAmount,
       }
     },

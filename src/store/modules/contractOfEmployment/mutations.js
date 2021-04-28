@@ -20,6 +20,12 @@ export default {
   SET_EMPLOYER_ZUS (state, employerZus) {
     state.employerZus = employerZus
   },
+  SET_EMPLOYEE_PPK (state, employeePpk) {
+    state.employeePpk = employeePpk
+  },
+  SET_EMPLOYER_PPK (state, employerPpk) {
+    state.employerPpk = employerPpk
+  },
   CLEAR_DATA (state) {
     state.net = null
     state.gross = null
@@ -39,5 +45,7 @@ export default {
       fp: null,
       fgsp: null,
     }
+    state.employeePpk = null
+    state.employerPpk = null
   },
 }

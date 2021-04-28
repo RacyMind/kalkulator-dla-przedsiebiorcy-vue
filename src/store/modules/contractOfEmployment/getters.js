@@ -6,4 +6,6 @@ export default {
   tax: (state) => state.tax,
   employeeZus: (state) => state.employeeZus,
   employerZus: (state) => state.employerZus,
+  employerPpk: (state) => state.employerPpk,
+  employeePpk: (state) => state.employeePpk,
 }

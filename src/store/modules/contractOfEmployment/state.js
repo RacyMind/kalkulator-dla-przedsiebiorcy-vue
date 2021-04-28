@@ -18,5 +18,7 @@ export default function () {
       fp: null,
       fgsp: null,
     },
+    employeePpk: null,
+    employerPpk: null,
   }
 }

@@ -16,5 +16,7 @@ export default function () {
       rent: null,
       pension: null,
     },
+    employeePpk: null,
+    employerPpk: null,
   }
 }

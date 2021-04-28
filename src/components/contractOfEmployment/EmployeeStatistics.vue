@@ -18,6 +18,7 @@ export default {
       net: 'contractOfEmployment/net',
       tax: 'contractOfEmployment/tax',
       employeeZus: 'contractOfEmployment/employeeZus',
+      employeePpk: 'contractOfEmployment/employeePpk',
     }),
     data () {
       return {
@@ -29,6 +30,7 @@ export default {
             this.employeeZus.sick.toFixed(2),
             this.employeeZus.rent.toFixed(2),
             this.employeeZus.pension.toFixed(2),
+            this.employeePpk.toFixed(2),
           ],
           backgroundColor: [
             this.$constants.COLORS.CHART1,
@@ -37,6 +39,7 @@ export default {
             this.$constants.COLORS.CHART4,
             this.$constants.COLORS.CHART5,
             this.$constants.COLORS.CHART6,
+            this.$constants.COLORS.CHART7,
           ],
         }],
         labels: [
@@ -46,6 +49,7 @@ export default {
           'Składka chorobowa',
           'Składka rentowa',
           'Składka emerytalna',
+          'PPK',
         ],
       }
     },
