@@ -74,7 +74,7 @@
                 class="full-width"
                 min="0"
                 step="0.01"
-                label="Składka wypadkowa (w %)*"
+                label="Składka wypadkowa (%)*"
                 autofocus
                 color="brand"
                 required

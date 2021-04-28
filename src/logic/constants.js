@@ -122,7 +122,18 @@ export default {
       SMALL_AMOUNT: 840,
     },
   },
-
+  PPK: {
+    EMPLOYEE: {
+      MINIMUM_RATE: 0.5,
+      MAXIMUM_RATE: 2,
+      DEFAULT_RATE: 2,
+    },
+    EMPLOYER: {
+      MINIMUM_RATE: 1.5,
+      MAXIMUM_RATE: 2.5,
+      DEFAULT_RATE: 1.5,
+    },
+  },
   MENU: {
     BUSINESS: [
       {
