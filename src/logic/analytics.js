@@ -2,7 +2,7 @@ import { uid } from 'quasar'
 
 export default {
 
-  logEvent (category, action, label, value) {
+  logEvent (category, action, label, value = null) {
     window.dataLayer.push({
       event: 'customEvent',
       category: category,

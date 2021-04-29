@@ -1,9 +1,9 @@
 export default {
   LOGS: [
     {
-      version: '3.0.3',
-      publish_date: '2021-04-??',
-      content: '<ul><li>Dodano PPK.</li><li>Poprawiono format waluty.</li><li>Praca w miejscu zamieszkania jest aktywna domyślnie.</li><li>Poprawiono kolory wykresów.</li></ul>',
+      version: '3.1.0',
+      publish_date: '2021-04-29',
+      content: '<ul><li>Dodano PPK.</li><li>Dodano formularz kontaktowy.</li><li>Poprawiono formatowanie waluty.</li><li>Praca w miejscu zamieszkania jest aktywna domyślnie.</li><li>Poprawiono kolory wykresów.</li><li>Poprawiono wyświetlanie modułu kursów walut, gdy serwer niedostępny.</li></ul>',
     },
     {
       version: '3.0.2',

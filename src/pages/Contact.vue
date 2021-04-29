@@ -9,7 +9,7 @@
         Wypełnij formularz
       </SectionHeader>
       <Form
-        class="q-my-lg q-px-md q-pb-md"
+        class="q-mt-md q-px-md q-pb-md"
       />
     </div>
     <Footer />

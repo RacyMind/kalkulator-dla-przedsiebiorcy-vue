@@ -62,11 +62,15 @@
 </template>
 
 <script>
+import ga from '../logic/analytics'
 export default {
   data () {
     return {
       url: 'https://kalkulatorfinansowy.app',
     }
+  },
+  created () {
+    ga.logEvent('Modal', 'Open', 'Wsparcie')
   },
 }
 </script>
