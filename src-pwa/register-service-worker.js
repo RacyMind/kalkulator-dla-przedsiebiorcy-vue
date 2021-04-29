@@ -1,5 +1,5 @@
 import { register } from 'register-service-worker'
-
+import { Notify } from 'quasar'
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
 // ServiceWorkerRegistration: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration
@@ -9,7 +9,7 @@ register(process.env.SERVICE_WORKER_FILE, {
   // to ServiceWorkerContainer.register()
   // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register#Parameter
 
-  // registrationOptions: { scope: './' },
+  registrationOptions: { scope: './' },
 
   ready (/* registration */) {
     // console.log('Service worker is active.')
@@ -28,7 +28,20 @@ register(process.env.SERVICE_WORKER_FILE, {
   },
 
   updated (/* registration */) {
-    // console.log('New content is available; please refresh.')
+    Notify.create({
+      message: 'Nowa wersja kalkulatora jest dostępna. Odśwież, by  wczytać',
+      icon: 'cloud_download',
+      closeBtn: 'Odśwież',
+      timeout: 10000,
+      onDismiss () {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          for (const registration of registrations) {
+            registration.unregister()
+          }
+          window.location.reload(true)
+        })
+      },
+    })
   },
 
   offline () {
