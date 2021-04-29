@@ -1,13 +1,25 @@
 <template>
   <div>
-    <p class="text-center q-my-md text-primary">Kurs średni z dnia {{ date }}</p>
+    <p
+      class="text-center q-my-md text-primary">
+      <span v-if="date">
+        Kurs średni z dnia {{ date }}
+      </span>
+    </p>
     <q-table
       :data="rates"
       :columns="columns"
       row-key="name"
-      hide-bottom
       :loading="isLoading"
+      hide-pagination
       :pagination="{rowsPerPage: 999}">
+      <template v-slot:no-data>
+        <div class="full-width row flex-center q-gutter-sm">
+          <span>
+            Brak walut do wyświetlenia
+          </span>
+        </div>
+      </template>
     </q-table>
   </div>
 </template>

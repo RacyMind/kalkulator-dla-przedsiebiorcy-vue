@@ -13,6 +13,7 @@ const routes = [
       { path: 'samozatrudnienie', component: () => import('pages/SelfEmployment') },
       { path: 'kursy-walut', component: () => import('pages/ExchangeRates') },
       { path: 'historia-zmian', component: () => import('pages/ChangeLogs') },
+      { path: 'kontakt', component: () => import('pages/Contact') },
     ],
   },
 

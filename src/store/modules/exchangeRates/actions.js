@@ -7,6 +7,9 @@ export default {
         commit('SET_DATE', response.data[0].effectiveDate)
         commit('SET_RATES', response.data[0].rates)
       })
+      .catch(() => {
+        commit('SET_RATES', [])
+      })
       .finally(function () {
         commit('SET_LOADING', false)
       })
