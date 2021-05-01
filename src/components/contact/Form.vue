@@ -51,7 +51,7 @@
           size="lg"
           label="Wyślij"
           :loading="isSending"
-          :disable="isSending"
+          :disable="isDisable"
         />
       </div>
     </div>
@@ -80,6 +80,14 @@ export default {
       subjects: ['Zaproponuj nową funkcjonalność', 'Zgłoś błąd', 'Inne'],
       isSending: false,
     }
+  },
+  computed: {
+    isDisable () {
+      if (this.isSending) {
+        return true
+      }
+      return !this.email || !this.subject || !this.message
+    },
   },
   methods: {
     send () {

@@ -19,7 +19,7 @@
           type="number"
           min="0"
           step="0.01"
-          label="Oprocentownie* (%)*"
+          label="Oprocentownie* (%)"
           color="brand"
           required
         />
@@ -30,7 +30,7 @@
           type="number"
           min="1"
           step="1"
-          label="Okres lokaty (w miesiącach)*"
+          label="Okres lokaty* (w miesiącach)"
           color="brand"
           required
         />
