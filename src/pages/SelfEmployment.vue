@@ -9,9 +9,10 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
+        @scroll="scrollTo"
       />
       <Advert />
-      <SectionHeader>
+      <SectionHeader ref="scrollTarget">
         <div class="row justify-between">
           <div>
             <q-icon name="o_credit_card" />
@@ -51,6 +52,7 @@ import Statistics from 'components/selfEmployment/Statistics'
 import WholeYear from 'components/selfEmployment/WholeYear'
 import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
+import helpers from 'src/logic/helpers'
 export default {
   data () {
     return {
@@ -64,6 +66,11 @@ export default {
     ...mapGetters({
       gross: 'selfEmployment/gross',
     }),
+  },
+  methods: {
+    scrollTo () {
+      helpers.scrollToElement(this.$refs.scrollTarget.$el)
+    },
   },
   components: {
     SectionHeader,

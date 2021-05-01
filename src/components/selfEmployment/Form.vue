@@ -213,6 +213,8 @@ export default {
       this.$store.commit('selfEmployment/SET_SICK', this.isSick)
       this.$store.commit('selfEmployment/SET_ZUS_ACCIDENT_RATE', this.selfEmployment.zusAccidentRate)
       this.$store.commit('selfEmployment/SET_FREE_AMOUNT', this.selfEmployment.freeAmount)
+
+      this.$emit('scroll')
     },
     calculateAmount () {
       if (!this.isFreeAmount) {

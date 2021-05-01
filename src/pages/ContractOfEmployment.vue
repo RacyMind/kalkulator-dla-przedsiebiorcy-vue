@@ -8,9 +8,12 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <Form class="q-my-lg q-px-md" />
+      <Form
+        class="q-my-lg q-px-md"
+        @scroll="scrollTo"
+      />
       <Advert />
-      <SectionHeader>
+      <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
@@ -85,6 +88,7 @@ import WholeYearForEmployee from 'components/contractOfEmployment/WholeYearForEm
 import WholeYearForEmployer from 'components/contractOfEmployment/WholeYearForEmployer'
 import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
+import helpers from 'src/logic/helpers'
 export default {
   data () {
     return {
@@ -99,6 +103,11 @@ export default {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',
     }),
+  },
+  methods: {
+    scrollTo () {
+      helpers.scrollToElement(this.$refs.scrollTarget.$el)
+    },
   },
   components: {
     WholeYearForEmployee,

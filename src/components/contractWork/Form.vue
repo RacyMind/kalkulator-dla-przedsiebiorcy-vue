@@ -101,6 +101,8 @@ export default {
       this.$store.commit('contractWork/SET_GROSS', contractWork.gross)
       this.$store.commit('contractWork/SET_BASIS_FOR_TAX', contractWork.basisForTax)
       this.$store.commit('contractWork/SET_EXPENSES', contractWork.expenses)
+
+      this.$emit('scroll')
     },
   },
 }

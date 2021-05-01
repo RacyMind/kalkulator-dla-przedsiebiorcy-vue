@@ -211,6 +211,8 @@ export default {
       this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
       this.$store.commit('contractOfMandate/SET_EMPLOYEE_PPK', this.contractOfMandate.employeePpk)
       this.$store.commit('contractOfMandate/SET_EMPLOYER_PPK', this.contractOfMandate.employerPpk)
+
+      this.$emit('scroll')
     },
 
     calculateForNetAmount (min, max, scale) {

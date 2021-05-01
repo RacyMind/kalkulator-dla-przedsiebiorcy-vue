@@ -165,6 +165,8 @@ export default {
       this.$store.commit('interest/SET_INTEREST', interest.interest)
       this.$store.commit('interest/SET_GROSS', interest.gross)
       this.$store.commit('interest/SET_DAYS', interest.days)
+
+      this.$emit('scroll')
     },
   },
 }

@@ -83,6 +83,8 @@ export default {
       this.$store.commit('invoice/SET_NET', invoice.net)
       this.$store.commit('invoice/SET_TAX', invoice.taxAmount)
       this.$store.commit('invoice/SET_GROSS', invoice.gross)
+
+      this.$emit('scroll')
     },
   },
 }

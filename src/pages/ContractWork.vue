@@ -10,9 +10,10 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
+        @scroll="scrollTo"
       />
       <Advert />
-      <SectionHeader>
+      <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
@@ -34,9 +35,15 @@ import Form from 'components/contractWork/Form'
 import Table from 'components/contractWork/Table'
 import Statistics from 'components/contractWork/Statistics'
 import Footer from 'components/Footer'
+import helpers from 'src/logic/helpers'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
+  },
+  methods: {
+    scrollTo () {
+      helpers.scrollToElement(this.$refs.scrollTarget.$el)
+    },
   },
   components: {
     SectionHeader,

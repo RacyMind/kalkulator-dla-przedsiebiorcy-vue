@@ -83,6 +83,8 @@ export default {
       this.$store.commit('investment/SET_NET', investment.net)
       this.$store.commit('investment/SET_TAX', investment.tax)
       this.$store.commit('investment/SET_GROSS', investment.gross)
+
+      this.$emit('scroll')
     },
   },
 }

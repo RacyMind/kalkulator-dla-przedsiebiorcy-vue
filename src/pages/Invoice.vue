@@ -10,9 +10,10 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
+        @scroll="scrollTo"
       />
       <Advert />
-      <SectionHeader>
+      <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
@@ -34,10 +35,16 @@ import Table from 'components/invoice/Table'
 import Statistics from 'components/invoice/Statistics'
 import Advert from 'components/Advert'
 import Footer from 'components/Footer'
+import helpers from 'src/logic/helpers'
 
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+  },
+  methods: {
+    scrollTo () {
+      helpers.scrollToElement(this.$refs.scrollTarget.$el)
+    },
   },
   components: {
     SectionHeader,
