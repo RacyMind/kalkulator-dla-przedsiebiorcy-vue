@@ -3,7 +3,7 @@ export default {
     {
       version: '3.1.1',
       publish_date: '2021-05-01',
-      content: '<ul><li>Ulga na start uwzględniana jest przez pierwsze 6 miesięcy.</li><li>Dodano opcję wyłączenia kwoty wonej od podatku w samozatrudnieniu.</li><li>Aktualizacja odsetek ustawowych.<li>Ukrycie komunikatu o zryczazłtowanym podatku dochodowym przy aktywnej opcji Zerowy PIT dla młodych.</li></ul>',
+      content: '<ul><li>Ulga na start uwzględniana jest przez pierwsze 6 miesięcy.</li><li>Dodano opcję wyłączenia kwoty wolnej od podatku w samozatrudnieniu.</li><li>Aktualizacja odsetek ustawowych.<li>Ukrycie komunikatu o zryczazłtowanym podatku dochodowym przy aktywnej opcji Zerowy PIT dla młodych.</li></ul>',
     },
     {
       version: '3.1.0',
