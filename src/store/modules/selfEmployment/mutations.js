@@ -8,6 +8,9 @@ export default {
   SET_TAX (state, tax) {
     state.tax = tax
   },
+  SET_FREE_AMOUNT (state, freeAmount) {
+    state.freeAmount = freeAmount
+  },
   SET_BASIS_FOR_TAX (state, basisForTax) {
     state.basisForTax = basisForTax
   },
@@ -17,8 +20,17 @@ export default {
   SET_ZUS (state, zus) {
     state.zus = zus
   },
+  SET_ZUS_ACCIDENT_RATE (state, zusAccidentRate) {
+    state.zusAccidentRate = zusAccidentRate
+  },
   SET_TAX_TYPE (state, taxType) {
     state.taxType = taxType
+  },
+  SET_AID (state, aid) {
+    state.aid = aid
+  },
+  SET_SICK (state, sick) {
+    state.sick = sick
   },
   CLEAR_DATA (state) {
     state.net = null
@@ -27,6 +39,9 @@ export default {
     state.expenses = null
     state.tax = null
     state.taxType = null
+    state.zusAccidentRate = null
+    state.aid = false
+    state.sick = false
     state.zus = {
       accident: null,
       health: null,

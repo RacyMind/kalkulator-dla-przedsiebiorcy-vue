@@ -133,6 +133,10 @@ export default {
       zus: 'selfEmployment/zus',
       taxType: 'selfEmployment/taxType',
       tax: 'selfEmployment/tax',
+      aid: 'selfEmployment/aid',
+      sick: 'selfEmployment/sick',
+      zusAccidentRate: 'selfEmployment/zusAccidentRate',
+      freeAmount: 'selfEmployment/freeAmount',
     }),
   },
   methods: {
@@ -151,7 +155,7 @@ export default {
       }
 
       for (let i = 0; i < 12; i++) {
-        const result = this.getResultForOneMonth()
+        const result = this.getResultForOneMonth(i)
 
         this.data[i] = {
           month: this.$constants.LOCALE_DATE.months[i],
@@ -179,12 +183,13 @@ export default {
 
       this.data.push(total)
     },
-    getResultForOneMonth () {
+    getResultForOneMonth (month) {
       const model = new SelfEmployment()
       const currentBasisForTax = this.totalBasisForTax
       model.gross = this.gross
       model.expenses = this.expenses
       model.taxType = this.taxType
+      model.freeAmount = this.freeAmount
 
       if (this.zus.accident) {
         model.zus.accident = this.zus.accident
@@ -201,6 +206,20 @@ export default {
       if (this.zus.fp) {
         model.zus.fp = this.zus.fp
       }
+      if (month > 5 && this.aid) {
+        model.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
+        model.zusAccidentRate = Number(this.zusAccidentRate)
+
+        model.calculateZUSAccident()
+        model.calculateZUSPension()
+        model.calculateZUSRent()
+        model.calculateZUSAccident()
+
+        if (this.sick) {
+          model.calculateZUSSick()
+        }
+      }
+
       model.zus.health = this.zus.health
       model.calculateUSHealth()
 
