@@ -1,9 +1,9 @@
 export default {
   LOGS: [
     {
-      version: '3.2.01',
+      version: '3.2.0',
       publish_date: '2021-05-??',
-      content: '<ul><li>Dodano moduł lokaty.</li></ul>',
+      content: '<ul><li>Dodano moduł lokaty.</li><li>Dodano łączne podsumowania dla umowy o pracę i umowy zlecenie.</li></ul>',
     },
     {
       version: '3.1.1',

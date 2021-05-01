@@ -13,6 +13,11 @@
       />
       <Advert />
       <SectionHeader>
+        <q-icon name="o_credit_card" />
+        Podsumowanie
+      </SectionHeader>
+      <TotalTable />
+      <SectionHeader>
         <div class="row justify-between">
           <div>
             <q-icon name="o_credit_card" />
@@ -73,6 +78,7 @@
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
 import Form from 'components/contractOfMandate/Form'
+import TotalTable from 'components/contractOfMandate/TotalTable'
 import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
 import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics'
 import EmployerTable from 'components/contractOfMandate/EmployerTable'
@@ -100,6 +106,7 @@ export default {
     SectionHeader,
     Advert,
     Form,
+    TotalTable,
     EmployeeTable,
     EmployeeStatistics,
     EmployerTable,
