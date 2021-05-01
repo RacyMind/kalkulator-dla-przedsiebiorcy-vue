@@ -24,9 +24,14 @@
           required
         />
         <q-toggle
-          v-model="isBasicRate"
+          v-model="isBasicCapitalRate"
           class="q-mt-sm"
-          label="odsetki ustawowe"
+          label="Ustawowe odsetki kapitałowe"
+        />
+        <q-toggle
+          v-model="isBasicLateRate"
+          class="q-mt-sm"
+          label="Ustawowe odsetki za opóźnienie"
         />
       </div>
     </div>
@@ -111,14 +116,15 @@ export default {
     return {
       amount: null,
       rate: null,
-      isBasicRate: false,
+      isBasicCapitalRate: false,
+      isBasicLateRate: false,
       startDate: null,
       endDate: null,
     }
   },
   created () {
-    this.rate = this.$constants.BASIC_INTEREST_RATE
-    this.isBasicRate = true
+    this.rate = this.$constants.BASIC_CAPITAL_INTEREST_RATE
+    this.isBasicCapitalRate = true
 
     this.$store.commit('interest/SET_NET', null)
     this.$store.commit('interest/SET_INTEREST', null)
@@ -126,13 +132,21 @@ export default {
     this.$store.commit('interest/SET_DAYS', 0)
   },
   watch: {
-    isBasicRate: function (val) {
+    isBasicCapitalRate: function (val) {
       if (val) {
-        this.rate = this.$constants.BASIC_INTEREST_RATE
+        this.isBasicLateRate = false
+        this.rate = this.$constants.BASIC_CAPITAL_INTEREST_RATE
+      }
+    },
+    isBasicLateRate: function (val) {
+      if (val) {
+        this.isBasicCapitalRate = false
+        this.rate = this.$constants.BASIC_LATE_INTEREST_RATE
       }
     },
     rate: function (val) {
-      this.isBasicRate = Number(val) === 13
+      this.isBasicCapitalRate = Number(val) === this.$constants.BASIC_CAPITAL_INTEREST_RATE
+      this.isBasicLateRate = Number(val) === this.$constants.BASIC_LATE_INTEREST_RATE
     },
   },
   methods: {

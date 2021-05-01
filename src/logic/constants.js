@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.1.0',
+    VERSION: '3.1.1',
   },
   VAT_VALUES: [
     {
@@ -74,7 +74,8 @@ export default {
     LUMP_SUM: 'lumpSum',
   },
   FREE_AMOUNT_FOR_TAX: 525.12 / 12,
-  BASIC_INTEREST_RATE: 13,
+  BASIC_CAPITAL_INTEREST_RATE: 3.6,
+  BASIC_LATE_INTEREST_RATE: 5.6,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
   LUMP_SUM_UP_TO_AMOUNT: 200,
   CONTRACT_WORK: {

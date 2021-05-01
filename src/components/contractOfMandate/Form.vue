@@ -196,7 +196,7 @@ export default {
         this.calculateForGrossAmount()
       }
 
-      if (this.contractOfMandate.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.contractOfMandate.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT && this.contractOfMandate.taxAmount > 0) {
         this.$q.notify({
           message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
         })
