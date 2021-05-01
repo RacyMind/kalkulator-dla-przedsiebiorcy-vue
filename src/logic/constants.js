@@ -33,6 +33,7 @@ export default {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
     LINEAR_RATE: 19,
+    BELKA_RATE: 19,
   },
   TAX_RATES_FOR_LAMP_SUM: [
     {
@@ -173,6 +174,12 @@ export default {
     ],
     PERCENTAGE: [
       {
+        title: 'Lokata',
+        caption: 'Moduł oblicza zysk z lokaty',
+        className: 'c-investment',
+        link: '/lokata',
+      },
+      {
         title: 'Odsetki',
         caption: 'Moduł oblicza odsetki za każdy dzień',
         className: 'c-interest',
@@ -196,7 +203,7 @@ export default {
       },
       {
         title: 'Formularz kontaktowy',
-        caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje.',
+        caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
         className: 'c-contact',
         link: '/kontakt',
       },
@@ -218,6 +225,7 @@ export default {
   },
   COLORS: {
     INVOICE: '#CB4135',
+    INVESTMENT: '#BE8900',
     INTEREST: '#edb113',
     CONTRACT_WORK: '#FF9E8D',
     CONTRACT_OF_MANDATE: '#FF8356',
