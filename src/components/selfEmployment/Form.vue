@@ -35,42 +35,48 @@
           label="Stawka ryczałtu ewidencjonowanego"
           color="brand"
         />
+        <q-toggle
+          v-model="isFreeAmount"
+          :disable="taxType.value !== $constants.TAX_TYPES.GENERAL"
+          class="q-mt-sm"
+          label="Kwota wolna od podatku"
+        />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <div class="column">
           <q-toggle
-            v-model="fullTimeJob"
+            v-model="isFullTimeJob"
             class="q-mt-sm"
-            label=" Praca na etacie"
+            label="Praca na etacie"
           />
           <q-toggle
-            v-model="aid"
-            :disable="fullTimeJob"
+            v-model="isAid"
+            :disable="isFullTimeJob"
             class="q-mt-sm"
             label="Ulga na start"
           />
           <q-toggle
-            v-model="smallZus"
-            :disable="fullTimeJob || aid"
+            v-model="isSmallZus"
+            :disable="isFullTimeJob || isAid"
             class="q-mt-sm"
             label="Mały ZUS"
           />
           <q-toggle
-            v-model="fp"
-            :disable="smallZus || fullTimeJob || aid"
+            v-model="isFp"
+            :disable="isSmallZus || isFullTimeJob || isAid"
             class="q-mt-sm"
             label="Składka na Fundusz Pracy"
           />
           <q-toggle
-            v-model="sick"
-            :disable="fullTimeJob || aid"
+            v-model="isSick"
+            :disable="isFullTimeJob"
             class="q-mt-sm"
             label="Składka chorobowa"
           />
         </div>
         <q-input
-          v-model="accident"
-          :disable="fullTimeJob || aid"
+          v-model="accidentRate"
+          :disable="isFullTimeJob"
           type="number"
           class="full-width"
           min="0"
@@ -107,21 +113,22 @@ export default {
       expenses: 0,
       taxType: null,
       taxRateForLumpSum: null,
-      sick: false,
-      fp: true,
-      accident: 0,
-      smallZus: false,
-      aid: false,
-      fullTimeJob: false,
+      accidentRate: 0,
+      isSmallZus: false,
+      isAid: false,
+      isFullTimeJob: false,
+      isFreeAmount: true,
+      isSick: false,
+      isFp: true,
     }
   },
   created () {
-    this.accident = this.$constants.ACCIDENT_RATE
+    this.accidentRate = this.$constants.ACCIDENT_RATE
     this.taxType = {
       value: this.$constants.TAX_TYPES.GENERAL,
       label: 'Zasady ogólne',
     }
-    this.taxRateForLumpSum = this.$constants.TAX_RATES_FOR_LAMP_SUM[0]
+    this.taxRateForLumpSum = this.$constants.TAX_RATES_FOR_LAMP_SUM[this.$constants.TAX_RATES_FOR_LAMP_SUM.length - 2]
 
     this.$store.commit('selfEmployment/CLEAR_DATA')
   },
@@ -144,22 +151,27 @@ export default {
     },
   },
   watch: {
-    fullTimeJob: function (val) {
+    isFullTimeJob: function (val) {
       if (val) {
-        this.aid = false
-        this.smallZus = false
-        this.fp = false
-        this.sick = false
+        this.isAid = false
+        this.isSmallZus = false
+        this.isFp = false
+        this.isSick = false
       }
     },
-    aid: function (val) {
+    isAid: function (val) {
       if (val) {
-        this.fp = false
+        this.isFp = false
       }
     },
-    smallZus: function (val) {
+    isSmallZus: function (val) {
       if (val) {
-        this.fp = false
+        this.isFp = false
+      }
+    },
+    taxType: function (val) {
+      if (val.value !== this.$constants.TAX_TYPES.GENERAL) {
+        this.isFreeAmount = false
       }
     },
   },
@@ -169,14 +181,14 @@ export default {
 
       this.selfEmployment.gross = Number(this.amount)
       this.selfEmployment.expenses = Number(this.expenses)
-      this.selfEmployment.zusAccidentRate = Number(this.accident) / 100
+      this.selfEmployment.zusAccidentRate = Number(this.accidentRate) / 100
       this.selfEmployment.taxType = this.taxType.value
 
       if (this.taxType.value === this.$constants.TAX_TYPES.LUMP_SUM) {
         this.selfEmployment.taxRateForLumpSum = Number(this.taxRateForLumpSum.value) / 100
       }
 
-      if (this.smallZus) {
+      if (this.isSmallZus) {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
       } else {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
@@ -197,19 +209,27 @@ export default {
       this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', this.selfEmployment.basisForTax)
       this.$store.commit('selfEmployment/SET_EXPENSES', this.selfEmployment.expenses)
       this.$store.commit('selfEmployment/SET_ZUS', this.selfEmployment.zus)
+      this.$store.commit('selfEmployment/SET_AID', this.isAid)
+      this.$store.commit('selfEmployment/SET_SICK', this.isSick)
+      this.$store.commit('selfEmployment/SET_ZUS_ACCIDENT_RATE', this.selfEmployment.zusAccidentRate)
+      this.$store.commit('selfEmployment/SET_FREE_AMOUNT', this.selfEmployment.freeAmount)
     },
     calculateAmount () {
-      if (!this.fullTimeJob && !this.aid) {
+      if (!this.isFreeAmount) {
+        this.selfEmployment.freeAmount = 0
+      }
+
+      if (!this.isFullTimeJob && !this.isAid) {
         this.selfEmployment.calculateZUSAccident()
         this.selfEmployment.calculateZUSPension()
         this.selfEmployment.calculateZUSRent()
       }
 
-      if (this.sick) {
+      if (this.isSick && !this.isAid) {
         this.selfEmployment.calculateZUSSick()
       }
 
-      if (this.fp) {
+      if (this.isFp) {
         this.selfEmployment.calculateZUSFP()
       }
 

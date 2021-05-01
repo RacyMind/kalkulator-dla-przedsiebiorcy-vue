@@ -4,6 +4,7 @@ export default function () {
     gross: null,
     basisForTax: null,
     expenses: null,
+    freeAmount: null,
     tax: null,
     zus: {
       health: null,
@@ -13,5 +14,8 @@ export default function () {
       accident: null,
     },
     taxType: null,
+    zusAccidentRate: null,
+    aid: false,
+    sick: false,
   }
 }
