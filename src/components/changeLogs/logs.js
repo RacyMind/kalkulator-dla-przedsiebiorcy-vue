@@ -3,7 +3,7 @@ export default {
     {
       version: '3.2.0',
       publish_date: '2021-05-??',
-      content: '<ul><li>Dodano moduł lokaty.</li><li>Dodano łączne podsumowania dla umowy o pracę i umowy zlecenie.</li><li>Dodano automatyczne przewijanie do pocsumowania.</li></ul>',
+      content: '<ul><li>Dodano moduł lokaty.</li><li>Dodano łączne podsumowania dla umowy o pracę i umowy zlecenie.</li><li>Dodano automatyczne przewijanie do podsumowania.</li></ul>',
     },
     {
       version: '3.1.1',
