@@ -13,7 +13,7 @@
           required
         />
       </div>
-      <div class="col-12 col-md-4 q-pl-md-sm">
+      <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
         <q-input
           v-model="rate"
           type="number"
