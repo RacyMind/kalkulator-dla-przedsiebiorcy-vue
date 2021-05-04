@@ -2,6 +2,7 @@
   <q-card style="width: auto; max-width: 90vw;">
     <q-table
       title=" Podsumowanie dla pracownika"
+      :grid="$q.screen.xs || $q.screen.sm"
       :data="data"
       :columns="columns"
       row-key="name"

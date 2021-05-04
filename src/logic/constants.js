@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.2.0',
+    VERSION: '3.3.1',
   },
   VAT_VALUES: [
     {
@@ -193,6 +193,12 @@ export default {
         className: 'c-exchangeRates',
         link: '/kursy-walut',
       },
+      {
+        title: 'Przelicznik walut',
+        caption: 'Moduł służy do przeliczania jednej waluty na drugą',
+        className: 'c-currencyConverter',
+        link: '/przelicznik-walut',
+      },
     ],
     APP: [
       {
@@ -232,6 +238,7 @@ export default {
     CONTRACT_OF_EMPLOYMENT: '#ed6d13',
     SELF_EMPLOYMENT: '#a31718',
     EXCHANGE_RATES: '#BB4985',
+    CURRENCY_CONVERTER: '#F881BC',
     CHANGES_LOGS: '#006593',
     CONTACT: '#0085B5',
     CHART1: '#e32514',

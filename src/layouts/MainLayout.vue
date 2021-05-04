@@ -31,23 +31,40 @@
       content-class="bg-grey-2"
     >
       <q-list>
-        <Menu />
+        <Menu/>
+        <div class="text-center">
+          <q-btn
+            class="q-my-md"
+            color="teal-7"
+            @click="openModal = true">
+            <q-icon
+              name="o_favorite_border"
+              class="q-mr-sm"/>
+            Wesprzyj projekt
+          </q-btn>
+        </div>
+
+        <q-dialog v-model="openModal">
+          <SupportProject/>
+        </q-dialog>
       </q-list>
     </q-drawer>
 
     <q-page-container class="flex flex-center q-mt-md bg-teal-1">
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import SupportProject from 'components/SupportProject'
 import Menu from 'components/Menu'
 import { mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
+      openModal: false,
       leftDrawerOpen: false,
     }
   },
@@ -56,6 +73,9 @@ export default {
       moduleTitle: 'app/moduleTitle',
     }),
   },
-  components: { Menu },
+  components: {
+    SupportProject,
+    Menu,
+  },
 }
 </script>

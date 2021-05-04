@@ -1,6 +1,7 @@
 // app global css in SCSS form
 @import "objects/sectionHeader";
 @import "objects/chart";
+@import "objects/q-table-grid";
 @import "components/invoice";
 @import "components/investment";
 @import "components/interest";
@@ -9,6 +10,7 @@
 @import "components/contractOfEmployment";
 @import "components/selfEmployment";
 @import "components/exchangeRates";
+@import "components/currencyConverter";
 @import "components/changeLogs";
 @import "components/aboutApp";
 @import "components/contact";
