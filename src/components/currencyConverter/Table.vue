@@ -1,44 +1,27 @@
 <template>
   <div>
-    <div class="row justify-between q-px-md q-py-sm">
-      <div>
-        Kapitał
+    <div v-if="amount">
+      <div class="row justify-between q-px-md q-py-sm">
+        <div>
+          {{1 | currency(fromCurrency)}}
+        </div>
+        <div>
+          {{ valueForOne | currency(toCurrency) }}
+        </div>
       </div>
-      <div>
-        {{ amount | pln }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
-      <div>
-        Zysk brutto
-      </div>
-      <div>
-        {{ gross | pln }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm">
-      <div>
-        Podatek
-      </div>
-      <div>
-        {{ tax | pln }}
+      <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
+        <div>
+          {{amount | currency(fromCurrency)}}
+        </div>
+        <div>
+          {{ valueForWholeAmount | currency(toCurrency) }}
+        </div>
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
-      <div>
-        Zysk netto
-      </div>
-      <div>
-        {{ net | pln }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
-      <div>
-        Suma kapitału i zysku netto
-      </div>
-      <div>
-        {{ amount + net | pln }}
-      </div>
+    <div
+      v-else
+      class="q-pa-md">
+      Brak danych
     </div>
   </div>
 </template>
@@ -48,10 +31,11 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      amount: 'investment/amount',
-      net: 'investment/net',
-      gross: 'investment/gross',
-      tax: 'investment/tax',
+      amount: 'currencyConverter/amount',
+      valueForOne: 'currencyConverter/valueForOne',
+      valueForWholeAmount: 'currencyConverter/valueForWholeAmount',
+      fromCurrency: 'currencyConverter/fromCurrency',
+      toCurrency: 'currencyConverter/toCurrency',
     }),
   },
 }

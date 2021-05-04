@@ -1,43 +1,37 @@
 <template>
   <q-form @submit.prevent="calculate">
     <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <div class="row">
-          <div class="col-12 col-md-4 q-pr-md-sm">
-            <q-input
-              v-model="currencyValueFrom"
-              type="number"
-              min="0"
-              step="0.01"
-              label="Mam*"
-              color="brand"
-              required
-            />
-          </div>
-          <div class="col-12 col-md-6 q-pl-md-sm">
-            <q-select
-              v-model="currencyFrom"
-              :options="currencies"
-              label="Waluta*"
-              color="brand"
-              option-label="code"
-              required
-              use-input
-              input-debounce="0"
-              @filter="filterCurrency"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 q-pl-md-sm">
+      <div class="col-12 col-md-4 q-pr-md-sm">
         <q-input
-          v-model="rate"
+          v-model="amount"
           type="number"
           min="0"
           step="0.01"
-          label="Oprocentownie* (%)"
+          label="Kwota*"
           color="brand"
           required
+        />
+      </div>
+      <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
+        <q-select
+          v-model="fromCurrency"
+          :options="currencies"
+          label="Mam*"
+          color="brand"
+          use-input
+          input-debounce="0"
+          @filter="filterCurrency"
+        />
+      </div>
+      <div class="col-12 col-md-4 q-pl-md-sm">
+        <q-select
+          v-model="toCurrency"
+          :options="currencies"
+          label="Chcę*"
+          color="brand"
+          use-input
+          input-debounce="0"
+          @filter="filterCurrency"
         />
       </div>
     </div>
@@ -49,7 +43,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount || !rate || !months"
+          :disable="isDisabled()"
         />
       </div>
     </div>
@@ -57,70 +51,80 @@
 </template>
 
 <script>
-import Investment from 'src/logic/Investment'
+import CurrencyConverter from 'src/logic/CurrencyConverter'
 import { mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      currencyFrom: null,
-      currencyValueFrom: null,
-      currencyTo: null,
-      currencyValueTo: null,
+      amount: null,
+      fromCurrency: null,
+      toCurrency: null,
+      currencies: [],
+      allRates: [],
+      pln: {
+        code: 'PLN',
+        currency: 'złoty',
+        mid: 1,
+      },
     }
   },
-  created () {
+  async created () {
+    this.$store.commit('currencyConverter/CLEAR_DATA')
+
     if (this.rates.length === 0) {
-      this.$store.dispatch('exchangeRates/loadLatestExchangeRates')
+      await this.$store.dispatch('exchangeRates/loadLatestExchangeRates')
     }
+
     this.$q.notify({
       message: 'Źródło danych: Narodowy Bank Polski',
     })
   },
   computed: {
     ...mapGetters({
-      currencies: 'exchangeRates/rates',
-      date: 'exchangeRates/date',
+      rates: 'exchangeRates/rates',
       isLoading: 'exchangeRates/isLoading',
     }),
   },
   methods: {
     calculate () {
-      const investment = new Investment()
-      investment.amount = Number(this.amount)
-      investment.rateInterest = Number(this.rate) / 100
-      investment.months = this.months
+      const currencyConverter = new CurrencyConverter()
+      const fromRatio = Number(this.fromCurrency.mid)
+      const toRatio = Number(this.toCurrency.mid)
 
-      investment.calculateInterest()
-      investment.calculateTax()
-      investment.calculateNet()
-
-      this.$store.commit('investment/SET_AMOUNT', investment.amount)
-      this.$store.commit('investment/SET_NET', investment.net)
-      this.$store.commit('investment/SET_TAX', investment.tax)
-      this.$store.commit('investment/SET_GROSS', investment.gross)
+      this.$store.commit('currencyConverter/SET_AMOUNT', this.amount)
+      this.$store.commit('currencyConverter/SET_VALUE_FOR_ONE', currencyConverter.convert(1, fromRatio, toRatio))
+      this.$store.commit('currencyConverter/SET_VALUE_FOR_WHOLE_AMOUNT', currencyConverter.convert(this.amount, fromRatio, toRatio))
+      this.$store.commit('currencyConverter/SET_FROM_CURRENCY', this.fromCurrency.code)
+      this.$store.commit('currencyConverter/SET_TO_CURRENCY', this.toCurrency.code)
 
       this.$emit('scroll')
     },
     filterCurrency (val, update) {
+      let allRates = [this.pln]
+      allRates = allRates.concat(JSON.parse(JSON.stringify(this.rates)))
+      allRates.map(rate => {
+        rate.label = `${rate.code} ${rate.currency}`
+      })
+
       if (val === '') {
         update(() => {
-          this.options = stringOptions
-
-          // with Quasar v1.7.4+
-          // here you have access to "ref" which
-          // is the Vue reference of the QSelect
+          this.currencies = allRates
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.options = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+        this.currencies = allRates.filter(currency => currency.label.toLowerCase().indexOf(needle) > -1)
       })
-    }
     },
-
+    isDisabled () {
+      if (this.isLoading) {
+        return true
+      }
+       return !this.amount || !this.fromCurrency || !this.toCurrency
+    },
   },
 }
 </script>

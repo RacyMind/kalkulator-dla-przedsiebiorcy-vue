@@ -1,0 +1,22 @@
+@import "../quasar.variables.scss";
+
+.q-table__grid-item-row:first-of-type {
+  .q-table__grid-item-value {
+    color: $primary;
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
+.q-table__grid-item:last-of-type {
+  .q-table__grid-item-card {
+    background: $primary;
+    color: $white;
+  }
+
+  .q-table__grid-item-row:first-of-type {
+    .q-table__grid-item-value {
+      color: $white;
+    }
+  }
+}
