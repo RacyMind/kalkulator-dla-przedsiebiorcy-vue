@@ -35,6 +35,21 @@
             class="q-mt-sm"
             label=" Praca w miejscu zamieszkania"
           />
+          <q-toggle
+            v-model="isAuthorExpenses"
+            class="q-mt-sm col-6"
+            label="Autorskie koszty uzyskania przychodu (50%)"
+          />
+          <q-input
+            v-if="isAuthorExpenses"
+            v-model="authorExpenses"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            label="Część pracy (%)*"
+            color="brand"
+          />
         </div>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -121,6 +136,8 @@ export default {
       ppk: false,
       employeePpkRate: 0,
       employerPpkRate: 0,
+      isAuthorExpenses: false,
+      authorExpenses: 100,
     }
   },
   created () {
@@ -133,13 +150,20 @@ export default {
   },
   methods: {
     calculate () {
+      let expenses
       this.contractOfEmployment = new ContractOfEmployment()
 
-      if (this.workInLivePlace) {
-        this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
-      } else {
-        this.contractOfEmployment.expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
+      if (this.isAuthorExpenses) {
+        this.contractOfEmployment.authorExpensePart = Number(this.authorExpenses) / 100
       }
+
+      if (this.workInLivePlace) {
+        expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
+      } else {
+        expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
+      }
+
+      this.contractOfEmployment.expenses = expenses
 
       this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
 
@@ -167,7 +191,8 @@ export default {
       this.$store.commit('contractOfEmployment/SET_TAX', this.contractOfEmployment.taxAmount)
       this.$store.commit('contractOfEmployment/SET_GROSS', this.contractOfEmployment.gross)
       this.$store.commit('contractOfEmployment/SET_BASIS_FOR_TAX', this.contractOfEmployment.basisForTax)
-      this.$store.commit('contractOfEmployment/SET_EXPENSES', this.contractOfEmployment.expenses)
+      this.$store.commit('contractOfEmployment/SET_EXPENSES', expenses)
+      this.$store.commit('contractOfEmployment/SET_AUTHOR_EXPENSES_PART', this.contractOfEmployment.authorExpensePart)
       this.$store.commit('contractOfEmployment/SET_EMPLOYEE_ZUS', this.contractOfEmployment.employeeZus)
       this.$store.commit('contractOfEmployment/SET_EMPLOYER_ZUS', this.contractOfEmployment.employerZus)
       this.$store.commit('contractOfEmployment/SET_EMPLOYEE_PPK', this.contractOfEmployment.employeePpk)

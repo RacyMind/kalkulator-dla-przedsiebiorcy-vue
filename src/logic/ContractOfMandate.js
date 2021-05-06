@@ -42,6 +42,11 @@ class ContractOfMandate {
    */
   expensesRate = 0
   /**
+   * Jaka część pracy na autorskie koszty uzyskania przychodu
+   * @type {number}
+   */
+  authorExpensePart = 0
+  /**
    * Kwota skladki zdrowotnej pracownika dla potrzeb urzedu skarbowego
    * @type {number}
    */
@@ -60,7 +65,7 @@ class ContractOfMandate {
     health: 0,
     sick: 0,
     rent: 0,
-    pension: 0,
+    isPension: 0,
   }
 
   /**
@@ -70,7 +75,7 @@ class ContractOfMandate {
   employerZus = {
     rent: 0,
     accident: 0,
-    pension: 0,
+    isPension: 0,
   }
 
   /**
@@ -114,8 +119,19 @@ class ContractOfMandate {
    * Oblicza koszty uzyskania przychodu
    */
   calculateExpenses () {
-    const expenses = (this.gross - (this.employeeZus.pension +
-      this.employeeZus.rent + this.employeeZus.sick)) * this.expensesRate
+    let expenses = 0
+    const basicForExpenses = this.gross - (this.employeeZus.pension +
+      this.employeeZus.rent + this.employeeZus.sick)
+
+    if (this.authorExpensePart) {
+      expenses = basicForExpenses * this.authorExpensePart * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
+    }
+
+    expenses += basicForExpenses * (1 - this.authorExpensePart) * this.expensesRate
+
+    if (expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+      expenses = constants.AMOUNT_OF_TAX_THRESHOLD
+    }
 
     this.expenses = parseFloat(expenses.toFixed(2))
   }

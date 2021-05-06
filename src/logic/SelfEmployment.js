@@ -91,7 +91,7 @@ class SelfEmployment {
     health: 0,
     sick: 0,
     rent: 0,
-    pension: 0,
+    isPension: 0,
     fp: 0,
   }
 

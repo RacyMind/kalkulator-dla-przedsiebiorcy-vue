@@ -14,6 +14,9 @@ export default {
   SET_EXPENSES (state, expenses) {
     state.expenses = expenses
   },
+  SET_AUTHOR_EXPENSES_PART (state, authorExpensePart) {
+    state.authorExpensePart = authorExpensePart
+  },
   SET_EMPLOYEE_ZUS (state, employeeZus) {
     state.employeeZus = employeeZus
   },
@@ -31,6 +34,7 @@ export default {
     state.gross = null
     state.basisForTax = null
     state.expenses = null
+    state.authorExpensePart = null
     state.tax = null
     state.employeeZus = {
       health: null,

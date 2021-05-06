@@ -42,10 +42,10 @@ class ContractOfEmployment {
    */
   expenses = 0
   /**
-   * Stawka kosztow uzyskania przychodu
+   * Jaka część pracy na autorskie koszty uzyskania przychodu
    * @type {number}
    */
-  expensesRate = 0
+  authorExpensePart = 0
   /**
    * Kwota skladki zdrowotnej pracownika dla potrzeb urzedu skarbowego
    * @type {number}
@@ -71,7 +71,7 @@ class ContractOfEmployment {
     health: 0,
     sick: 0,
     rent: 0,
-    pension: 0,
+    isPension: 0,
   }
 
   /**
@@ -81,7 +81,7 @@ class ContractOfEmployment {
   employerZus = {
     rent: 0,
     accident: 0,
-    pension: 0,
+    isPension: 0,
     fp: 0,
     fgsp: 0,
   }
@@ -127,6 +127,28 @@ class ContractOfEmployment {
     }
 
     this.taxAmount = Math.round(this.taxAmount)
+  }
+
+  /**
+   * Oblicza koszty uzyskania przychodu
+   */
+  calculateExpenses () {
+    const expenses = this.expenses
+    const basicForExpenses = this.gross - (this.employeeZus.pension +
+      this.employeeZus.rent + this.employeeZus.sick)
+
+    if (this.authorExpensePart) {
+      this.expenses = basicForExpenses * this.authorExpensePart * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
+      if (this.authorExpensePart < 1) {
+        this.expenses += expenses
+      }
+    }
+
+    if (expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+      this.expenses = constants.AMOUNT_OF_TAX_THRESHOLD
+    }
+
+    this.expenses = parseFloat(this.expenses.toFixed(2))
   }
 
   /**
@@ -314,6 +336,8 @@ class ContractOfEmployment {
 
     this.calculateZUSEmployeeHealth()
     this.calculateUSEmployeeHealth()
+
+    this.calculateExpenses()
 
     this.calculateBasisForTax()
     this.calculateTaxAmount()
