@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.3.2',
+      publish_date: '2021-05-06',
+      content: '<ul><li>Dodano autorskie koszty uzyskania przychodu.</li></ul>',
+    },
+    {
       version: '3.3.1',
       publish_date: '2021-05-04',
       content: '<ul><li>Poprawiono układ tabel na smartfonach.</li></ul>',

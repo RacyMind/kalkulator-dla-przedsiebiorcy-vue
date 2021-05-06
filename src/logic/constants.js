@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.3.1',
+    VERSION: '3.3.2',
   },
   VAT_VALUES: [
     {
