@@ -32,6 +32,7 @@ import ContractOfMandate from 'src/logic/ContractOfMandate'
 export default {
   data () {
     return {
+      totalExpenses: 0,
       totalBasisForTax: 0,
       totalBasicAmountForRentAndPension: 0,
       columns: [
@@ -122,6 +123,7 @@ export default {
   computed: {
     ...mapGetters({
       gross: 'contractOfMandate/gross',
+      authorExpensePart: 'contractOfMandate/authorExpensePart',
       basisForTax: 'contractOfMandate/basisForTax',
       employeeZus: 'contractOfMandate/employeeZus',
       employeePpk: 'contractOfMandate/employeePpk',
@@ -171,6 +173,7 @@ export default {
     getResultForOneMonth () {
       const model = new ContractOfMandate()
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
+      const currentTotalExpenses = this.totalExpenses
 
       model.gross = this.gross
       model.employeePpk = this.employeePpk
@@ -202,7 +205,19 @@ export default {
         model.calculateZUSEmployeeSick()
       }
 
+      model.authorExpensePart = this.authorExpensePart
+
       model.calculateExpenses()
+
+      const newTotalExpenses = model.expenses + this.totalExpenses
+
+      if (currentTotalExpenses > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+        model.expenses = 0
+      } else {
+        if (newTotalExpenses > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+          model.expenses = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentTotalExpenses
+        }
+      }
 
       if (this.employeeZus.health) {
         model.calculateZUSEmployeeHealth()
@@ -220,6 +235,8 @@ export default {
       }
 
       model.calculateNetAmount()
+
+      this.totalExpenses += model.expenses
 
       return {
         rent: model.employeeZus.rent,

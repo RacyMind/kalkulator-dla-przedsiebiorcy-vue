@@ -26,9 +26,24 @@
             />
           </div>
           <q-toggle
-            v-model="young"
+            v-model="isYoung"
             class="q-mt-sm"
             label="Zerowy PIT dla młodych"
+          />
+          <q-toggle
+            v-model="isAuthorExpenses"
+            class="q-mt-sm col-6"
+            label="Autorskie koszty uzyskania przychodu (50%)"
+          />
+          <q-input
+            v-if="isAuthorExpenses"
+            v-model="authorExpenses"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            label="Część pracy (%)*"
+            color="brand"
           />
         </div>
       </div>
@@ -36,40 +51,40 @@
         <div class="q-mt-sm block">
           <div class="column">
             <q-toggle
-              v-model="student"
+              v-model="isStudent"
               class="q-mt-sm"
               label="Student / uczeń"
             />
             <div class="row">
               <q-toggle
-                v-model="health"
-                :disable="student"
+                v-model="isHealth"
+                :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka zdrowotna"
               />
               <q-toggle
-                v-model="sick"
-                :disable="student"
+                v-model="isSick"
+                :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka chorobowa"
               />
             </div>
             <div class="row">
               <q-toggle
-                v-model="rent"
-                :disable="student"
+                v-model="isRent"
+                :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka rentowa"
               />
               <q-toggle
-                v-model="pension"
-                :disable="student"
+                v-model="isPension"
+                :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka emerytalna"
               />
               <q-input
                 v-model="accident"
-                :disable="student"
+                :disable="isStudent"
                 type="number"
                 class="full-width"
                 min="0"
@@ -79,12 +94,12 @@
                 required
               />
               <q-toggle
-                v-model="ppk"
+                v-model="isPpk"
                 class="q-mt-sm"
                 label="PPK"
               />
               <div
-                v-if="ppk"
+                v-if="isPpk"
                 class="row full-width">
                 <div class="col-6">
                   <q-input
@@ -140,16 +155,18 @@ export default {
       contractOfMandate: null,
       amount: null,
       amountType: null,
-      young: false,
-      student: false,
-      health: true,
-      sick: true,
-      rent: true,
-      pension: true,
       accident: 0,
-      ppk: false,
       employeePpkRate: 0,
       employerPpkRate: 0,
+      isYoung: false,
+      isStudent: false,
+      isHealth: true,
+      isSick: true,
+      isRent: true,
+      isPension: true,
+      isPpk: false,
+      isAuthorExpenses: false,
+      authorExpenses: 100,
     }
   },
   created () {
@@ -163,10 +180,10 @@ export default {
   watch: {
     student: function (val) {
       if (val) {
-        this.health = false
-        this.sick = false
-        this.rent = false
-        this.pension = false
+        this.isHealth = false
+        this.isSick = false
+        this.isRent = false
+        this.isPension = false
         this.accident = 0
 
         this.$q.notify({
@@ -179,11 +196,15 @@ export default {
     calculate () {
       this.contractOfMandate = new ContractOfMandate()
 
+      if (this.isAuthorExpenses) {
+        this.contractOfMandate.authorExpensePart = Number(this.authorExpenses) / 100
+      }
+
       if (this.accident) {
         this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
       }
 
-      if (this.ppk) {
+      if (this.isPpk) {
         this.contractOfMandate.employeePpkRate = Number(this.employeePpkRate) / 100
         this.contractOfMandate.employerPpkRate = Number(this.employerPpkRate) / 100
       }
@@ -207,6 +228,7 @@ export default {
       this.$store.commit('contractOfMandate/SET_GROSS', this.contractOfMandate.gross)
       this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', this.contractOfMandate.basisForTax)
       this.$store.commit('contractOfMandate/SET_EXPENSES', this.contractOfMandate.expenses)
+      this.$store.commit('contractOfMandate/SET_AUTHOR_EXPENSES_PART', this.contractOfMandate.authorExpensePart)
       this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', this.contractOfMandate.employeeZus)
       this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
       this.$store.commit('contractOfMandate/SET_EMPLOYEE_PPK', this.contractOfMandate.employeePpk)
@@ -221,7 +243,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfMandate.gross = iterator
 
-        this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young, this.ppk)
+        this.contractOfMandate.calculateAll(this.accident, this.isPension, this.isRent, this.isSick, this.isHealth, this.isYoung, this.isPpk)
 
         if (Math.abs(this.contractOfMandate.net - net) <= 0.0005) {
           return
@@ -235,7 +257,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfMandate.gross = Number(this.amount)
 
-      this.contractOfMandate.calculateAll(this.accident, this.pension, this.rent, this.sick, this.health, this.young, this.ppk)
+      this.contractOfMandate.calculateAll(this.accident, this.isPension, this.isRent, this.isSick, this.isHealth, this.isYoung, this.isPpk)
     },
   },
 }
