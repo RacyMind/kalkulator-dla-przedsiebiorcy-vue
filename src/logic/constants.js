@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.3.3',
+    VERSION: '3.4.0',
   },
   VAT_VALUES: [
     {
@@ -35,6 +35,16 @@ export default {
     LINEAR_RATE: 19,
     BELKA_RATE: 19,
   },
+  SICK_PAY_RATES: [
+    {
+      label: '80%',
+      value: 80,
+    },
+    {
+      label: '100%',
+      value: 100,
+    },
+  ],
   TAX_RATES_FOR_LAMP_SUM: [
     {
       label: '2%',
@@ -172,6 +182,12 @@ export default {
         className: 'c-contractWork',
         link: '/umowa-o-dzielo',
       },
+      {
+        title: 'Zasiłek chorobowy',
+        caption: 'Moduł oblicza wysokość zasiłku chorobowego',
+        className: 'c-sickPay',
+        link: '/zasilek-chorobowy',
+      },
     ],
     PERCENTAGE: [
       {
@@ -242,6 +258,7 @@ export default {
     CURRENCY_CONVERTER: '#F881BC',
     CHANGES_LOGS: '#006593',
     CONTACT: '#0085B5',
+    SICK_PAY: '#ffa483',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#FF9E8D',

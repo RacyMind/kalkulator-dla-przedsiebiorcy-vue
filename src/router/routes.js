@@ -16,6 +16,7 @@ const routes = [
       { path: 'przelicznik-walut', component: () => import('pages/CurrencyConverter') },
       { path: 'historia-zmian', component: () => import('pages/ChangeLogs') },
       { path: 'kontakt', component: () => import('pages/Contact') },
+      { path: 'zasilek-chorobowy', component: () => import('pages/SickPay') },
     ],
   },
 
