@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.4.0',
+      publish_date: '2021-05-10',
+      content: '<ul><li>Dodano moduł do obliczania zasiłku chorobowego.</li></ul>',
+    },
+    {
       version: '3.3.3',
       publish_date: '2021-05-08',
       content: '<ul><li>Poprawiono błąd przy aktywnej uldze na start.</li><li>Dodano składkę PPK od pracodawcy do podstawy opodatkowania.</li></ul>',
