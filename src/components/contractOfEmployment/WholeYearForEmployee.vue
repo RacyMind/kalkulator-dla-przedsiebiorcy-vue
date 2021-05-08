@@ -125,6 +125,12 @@ export default {
         message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
       })
     }
+
+    if (this.employerPpk) {
+      this.$q.notify({
+        message: 'Od lutego do podsrawy opodatkowania doliczana jest składka PPK wpłacana przez pracodawcę.',
+      })
+    }
   },
   computed: {
     ...mapGetters({
@@ -133,6 +139,7 @@ export default {
       basisForTax: 'contractOfEmployment/basisForTax',
       expenses: 'contractOfEmployment/expenses',
       employeePpk: 'contractOfEmployment/employeePpk',
+      employerPpk: 'contractOfEmployment/employerPpk',
     }),
   },
   methods: {
@@ -150,7 +157,7 @@ export default {
       }
 
       for (let i = 0; i < 12; i++) {
-        const result = this.getResultForOneMonth()
+        const result = this.getResultForOneMonth(i)
 
         this.data[i] = {
           month: this.$constants.LOCALE_DATE.months[i],
@@ -176,7 +183,7 @@ export default {
 
       this.data.push(total)
     },
-    getResultForOneMonth () {
+    getResultForOneMonth (month) {
       const model = new ContractOfEmployment()
       const currentBasisForTax = this.totalBasisForTax
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
@@ -220,6 +227,10 @@ export default {
       }
 
       model.calculateBasisForTax()
+
+      if (month > 0) {
+        model.basisForTax += this.employerPpk
+      }
 
       const newTotalBasisForTax = currentBasisForTax + model.basisForTax
 
