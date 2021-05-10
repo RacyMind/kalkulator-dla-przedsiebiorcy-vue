@@ -5,7 +5,7 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN($filters.currencyPLN(gross) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ zusTotal | pln }}
+        {{ $filters.currencyPLN(zusTotal) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ employerZus.accident | pln }}
+        {{ $filters.currencyPLN(employerZus.accident) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ employerZus.rent | pln }}
+        {{ $filters.currencyPLN(employerZus.rent) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ employerZus.pension | pln }}
+        {{ $filters.currencyPLN(employerZus.pension) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka na Fundusz Pracy
       </div>
       <div>
-        {{ employerZus.fp | pln }}
+        {{ $filters.currencyPLN(employerZus.fp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka na FGŚP
       </div>
       <div>
-        {{ employerZus.fgsp | pln }}
+        {{ $filters.currencyPLN(employerZus.fgsp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         PPK
       </div>
       <div>
-        {{ employerPpk | pln }}
+        {{ $filters.currencyPLN(employerPpk) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -69,7 +69,7 @@
         Suma kosztów pracodawcy
       </div>
       <div>
-        {{ totalAmount | pln }}
+        {{ $filters.currencyPLN(totalAmount) }}
       </div>
     </div>
   </div>

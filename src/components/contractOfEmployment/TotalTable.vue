@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net)
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składki ZUS
       </div>
       <div>
-        {{ zusEmployeeTotal + zusEmployerTotal | pln }}
+        {{ $filters.currencyPLN(zusEmployeeTotal + zusEmployerTotal)
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         PPK
       </div>
       <div>
-        {{ employeePpk  + employerPpk | pln }}
+        {{ $filters.currencyPLN(employeePpk  + employerPpk)
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek
       </div>
       <div>
-        {{ tax | pln }}
+        {{ $filters.currencyPLN(tax)
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,7 +37,7 @@
         Suma kosztów pracodawcy
       </div>
       <div>
-        {{ totalAmount | pln }}
+        {{ $filters.currencyPLN(totalAmount)
       </div>
     </div>
   </div>
