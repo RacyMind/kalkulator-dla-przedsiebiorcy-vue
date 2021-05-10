@@ -5,7 +5,7 @@
         Kwota
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Odsetki
       </div>
       <div>
-        {{ interest | pln }}
+        {{ $filters.currencyPLN(interest) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -29,7 +29,7 @@
         Suma kwoty i odsetek
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
   </div>

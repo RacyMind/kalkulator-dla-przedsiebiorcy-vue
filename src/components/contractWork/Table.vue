@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ expenses | pln }}
+        {{ $filters.currencyPLN(expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ basisForTax | pln }}
+        {{ $filters.currencyPLN(basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ tax | pln }}
+        {{ $filters.currencyPLN(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,7 +37,7 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
   </div>
