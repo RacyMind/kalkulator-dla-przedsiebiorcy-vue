@@ -1,11 +1,11 @@
 // default src/store/index.js content:
 import { createStore } from 'vuex'
 // import example from './module-example'
-
+import modules from './modules'
 export default function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
-      // example
+      ...modules,
     },
 
     // enable strict mode (adds overhead!)
