@@ -5,7 +5,7 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ $filters.currencyPLN($filters.currencyPLN(gross) }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">

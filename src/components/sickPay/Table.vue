@@ -5,7 +5,7 @@
         Podstawa wymiaru świadczenia
       </div>
       <div>
-        {{ basic | pln }}
+        {{ $filters.currencyPLN(basic) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -21,7 +21,7 @@
         Zasiłek chorobowy
       </div>
       <div>
-        {{ amount | pln }}
+        {{ $filters.currencyPLN(amount) }}
       </div>
     </div>
   </div>

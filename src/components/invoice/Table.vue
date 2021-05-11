@@ -5,7 +5,7 @@
         Kwota netto
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Kwota podatku
       </div>
       <div>
-        {{ tax | pln }}
+        {{ $filters.currencyPLN(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -21,7 +21,7 @@
         Kwota brutto
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
   </div>
