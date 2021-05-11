@@ -31,7 +31,7 @@
     "eslint-plugin-quasar": "^1.0.0",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",
-    "workbox-webpack-plugin": "^5.1.4"
+    "workbox-webpack-plugin": "^6.1.5"
   },
   "browserslist": [
     "last 10 Chrome versions",

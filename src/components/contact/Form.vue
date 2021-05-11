@@ -114,7 +114,6 @@ export default {
           this.message = null
         })
         .catch(error => {
-          console.log('error', error)
           this.$q.notify({
             color: 'negative',
             message: error.response.data,
