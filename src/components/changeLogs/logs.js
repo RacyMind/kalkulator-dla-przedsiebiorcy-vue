@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.5.0',
+      publish_date: '2021-05-10',
+      content: '<ul><li>Migracja do Quasar 2 i Vue 3.</li><li>Naprawa błędu przy wyłączonej składce emerytalnej w umowie zlecenie.</li></ul>',
+    },
+    {
       version: '3.4.0',
       publish_date: '2021-05-10',
       content: '<ul><li>Dodano moduł do obliczania zasiłku chorobowego.</li></ul>',

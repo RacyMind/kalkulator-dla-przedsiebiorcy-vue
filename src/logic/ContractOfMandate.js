@@ -65,7 +65,7 @@ class ContractOfMandate {
     health: 0,
     sick: 0,
     rent: 0,
-    isPension: 0,
+    pension: 0,
   }
 
   /**
@@ -75,7 +75,7 @@ class ContractOfMandate {
   employerZus = {
     rent: 0,
     accident: 0,
-    isPension: 0,
+    pension: 0,
   }
 
   /**

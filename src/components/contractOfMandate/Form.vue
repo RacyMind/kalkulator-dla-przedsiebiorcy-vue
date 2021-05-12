@@ -179,7 +179,7 @@ export default {
     this.$store.commit('contractOfMandate/CLEAR_DATA')
   },
   watch: {
-    student: function (val) {
+    isStudent: function (val) {
       if (val) {
         this.isHealth = false
         this.isSick = false
