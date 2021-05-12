@@ -7,7 +7,7 @@
       </span>
     </p>
     <q-table
-      :data="rates"
+      :rows="rates"
       :columns="columns"
       row-key="name"
       :loading="isLoading"
