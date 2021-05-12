@@ -169,6 +169,7 @@ export default {
       authorExpenses: 100,
     }
   },
+  emits: ['scroll'],
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.GROSS
     this.accident = this.$constants.ACCIDENT_RATE

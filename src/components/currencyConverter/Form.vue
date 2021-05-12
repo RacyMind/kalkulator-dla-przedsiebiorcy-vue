@@ -69,6 +69,7 @@ export default {
       },
     }
   },
+  emits: ['scroll'],
   async created () {
     this.$store.commit('currencyConverter/CLEAR_DATA')
 
