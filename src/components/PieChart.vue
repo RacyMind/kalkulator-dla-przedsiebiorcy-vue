@@ -1,11 +1,18 @@
 <script>
-import { Pie, mixins } from 'vue-chartjs'
-const { reactiveProp } = mixins
+import { Pie } from 'vue3-chart-v2'
 
 export default {
   extends: Pie,
-  mixins: [reactiveProp],
-  props: ['options'],
+  props: {
+    chartData: {
+      type: Object,
+      required: true,
+    },
+    chartOptions: {
+      type: Object,
+      required: false,
+    },
+  },
   mounted () {
     this.renderChart(this.chartData, this.options)
   },
