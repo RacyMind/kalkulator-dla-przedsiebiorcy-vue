@@ -147,6 +147,7 @@ export default {
       DEFAULT_RATE: 1.5,
     },
   },
+  CASH_REGISTER_LIMIT: 20000,
   MENU: {
     BUSINESS: [
       {
