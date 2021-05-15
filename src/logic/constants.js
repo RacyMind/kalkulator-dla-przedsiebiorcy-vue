@@ -161,6 +161,12 @@ export default {
         className: 'c-invoice',
         link: '/faktura-vat',
       },
+      {
+        title: 'Limit obrotu zwalniającego z ewidencjonowania w kasie fiskalnej',
+        caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',
+        className: 'c-cashRegisterLimit',
+        link: '/limit-obrotu-dla-kasy-fiskalnej',
+      },
 
     ],
     WORK: [
@@ -259,6 +265,7 @@ export default {
     CHANGES_LOGS: '#006593',
     CONTACT: '#0085B5',
     SICK_PAY: '#ffa483',
+    CASH_REGISTER_LIMIT: '#F6676E',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#FF9E8D',
