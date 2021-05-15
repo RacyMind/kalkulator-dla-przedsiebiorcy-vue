@@ -118,14 +118,14 @@ module.exports = function (/* ctx */) {
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      // workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      // workboxOptions: {}, // only for GenerateSW
       manifest: {
         name: 'Kalkulator finansowy',
         short_name: 'Kalkulator finansowy',
         version: '3.0.1',
         description: 'Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń.',
-        display: 'fullscreen',
+        display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#d12526',
