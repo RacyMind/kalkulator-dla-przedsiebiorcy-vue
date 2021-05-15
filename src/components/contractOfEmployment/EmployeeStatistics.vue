@@ -2,8 +2,9 @@
   <div class="q-pa-md">
     <PieChart
       v-if="net"
+      :key="componentKey"
       class="pieChart"
-      :chart-data="data"/>
+      :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
 </template>
@@ -13,6 +14,11 @@ import PieChart from 'components/PieChart'
 import { mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      componentKey: 0,
+    }
+  },
   computed: {
     ...mapGetters({
       net: 'contractOfEmployment/net',
@@ -20,7 +26,7 @@ export default {
       employeeZus: 'contractOfEmployment/employeeZus',
       employeePpk: 'contractOfEmployment/employeePpk',
     }),
-    data () {
+    chartData () {
       return {
         datasets: [{
           data: [
@@ -52,6 +58,33 @@ export default {
           'PPK',
         ],
       }
+    },
+  },
+  watch: {
+    net (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+    tax (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+    employeeZus (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+    employeePpk (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+  },
+  methods: {
+    forceRerender () {
+      this.componentKey += 1
     },
   },
   components: {

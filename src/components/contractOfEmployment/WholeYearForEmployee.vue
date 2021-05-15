@@ -140,6 +140,7 @@ export default {
       expenses: 'contractOfEmployment/expenses',
       employeePpk: 'contractOfEmployment/employeePpk',
       employerPpk: 'contractOfEmployment/employerPpk',
+      freeAmount: 'contractOfEmployment/freeAmount',
     }),
   },
   methods: {
@@ -190,6 +191,7 @@ export default {
       const currentTotalExpenses = this.totalExpenses
 
       model.gross = this.gross
+      model.freeAmount = this.freeAmount
       model.expenses = this.expenses
       model.employeePpk = this.employeePpk
       model.basicAmountForRentAndPension = model.gross

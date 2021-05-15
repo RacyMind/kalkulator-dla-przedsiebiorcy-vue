@@ -37,6 +37,7 @@ export default {
     state.gross = null
     state.basisForTax = null
     state.expenses = null
+    state.freeAmount = null
     state.tax = null
     state.taxType = null
     state.zusAccidentRate = null

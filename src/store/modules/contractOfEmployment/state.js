@@ -4,6 +4,7 @@ export default function () {
     gross: null,
     basisForTax: null,
     expenses: null,
+    freeAmount: null,
     authorExpensePart: null,
     tax: null,
     employeeZus: {

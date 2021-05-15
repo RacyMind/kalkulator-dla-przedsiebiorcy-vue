@@ -36,6 +36,11 @@
             label=" Praca w miejscu zamieszkania"
           />
           <q-toggle
+            v-model="isFreeAmount"
+            class="q-mt-sm"
+            label="Kwota wolna od podatku"
+          />
+          <q-toggle
             v-model="isAuthorExpenses"
             class="q-mt-sm col-6"
             label="Autorskie koszty uzyskania przychodu (50%)"
@@ -138,6 +143,7 @@ export default {
       employerPpkRate: 0,
       isAuthorExpenses: false,
       authorExpenses: 100,
+      isFreeAmount: true,
     }
   },
   emits: ['scroll'],
@@ -153,6 +159,10 @@ export default {
     calculate () {
       let expenses
       this.contractOfEmployment = new ContractOfEmployment()
+
+      if (!this.isFreeAmount) {
+        this.contractOfEmployment.freeAmount = 0
+      }
 
       if (this.isAuthorExpenses) {
         this.contractOfEmployment.authorExpensePart = Number(this.authorExpenses) / 100
@@ -198,6 +208,7 @@ export default {
       this.$store.commit('contractOfEmployment/SET_EMPLOYER_ZUS', this.contractOfEmployment.employerZus)
       this.$store.commit('contractOfEmployment/SET_EMPLOYEE_PPK', this.contractOfEmployment.employeePpk)
       this.$store.commit('contractOfEmployment/SET_EMPLOYER_PPK', this.contractOfEmployment.employerPpk)
+      this.$store.commit('contractOfEmployment/SET_FREE_AMOUNT', this.contractOfEmployment.freeAmount)
 
       this.$emit('scroll')
     },

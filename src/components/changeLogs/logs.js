@@ -2,8 +2,8 @@ export default {
   LOGS: [
     {
       version: '3.5.0',
-      publish_date: '2021-05-10',
-      content: '<ul><li>Migracja do Quasar 2 i Vue 3.</li><li>Naprawa błędu przy wyłączonej składce emerytalnej w umowie zlecenie.</li></ul>',
+      publish_date: '2021-05-15',
+      content: '<ul><li>Migracja do Quasar 2 i Vue 3.</li><li>Naprawa błędu przy wyłączonej składce emerytalnej w umowie zlecenie.</li><li>Dodanie opcji wyłączenia kwoty wolnej od podatku w umowie o pracę.</li></ul>',
     },
     {
       version: '3.4.0',

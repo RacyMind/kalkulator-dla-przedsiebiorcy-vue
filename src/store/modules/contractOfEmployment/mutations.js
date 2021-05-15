@@ -8,6 +8,9 @@ export default {
   SET_TAX (state, tax) {
     state.tax = tax
   },
+  SET_FREE_AMOUNT (state, freeAmount) {
+    state.freeAmount = freeAmount
+  },
   SET_BASIS_FOR_TAX (state, basisForTax) {
     state.basisForTax = basisForTax
   },
@@ -34,6 +37,7 @@ export default {
     state.gross = null
     state.basisForTax = null
     state.expenses = null
+    state.freeAmount = null
     state.authorExpensePart = null
     state.tax = null
     state.employeeZus = {
