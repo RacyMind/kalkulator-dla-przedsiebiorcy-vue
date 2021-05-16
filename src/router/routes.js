@@ -18,6 +18,8 @@ const routes = [
       { path: 'historia-zmian', component: () => import('pages/ChangeLogs') },
       { path: 'kontakt', component: () => import('pages/Contact') },
       { path: 'zasilek-chorobowy', component: () => import('pages/SickPay') },
+      { path: 'polski-lad/samozatrudnienie', component: () => import('pages/PolskiLadSelfEmployment') },
+      { path: 'polski-lad/umowa-o-prace', component: () => import('pages/PolskiLadContractOfEmployment') },
     ],
   },
 

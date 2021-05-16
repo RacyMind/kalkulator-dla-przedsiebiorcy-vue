@@ -1,0 +1,212 @@
+<template>
+  <q-card style="width: auto; max-width: 90vw;">
+    <q-table
+      title=" Podsumowanie dla pracodawcy"
+      :grid="$q.screen.xs || $q.screen.sm"
+      :rows="data"
+      :columns="columns"
+      row-key="name"
+      hide-bottom
+      :pagination="{rowsPerPage: 13}">
+      <template v-slot:body-cell="props">
+        <q-td
+          :props="props"
+          :class="(props.row.month=='Cały rok')?'bg-primary text-white':'bg-white text-black'"
+        >
+          {{props.value}}
+        </q-td>
+      </template>
+    </q-table>
+  </q-card>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import helpers from 'src/logic/helpers'
+import PolskiLadContractOfEmployment from 'src/logic/PolskiLadContractOfEmployment'
+
+export default {
+  data () {
+    return {
+      totalBasisForTax: 0,
+      totalBasicAmountForRentAndPension: 0,
+      columns: [
+        {
+          name: 'month',
+          required: true,
+          align: 'left',
+          field: row => row.month,
+          format: val => `${val}`,
+        },
+        {
+          name: 'gross',
+          label: 'Brutto',
+          required: true,
+          align: 'left',
+          field: row => row.gross,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'accident',
+          label: 'Skł. wypadkowa',
+          required: true,
+          align: 'left',
+          field: row => row.accident,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'rent',
+          label: 'Skł. rentowa',
+          required: true,
+          align: 'left',
+          field: row => row.rent,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'pension',
+          label: 'Skł. emerytalna',
+          required: true,
+          align: 'left',
+          field: row => row.pension,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'fp',
+          label: 'Skł. na Fundusz Pracy',
+          required: true,
+          align: 'left',
+          field: row => row.fp,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'fgsp',
+          label: 'Skł. na FGŚP',
+          required: true,
+          align: 'left',
+          field: row => row.fgsp,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'ppk',
+          label: 'PPK',
+          required: true,
+          align: 'left',
+          field: row => row.ppk,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
+          name: 'totalAmount',
+          label: 'Suma kosztów pracodawcy',
+          required: true,
+          align: 'left',
+          field: row => row.totalAmount,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+      ],
+      data: [],
+    }
+  },
+  created () {
+    this.setData()
+
+    if (this.totalBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+      this.$q.notify({
+        message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+      })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      gross: 'polskiLadContractOfEmployment/gross',
+      employerZus: 'polskiLadContractOfEmployment/employerZus',
+      employerPpk: 'polskiLadContractOfEmployment/employerPpk',
+    }),
+  },
+  methods: {
+    setData () {
+      const total = {
+        month: 'Cały rok',
+        gross: 0,
+        pension: 0,
+        accident: 0,
+        rent: 0,
+        fp: 0,
+        fgsp: 0,
+        ppk: 0,
+        totalAmount: 0,
+      }
+
+      for (let i = 0; i < 12; i++) {
+        const result = this.getResultForOneMonth()
+
+        this.data[i] = {
+          month: this.$constants.LOCALE_DATE.months[i],
+          gross: result.gross,
+          pension: result.pension,
+          accident: result.accident,
+          rent: result.rent,
+          fp: result.fp,
+          fgsp: result.fgsp,
+          ppk: result.ppk,
+          totalAmount: result.totalAmount,
+        }
+
+        total.gross += result.gross
+        total.pension += result.pension
+        total.accident += result.accident
+        total.rent += result.rent
+        total.fp += result.fp
+        total.fgsp += result.fgsp
+        total.ppk += result.ppk
+        total.totalAmount += result.totalAmount
+      }
+
+      this.data.push(total)
+    },
+    getResultForOneMonth () {
+      const model = new PolskiLadContractOfEmployment()
+      const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
+
+      model.gross = this.gross
+      model.employerPpk = this.employerPpk
+      model.basicAmountForRentAndPension = model.gross
+
+      const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
+
+      if (currentBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+        model.basicAmountForRentAndPension = 0
+      } else {
+        if (newBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+          model.basicAmountForRentAndPension = this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - currentBasicAmountForRentAndPension
+        }
+      }
+
+      this.totalBasicAmountForRentAndPension += model.gross
+
+      model.employerZus.accident = this.employerZus.accident
+      model.calculateZUSEmployerPension()
+      model.calculateZUSEmployerRent()
+
+      if (this.employerZus.fp) {
+        model.calculateZUSEmployerFGSP()
+        model.calculateZUSEmployerFP()
+      }
+
+      const totalAmount = model.gross + model.employerZus.rent +
+        model.employerZus.pension + model.employerZus.accident +
+        model.employerZus.fp + model.employerZus.fgsp + model.employerPpk
+
+      return {
+        gross: model.gross,
+        rent: model.employerZus.rent,
+        pension: model.employerZus.pension,
+        accident: model.employerZus.accident,
+        fp: model.employerZus.fp,
+        fgsp: model.employerZus.fgsp,
+        ppk: model.employerPpk,
+        totalAmount: totalAmount,
+      }
+    },
+  },
+}
+</script>
