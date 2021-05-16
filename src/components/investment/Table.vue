@@ -5,7 +5,7 @@
         Kapitał
       </div>
       <div>
-        {{ amount | pln }}
+        {{ $filters.currencyPLN(amount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Zysk brutto
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podatek
       </div>
       <div>
-        {{ tax | pln }}
+        {{ $filters.currencyPLN(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zysk netto
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,7 +37,7 @@
         Suma kapitału i zysku netto
       </div>
       <div>
-        {{ amount + net | pln }}
+        {{ $filters.currencyPLN(amount + net) }}
       </div>
     </div>
   </div>

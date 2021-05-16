@@ -122,6 +122,7 @@ export default {
       isFp: true,
     }
   },
+  emits: ['scroll'],
   created () {
     this.accidentRate = this.$constants.ACCIDENT_RATE
     this.taxType = {

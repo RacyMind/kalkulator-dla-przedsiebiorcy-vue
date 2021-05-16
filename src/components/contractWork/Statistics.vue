@@ -2,8 +2,9 @@
   <div class="q-pa-md">
     <PieChart
       v-if="net"
+      :key="componentKey"
       class="pieChart"
-      :chart-data="data"/>
+      :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
 </template>
@@ -13,12 +14,17 @@ import PieChart from 'components/PieChart'
 import { mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      componentKey: 0,
+    }
+  },
   computed: {
     ...mapGetters({
       net: 'contractWork/net',
       tax: 'contractWork/tax',
     }),
-    data () {
+    chartData () {
       return {
         datasets: [{
           data: [this.net.toFixed(2), this.tax.toFixed(2)],
@@ -32,6 +38,23 @@ export default {
           'Zaliczka na podatek dochodowy',
         ],
       }
+    },
+  },
+  watch: {
+    net (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+    tax (prevState, newState) {
+      if (prevState !== newState) {
+        this.forceRerender()
+      }
+    },
+  },
+  methods: {
+    forceRerender () {
+      this.componentKey += 1
     },
   },
   components: {

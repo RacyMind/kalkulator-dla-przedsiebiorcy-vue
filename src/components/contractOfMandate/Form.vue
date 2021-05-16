@@ -169,6 +169,7 @@ export default {
       authorExpenses: 100,
     }
   },
+  emits: ['scroll'],
   created () {
     this.amountType = this.$constants.AMOUNT_TYPES.GROSS
     this.accident = this.$constants.ACCIDENT_RATE
@@ -178,7 +179,7 @@ export default {
     this.$store.commit('contractOfMandate/CLEAR_DATA')
   },
   watch: {
-    student: function (val) {
+    isStudent: function (val) {
       if (val) {
         this.isHealth = false
         this.isSick = false

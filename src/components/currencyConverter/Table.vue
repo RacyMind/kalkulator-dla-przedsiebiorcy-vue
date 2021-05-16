@@ -3,18 +3,18 @@
     <div v-if="amount">
       <div class="row justify-between q-px-md q-py-sm">
         <div>
-          {{1 | currency(fromCurrency)}}
+          {{ $filters.currency(1, fromCurrency) }}
         </div>
         <div>
-          {{ valueForOne | currency(toCurrency) }}
+          {{ $filters.currency( valueForOne, toCurrency) }}
         </div>
       </div>
       <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
         <div>
-          {{amount | currency(fromCurrency)}}
+          {{ $filters.currency(amount, fromCurrency) }}
         </div>
         <div>
-          {{ valueForWholeAmount | currency(toCurrency) }}
+          {{ $filters.currency( valueForWholeAmount, toCurrency) }}
         </div>
       </div>
     </div>

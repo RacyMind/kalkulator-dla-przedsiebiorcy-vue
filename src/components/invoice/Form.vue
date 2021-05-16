@@ -60,6 +60,7 @@ export default {
       rate: null,
     }
   },
+  emits: ['scroll'],
   created () {
     this.rate = this.$constants.DEFAULT_VAT_VALUE
 

@@ -122,6 +122,7 @@ export default {
       endDate: null,
     }
   },
+  emits: ['scroll'],
   created () {
     this.rate = this.$constants.BASIC_CAPITAL_INTEREST_RATE
     this.isBasicCapitalRate = true

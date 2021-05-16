@@ -3,7 +3,7 @@
     <q-table
       title=" Podsumowanie dla pracodawcy"
       :grid="$q.screen.xs || $q.screen.sm"
-      :data="data"
+      :rows="data"
       :columns="columns"
       row-key="name"
       hide-bottom

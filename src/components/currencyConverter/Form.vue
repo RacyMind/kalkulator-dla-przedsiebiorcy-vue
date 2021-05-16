@@ -69,6 +69,7 @@ export default {
       },
     }
   },
+  emits: ['scroll'],
   async created () {
     this.$store.commit('currencyConverter/CLEAR_DATA')
 
@@ -103,7 +104,7 @@ export default {
     filterCurrency (val, update) {
       let allRates = [this.pln]
       allRates = allRates.concat(JSON.parse(JSON.stringify(this.rates)))
-      allRates.map(rate => {
+      allRates.forEach(rate => {
         rate.label = `${rate.code} ${rate.currency}`
       })
 

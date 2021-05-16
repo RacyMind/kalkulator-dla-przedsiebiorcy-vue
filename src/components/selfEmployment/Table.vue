@@ -5,7 +5,7 @@
         Dochód netto
       </div>
       <div>
-        {{ net | pln }}
+        {{ $filters.currencyPLN(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ expenses | pln }}
+        {{ $filters.currencyPLN(expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ basisForTax | pln }}
+        {{ $filters.currencyPLN(basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ tax | pln }}
+        {{ $filters.currencyPLN(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ zusTotal | pln }}
+        {{ $filters.currencyPLN(zusTotal) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ zus.health | pln }}
+        {{ $filters.currencyPLN(zus.health) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ zus.sick | pln }}
+        {{ $filters.currencyPLN(zus.sick) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ zus.rent | pln }}
+        {{ $filters.currencyPLN(zus.rent) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ zus.pension | pln }}
+        {{ $filters.currencyPLN(zus.pension) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -77,7 +77,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ zus.accident | pln }}
+        {{ $filters.currencyPLN(zus.accident) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -85,7 +85,7 @@
         Składka na Fundusz Pracy
       </div>
       <div>
-        {{ zus.fp | pln }}
+        {{ $filters.currencyPLN(zus.fp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -93,7 +93,7 @@
         Przychód netto
       </div>
       <div>
-        {{ gross | pln }}
+        {{ $filters.currencyPLN(gross) }}
       </div>
     </div>
   </div>

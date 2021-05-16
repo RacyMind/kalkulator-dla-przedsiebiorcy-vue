@@ -62,6 +62,7 @@ export default {
       months: 12,
     }
   },
+  emits: ['scroll'],
   created () {
     this.$store.commit('investment/SET_AMOUNT', null)
     this.$store.commit('investment/SET_NET', null)

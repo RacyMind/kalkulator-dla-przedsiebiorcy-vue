@@ -62,6 +62,7 @@ export default {
       days: null,
     }
   },
+  emits: ['scroll'],
   created () {
     this.rate = this.$constants.SICK_PAY_RATES[0]
 
