@@ -107,6 +107,14 @@ export default {
           format: val => `${helpers.formatCurrency(val)}`,
         },
         {
+          name: 'expenses',
+          label: 'Koszty przycchodu',
+          required: true,
+          align: 'left',
+          field: row => row.expenses,
+          format: val => `${helpers.formatCurrency(val)}`,
+        },
+        {
           name: 'net',
           label: 'Dochód netto',
           required: true,
@@ -153,6 +161,7 @@ export default {
         fp: 0,
         taxAmount: 0,
         net: 0,
+        expenses: 0,
       }
 
       for (let i = 0; i < 12; i++) {
@@ -169,6 +178,7 @@ export default {
           fp: result.fp,
           taxAmount: result.taxAmount,
           net: result.net,
+          expenses: result.expenses,
         }
 
         total.gross += result.gross
@@ -180,6 +190,7 @@ export default {
         total.fp += result.fp
         total.taxAmount += result.taxAmount
         total.net += result.net
+        total.expenses += result.expenses
       }
 
       this.data.push(total)
@@ -279,6 +290,7 @@ export default {
         accident: model.zus.accident,
         fp: model.zus.fp,
         taxAmount: model.taxAmount,
+        expenses: model.expenses,
         net: model.net,
         gross: model.gross,
       }

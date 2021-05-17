@@ -181,8 +181,8 @@ export default {
       this.polskiLadSelfEmployment = new PolskiLadSelfEmployment()
 
       this.polskiLadSelfEmployment.gross = Number(this.amount)
-      this.polskiLadSelfEmployment.basisForHealth = Number(this.amount)
       this.polskiLadSelfEmployment.expenses = Number(this.expenses)
+      this.polskiLadSelfEmployment.basisForHealth = this.polskiLadSelfEmployment.gross - this.polskiLadSelfEmployment.expenses
       this.polskiLadSelfEmployment.zusAccidentRate = Number(this.accidentRate) / 100
       this.polskiLadSelfEmployment.taxType = this.taxType.value
 

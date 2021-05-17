@@ -173,7 +173,7 @@ class SelfEmployment {
    * Oblicza kwote netto
    */
   calculateNetAmount () {
-    const net = this.gross - this.taxAmount -
+    const net = this.gross - this.expenses - this.taxAmount -
       (this.zus.pension + this.zus.rent +
         this.zus.sick + this.zus.health + this.zus.fp + this.zus.accident)
 

@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.6.1',
+      publish_date: '2021-05-17',
+      content: '<ul><li>Poprawiono błąd w obliczeniach przy niezerowych kosztach w samozatrudnieniu.</li></ul>',
+    },
+    {
       version: '3.6.0',
       publish_date: '2021-05-16',
       content: '<ul><li>Dodano moduły dla Polskiego Ładu.</li></ul>',
