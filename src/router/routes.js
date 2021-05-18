@@ -20,6 +20,7 @@ const routes = [
       { path: 'zasilek-chorobowy', component: () => import('pages/SickPay') },
       { path: 'polski-lad/samozatrudnienie', component: () => import('pages/PolskiLadSelfEmployment') },
       { path: 'polski-lad/umowa-o-prace', component: () => import('pages/PolskiLadContractOfEmployment') },
+      { path: 'limit-obrotu-dla-kasy-fiskalnej', component: () => import('pages/CashRegisterLimit') },
     ],
   },
 

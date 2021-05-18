@@ -151,6 +151,7 @@ export default {
       DEFAULT_RATE: 1.5,
     },
   },
+  CASH_REGISTER_LIMIT: 20000,
   MENU: {
     BUSINESS: [
       {
@@ -164,6 +165,12 @@ export default {
         caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
         className: 'c-invoice',
         link: '/faktura-vat',
+      },
+      {
+        title: 'Limit obrotu zwalniającego z ewidencjonowania w kasie fiskalnej',
+        caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',
+        className: 'c-cashRegisterLimit',
+        link: '/limit-obrotu-dla-kasy-fiskalnej',
       },
 
     ],
@@ -278,6 +285,7 @@ export default {
     CONTACT: '#0085B5',
     SICK_PAY: '#ffa483',
     POLSKI_LAD: '#4E8E2F',
+    CASH_REGISTER_LIMIT: '#F6676E',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#FF9E8D',
