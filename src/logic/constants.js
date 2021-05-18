@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.5.0',
+    VERSION: '3.6.3',
   },
   VAT_VALUES: [
     {
@@ -85,9 +85,11 @@ export default {
     LUMP_SUM: 'lumpSum',
   },
   FREE_AMOUNT_FOR_TAX: 525.12 / 12,
+  POLSKI_LAD_FREE_AMOUNT_FOR_TAX: 5100 / 12,
   BASIC_CAPITAL_INTEREST_RATE: 3.6,
   BASIC_LATE_INTEREST_RATE: 5.6,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
+  AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD: 120000,
   LUMP_SUM_UP_TO_AMOUNT: 200,
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
@@ -105,9 +107,11 @@ export default {
   US: {
     EMPLOYEE: {
       HEALTH_RATE: 7.75,
+      POLSKI_LAD_HEALTH_RATE: 0,
     },
     OWNER: {
       HEALTH_RATE: 7.75,
+      POLSKI_LAD_HEALTH_RATE: 0,
     },
   },
   LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
@@ -138,12 +142,12 @@ export default {
   PPK: {
     EMPLOYEE: {
       MINIMUM_RATE: 0.5,
-      MAXIMUM_RATE: 2,
+      MAXIMUM_RATE: 4,
       DEFAULT_RATE: 2,
     },
     EMPLOYER: {
       MINIMUM_RATE: 1.5,
-      MAXIMUM_RATE: 2.5,
+      MAXIMUM_RATE: 4,
       DEFAULT_RATE: 1.5,
     },
   },
@@ -244,6 +248,20 @@ export default {
         link: 'https://kalkulatorfinansowy.app',
       },
     ],
+    POLSKI_LAD: [
+      {
+        title: 'Samozatrudnienie',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
+        className: 'c-polskiLad',
+        link: '/polski-lad/samozatrudnienie',
+      },
+      {
+        title: 'Umowa o pracę',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
+        className: 'c-polskiLad',
+        link: '/polski-lad/umowa-o-prace',
+      },
+    ],
   },
   LOCALE_DATE: {
     /* starting with Sunday */
@@ -266,6 +284,7 @@ export default {
     CHANGES_LOGS: '#006593',
     CONTACT: '#0085B5',
     SICK_PAY: '#ffa483',
+    POLSKI_LAD: '#4E8E2F',
     CASH_REGISTER_LIMIT: '#F6676E',
     CHART1: '#e32514',
     CHART2: '#edb113',

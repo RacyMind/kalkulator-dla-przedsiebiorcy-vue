@@ -1,6 +1,26 @@
 export default {
   LOGS: [
     {
+      version: '3.6.3',
+      publish_date: '2021-05-19',
+      content: '<ul><li>Poprawiono maksymalne zakresy dla PPK.</li></ul>',
+    },
+    {
+      version: '3.6.2',
+      publish_date: '2021-05-17',
+      content: '<ul><li>Poprawiono błąd w obliczeniach przy niezerowych kosztach w samozatrudnieniu przy podatku liniowym.</li></ul>',
+    },
+    {
+      version: '3.6.1',
+      publish_date: '2021-05-17',
+      content: '<ul><li>Poprawiono błąd w obliczeniach przy niezerowych kosztach w samozatrudnieniu.</li></ul>',
+    },
+    {
+      version: '3.6.0',
+      publish_date: '2021-05-16',
+      content: '<ul><li>Dodano moduły dla Polskiego Ładu.</li></ul>',
+    },
+    {
       version: '3.5.0',
       publish_date: '2021-05-15',
       content: '<ul><li>Migracja do Quasar 2 i Vue 3.</li><li>Naprawa błędu przy wyłączonej składce emerytalnej w umowie zlecenie.</li><li>Dodanie opcji wyłączenia kwoty wolnej od podatku w umowie o pracę.</li></ul>',

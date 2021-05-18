@@ -27,7 +27,7 @@
  */
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import SelfEmployment from 'src/logic/SelfEmployment'
+import PolskiLadSelfEmployment from 'src/logic/PolskiLadSelfEmployment'
 
 export default {
   data () {
@@ -129,23 +129,23 @@ export default {
   created () {
     this.setData()
 
-    if (this.taxType === this.$constants.TAX_TYPES.GENERAL && this.totalBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+    if (this.taxType === this.$constants.TAX_TYPES.GENERAL && this.totalBasisForTax > this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
       this.$q.notify({
-        message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+        message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
       })
     }
   },
   computed: {
     ...mapGetters({
-      gross: 'selfEmployment/gross',
-      expenses: 'selfEmployment/expenses',
-      zus: 'selfEmployment/zus',
-      taxType: 'selfEmployment/taxType',
-      tax: 'selfEmployment/tax',
-      aid: 'selfEmployment/aid',
-      sick: 'selfEmployment/sick',
-      zusAccidentRate: 'selfEmployment/zusAccidentRate',
-      freeAmount: 'selfEmployment/freeAmount',
+      gross: 'polskiLadSelfEmployment/gross',
+      expenses: 'polskiLadSelfEmployment/expenses',
+      zus: 'polskiLadSelfEmployment/zus',
+      taxType: 'polskiLadSelfEmployment/taxType',
+      tax: 'polskiLadSelfEmployment/tax',
+      aid: 'polskiLadSelfEmployment/aid',
+      sick: 'polskiLadSelfEmployment/sick',
+      zusAccidentRate: 'polskiLadSelfEmployment/zusAccidentRate',
+      freeAmount: 'polskiLadSelfEmployment/freeAmount',
     }),
   },
   methods: {
@@ -196,9 +196,10 @@ export default {
       this.data.push(total)
     },
     getResultForOneMonth (month) {
-      const model = new SelfEmployment()
+      const model = new PolskiLadSelfEmployment()
       const currentBasisForTax = this.totalBasisForTax
       model.gross = this.gross
+      model.basisForHealth = this.gross - this.expenses
       model.expenses = this.expenses
       model.taxType = this.taxType
       model.freeAmount = this.freeAmount

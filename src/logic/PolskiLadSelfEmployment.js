@@ -1,6 +1,6 @@
 import constants from 'src/logic/constants'
 
-class SelfEmployment {
+class PolskiLadSelfEmployment {
   /**
    * Kwota netto
    * @type {number}
@@ -80,7 +80,7 @@ class SelfEmployment {
    * Wolna kwota od podatku
    * @type {number}
    */
-  freeAmount = constants.FREE_AMOUNT_FOR_TAX
+  freeAmount = constants.POLSKI_LAD_FREE_AMOUNT_FOR_TAX
 
   /**
    * Skłądki ZUS dla właściciela
@@ -100,11 +100,11 @@ class SelfEmployment {
    */
   calculateTaxAmount () {
     if (this.taxType === constants.TAX_TYPES.GENERAL) {
-      if (this.gross <= constants.AMOUNT_OF_TAX_THRESHOLD) {
+      if (this.gross <= constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
         this.taxAmount = this.basisForTax * this.firstTaxRate - this.USHealth - this.freeAmount
       } else {
-        this.taxAmount = constants.AMOUNT_OF_TAX_THRESHOLD * this.firstTaxRate +
-          (this.basisForTax - constants.AMOUNT_OF_TAX_THRESHOLD) * this.secondTaxRate -
+        this.taxAmount = constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD * this.firstTaxRate +
+          (this.basisForTax - constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) * this.secondTaxRate -
           this.USHealth - this.freeAmount
       }
     }
@@ -220,7 +220,7 @@ class SelfEmployment {
    * Oblicza kwote skladki zdrowotnej dla US
    */
   calculateUSHealth () {
-    const USHealth = (constants.US.OWNER.HEALTH_RATE / 100) * this.basisForHealth
+    const USHealth = (constants.US.OWNER.POLSKI_LAD_HEALTH_RATE / 100) * this.basisForHealth
 
     this.USHealth = parseFloat(USHealth.toFixed(2))
   }
@@ -246,4 +246,4 @@ class SelfEmployment {
   }
 }
 
-export default SelfEmployment
+export default PolskiLadSelfEmployment
