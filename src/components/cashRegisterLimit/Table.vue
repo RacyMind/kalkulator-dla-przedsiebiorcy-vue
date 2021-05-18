@@ -2,34 +2,26 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Kwota
+        Data rozpoczęcia sprzedaży:
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
+        {{ formatDate(sellStartDate, 'dd.MM.yyyy ') }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Odsetki
+        Liczba dni sprzedaży do końca roku
       </div>
       <div>
-        {{ $filters.currencyPLN(interest) }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm">
-      <div>
-        Liczba dni
-      </div>
-      <div>
-        {{ days }}
+        {{ daysToEndYear }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Suma kwoty i odsetek
+        Limit obrotu uprawniający do zwolnienia
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ $filters.currencyPLN(amount) }}
       </div>
     </div>
   </div>
@@ -37,14 +29,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { format } from 'date-fns'
 export default {
   computed: {
     ...mapGetters({
-      net: 'interest/net',
-      interest: 'interest/interest',
-      gross: 'interest/gross',
-      days: 'interest/days',
+      sellStartDate: 'cashRegisterLimit/sellStartDate',
+      daysToEndYear: 'cashRegisterLimit/daysToEndYear',
+      amount: 'cashRegisterLimit/amount',
     }),
+  },
+  methods: {
+    formatDate (date, dateFormat) {
+      if (!date) {
+        return null
+      }
+      return format(new Date(date), dateFormat) + ' r.'
+    },
   },
 }
 </script>

@@ -46,8 +46,7 @@
 
 <script>
 import CashRegisterLimit from 'src/logic/CashRegisterLimit'
-import getDayOfYear from 'date-fns/getDayOfYear'
-import lastDayOfYear from 'date-fns/lastDayOfYear'
+import { getDayOfYear, lastDayOfYear, format } from 'date-fns'
 
 export default {
   data () {
@@ -57,10 +56,8 @@ export default {
   },
   emits: ['scroll'],
   created () {
-    this.$store.commit('interest/SET_NET', null)
-    this.$store.commit('interest/SET_INTEREST', null)
-    this.$store.commit('interest/SET_GROSS', null)
-    this.$store.commit('interest/SET_DAYS', 0)
+    this.sellStartDate = format(new Date(), 'yyyy/MM/dd')
+    this.$store.commit('cashRegisterLimit/CLEAR_DATA')
   },
   methods: {
     calculate () {
@@ -72,10 +69,9 @@ export default {
       cashRegisterLimit.daysOfYear = getDayOfYear(lastDayOfDateYear)
       cashRegisterLimit.calculate()
 
-      this.$store.commit('interest/SET_NET', interest.net)
-      this.$store.commit('interest/SET_INTEREST', interest.interest)
-      this.$store.commit('interest/SET_GROSS', interest.gross)
-      this.$store.commit('interest/SET_DAYS', interest.days)
+      this.$store.commit('cashRegisterLimit/SET_SELL_START_DATE', this.sellStartDate)
+      this.$store.commit('cashRegisterLimit/SET_DAYS_TO_END_YEAR', cashRegisterLimit.daysOfYear - cashRegisterLimit.dayOfYear + 1)
+      this.$store.commit('cashRegisterLimit/SET_AMOUNT', cashRegisterLimit.amount)
 
       this.$emit('scroll')
     },

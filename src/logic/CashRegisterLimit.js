@@ -21,7 +21,7 @@ class CashRegisterLimit {
    * Oblicza kwote limitu
    */
   calculate () {
-    this.amount = constants.CASH_REGISTER_LIMIT * this.dayOfYear / this.daysOfYear
+    this.amount = constants.CASH_REGISTER_LIMIT * (this.daysOfYear - this.dayOfYear + 1) / this.daysOfYear
     this.amount = +this.amount.toFixed(2)
   }
 }

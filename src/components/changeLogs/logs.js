@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.7.0',
+      publish_date: '2021-05-19',
+      content: '<ul><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li></ul>',
+    },
+    {
       version: '3.6.3',
       publish_date: '2021-05-19',
       content: '<ul><li>Poprawiono maksymalne zakresy dla PPK.</li></ul>',
