@@ -155,7 +155,7 @@ class SelfEmployment {
       basisForTax = this.gross -
         (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
     } else if (this.taxType === constants.TAX_TYPES.LINEAR) {
-      basisForTax = this.gross -
+      basisForTax = this.gross - this.expenses -
         (this.zus.pension + this.zus.rent + this.zus.sick + this.zus.accident)
     } else {
       basisForTax = this.gross - this.expenses -
