@@ -3,7 +3,7 @@ export default {
     {
       version: '3.7.0',
       publish_date: '2021-05-19',
-      content: '<ul><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li></ul>',
+      content: '<ul><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li><li>Ujednolicono kolory.</li></ul>',
     },
     {
       version: '3.6.3',
