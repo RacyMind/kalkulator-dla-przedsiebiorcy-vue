@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.6.3',
+      publish_date: '2021-05-19',
+      content: '<ul><li>Poprawiono maksymalne zakresy dla PPK.</li></ul>',
+    },
+    {
       version: '3.6.2',
       publish_date: '2021-05-17',
       content: '<ul><li>Poprawiono błąd w obliczeniach przy niezerowych kosztach w samozatrudnieniu przy podatku liniowym.</li></ul>',

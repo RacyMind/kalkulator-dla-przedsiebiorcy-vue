@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.6.2',
+    VERSION: '3.6.3',
   },
   VAT_VALUES: [
     {
@@ -142,12 +142,12 @@ export default {
   PPK: {
     EMPLOYEE: {
       MINIMUM_RATE: 0.5,
-      MAXIMUM_RATE: 2,
+      MAXIMUM_RATE: 4,
       DEFAULT_RATE: 2,
     },
     EMPLOYER: {
       MINIMUM_RATE: 1.5,
-      MAXIMUM_RATE: 2.5,
+      MAXIMUM_RATE: 4,
       DEFAULT_RATE: 1.5,
     },
   },
