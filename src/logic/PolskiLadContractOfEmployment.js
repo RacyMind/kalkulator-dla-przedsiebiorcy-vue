@@ -235,9 +235,13 @@ class PolskiLadContractOfEmployment {
    * Oblicza kwote skladki zdrowotnej dla ZUS
    */
   calculateZUSEmployeeHealth () {
-    const health = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
+    let health = (constants.ZUS.EMPLOYEE.HEALTH_RATE / 100) *
       (this.gross - (this.employeeZus.pension +
         this.employeeZus.rent + this.employeeZus.sick))
+
+    if (health < 0) {
+      health = 0
+    }
 
     this.employeeZus.health = parseFloat(health.toFixed(2))
   }
