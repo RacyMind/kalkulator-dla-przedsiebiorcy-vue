@@ -3,11 +3,11 @@ export default {
     {
       version: '3.7.0',
       publish_date: '2021-05-19',
-      content: '<ul><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li><li>Ujednolicono kolory.</li><li>Zablokowano możliwość wyświetlania ujemnej składki zdrowotnej w Polskim Ładzie.</li></ul>',
+      content: '<ul><li>Poprawiono obliczenie podatku przy zerowym PIT dla młodych po przekroczeniu limitu.</li><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li><li>Ujednolicono kolory.</li><li>Zablokowano możliwość wyświetlania ujemnej składki zdrowotnej w Polskim Ładzie.</li></ul>',
     },
     {
       version: '3.6.3',
-      publish_date: '2021-05-19',
+      publish_date: '2021-05-18',
       content: '<ul><li>Poprawiono maksymalne zakresy dla PPK.</li></ul>',
     },
     {

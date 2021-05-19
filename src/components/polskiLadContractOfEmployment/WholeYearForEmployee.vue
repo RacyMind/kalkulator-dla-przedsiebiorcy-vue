@@ -109,6 +109,7 @@ export default {
         },
       ],
       data: [],
+      totalGross: 0,
     }
   },
   created () {
@@ -186,6 +187,13 @@ export default {
     },
     getResultForOneMonth (month) {
       const model = new PolskiLadContractOfEmployment()
+      this.totalGross += this.gross
+
+      // Warunek dla 2. progu PITu dla mlodych
+      if (!this.basisForTax && this.totalGross > this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
+        this.totalBasisForTax = 0
+      }
+
       const currentBasisForTax = this.totalBasisForTax
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
       const currentTotalExpenses = this.totalExpenses
@@ -263,7 +271,7 @@ export default {
 
       model.taxAmount = Math.round(model.taxAmount)
 
-      if (!this.basisForTax) {
+      if (!this.basisForTax && this.totalGross <= this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
         model.taxAmount = 0
         model.basisForTax = 0
         model.expenses = 0

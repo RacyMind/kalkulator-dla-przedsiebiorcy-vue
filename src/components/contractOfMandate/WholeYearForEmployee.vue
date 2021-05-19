@@ -109,6 +109,7 @@ export default {
         },
       ],
       data: [],
+      totalGross: 0,
     }
   },
   created () {
@@ -179,6 +180,13 @@ export default {
     },
     getResultForOneMonth (month) {
       const model = new ContractOfMandate()
+      this.totalGross += this.gross
+
+      // Warunek dla 2. progu PITu dla mlodych
+      if (!this.basisForTax && this.totalGross > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+        this.totalBasisForTax = 0
+      }
+
       const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
       const currentTotalExpenses = this.totalExpenses
 
@@ -239,7 +247,7 @@ export default {
 
       model.calculateTaxAmount()
 
-      if (!this.basisForTax) {
+      if (!this.basisForTax && this.totalGross <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
         model.taxAmount = 0
         model.basisForTax = 0
         model.expenses = 0
