@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.7.0',
+    VERSION: '3.8.0',
   },
   VAT_VALUES: [
     {
@@ -152,6 +152,7 @@ export default {
     },
   },
   CASH_REGISTER_LIMIT: 20000,
+  MINIMUM_SALARY: 2800,
   MENU: {
     BUSINESS: [
       {
@@ -159,6 +160,12 @@ export default {
         caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
         className: 'c-selfEmployment',
         link: '/samozatrudnienie',
+      },
+      {
+        title: 'Działalność niezarejestrowana',
+        caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',
+        className: 'c-unregisteredCompany',
+        link: '/dzialalnosc-niezarejestrowana',
       },
       {
         title: 'Faktura VAT',
@@ -279,6 +286,7 @@ export default {
     CONTRACT_OF_MANDATE: '#ed6d13',
     CONTRACT_OF_EMPLOYMENT: '#ed6d13',
     SELF_EMPLOYMENT: '#a31718',
+    UNREGISTERED_COMPANY: '#a31718',
     EXCHANGE_RATES: '#BB4985',
     CURRENCY_CONVERTER: '#BB4985',
     CHANGES_LOGS: '#00A7D9',
