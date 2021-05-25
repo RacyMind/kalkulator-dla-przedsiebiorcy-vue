@@ -243,17 +243,17 @@ export default {
       this.totalBasisForTax += model.basisForTax
 
       if (this.taxType === this.$constants.TAX_TYPES.GENERAL) {
-        if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+        if (currentBasisForTax > this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
           model.calculateTaxBySecondTaxRate()
 
           model.taxAmount = model.taxAmount - model.USHealth
         } else {
-          if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+          if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD) {
             model.calculateTaxByFirstTaxRate()
 
             model.taxAmount = model.taxAmount - model.USHealth - model.freeAmount
           } else {
-            const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
+            const basisForFirstRateTax = this.$constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD - currentBasisForTax
             const basisForTax = model.basisForTax
             model.basisForTax = basisForFirstRateTax
             model.calculateTaxByFirstTaxRate()

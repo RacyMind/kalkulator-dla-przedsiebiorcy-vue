@@ -1,6 +1,16 @@
 export default {
   LOGS: [
     {
+      version: '3.8.0',
+      publish_date: '2021-05-25',
+      content: '<ul><li>Dodano moduł działalności niezarejestrowanej.</li></ul>',
+    },
+    {
+      version: '3.7.1',
+      publish_date: '2021-05-20',
+      content: '<ul><li>Poprawiono wartość 2. progu w samozatrudnieniu w Polskim Ładzie.</li></ul>',
+    },
+    {
       version: '3.7.0',
       publish_date: '2021-05-19',
       content: '<ul><li>Poprawiono obliczenie podatku przy zerowym PIT dla młodych po przekroczeniu limitu.</li><li>Dodano moduł Limit obrotu dla kasy fiskalnej.</li><li>Ujednolicono kolory.</li><li>Zablokowano możliwość wyświetlania ujemnej składki zdrowotnej w Polskim Ładzie.</li></ul>',
