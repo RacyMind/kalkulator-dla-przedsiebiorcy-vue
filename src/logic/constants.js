@@ -294,6 +294,7 @@ export default {
     SICK_PAY: '#ed6d13',
     POLSKI_LAD: '#FF8356',
     CASH_REGISTER_LIMIT: '#a31718',
+    VAT_LIMIT: '#a31718',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#ed6d13',
