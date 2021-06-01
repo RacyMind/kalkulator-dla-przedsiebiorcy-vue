@@ -3,7 +3,7 @@ export default {
     {
       version: '3.9.0',
       publish_date: '2021-06-01',
-      content: '<ul><li>Dodano moduł do bliczania limitu zwolnienia z VAT.</li></ul>',
+      content: '<ul><li>Dodano moduł do obliczania limitu zwolnienia z VAT.</li></ul>',
     },
     {
       version: '3.8.0',
