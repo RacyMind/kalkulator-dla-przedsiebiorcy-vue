@@ -74,6 +74,23 @@
             label="Składka chorobowa"
           />
         </div>
+        <q-toggle
+          v-model="isCustomBasisForZus"
+          :disable="isSmallZus"
+          class="q-mt-sm"
+          label="Własna podstawa dla składek ZUS"
+        />
+        <q-input
+          v-if="isCustomBasisForZus"
+          v-model="customBasisForZus"
+          type="number"
+          class="full-width"
+          min="0"
+          step="0.01"
+          label="Podstawa dla składek ZUS"
+          color="brand"
+          required
+        />
         <q-input
           v-model="accidentRate"
           :disable="isFullTimeJob"
@@ -120,11 +137,14 @@ export default {
       isFreeAmount: true,
       isSick: false,
       isFp: true,
+      isCustomBasisForZus: false,
+      customBasisForZus: null,
     }
   },
   emits: ['scroll'],
   created () {
     this.accidentRate = this.$constants.ACCIDENT_RATE
+    this.customBasisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
     this.taxType = {
       value: this.$constants.TAX_TYPES.GENERAL,
       label: 'Zasady ogólne',
@@ -168,6 +188,7 @@ export default {
     isSmallZus: function (val) {
       if (val) {
         this.isFp = false
+        this.isCustomBasisForZus = false
       }
     },
     taxType: function (val) {
@@ -193,6 +214,10 @@ export default {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
       } else {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
+      }
+
+      if (this.isCustomBasisForZus) {
+        this.selfEmployment.basisForZus = Number(this.customBasisForZus)
       }
 
       this.calculateAmount()
