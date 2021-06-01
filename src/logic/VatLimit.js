@@ -21,7 +21,7 @@ class VatLimit {
    * Oblicza kwote limitu
    */
   calculate () {
-    this.amount = constants.CASH_REGISTER_LIMIT * (this.daysOfYear - this.dayOfYear + 1) / this.daysOfYear
+    this.amount = constants.VAT_LIMIT * (this.daysOfYear - this.dayOfYear + 1) / this.daysOfYear
     this.amount = +this.amount.toFixed(2)
   }
 }

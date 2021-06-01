@@ -3,10 +3,10 @@
     <div class="row">
       <div class="col-12">
         <q-input
-          v-model="sellStartDate"
+          v-model="businessStartDate"
           color="brand"
           mask="date"
-          label="Data rozpoczęcia sprzedaży*"
+          label="Data rozpoczęcia działalności*"
           required
           :rules="['date']">
           <template v-slot:append>
@@ -18,7 +18,7 @@
                 transition-show="scale"
                 transition-hide="scale">
                 <q-date
-                  v-model="sellStartDate"
+                  v-model="businessStartDate"
                   :locale="$constants.LOCALE_DATE"
                   @input="() => $refs.qDateProxy1.hide()"
                 >
@@ -37,7 +37,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!sellStartDate"
+          :disable="!businessStartDate"
         />
       </div>
     </div>
@@ -45,33 +45,33 @@
 </template>
 
 <script>
-import CashRegisterLimit from 'src/logic/CashRegisterLimit'
+import VatLimit from 'src/logic/VatLimit'
 import { getDayOfYear, lastDayOfYear, format } from 'date-fns'
 
 export default {
   data () {
     return {
-      sellStartDate: null,
+      businessStartDate: null,
     }
   },
   emits: ['scroll'],
   created () {
-    this.sellStartDate = format(new Date(), 'yyyy/MM/dd')
-    this.$store.commit('cashRegisterLimit/CLEAR_DATA')
+    this.businessStartDate = format(new Date(), 'yyyy/MM/dd')
+    this.$store.commit('vatLimit/CLEAR_DATA')
   },
   methods: {
     calculate () {
-      const cashRegisterLimit = new CashRegisterLimit()
+      const vatLimit = new VatLimit()
 
-      const lastDayOfDateYear = lastDayOfYear(new Date(this.sellStartDate))
+      const lastDayOfDateYear = lastDayOfYear(new Date(this.businessStartDate))
 
-      cashRegisterLimit.dayOfYear = getDayOfYear(new Date(this.sellStartDate))
-      cashRegisterLimit.daysOfYear = getDayOfYear(lastDayOfDateYear)
-      cashRegisterLimit.calculate()
+      vatLimit.dayOfYear = getDayOfYear(new Date(this.businessStartDate))
+      vatLimit.daysOfYear = getDayOfYear(lastDayOfDateYear)
+      vatLimit.calculate()
 
-      this.$store.commit('cashRegisterLimit/SET_SELL_START_DATE', this.sellStartDate)
-      this.$store.commit('cashRegisterLimit/SET_DAYS_TO_END_YEAR', cashRegisterLimit.daysOfYear - cashRegisterLimit.dayOfYear + 1)
-      this.$store.commit('cashRegisterLimit/SET_AMOUNT', cashRegisterLimit.amount)
+      this.$store.commit('vatLimit/SET_BUSINESS_START_DATE', this.businessStartDate)
+      this.$store.commit('vatLimit/SET_DAYS_TO_END_YEAR', vatLimit.daysOfYear - vatLimit.dayOfYear + 1)
+      this.$store.commit('vatLimit/SET_AMOUNT', vatLimit.amount)
 
       this.$emit('scroll')
     },

@@ -2,15 +2,15 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Data rozpoczęcia sprzedaży:
+        Data rozpoczęcia działalności:
       </div>
       <div>
-        {{ formatDate(sellStartDate, 'dd.MM.yyyy ') }}
+        {{ formatDate(businessStartDate, 'dd.MM.yyyy ') }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Liczba dni sprzedaży do końca roku
+        Liczba dni działalności do końca roku
       </div>
       <div>
         {{ daysToEndYear }}
@@ -18,7 +18,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Limit obrotu uprawniający do zwolnienia
+        Limit przychodu uprawniający do zwolnienia
       </div>
       <div>
         {{ $filters.currencyPLN(amount) }}
@@ -33,9 +33,9 @@ import { format } from 'date-fns'
 export default {
   computed: {
     ...mapGetters({
-      sellStartDate: 'cashRegisterLimit/sellStartDate',
-      daysToEndYear: 'cashRegisterLimit/daysToEndYear',
-      amount: 'cashRegisterLimit/amount',
+      businessStartDate: 'vatLimit/businessStartDate',
+      daysToEndYear: 'vatLimit/daysToEndYear',
+      amount: 'vatLimit/amount',
     }),
   },
   methods: {
