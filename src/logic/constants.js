@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.8.0',
+    VERSION: '3.9.0',
   },
   VAT_VALUES: [
     {
@@ -152,6 +152,7 @@ export default {
     },
   },
   CASH_REGISTER_LIMIT: 20000,
+  VAT_LIMIT: 200000,
   MINIMUM_SALARY: 2800,
   MENU: {
     BUSINESS: [
@@ -174,10 +175,16 @@ export default {
         link: '/faktura-vat',
       },
       {
-        title: 'Limit obrotu zwalniającego z ewidencjonowania w kasie fiskalnej',
+        title: 'Limit zwolnienia z ewidencjonowania w kasie fiskalnej',
         caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',
         className: 'c-cashRegisterLimit',
         link: '/limit-obrotu-dla-kasy-fiskalnej',
+      },
+      {
+        title: 'Limit zwolnienia z VAT',
+        caption: 'Moduł oblicza kwotę przychodu, którego przekroczenie powoduje utratę prawa do zwolnienia z VAT',
+        className: 'c-vatLimit',
+        link: '/limit-zwolnienia-z-vat',
       },
 
     ],
@@ -294,6 +301,7 @@ export default {
     SICK_PAY: '#ed6d13',
     POLSKI_LAD: '#FF8356',
     CASH_REGISTER_LIMIT: '#a31718',
+    VAT_LIMIT: '#a31718',
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#ed6d13',
