@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '3.10.0',
+      publish_date: '2021-06-01',
+      content: '<ul><li>Dodano możliwość wpisania podstawy składek ZUS w samozatrudnieniu.</li></ul>',
+    },
+    {
       version: '3.9.0',
       publish_date: '2021-06-01',
       content: '<ul><li>Dodano moduł do bliczania limitu zwolnienia z VAT.</li></ul>',
