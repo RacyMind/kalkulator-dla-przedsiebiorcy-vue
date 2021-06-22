@@ -186,7 +186,12 @@ export default {
         className: 'c-vatLimit',
         link: '/limit-zwolnienia-z-vat',
       },
-
+      {
+        title: 'Składki ZUS za cześć miesiąca',
+        caption: 'Moduł oblicza składki ZUS dla przedsiębiorców za cześć miesiąca',
+        className: 'c-partialZusContributions',
+        link: '/skladki-zus-za-czesc-miesiaca',
+      },
     ],
     WORK: [
       {

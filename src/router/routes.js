@@ -23,6 +23,7 @@ const routes = [
       { path: 'limit-obrotu-dla-kasy-fiskalnej', component: () => import('pages/CashRegisterLimit') },
       { path: 'dzialalnosc-niezarejestrowana', component: () => import('pages/UnregisteredCompany') },
       { path: 'limit-zwolnienia-z-vat', component: () => import('pages/VatLimit') },
+      { path: 'skladki-zus-za-czesc-miesiaca', component: () => import('pages/PartialZusContributions') },
     ],
   },
 
