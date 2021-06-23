@@ -1,0 +1,57 @@
+<template>
+  <q-page
+    class="q-pa-md full-width c-partialZusContributions"
+    style="max-width:800px;"
+  >
+    <div class="full-width bg-white">
+      <SectionHeader>
+        <q-icon name="o_description" />
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        class="q-my-lg q-px-md"
+        @scroll="scrollTo"
+      />
+      <Advert />
+      <SectionHeader ref="scrollTarget">
+        <q-icon name="o_credit_card" />
+        Podsumowanie
+      </SectionHeader>
+      <Table />
+      <SectionHeader>
+        <q-icon name="o_pie_chart" />
+        Wykres
+      </SectionHeader>
+      <Statistics />
+    </div>
+    <Footer />
+  </q-page>
+</template>
+
+<script>
+import SectionHeader from 'components/SectionHeader'
+import Advert from 'components/Advert'
+import Form from 'components/partialZusContributions/Form'
+import Table from 'components/partialZusContributions/Table'
+import Statistics from 'components/partialZusContributions/Statistics'
+import Footer from 'components/Footer'
+import helpers from 'src/logic/helpers'
+export default {
+  created () {
+    this.$store.commit('app/SET_MODULE_TITLE', 'Składki ZUS za część miesiąca')
+  },
+  methods: {
+    scrollTo () {
+      helpers.scrollToElement(this.$refs.scrollTarget.$el)
+    },
+  },
+  components: {
+    SectionHeader,
+    Advert,
+    Form,
+    Table,
+    Statistics,
+    Footer,
+  },
+}
+</script>
