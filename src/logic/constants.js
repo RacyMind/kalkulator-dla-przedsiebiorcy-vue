@@ -1,7 +1,7 @@
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.10.0',
+    VERSION: '3.11.0',
   },
   VAT_VALUES: [
     {
@@ -187,8 +187,8 @@ export default {
         link: '/limit-zwolnienia-z-vat',
       },
       {
-        title: 'Składki ZUS za cześć miesiąca',
-        caption: 'Moduł oblicza składki ZUS dla przedsiębiorców za cześć miesiąca',
+        title: 'Składki ZUS za część miesiąca',
+        caption: 'Moduł oblicza składki ZUS dla przedsiębiorców za część miesiąca',
         className: 'c-partialZusContributions',
         link: '/skladki-zus-za-czesc-miesiaca',
       },

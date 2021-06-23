@@ -25,7 +25,6 @@
         <div class="column">
           <q-toggle
             v-model="isSmallZus"
-            :disable="isFullTimeJob || isAid"
             class="q-mt-sm"
             label="Mały ZUS"
           />
@@ -37,7 +36,6 @@
           />
           <q-toggle
             v-model="isSick"
-            :disable="isFullTimeJob"
             class="q-mt-sm"
             label="Składka chorobowa"
           />
@@ -61,7 +59,6 @@
         />
         <q-input
           v-model="accidentRate"
-          :disable="isFullTimeJob"
           type="number"
           class="full-width"
           min="0"
@@ -112,51 +109,31 @@ export default {
     this.customBasisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
     this.daysInMonth = getDaysInMonth(new Date())
 
-    this.$store.commit('selfEmployment/CLEAR_DATA')
+    this.$store.commit('partialZusContributions/CLEAR_DATA')
   },
   computed: {
     isDisabledButton () {
+      if (!this.daysOfRunningBusiness || !this.daysInMonth) {
+        return true
+      }
+      if (this.daysOfRunningBusiness > this.daysInMonth) {
+        return true
+      }
       return false
     },
   },
   watch: {
-    isFullTimeJob: function (val) {
-      if (val) {
-        this.isAid = false
-        this.isSmallZus = false
-        this.isFp = false
-        this.isSick = false
-      }
-    },
-    isAid: function (val) {
-      if (val) {
-        this.isFp = false
-      }
-    },
     isSmallZus: function (val) {
       if (val) {
         this.isFp = false
         this.isCustomBasisForZus = false
       }
     },
-    taxType: function (val) {
-      if (val.value !== this.$constants.TAX_TYPES.GENERAL) {
-        this.isFreeAmount = false
-      }
-    },
   },
   methods: {
     calculate () {
       this.selfEmployment = new SelfEmployment()
-
-      this.selfEmployment.gross = Number(this.amount)
-      this.selfEmployment.expenses = Number(this.expenses)
       this.selfEmployment.zusAccidentRate = Number(this.accidentRate) / 100
-      this.selfEmployment.taxType = this.taxType.value
-
-      if (this.taxType.value === this.$constants.TAX_TYPES.LUMP_SUM) {
-        this.selfEmployment.taxRateForLumpSum = Number(this.taxRateForLumpSum.value) / 100
-      }
 
       if (this.isSmallZus) {
         this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
@@ -168,40 +145,23 @@ export default {
         this.selfEmployment.basisForZus = Number(this.customBasisForZus)
       }
 
+      this.selfEmployment.basisForZus /= this.daysInMonth
+      this.selfEmployment.basisForZus *= this.daysOfRunningBusiness
+      this.selfEmployment.basisForZus = parseFloat(this.selfEmployment.basisForZus.toFixed(2))
+
       this.calculateAmount()
 
-      if (this.selfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD && this.selfEmployment.taxType !== this.$constants.TAX_TYPES.LINEAR) {
-        this.$q.notify({
-          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
-        })
-      }
-
-      this.$store.commit('selfEmployment/SET_NET', this.selfEmployment.net)
-      this.$store.commit('selfEmployment/SET_TAX', this.selfEmployment.taxAmount)
-      this.$store.commit('selfEmployment/SET_TAX_TYPE', this.selfEmployment.taxType)
-      this.$store.commit('selfEmployment/SET_GROSS', this.selfEmployment.gross)
-      this.$store.commit('selfEmployment/SET_BASIS_FOR_TAX', this.selfEmployment.basisForTax)
-      this.$store.commit('selfEmployment/SET_EXPENSES', this.selfEmployment.expenses)
-      this.$store.commit('selfEmployment/SET_ZUS', this.selfEmployment.zus)
-      this.$store.commit('selfEmployment/SET_AID', this.isAid)
-      this.$store.commit('selfEmployment/SET_SICK', this.isSick)
-      this.$store.commit('selfEmployment/SET_ZUS_ACCIDENT_RATE', this.selfEmployment.zusAccidentRate)
-      this.$store.commit('selfEmployment/SET_FREE_AMOUNT', this.selfEmployment.freeAmount)
+      this.$store.commit('partialZusContributions/SET_BASIS_FOR_ZUS', this.selfEmployment.basisForZus)
+      this.$store.commit('partialZusContributions/SET_ZUS', this.selfEmployment.zus)
 
       this.$emit('scroll')
     },
     calculateAmount () {
-      if (!this.isFreeAmount) {
-        this.selfEmployment.freeAmount = 0
-      }
-
-      if (!this.isFullTimeJob && !this.isAid) {
         this.selfEmployment.calculateZUSAccident()
         this.selfEmployment.calculateZUSPension()
         this.selfEmployment.calculateZUSRent()
-      }
 
-      if (this.isSick && !this.isAid) {
+      if (this.isSick) {
         this.selfEmployment.calculateZUSSick()
       }
 
@@ -211,11 +171,6 @@ export default {
 
       this.selfEmployment.calculateZUSHealth()
       this.selfEmployment.calculateUSHealth()
-
-      this.selfEmployment.calculateBasisForTax()
-      this.selfEmployment.calculateTaxAmount()
-
-      this.selfEmployment.calculateNetAmount()
     },
   },
 }

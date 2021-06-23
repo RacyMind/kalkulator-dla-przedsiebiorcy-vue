@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net"
+      v-if="zus.health"
       :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
@@ -21,16 +21,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      net: 'selfEmployment/net',
-      tax: 'selfEmployment/tax',
-      zus: 'selfEmployment/zus',
+      zus: 'partialZusContributions/zus',
     }),
     chartData () {
       return {
         datasets: [{
           data: [
-            this.net.toFixed(2),
-            this.tax.toFixed(2),
             this.zus.health.toFixed(2),
             this.zus.sick.toFixed(2),
             this.zus.rent.toFixed(2),
@@ -43,13 +39,9 @@ export default {
             this.$constants.COLORS.CHART3,
             this.$constants.COLORS.CHART4,
             this.$constants.COLORS.CHART5,
-            this.$constants.COLORS.CHART6,
-            this.$constants.COLORS.CHART7,
           ],
         }],
         labels: [
-          'Dochód netto',
-          'Zaliczka na podatek dochodowy',
           'Składka zdrowotna',
           'Składka chorobowa',
           'Składka rentowa',

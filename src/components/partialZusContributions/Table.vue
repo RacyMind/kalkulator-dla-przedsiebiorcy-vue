@@ -2,22 +2,14 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Dochód netto
+        Podstawa wymiaru składek
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm">
-      <div>
-        Składki ZUS
-      </div>
-      <div class="text-weight-bold">
-        {{ $filters.currencyPLN(zusTotal) }}
+        {{ $filters.currencyPLN(basisForZus) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
-      <div class="q-pl-sm">
+      <div>
         Składka zdrowotna
       </div>
       <div>
@@ -25,7 +17,7 @@
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
-      <div class="q-pl-sm">
+      <div>
         Składka chorobowa
       </div>
       <div>
@@ -33,7 +25,7 @@
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
-      <div class="q-pl-sm">
+      <div>
         Składka rentowa
       </div>
       <div>
@@ -41,7 +33,7 @@
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
-      <div class="q-pl-sm">
+      <div>
         Składka emerytalna
       </div>
       <div>
@@ -49,7 +41,7 @@
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
-      <div class="q-pl-sm">
+      <div>
         Składka wypadkowa
       </div>
       <div>
@@ -57,7 +49,7 @@
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
-      <div class="q-pl-sm">
+      <div>
         Składka na Fundusz Pracy
       </div>
       <div>
@@ -66,10 +58,10 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Przychód netto
+        Składki ZUS
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ $filters.currencyPLN(zusTotal) }}
       </div>
     </div>
   </div>
@@ -80,12 +72,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      net: 'selfEmployment/net',
-      gross: 'selfEmployment/gross',
-      basisForTax: 'selfEmployment/basisForTax',
-      expenses: 'selfEmployment/expenses',
-      tax: 'selfEmployment/tax',
-      zus: 'selfEmployment/zus',
+      zus: 'partialZusContributions/zus',
+      basisForZus: 'partialZusContributions/basisForZus',
     }),
     zusTotal () {
       if (this.isZusEmpty(this.zus)) {
