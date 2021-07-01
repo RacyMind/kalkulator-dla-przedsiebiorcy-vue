@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net && tax"
+      v-if="net"
       :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>

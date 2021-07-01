@@ -100,7 +100,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount || !rate || !startDate || !endDate"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -131,6 +131,17 @@ export default {
     this.$store.commit('interest/SET_INTEREST', null)
     this.$store.commit('interest/SET_GROSS', null)
     this.$store.commit('interest/SET_DAYS', 0)
+  },
+  computed: {
+    isDisabledButton () {
+      if (!this.amount || !this.rate || !this.startDate || !this.endDate) {
+        return true
+      }
+      if (this.startDate >= this.endDate) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     isBasicCapitalRate: function (val) {

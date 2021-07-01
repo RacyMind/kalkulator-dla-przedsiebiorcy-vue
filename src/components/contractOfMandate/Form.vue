@@ -139,7 +139,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -177,6 +177,23 @@ export default {
     this.employeePpkRate = this.$constants.PPK.EMPLOYEE.DEFAULT_RATE
 
     this.$store.commit('contractOfMandate/CLEAR_DATA')
+  },
+  computed: {
+    isDisabledButton () {
+      if (!this.amount) {
+        return true
+      }
+      if (this.accident.length === 0) {
+        return true
+      }
+      if (this.isAuthorExpenses && this.authorExpenses.length === 0) {
+        return true
+      }
+      if (this.isPpk && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     isStudent: function (val) {

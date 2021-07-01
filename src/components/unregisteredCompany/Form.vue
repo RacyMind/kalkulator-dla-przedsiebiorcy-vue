@@ -34,7 +34,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -54,6 +54,17 @@ export default {
   created () {
     this.limitForUnregisteredCompany = this.$constants.MINIMUM_SALARY / 2
     this.$store.commit('unregisteredCompany/CLEAR_DATA')
+  },
+  computed: {
+    isDisabledButton () {
+      if (!this.amount) {
+        return true
+      }
+      if (this.expenses.length === 0) {
+        return true
+      }
+      return false
+    },
   },
   methods: {
     calculate () {

@@ -116,6 +116,12 @@ export default {
       if (!this.daysOfRunningBusiness || !this.daysInMonth) {
         return true
       }
+      if (this.accidentRate.length === 0) {
+        return true
+      }
+      if (this.isCustomBasisForZus && this.customBasisForZus.length === 0) {
+        return true
+      }
       if (this.daysOfRunningBusiness > this.daysInMonth) {
         return true
       }
