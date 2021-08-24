@@ -2,6 +2,11 @@ export default {
   LOGS: [
     {
       version: '3.11.0',
+      publish_date: '??',
+      content: '<ul><li>Użyto Composition API do formatowania walut.</li></ul>',
+    },
+    {
+      version: '3.11.0',
       publish_date: '2021-07-01',
       content: '<ul><li>Dodano moduł do obliczania składki ZUS dla przedsiębiorców za część miesiąca.</li><li>Poprawiono wyświetlanie wykresu dla 0% VAT w Faktura VAT.</li><li>Poprawiono wyłączanie przycisków, gdy dane są niekompletne.</li></ul>',
     },

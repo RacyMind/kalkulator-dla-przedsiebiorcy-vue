@@ -5,7 +5,7 @@
         Podstawa wymiaru składek
       </div>
       <div>
-        {{ $filters.currencyPLN(basisForZus) }}
+        {{ pln(basisForZus) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.health) }}
+        {{ pln(zus.health) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.sick) }}
+        {{ pln(zus.sick) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.rent) }}
+        {{ pln(zus.rent) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.pension) }}
+        {{ pln(zus.pension) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.accident) }}
+        {{ pln(zus.accident) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka na Fundusz Pracy
       </div>
       <div>
-        {{ $filters.currencyPLN(zus.fp) }}
+        {{ pln(zus.fp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -61,15 +61,19 @@
         Składki ZUS
       </div>
       <div>
-        {{ $filters.currencyPLN(zusTotal) }}
+        {{ pln(zusTotal) }}
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
 
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       zus: 'partialZusContributions/zus',

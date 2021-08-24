@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
+        {{ pln(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składki ZUS
       </div>
       <div>
-        {{ $filters.currencyPLN(zusEmployeeTotal + zusEmployerTotal) }}
+        {{ pln(zusEmployeeTotal + zusEmployerTotal) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         PPK
       </div>
       <div>
-        {{ $filters.currencyPLN(employeePpk  + employerPpk) }}
+        {{ pln(employeePpk  + employerPpk) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek
       </div>
       <div>
-        {{ $filters.currencyPLN(tax) }}
+        {{ pln(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,15 +37,19 @@
         Suma kosztów pracodawcy
       </div>
       <div>
-        {{ $filters.currencyPLN(totalAmount) }}
+        {{ pln(totalAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
 
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       net: 'polskiLadContractOfEmployment/net',

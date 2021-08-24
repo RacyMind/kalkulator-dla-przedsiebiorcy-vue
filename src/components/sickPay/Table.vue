@@ -5,7 +5,7 @@
         Podstawa wymiaru świadczenia
       </div>
       <div>
-        {{ $filters.currencyPLN(basic) }}
+        {{ pln(basic) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -21,7 +21,7 @@
         Zasiłek chorobowy
       </div>
       <div>
-        {{ $filters.currencyPLN(amount) }}
+        {{ pln(amount) }}
       </div>
     </div>
   </div>
@@ -29,7 +29,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
+
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       amount: 'sickPay/amount',

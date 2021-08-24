@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
+        {{ pln(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ $filters.currencyPLN(expenses) }}
+        {{ pln(expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ $filters.currencyPLN(basisForTax) }}
+        {{ pln(basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ $filters.currencyPLN(tax) }}
+        {{ pln(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ $filters.currencyPLN(zusTotal) }}
+        {{ pln(zusTotal) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ $filters.currencyPLN(employeeZus.health) }}
+        {{ pln(employeeZus.health) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ $filters.currencyPLN(employeeZus.sick) }}
+        {{ pln(employeeZus.sick) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ $filters.currencyPLN(employeeZus.rent) }}
+        {{ pln(employeeZus.rent) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ $filters.currencyPLN(employeeZus.pension) }}
+        {{ pln(employeeZus.pension) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -77,7 +77,7 @@
         PPK
       </div>
       <div>
-        {{ $filters.currencyPLN(employeePpk) }}
+        {{ pln(employeePpk) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -85,15 +85,19 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ pln(gross) }}
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
 
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       net: 'contractOfMandate/net',

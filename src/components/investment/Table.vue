@@ -5,7 +5,7 @@
         Kapitał
       </div>
       <div>
-        {{ $filters.currencyPLN(amount) }}
+        {{ pln(amount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Zysk brutto
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ pln(gross) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podatek
       </div>
       <div>
-        {{ $filters.currencyPLN(tax) }}
+        {{ pln(tax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zysk netto
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
+        {{ pln(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,7 +37,7 @@
         Suma kapitału i zysku netto
       </div>
       <div>
-        {{ $filters.currencyPLN(amount + net) }}
+        {{ pln(amount + net) }}
       </div>
     </div>
   </div>
@@ -45,7 +45,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
+
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       amount: 'investment/amount',
