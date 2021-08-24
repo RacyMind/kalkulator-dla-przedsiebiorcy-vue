@@ -26,7 +26,7 @@
  * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
  */
 import { mapGetters } from 'vuex'
-import helpers from 'src/logic/helpers'
+import { pln } from 'src/use/currencyFormat'
 import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 
 export default {
@@ -49,7 +49,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.gross,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'sick',
@@ -57,7 +57,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.sick,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'rent',
@@ -65,7 +65,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.rent,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'pension',
@@ -73,7 +73,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.pension,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'health',
@@ -81,7 +81,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.health,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'taxAmount',
@@ -89,7 +89,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.taxAmount,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'ppk',
@@ -97,7 +97,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.ppk,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'net',
@@ -105,7 +105,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.net,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
       ],
       data: [],

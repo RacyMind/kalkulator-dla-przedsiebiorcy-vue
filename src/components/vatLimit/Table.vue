@@ -21,7 +21,7 @@
         Limit przychodu uprawniający do zwolnienia
       </div>
       <div>
-        {{ $filters.currencyPLN(amount) }}
+        {{ pln(amount) }}
       </div>
     </div>
   </div>
@@ -30,21 +30,24 @@
 <script>
 import { mapGetters } from 'vuex'
 import { format } from 'date-fns'
+import { pln } from 'src/use/currencyFormat'
+
 export default {
+  setup () {
+    const formatDate = (date, dateFormat) => {
+      if (!date) {
+        return null
+      }
+      return format(new Date(date), dateFormat) + ' r.'
+    }
+    return { pln, formatDate }
+  },
   computed: {
     ...mapGetters({
       businessStartDate: 'vatLimit/businessStartDate',
       daysToEndYear: 'vatLimit/daysToEndYear',
       amount: 'vatLimit/amount',
     }),
-  },
-  methods: {
-    formatDate (date, dateFormat) {
-      if (!date) {
-        return null
-      }
-      return format(new Date(date), dateFormat) + ' r.'
-    },
   },
 }
 </script>

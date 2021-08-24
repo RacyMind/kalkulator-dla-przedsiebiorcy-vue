@@ -5,7 +5,7 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ pln(gross) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ $filters.currencyPLN(zusTotal) }}
+        {{ pln(zusTotal) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ $filters.currencyPLN(employerZus.accident) }}
+        {{ pln(employerZus.accident) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ $filters.currencyPLN(employerZus.rent) }}
+        {{ pln(employerZus.rent) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ $filters.currencyPLN(employerZus.pension) }}
+        {{ pln(employerZus.pension) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka na Fundusz Pracy
       </div>
       <div>
-        {{ $filters.currencyPLN(employerZus.fp) }}
+        {{ pln(employerZus.fp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka na FGŚP
       </div>
       <div>
-        {{ $filters.currencyPLN(employerZus.fgsp) }}
+        {{ pln(employerZus.fgsp) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         PPK
       </div>
       <div>
-        {{ $filters.currencyPLN(employerPpk) }}
+        {{ pln(employerPpk) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -69,15 +69,19 @@
         Suma kosztów pracodawcy
       </div>
       <div>
-        {{ $filters.currencyPLN(totalAmount) }}
+        {{ pln(totalAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
 
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       gross: 'contractOfEmployment/gross',

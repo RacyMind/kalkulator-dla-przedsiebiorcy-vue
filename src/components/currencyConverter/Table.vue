@@ -3,18 +3,18 @@
     <div v-if="amount">
       <div class="row justify-between q-px-md q-py-sm">
         <div>
-          {{ $filters.currency(1, fromCurrency) }}
+          {{ formatToCurrency(1, fromCurrency) }}
         </div>
         <div>
-          {{ $filters.currency( valueForOne, toCurrency) }}
+          {{ formatToCurrency( valueForOne, toCurrency) }}
         </div>
       </div>
       <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
         <div>
-          {{ $filters.currency(amount, fromCurrency) }}
+          {{ formatToCurrency(amount, fromCurrency) }}
         </div>
         <div>
-          {{ $filters.currency( valueForWholeAmount, toCurrency) }}
+          {{ formatToCurrency( valueForWholeAmount, toCurrency) }}
         </div>
       </div>
     </div>
@@ -28,7 +28,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { formatToCurrency } from 'src/use/currencyFormat'
 export default {
+  setup () {
+    return { formatToCurrency }
+  },
   computed: {
     ...mapGetters({
       amount: 'currencyConverter/amount',

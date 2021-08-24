@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import helpers from 'src/logic/helpers'
+import { pln } from 'src/use/currencyFormat'
 import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 
 export default {
@@ -44,7 +44,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.gross,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'accident',
@@ -52,7 +52,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.accident,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'rent',
@@ -60,7 +60,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.rent,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'pension',
@@ -68,7 +68,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.pension,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'fp',
@@ -76,7 +76,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.fp,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'fgsp',
@@ -84,7 +84,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.fgsp,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'ppk',
@@ -92,7 +92,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.ppk,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
         {
           name: 'totalAmount',
@@ -100,7 +100,7 @@ export default {
           required: true,
           align: 'left',
           field: row => row.totalAmount,
-          format: val => `${helpers.formatCurrency(val)}`,
+          format: val => `${pln(val)}`,
         },
       ],
       data: [],

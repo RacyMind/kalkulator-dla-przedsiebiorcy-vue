@@ -20,7 +20,6 @@ module.exports = function (/* ctx */) {
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'mixins',
-      'filters',
       'google-analytics',
     ],
 

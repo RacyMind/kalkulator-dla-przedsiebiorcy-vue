@@ -5,7 +5,7 @@
         Kwota
       </div>
       <div>
-        {{ $filters.currencyPLN(net) }}
+        {{ pln(net) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Odsetki
       </div>
       <div>
-        {{ $filters.currencyPLN(interest) }}
+        {{ pln(interest) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -29,7 +29,7 @@
         Suma kwoty i odsetek
       </div>
       <div>
-        {{ $filters.currencyPLN(gross) }}
+        {{ pln(gross) }}
       </div>
     </div>
   </div>
@@ -37,7 +37,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { pln } from 'src/use/currencyFormat'
+
 export default {
+  setup () {
+    return { pln }
+  },
   computed: {
     ...mapGetters({
       net: 'interest/net',
