@@ -1,43 +1,32 @@
-class Invoice {
-  /**
-   * @Kwota netto
-   * @type {number}
-   */
-  net = 0
-  /**
-   * Kwota brutto
-   * @type {number}
-   */
-  gross = 0
-  /**
-   * Kwota podatku
-   * @type {number}
-   */
-  taxAmount = 0
-  /**
-   * Stawka podatku
-   * @type {number}
-   */
-  rateTax = 0
-  /**
-   * Oblicza kwotę podatku
-   */
-  calculateTaxAmount () {
-    this.taxAmount = this.net * this.rateTax
-  }
-
-  /**
-   * Oblicza kwotę netto
-   */
-  calculateNet () {
-    this.net = this.gross / (1 + this.rateTax)
-  }
-
-  /**
-   * Oblicza kwotę netto
-   */
-  calculateGross () {
-    this.gross = this.net + this.taxAmount
-  }
+/**
+ * Calculates the net amount
+ *
+ * @param {number }gross
+ * @param {number} taxRate
+ * @returns {number}
+ */
+export function calculateNetAmount (gross, taxRate) {
+  return gross / (1 + taxRate)
 }
-export default Invoice
+
+/**
+ *  Calculates the gross amount
+ *
+ * @param {number} net
+ * @param {number} taxAmount
+ * @returns {number}
+ */
+export function calculateGrossAmount (net, taxAmount) {
+  return net + taxAmount
+}
+
+/**
+ * Calculates the tax amount
+ *
+ * @param {number} net
+ * @param {number} taxRate
+ * @returns {number}
+ */
+export function calculateTaxAmount (net, taxRate) {
+  return net * taxRate
+}

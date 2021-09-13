@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="save">
+  <q-form @submit.prevent="calculate">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -14,12 +14,12 @@
         />
         <div class="q-mt-sm block">
           <q-radio
-            v-model="typeAmount"
+            v-model="amountType"
             val="net"
             label="netto"
           />
           <q-radio
-            v-model="typeAmount"
+            v-model="amountType"
             val="gross"
             label="brutto"
           />
@@ -27,8 +27,8 @@
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-select
-          v-model="rate"
-          :options="$constants.VAT_VALUES"
+          v-model="taxRate"
+          :options="constants.VAT_VALUES"
           label="Stawka podatku VAT*"
           color="brand"
           required
@@ -51,39 +51,46 @@
 </template>
 
 <script>
-import Invoice from 'src/logic/Invoice'
+import constants from 'src/logic/constants'
+import { calculateGrossAmount, calculateNetAmount, calculateTaxAmount } from 'src/logic/Invoice'
+
 export default {
+  setup () {
+    return { constants }
+  },
   data () {
     return {
       amount: null,
-      typeAmount: 'net',
-      rate: null,
+      amountType: 'net',
+      taxRate: null,
     }
   },
   emits: ['scroll'],
   created () {
-    this.rate = this.$constants.DEFAULT_VAT_VALUE
+    this.taxRate = this.$constants.DEFAULT_VAT_VALUE
 
     this.$store.commit('invoice/SET_NET', null)
     this.$store.commit('invoice/SET_TAX', null)
     this.$store.commit('invoice/SET_GROSS', null)
   },
   methods: {
-    save () {
-      const invoice = new Invoice()
-      invoice.rateTax = Number(this.rate.value) / 100
-      if (this.typeAmount === 'net') {
-        invoice.net = Number(this.amount)
-        invoice.calculateTaxAmount()
-        invoice.calculateGross()
+    calculate () {
+      const taxRate = Number(this.taxRate.value) / 100
+      let netAmount, grossAmount, taxAmount
+
+      if (this.amountType === 'net') {
+        netAmount = Number(this.amount)
+        taxAmount = calculateTaxAmount(netAmount, taxRate)
+        grossAmount = calculateGrossAmount(netAmount, taxAmount)
       } else {
-        invoice.gross = Number(this.amount)
-        invoice.calculateNet()
-        invoice.calculateTaxAmount()
+        grossAmount = Number(this.amount)
+        netAmount = calculateNetAmount(grossAmount, taxRate)
+        taxAmount = calculateTaxAmount(netAmount, taxRate)
       }
-      this.$store.commit('invoice/SET_NET', invoice.net)
-      this.$store.commit('invoice/SET_TAX', invoice.taxAmount)
-      this.$store.commit('invoice/SET_GROSS', invoice.gross)
+
+      this.$store.commit('invoice/SET_NET', netAmount)
+      this.$store.commit('invoice/SET_TAX', taxAmount)
+      this.$store.commit('invoice/SET_GROSS', grossAmount)
 
       this.$emit('scroll')
     },
