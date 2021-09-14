@@ -8,4 +8,9 @@ export default {
   SET_TAX (state, tax) {
     state.tax = tax
   },
+  CLEAR_DATA (state) {
+    state.net = null
+    state.gross = null
+    state.tax = null
+  },
 }
