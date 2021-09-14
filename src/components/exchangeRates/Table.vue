@@ -10,6 +10,7 @@
       :rows="rates"
       :columns="columns"
       row-key="name"
+      @row-click="openCurrency"
       :loading="isLoading"
       hide-pagination
       :pagination="{rowsPerPage: 999}">
@@ -75,6 +76,13 @@ export default {
       date: 'exchangeRates/date',
       isLoading: 'exchangeRates/isLoading',
     }),
+  },
+  methods: {
+    openCurrency (event, row) {
+      this.$router.push({
+        path: `/kursy-walut/${row.code.toLowerCase()}`,
+      })
+    },
   },
 }
 </script>
