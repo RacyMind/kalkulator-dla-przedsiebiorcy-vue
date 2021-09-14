@@ -3,14 +3,17 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
           label="Kwota*"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
         <div class="q-mt-sm block">
           <q-radio
@@ -43,7 +46,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount"
+          :disable="isDisabled"
         />
       </div>
     </div>
@@ -55,6 +58,7 @@ import constants from 'src/logic/constants'
 import { calculateGrossAmount, calculateNetAmount, calculateTaxAmount } from 'src/logic/Invoice'
 
 export default {
+  emits: ['scroll'],
   setup () {
     return { constants }
   },
@@ -65,13 +69,17 @@ export default {
       taxRate: null,
     }
   },
-  emits: ['scroll'],
   created () {
-    this.taxRate = this.$constants.DEFAULT_VAT_VALUE
-
-    this.$store.commit('invoice/SET_NET', null)
-    this.$store.commit('invoice/SET_TAX', null)
-    this.$store.commit('invoice/SET_GROSS', null)
+    this.taxRate = this.constants.DEFAULT_VAT_VALUE
+    this.$store.commit('invoice/CLEAR_DATA')
+  },
+  computed: {
+    isDisabled () {
+      if (!this.amount || this.taxRate === null) {
+        return true
+      }
+      return false
+    },
   },
   methods: {
     calculate () {
