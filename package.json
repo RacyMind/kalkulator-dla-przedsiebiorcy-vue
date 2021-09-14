@@ -16,12 +16,12 @@
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "date-fns": "^2.17.0",
-    "quasar": "^2.0.0-beta.15",
+    "quasar": "^2.0.4",
     "vue3-chart-v2": "^0.8.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.0.0",
-    "@quasar/app": "^3.0.0-beta.22",
+    "@quasar/app": "^3.1.0",
     "eslint": "^7.14.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-loader": "^4.0.2",
