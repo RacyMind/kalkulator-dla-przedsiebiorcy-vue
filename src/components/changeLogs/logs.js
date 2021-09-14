@@ -3,7 +3,7 @@ export default {
     {
       version: '3.11.0',
       publish_date: '??',
-      content: '<ul><li>Użyto Composition API do formatowania walut.</li></ul>',
+      content: '<ul><li>Użyto Composition API do formatowania walut.</li><li>Aktualizacja bibliotek.</li></ul>',
     },
     {
       version: '3.11.0',
