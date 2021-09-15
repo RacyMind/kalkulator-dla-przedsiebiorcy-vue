@@ -3,5 +3,6 @@ export default function () {
     rates: [],
     isLoading: false,
     date: null,
+    currency: null,
   }
 }

@@ -14,4 +14,17 @@ export default {
         commit('SET_LOADING', false)
       })
   },
+  loadExchangeRateCurrency ({ commit }, { code, startDate, endDate }) {
+    commit('SET_LOADING', true)
+    axios.get(`http://api.nbp.pl/api/exchangerates/rates/a/${code}/${startDate}/${endDate}`)
+      .then(function (response) {
+        commit('SET_CURRENCY', response.data)
+      })
+      .catch(() => {
+        commit('SET_CURRENCY', null)
+      })
+      .finally(function () {
+        commit('SET_LOADING', false)
+      })
+  },
 }
