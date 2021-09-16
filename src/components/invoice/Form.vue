@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -46,7 +46,7 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="isDisabled"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -55,10 +55,9 @@
 
 <script>
 import constants from 'src/logic/constants'
-import { calculateGrossAmount, calculateNetAmount, calculateTaxAmount } from 'src/logic/Invoice'
 
 export default {
-  emits: ['scroll'],
+  emits: ['submitted'],
   setup () {
     return { constants }
   },
@@ -71,10 +70,9 @@ export default {
   },
   created () {
     this.taxRate = this.constants.DEFAULT_VAT_VALUE
-    this.$store.commit('invoice/CLEAR_DATA')
   },
   computed: {
-    isDisabled () {
+    isDisabledButton () {
       if (!this.amount || this.taxRate === null) {
         return true
       }
@@ -82,25 +80,12 @@ export default {
     },
   },
   methods: {
-    calculate () {
-      const taxRate = Number(this.taxRate.value) / 100
-      let netAmount, grossAmount, taxAmount
+    save () {
+      this.$store.commit('invoice/setAmount', Number(this.amount))
+      this.$store.commit('invoice/setAmountType', this.amountType)
+      this.$store.commit('invoice/setTaxRate', Number(this.taxRate.value) / 100)
 
-      if (this.amountType === 'net') {
-        netAmount = Number(this.amount)
-        taxAmount = calculateTaxAmount(netAmount, taxRate)
-        grossAmount = calculateGrossAmount(netAmount, taxAmount)
-      } else {
-        grossAmount = Number(this.amount)
-        netAmount = calculateNetAmount(grossAmount, taxRate)
-        taxAmount = calculateTaxAmount(netAmount, taxRate)
-      }
-
-      this.$store.commit('invoice/SET_NET', netAmount)
-      this.$store.commit('invoice/SET_TAX', taxAmount)
-      this.$store.commit('invoice/SET_GROSS', grossAmount)
-
-      this.$emit('scroll')
+      this.$emit('submitted')
     },
   },
 }

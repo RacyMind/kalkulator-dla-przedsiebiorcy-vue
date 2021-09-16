@@ -1,16 +1,16 @@
 export default {
-  SET_NET (state, net) {
-    state.net = net
+  setAmount (state, amount) {
+    state.amount = amount
   },
-  SET_GROSS (state, gross) {
-    state.gross = gross
+  setAmountType (state, amountType) {
+    state.amountType = amountType
   },
-  SET_TAX (state, tax) {
-    state.tax = tax
+  setTaxRate (state, taxRate) {
+    state.taxRate = taxRate
   },
-  CLEAR_DATA (state) {
-    state.net = null
-    state.gross = null
-    state.tax = null
+  clearAllData (state) {
+    state.amount = null
+    state.amountType = null
+    state.taxRate = null
   },
 }
