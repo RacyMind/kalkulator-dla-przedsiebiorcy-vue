@@ -115,10 +115,22 @@ export default {
     show () {
       const startDate = format(new Date(this.startDate), 'Y-MM-dd')
       const endDate = format(new Date(this.endDate), 'Y-MM-dd')
+
+      this.$store.commit('exchangeRates/setLoading', true)
+
       this.$store.dispatch('exchangeRates/loadExchangeRateCurrency', {
         code: this.$route.params.currency,
         startDate,
         endDate,
+      }).then(response => {
+        this.$store.commit('exchangeRates/setCurrency', response.data)
+      }).catch((error) => {
+        this.$q.notify({
+          message: error.response.data,
+        })
+        this.$store.commit('exchangeRates/setCurrency', null)
+      }).finally(() => {
+        this.$store.commit('exchangeRates/setLoading', false)
       })
     },
   },

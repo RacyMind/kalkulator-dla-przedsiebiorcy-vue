@@ -1,9 +1,8 @@
 <template>
   <div class="q-pa-md">
     <LineChart
-      v-if="net"
+      v-if="currency"
       :key="componentKey"
-      class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
@@ -24,15 +23,21 @@ export default {
     ...mapGetters({
       currency: 'exchangeRates/currency',
     }),
+    dates () {
+      return this.currency.rates.map(rate => rate.effectiveDate)
+    },
+    rates () {
+      return this.currency.rates.map(rate => rate.mid)
+    },
     chartData () {
       return {
+        labels: this.dates,
         datasets: [{
-          data: [],
-          backgroundColor: [colors.lighten(constants.COLORS.CURRENCIES, -20)],
+          label: 'waluta',
+          data: this.rates,
+          fill: false,
+          borderColor: colors.lighten(constants.COLORS.EXCHANGE_RATES, -20),
         }],
-        labels: [
-          'Kwota podatku',
-        ],
       }
     },
   },
