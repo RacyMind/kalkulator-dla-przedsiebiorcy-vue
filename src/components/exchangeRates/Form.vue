@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="show">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { format, isFuture } from 'date-fns'
+import { format, isFuture, subMonths } from 'date-fns'
 import { ref } from 'vue'
 import constants from 'src/logic/constants'
 
@@ -96,6 +96,15 @@ export default {
         return date <= format(new Date(), 'y/MM/dd')
       },
     }
+  },
+  created () {
+    const now = new Date()
+    const monthAgo = subMonths(now, 1)
+
+    this.startDate = format(monthAgo, 'Y/MM/dd')
+    this.endDate = format(now, 'Y/MM/dd')
+
+    this.save()
   },
   computed: {
     isDisabledButton () {
@@ -112,7 +121,7 @@ export default {
     },
   },
   methods: {
-    show () {
+    save () {
       const startDate = format(new Date(this.startDate), 'Y-MM-dd')
       const endDate = format(new Date(this.endDate), 'Y-MM-dd')
 

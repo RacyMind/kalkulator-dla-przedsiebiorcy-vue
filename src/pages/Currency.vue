@@ -14,7 +14,7 @@
       />
       <Advert />
       <SectionHeader>
-        <q-icon name="o_pie_chart" />
+        <q-icon name="o_insights" />
         Wykres
       </SectionHeader>
       <CurrencyStatistics />
@@ -33,7 +33,7 @@ import helpers from 'src/logic/helpers'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Waluta')
+    this.$store.commit('app/SET_MODULE_TITLE', this.$route.params.currency.toUpperCase())
   },
   methods: {
     scrollTo () {

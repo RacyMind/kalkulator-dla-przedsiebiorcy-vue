@@ -12,6 +12,7 @@
 import { mapGetters } from 'vuex'
 import { colors } from 'quasar'
 import constants from 'src/logic/constants'
+import { deepEqual } from 'src/use/deepEqual'
 import LineChart from '../LineChart'
 export default {
   data () {
@@ -33,7 +34,7 @@ export default {
       return {
         labels: this.dates,
         datasets: [{
-          label: 'waluta',
+          label: this.currency.currency,
           data: this.rates,
           fill: false,
           borderColor: colors.lighten(constants.COLORS.EXCHANGE_RATES, -20),
@@ -43,7 +44,7 @@ export default {
   },
   watch: {
     currency (prevState, newState) {
-      if (prevState !== newState) {
+      if (!deepEqual(prevState, newState)) {
         this.forceRerender()
       }
     },
