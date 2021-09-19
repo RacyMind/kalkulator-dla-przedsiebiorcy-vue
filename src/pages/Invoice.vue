@@ -10,7 +10,7 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
-        @scroll="scrollTo"
+        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -40,6 +40,7 @@ import helpers from 'src/logic/helpers'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+    this.$store.commit('invoice/clearAllData')
   },
   methods: {
     scrollTo () {
