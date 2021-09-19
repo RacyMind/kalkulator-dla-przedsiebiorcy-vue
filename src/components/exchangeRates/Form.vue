@@ -82,7 +82,6 @@
 
 <script>
 import { format, isFuture } from 'date-fns'
-import { mapGetters } from 'vuex'
 import { ref } from 'vue'
 import constants from 'src/logic/constants'
 

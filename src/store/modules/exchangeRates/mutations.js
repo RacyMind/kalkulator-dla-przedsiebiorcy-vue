@@ -1,14 +1,14 @@
 export default {
-  SET_RATES (state, rates) {
+  setRates (state, rates) {
     state.rates = rates
   },
-  SET_LOADING (state, isLoading) {
+  setLoading (state, isLoading) {
     state.isLoading = isLoading
   },
-  SET_DATE (state, date) {
+  setDate (state, date) {
     state.date = date
   },
-  SET_CURRENCY (state, currency) {
+  setCurrency (state, currency) {
     state.currency = currency
   },
 }

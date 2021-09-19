@@ -17,7 +17,7 @@
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <Statistics />
+      <CurrencyStatistics />
     </div>
     <Footer />
   </q-page>
@@ -26,8 +26,7 @@
 <script>
 import SectionHeader from 'components/SectionHeader'
 import Form from 'components/exchangeRates/Form'
-import Table from 'components/interest/Table'
-import Statistics from 'components/interest/Statistics'
+import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Advert from 'components/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
@@ -44,8 +43,7 @@ export default {
   components: {
     SectionHeader,
     Form,
-    Table,
-    Statistics,
+    CurrencyStatistics,
     Advert,
     Footer,
   },
