@@ -14,6 +14,7 @@ const routes = [
       { path: 'umowa-o-prace', component: () => import('pages/ContractOfEmployment') },
       { path: 'samozatrudnienie', component: () => import('pages/SelfEmployment') },
       { path: 'kursy-walut', component: () => import('pages/ExchangeRates') },
+      { path: 'kursy-walut/:currency', component: () => import('pages/Currency') },
       { path: 'przelicznik-walut', component: () => import('pages/CurrencyConverter') },
       { path: 'historia-zmian', component: () => import('pages/ChangeLogs') },
       { path: 'kontakt', component: () => import('pages/Contact') },
