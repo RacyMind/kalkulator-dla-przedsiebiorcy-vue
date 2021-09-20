@@ -10,7 +10,7 @@
           required
           :rules="[
             'date',
-            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisziejszą'
+            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisiejszą'
           ]">
           <template v-slot:append>
             <q-icon
@@ -42,7 +42,7 @@
           required
           :rules="[
             'date',
-            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisziejszą'
+            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisiejszą'
           ]">
           <template v-slot:append>
             <q-icon
@@ -133,9 +133,16 @@ export default {
         endDate,
       }).then(response => {
         this.$store.commit('exchangeRates/setCurrency', response.data)
-      }).catch((error) => {
         this.$q.notify({
-          message: error.response.data,
+          message: 'Źródło danych: Narodowy Bank Polski',
+        })
+      }).catch((error) => {
+        let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
+        if (error.response) {
+          message = error.response.data
+        }
+        this.$q.notify({
+          message: message,
         })
         this.$store.commit('exchangeRates/setCurrency', null)
       }).finally(() => {

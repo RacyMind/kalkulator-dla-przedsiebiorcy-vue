@@ -43,10 +43,13 @@ export default {
     },
   },
   watch: {
-    currency (prevState, newState) {
-      if (!deepEqual(prevState, newState)) {
-        this.forceRerender()
-      }
+    currency: {
+      handler (prevState, newState) {
+        if (!deepEqual(prevState, newState)) {
+          this.forceRerender()
+        }
+      },
+      immediate: true,
     },
   },
   methods: {

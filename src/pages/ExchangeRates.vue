@@ -6,7 +6,7 @@
     <div class="full-width bg-white">
       <SectionHeader>
         <q-icon name="o_euro" />
-        Aktualne kursy walut
+        Kursy walut
       </SectionHeader>
       <Advert />
       <Table />

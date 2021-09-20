@@ -33,6 +33,7 @@ import helpers from 'src/logic/helpers'
 
 export default {
   created () {
+    this.$store.commit('exchangeRates/setCurrency', null)
     this.$store.commit('app/SET_MODULE_TITLE', this.$route.params.currency.toUpperCase())
   },
   methods: {

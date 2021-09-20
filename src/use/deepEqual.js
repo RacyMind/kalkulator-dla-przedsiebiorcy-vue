@@ -8,6 +8,9 @@ function deepEqual (object1, object2) {
   if (object2 === null && object1 !== null) {
     return false
   }
+  if (typeof object1 === 'undefined' || typeof object2 === 'undefined') {
+    return false
+  }
 
   const keys1 = Object.keys(object1)
   const keys2 = Object.keys(object2)
