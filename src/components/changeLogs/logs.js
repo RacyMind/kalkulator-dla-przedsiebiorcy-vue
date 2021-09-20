@@ -1,9 +1,9 @@
 export default {
   LOGS: [
     {
-      version: '3.11.0',
-      publish_date: '??',
-      content: '<ul><li>Użyto Composition API do formatowania walut.</li><li>Dodano możliwość wyświetlenia archiwalnych kursów walut.</li><li>Dodano wykres z archiwalnymi kursami dla pojedynczej waluty.</li><li>Refaktoryzacja modułu faktur.</li><li>Aktualizacja bibliotek.</li></ul>',
+      version: '3.12.0',
+      publish_date: '2021-09-20',
+      content: '<ul><li>Użyto Composition API do formatowania walut.</li><li>Dodano możliwość wyświetlenia archiwalnych kursów walut.</li><li>Dodano wykres z archiwalnymi kursami dla pojedynczej waluty.</li><li>Refaktoryzacja modułu faktur.</li><li>Dodano przycisk do zamknięcia popup.</li><li>Aktualizacja bibliotek.</li></ul>',
     },
     {
       version: '3.11.0',

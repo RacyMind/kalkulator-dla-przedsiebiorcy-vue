@@ -1,5 +1,14 @@
 <template>
-  <q-card style="width: auto; max-width: 90vw;">
+  <q-card
+    class="relative-position"
+    style="width: auto; max-width: 90vw;">
+    <q-btn
+      icon="close"
+      class="absolute-top-right z-top"
+      flat
+      round
+      dense
+      v-close-popup />
     <q-table
       title=" Podsumowanie"
       :grid="$q.screen.xs || $q.screen.sm"
