@@ -40,7 +40,9 @@ function calculateTaxAmount (net, taxRate) {
  * @returns {{netAMount: number, grossAmount: number, taxAmount: number}}
  */
 function getResult (amount, amountType, taxRate) {
-  let netAmount = 0; let grossAmount = 0; let taxAmount = 0
+  let netAmount = 0
+  let grossAmount = 0
+  let taxAmount = 0
 
   switch (amountType) {
     case 'net':

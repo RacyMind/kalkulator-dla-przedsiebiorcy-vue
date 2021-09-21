@@ -1,3 +1,4 @@
+const AMOUNT_OF_TAX_THRESHOLD = 85528
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
@@ -94,6 +95,7 @@ export default {
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
+    MAX_EXPENSES: AMOUNT_OF_TAX_THRESHOLD,
   },
   CONTRACT_OF_MANDATE: {
     EXPENSES_RATE: 0.2,
