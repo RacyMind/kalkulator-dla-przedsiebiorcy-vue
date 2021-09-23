@@ -1,68 +1,58 @@
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
-class UnregisteredCompany {
-  /**
-   * Kwota netto
-   * @type {number}
-   */
-  net = 0
-  /**
-   * Kwota brutto
-   * @type {number}
-   */
-  gross = 0
-  /**
-   * Kwota podatku
-   * @type {number}
-   */
-  taxAmount = 0
+const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 
-  /**
-   * Podstawa do obliczenia podatku
-   * @type {number}
-   */
-  basisForTax = 0
+/**
+ * Calculates the basis for tax
+ *
+ * @param {number} grossAmount
+ * @param {number} expenses
+ * @returns {number}
+ */
+function calculateBasisForTax (grossAmount, expenses) {
+  return helpers.round(grossAmount - expenses)
+}
 
-  /**
-   * Koszty uzyskania przychodu
-   * @type {number}
-   */
-  expenses = 0
+/**
+ * Calculates the tax amount
+ * @param {number} basisForTax
+ * @returns {number}
+ */
+function calculateTaxAmount (basisForTax) {
+  return helpers.round(basisForTax * taxRate)
+}
 
-  /**
-   * Stawka podatku
-   * @type {number}
-   */
-  taxRate = constants.TAX_RATES.FIRST_RATE / 100
+/**
+ * Calculates the net amount
+ *
+ * @param {number} grossAmount
+ * @param {number} taxAmount
+ * @returns {number}
+ */
+function calculateNetAmount (grossAmount, taxAmount) {
+  return grossAmount - taxAmount
+}
 
-  /**
-   * Oblicza podstawę opodatkowania
-   */
-  calculateBasisForTax () {
-    this.basisForTax = Math.round(this.gross - this.expenses)
-  }
+/**
+ * Returns the result
+ *
+ * @param {number} grossAmount
+ * @param {number} expenses
+ * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number}}
+ */
+function getResult (grossAmount, expenses) {
+  const basisForTax = calculateBasisForTax(grossAmount, expenses)
+  const taxAmount = calculateTaxAmount(basisForTax)
+  const netAmount = calculateNetAmount(grossAmount, taxAmount)
 
-  /**
-   * Oblicza kwotę podatku
-   */
-  calculateTaxAmount () {
-    this.taxAmount = Math.round(this.basisForTax * this.taxRate)
-  }
-
-  /**
-   * Oblicza kwotę netto
-   */
-  calculateNet () {
-    this.net = this.gross - this.taxAmount
-  }
-
-  /**
-   * Obliczenia dla kwoty brutto
-   */
-  calculateAll () {
-    this.calculateBasisForTax()
-    this.calculateTaxAmount()
-    this.calculateNet()
+  return {
+    netAmount: netAmount,
+    grossAmount: grossAmount,
+    basisForTax: basisForTax,
+    taxAmount: taxAmount,
+    expenses: expenses,
   }
 }
-export default UnregisteredCompany
+
+export { getResult }

@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -10,7 +10,10 @@
           label="Przychód*"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -19,10 +22,12 @@
           type="number"
           min="0"
           step="0.01"
-          label="Koszty uzysaknia przychodu*"
-          autofocus
+          label="Koszty uzyskania przychodu*"
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
       </div>
     </div>
@@ -42,18 +47,13 @@
 </template>
 
 <script>
-import UnregisteredCompany from 'src/logic/UnregisteredCompany'
 export default {
+  emits: ['submitted'],
   data () {
     return {
       amount: null,
       expenses: 0,
-      limitForUnregisteredCompany: 0,
     }
-  },
-  created () {
-    this.limitForUnregisteredCompany = this.$constants.MINIMUM_SALARY / 2
-    this.$store.commit('unregisteredCompany/CLEAR_DATA')
   },
   computed: {
     isDisabledButton () {
@@ -67,26 +67,11 @@ export default {
     },
   },
   methods: {
-    calculate () {
-      const unregisteredCompany = new UnregisteredCompany()
+    save () {
+      this.$store.commit('unregisteredCompany/setAmount', +this.amount)
+      this.$store.commit('unregisteredCompany/setExpenses', +this.expenses)
 
-        unregisteredCompany.gross = Number(this.amount)
-        unregisteredCompany.expenses = Number(this.expenses)
-        unregisteredCompany.calculateAll()
-
-      if (unregisteredCompany.gross > this.limitForUnregisteredCompany) {
-        this.$q.notify({
-          message: `Przekroczono limit przycchodu (${this.limitForUnregisteredCompany} zł)  dla działalności niezarejestrowanej.`,
-        })
-      }
-
-      this.$store.commit('unregisteredCompany/SET_NET', unregisteredCompany.net)
-      this.$store.commit('unregisteredCompany/SET_TAX', unregisteredCompany.taxAmount)
-      this.$store.commit('unregisteredCompany/SET_GROSS', unregisteredCompany.gross)
-      this.$store.commit('unregisteredCompany/SET_BASIS_FOR_TAX', unregisteredCompany.basisForTax)
-      this.$store.commit('unregisteredCompany/SET_EXPENSES', unregisteredCompany.expenses)
-
-      this.$emit('scroll')
+      this.$emit('submitted')
     },
   },
 }

@@ -3,7 +3,7 @@ export default {
     {
       version: '3.13.0',
       publish_date: '2021-09-20',
-      content: '<ul><li>Refaktoryzacja modułu umowy dzieło.</li></ul>',
+      content: '<ul><li>Refaktoryzacja modułu umowy dzieło.</li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',
     },
     {
       version: '3.12.0',

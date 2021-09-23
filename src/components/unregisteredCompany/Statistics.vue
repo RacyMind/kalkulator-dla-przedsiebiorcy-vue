@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net"
+      v-if="result.netAmount"
       :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
@@ -10,27 +10,42 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getResult } from 'src/logic/UnregisteredCompany'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
 
 export default {
+  setup () {
+    const store = useStore()
+    const amount = computed(() => store.getters['unregisteredCompany/amount'])
+    const expenses = computed(() => store.getters['unregisteredCompany/expenses'])
+
+    return {
+      amount,
+      expenses,
+    }
+  },
   data () {
     return {
       componentKey: 0,
     }
   },
   computed: {
-    ...mapGetters({
-      net: 'unregisteredCompany/net',
-      tax: 'unregisteredCompany/tax',
-    }),
+    result () {
+      return getResult(this.amount, this.expenses)
+    },
     chartData () {
       return {
         datasets: [{
-          data: [this.net.toFixed(2), this.tax.toFixed(2)],
+          data: [
+            this.result.netAmount,
+            this.result.taxAmount,
+          ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
           ],
         }],
         labels: [
@@ -41,12 +56,7 @@ export default {
     },
   },
   watch: {
-    net (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    tax (prevState, newState) {
+    result (prevState, newState) {
       if (prevState !== newState) {
         this.forceRerender()
       }
