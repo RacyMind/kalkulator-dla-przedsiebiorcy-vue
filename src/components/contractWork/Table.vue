@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ pln(net) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ pln(expenses) }}
+        {{ pln(result.expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ pln(basisForTax) }}
+        {{ pln(result.basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ pln(tax) }}
+        {{ pln(result.taxAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,27 +37,57 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ pln(gross) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getResult } from 'src/logic/ContractWork'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
   setup () {
-    return { pln }
+    const store = useStore()
+    const amount = computed(() => store.getters['contractWork/amount'])
+    const amountType = computed(() => store.getters['contractWork/amountType'])
+    const expenseRate = computed(() => store.getters['contractWork/expenseRate'])
+
+    return {
+      pln,
+      amount,
+      amountType,
+      expenseRate,
+    }
   },
   computed: {
-    ...mapGetters({
-      net: 'contractWork/net',
-      gross: 'contractWork/gross',
-      basisForTax: 'contractWork/basisForTax',
-      expenses: 'contractWork/expenses',
-      tax: 'contractWork/tax',
-    }),
+    result () {
+      return getResult(this.amount, this.amountType, this.expenseRate)
+    },
+  },
+  watch: {
+    amount: function (val) {
+      if (val) {
+        this.showNotifications()
+      }
+    },
+  },
+  methods: {
+    showNotifications () {
+      if (this.amount && this.result.grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+        this.$q.notify({
+          message: `Dla wynagrodzenia brutto do ${constants.LUMP_SUM_UP_TO_AMOUNT} zł płaci się podatek zryczałtowany.`,
+        })
+      }
+      if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.CONTRACT_WORK.MAX_EXPENSES / 2) {
+        this.$q.notify({
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${constants.CONTRACT_WORK.MAX_EXPENSES / 2} zł.`,
+        })
+      }
+    },
   },
 }
 </script>

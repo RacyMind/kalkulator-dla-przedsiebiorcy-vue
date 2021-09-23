@@ -1,9 +1,7 @@
 export default function () {
   return {
-    net: null,
-    gross: null,
-    basisForTax: null,
-    expenses: null,
-    tax: null,
+    amount: null,
+    amountType: 'gross',
+    expenseRate: 0.5,
   }
 }

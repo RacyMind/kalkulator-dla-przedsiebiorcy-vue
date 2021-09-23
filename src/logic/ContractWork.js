@@ -1,4 +1,5 @@
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 /**
  * Calculates expenses
@@ -8,7 +9,7 @@ import constants from 'src/logic/constants'
  * @returns {number}
  */
 function calculateExpenses (grossAmount, expensesRate) {
-  const expenses = +(grossAmount * expensesRate).toFixed(2)
+  const expenses = helpers.round(grossAmount * expensesRate, 2)
 
   if (expensesRate === 0.5 && expenses > constants.CONTRACT_WORK.MAX_EXPENSES) {
     return constants.CONTRACT_WORK.MAX_EXPENSES / 2
@@ -24,7 +25,7 @@ function calculateExpenses (grossAmount, expensesRate) {
  * @returns {number}
  */
 function calculateBasisForTax (grossAmount, expenses) {
-  return Math.round(grossAmount - expenses)
+  return helpers.round(grossAmount - expenses)
 }
 
 /**
@@ -35,7 +36,7 @@ function calculateBasisForTax (grossAmount, expenses) {
  * @returns {number}
  */
 function calculateTaxAmount (basisForTax, taxRate) {
-  return Math.round(basisForTax * taxRate)
+  return helpers.round(basisForTax * taxRate)
 }
 
 /**
@@ -47,7 +48,7 @@ function calculateTaxAmount (basisForTax, taxRate) {
  * @returns {number}
  */
 function calculateGrossAmount (netAmount, taxRate, expensesRate) {
-  return +(netAmount / (1 - taxRate * (1 - expensesRate))).toFixed(2)
+  return helpers.round(netAmount / (1 - taxRate * (1 - expensesRate)), 2)
 }
 
 /**
@@ -128,11 +129,21 @@ function getResultUsingGrossAmount (amount, expensesRate) {
  * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}|{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
  */
 function getResult (amount, amountType, expenseRate) {
+  if (!amount || !amountType || !expenseRate) {
+    return {
+      netAmount: 0,
+      expenses: 0,
+      basisForTax: 0,
+      taxAmount: 0,
+      grossAmount: 0,
+    }
+  }
+
   switch (amountType) {
-    case 'gross':
-      return getResultUsingGrossAmount(amount, expenseRate)
-    case 'net':
+    case constants.AMOUNT_TYPES.NET:
       return getResultUsingNetAmount(amount, expenseRate)
+    case constants.AMOUNT_TYPES.GROSS:
+      return getResultUsingGrossAmount(amount, expenseRate)
   }
 }
 
