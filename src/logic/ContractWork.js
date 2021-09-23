@@ -5,13 +5,13 @@ import helpers from 'src/logic/helpers'
  * Calculates expenses
  *
  * @param {number} grossAmount
- * @param {number} expensesRate
+ * @param {number} expenseRate
  * @returns {number}
  */
-function calculateExpenses (grossAmount, expensesRate) {
-  const expenses = helpers.round(grossAmount * expensesRate, 2)
+function calculateExpenses (grossAmount, expenseRate) {
+  const expenses = helpers.round(grossAmount * expenseRate, 2)
 
-  if (expensesRate === 0.5 && expenses > constants.CONTRACT_WORK.MAX_EXPENSES) {
+  if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > constants.CONTRACT_WORK.MAX_EXPENSES) {
     return constants.CONTRACT_WORK.MAX_EXPENSES / 2
   }
   return expenses
@@ -44,11 +44,11 @@ function calculateTaxAmount (basisForTax, taxRate) {
  *
  * @param {number} netAmount
  * @param {number} taxRate
- * @param {number} expensesRate
+ * @param {number} expenseRate
  * @returns {number}
  */
-function calculateGrossAmount (netAmount, taxRate, expensesRate) {
-  return helpers.round(netAmount / (1 - taxRate * (1 - expensesRate)), 2)
+function calculateGrossAmount (netAmount, taxRate, expenseRate) {
+  return helpers.round(netAmount / (1 - taxRate * (1 - expenseRate)), 2)
 }
 
 /**
@@ -66,19 +66,19 @@ function calculateNetAmount (grossAmount, taxAmount) {
  * Gets the result using a net amount
  *
  * @param {number} amount
- * @param {number} expensesRate
+ * @param {number} expenseRate
  * @returns {{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
  */
-function getResultUsingNetAmount (amount, expensesRate) {
+function getResultUsingNetAmount (amount, expenseRate) {
   const netAmount = amount
-  let grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expensesRate)
+  let grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expenseRate)
 
   if (grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
-    expensesRate = 0
-    grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expensesRate)
+    expenseRate = 0
+    grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expenseRate)
   }
 
-  const expenses = calculateExpenses(grossAmount, expensesRate)
+  const expenses = calculateExpenses(grossAmount, expenseRate)
   const basisForTax = calculateBasisForTax(grossAmount, expenses)
   const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
   grossAmount = netAmount + taxAmount
@@ -96,17 +96,17 @@ function getResultUsingNetAmount (amount, expensesRate) {
  * Gets the result using a gross amount
  *
  * @param {number} amount
- * @param {number} expensesRate
+ * @param {number} expenseRate
  * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}}
  */
-function getResultUsingGrossAmount (amount, expensesRate) {
+function getResultUsingGrossAmount (amount, expenseRate) {
   const grossAmount = amount
 
   if (grossAmount < constants.LUMP_SUM_UP_TO_AMOUNT) {
-    expensesRate = 0
+    expenseRate = 0
   }
 
-  const expenses = calculateExpenses(grossAmount, expensesRate)
+  const expenses = calculateExpenses(grossAmount, expenseRate)
   const basisForTax = calculateBasisForTax(grossAmount, expenses)
   const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
   const netAmount = calculateNetAmount(grossAmount, taxAmount)
