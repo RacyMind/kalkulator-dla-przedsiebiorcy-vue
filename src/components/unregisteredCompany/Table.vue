@@ -5,7 +5,7 @@
         Dochód netto
       </div>
       <div>
-        {{ pln(net) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ pln(expenses) }}
+        {{ pln(result.expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ pln(basisForTax) }}
+        {{ pln(result.basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ pln(tax) }}
+        {{ pln(result.taxAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -37,27 +37,51 @@
         Przychód
       </div>
       <div>
-        {{ pln(gross) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getResult } from 'src/logic/UnregisteredCompany'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
   setup () {
-    return { pln }
+    const store = useStore()
+    const amount = computed(() => store.getters['unregisteredCompany/amount'])
+    const expenses = computed(() => store.getters['unregisteredCompany/expenses'])
+
+    return {
+      pln,
+      amount,
+      expenses,
+    }
   },
   computed: {
-    ...mapGetters({
-      net: 'unregisteredCompany/net',
-      gross: 'unregisteredCompany/gross',
-      basisForTax: 'unregisteredCompany/basisForTax',
-      expenses: 'unregisteredCompany/expenses',
-      tax: 'unregisteredCompany/tax',
-    }),
+    result () {
+      return getResult(this.amount, this.expenses)
+    },
+  },
+  watch: {
+    amount: function (val) {
+      if (val) {
+        this.showNotifications()
+      }
+    },
+  },
+  methods: {
+    showNotifications () {
+      const limitForUnregisteredCompany = constants.MINIMUM_SALARY / 2
+      if (this.result.grossAmount > limitForUnregisteredCompany) {
+        this.$q.notify({
+          message: `Przekroczono limit przychodu (${limitForUnregisteredCompany} zł)  dla działalności niezarejestrowanej.`,
+        })
+      }
+    },
   },
 }
 </script>

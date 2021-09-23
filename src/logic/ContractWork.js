@@ -1,6 +1,8 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
+const taxRate = constants.TAX_RATES.FIRST_RATE / 100
+
 /**
  * Calculates expenses
  *
@@ -32,10 +34,9 @@ function calculateBasisForTax (grossAmount, expenses) {
  * Calculates a tax amount
  *
  * @param {number} basisForTax
- * @param {number} taxRate
  * @returns {number}
  */
-function calculateTaxAmount (basisForTax, taxRate) {
+function calculateTaxAmount (basisForTax) {
   return helpers.round(basisForTax * taxRate)
 }
 
@@ -43,11 +44,10 @@ function calculateTaxAmount (basisForTax, taxRate) {
  * Calculates a gros amount
  *
  * @param {number} netAmount
- * @param {number} taxRate
  * @param {number} expenseRate
  * @returns {number}
  */
-function calculateGrossAmount (netAmount, taxRate, expenseRate) {
+function calculateGrossAmount (netAmount, expenseRate) {
   return helpers.round(netAmount / (1 - taxRate * (1 - expenseRate)), 2)
 }
 
@@ -71,16 +71,16 @@ function calculateNetAmount (grossAmount, taxAmount) {
  */
 function getResultUsingNetAmount (amount, expenseRate) {
   const netAmount = amount
-  let grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expenseRate)
+  let grossAmount = calculateGrossAmount(amount, expenseRate)
 
   if (grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
     expenseRate = 0
-    grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expenseRate)
+    grossAmount = calculateGrossAmount(amount, expenseRate)
   }
 
   const expenses = calculateExpenses(grossAmount, expenseRate)
   const basisForTax = calculateBasisForTax(grossAmount, expenses)
-  const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
+  const taxAmount = calculateTaxAmount(basisForTax)
   grossAmount = netAmount + taxAmount
 
   return {
@@ -108,7 +108,7 @@ function getResultUsingGrossAmount (amount, expenseRate) {
 
   const expenses = calculateExpenses(grossAmount, expenseRate)
   const basisForTax = calculateBasisForTax(grossAmount, expenses)
-  const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
+  const taxAmount = calculateTaxAmount(basisForTax)
   const netAmount = calculateNetAmount(grossAmount, taxAmount)
 
   return {

@@ -39,6 +39,7 @@ import helpers from 'src/logic/helpers'
 export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Działalność niezarejestrowana')
+    this.$store.commit('unregisteredCompany/clearAllData')
   },
   methods: {
     scrollTo () {
