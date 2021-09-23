@@ -1,124 +1,150 @@
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
-class ContractWork {
-  /**
-   * Kwota netto
-   * @type {number}
-   */
-  net = 0
-  /**
-   * Kwota brutto
-   * @type {number}
-   */
-  gross = 0
-  /**
-   * Kwota podatku
-   * @type {number}
-   */
-  taxAmount = 0
+/**
+ * Calculates expenses
+ *
+ * @param {number} grossAmount
+ * @param {number} expensesRate
+ * @returns {number}
+ */
+function calculateExpenses (grossAmount, expensesRate) {
+  const expenses = helpers.round(grossAmount * expensesRate, 2)
 
-  /**
-   * Podstawa do obliczenia podatku
-   * @type {number}
-   */
-  basisForTax = 0
+  if (expensesRate === 0.5 && expenses > constants.CONTRACT_WORK.MAX_EXPENSES) {
+    return constants.CONTRACT_WORK.MAX_EXPENSES / 2
+  }
+  return expenses
+}
 
-  /**
-   * Koszty uzyskania przychodu
-   * @type {number}
-   */
-  expenses = 0
+/**
+ * Calculates basis for a tax
+ *
+ * @param {number} grossAmount
+ * @param {number} expenses
+ * @returns {number}
+ */
+function calculateBasisForTax (grossAmount, expenses) {
+  return helpers.round(grossAmount - expenses)
+}
 
-  /**
-   * Stawka kosztow uzyskania przychodu
-   * @type {number}
-   */
-  expensesRate = 0
+/**
+ * Calculates a tax amount
+ *
+ * @param {number} basisForTax
+ * @param {number} taxRate
+ * @returns {number}
+ */
+function calculateTaxAmount (basisForTax, taxRate) {
+  return helpers.round(basisForTax * taxRate)
+}
 
-  /**
-   * Maksymalne koszty przy 50% kosztow przychodu
-   * @type {number}
-   */
-  maxExpenses = constants.AMOUNT_OF_TAX_THRESHOLD / 2
+/**
+ * Calculates a gros amount
+ *
+ * @param {number} netAmount
+ * @param {number} taxRate
+ * @param {number} expensesRate
+ * @returns {number}
+ */
+function calculateGrossAmount (netAmount, taxRate, expensesRate) {
+  return helpers.round(netAmount / (1 - taxRate * (1 - expensesRate)), 2)
+}
 
-  /**
-   * Stawka podatku
-   * @type {number}
-   */
-  taxRate = constants.TAX_RATES.FIRST_RATE / 100
+/**
+ * Calculates a net amount
+ *
+ * @param {number} grossAmount
+ * @param {number} taxAmount
+ * @returns {number}
+ */
+function calculateNetAmount (grossAmount, taxAmount) {
+  return grossAmount - taxAmount
+}
 
-  /**
-   * Oblicza koszty uzyskania przychodu
-   */
-  calculateExpenses () {
-    let expenses = (this.gross * this.expensesRate).toFixed(2)
-    expenses = parseFloat(expenses)
+/**
+ * Gets the result using a net amount
+ *
+ * @param {number} amount
+ * @param {number} expensesRate
+ * @returns {{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
+ */
+function getResultUsingNetAmount (amount, expensesRate) {
+  const netAmount = amount
+  let grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expensesRate)
 
-    if (this.expensesRate === 0.5 && expenses > this.maxExpenses) {
-      expenses = this.maxExpenses
-    }
-    this.expenses = expenses
+  if (grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+    expensesRate = 0
+    grossAmount = calculateGrossAmount(amount, constants.TAX_RATES.FIRST_RATE / 100, expensesRate)
   }
 
-  /**
-   * Oblicza podstawę opodatkowania
-   */
-  calculateBasisForTax () {
-    this.basisForTax = Math.round(this.gross - this.expenses)
-  }
+  const expenses = calculateExpenses(grossAmount, expensesRate)
+  const basisForTax = calculateBasisForTax(grossAmount, expenses)
+  const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
+  grossAmount = netAmount + taxAmount
 
-  /**
-   * Oblicza kwotę podatku
-   */
-  calculateTaxAmount () {
-    this.taxAmount = Math.round(this.basisForTax * this.taxRate)
-  }
-
-  /**
-   * Oblicza kwotę brutto
-   */
-  calculateGross () {
-    const gross = this.net / (1 - this.taxRate * (1 - this.expensesRate
-    ))
-    this.gross = parseFloat(gross.toFixed(2))
-  }
-
-  /**
-   * Oblicza kwotę netto
-   */
-  calculateNet () {
-    this.net = this.gross - this.taxAmount
-  }
-
-  /**
-   * Obliczenia dla kwoty netto
-   */
-  calculateForNetAmount () {
-    this.calculateGross()
-
-    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
-      this.expensesRate = 0
-    }
-
-    this.calculateExpenses()
-    this.calculateGross()
-    this.calculateBasisForTax()
-    this.calculateTaxAmount()
-    this.gross = this.net + this.taxAmount
-  }
-
-  /**
-   * Obliczenia dla kwoty brutto
-   */
-  calculateForGrossAmount () {
-    if (this.gross <= constants.LUMP_SUM_UP_TO_AMOUNT) {
-      this.expensesRate = 0
-    }
-
-    this.calculateExpenses()
-    this.calculateBasisForTax()
-    this.calculateTaxAmount()
-    this.calculateNet()
+  return {
+    netAmount: netAmount,
+    expenses: expenses,
+    basisForTax: basisForTax,
+    taxAmount: taxAmount,
+    grossAmount: grossAmount,
   }
 }
-export default ContractWork
+
+/**
+ * Gets the result using a gross amount
+ *
+ * @param {number} amount
+ * @param {number} expensesRate
+ * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}}
+ */
+function getResultUsingGrossAmount (amount, expensesRate) {
+  const grossAmount = amount
+
+  if (grossAmount < constants.LUMP_SUM_UP_TO_AMOUNT) {
+    expensesRate = 0
+  }
+
+  const expenses = calculateExpenses(grossAmount, expensesRate)
+  const basisForTax = calculateBasisForTax(grossAmount, expenses)
+  const taxAmount = calculateTaxAmount(basisForTax, constants.TAX_RATES.FIRST_RATE / 100)
+  const netAmount = calculateNetAmount(grossAmount, taxAmount)
+
+  return {
+    netAmount: netAmount,
+    expenses: expenses,
+    basisForTax: basisForTax,
+    taxAmount: taxAmount,
+    grossAmount: grossAmount,
+  }
+}
+
+/**
+ * Gets the result
+ *
+ * @param {number} amount
+ * @param {string} amountType
+ * @param {number} expenseRate
+ * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}|{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
+ */
+function getResult (amount, amountType, expenseRate) {
+  if (!amount || !amountType || !expenseRate) {
+    return {
+      netAmount: 0,
+      expenses: 0,
+      basisForTax: 0,
+      taxAmount: 0,
+      grossAmount: 0,
+    }
+  }
+
+  switch (amountType) {
+    case constants.AMOUNT_TYPES.NET:
+      return getResultUsingNetAmount(amount, expenseRate)
+    case constants.AMOUNT_TYPES.GROSS:
+      return getResultUsingGrossAmount(amount, expenseRate)
+  }
+}
+
+export { getResult }

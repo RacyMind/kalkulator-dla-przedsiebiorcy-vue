@@ -41,7 +41,10 @@ export default {
     chartData () {
       return {
         datasets: [{
-          data: [this.result.netAmount, this.result.taxAmount],
+          data: [
+            this.result.netAmount,
+            this.result.taxAmount,
+          ],
           backgroundColor: [colors.lighten(this.$constants.COLORS.INVOICE, -20), colors.lighten(this.$constants.COLORS.INVOICE, 20)],
         }],
         labels: [

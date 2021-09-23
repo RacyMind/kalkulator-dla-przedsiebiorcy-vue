@@ -1,7 +1,5 @@
 export default {
-  net: (state) => state.net,
-  gross: (state) => state.gross,
-  expenses: (state) => state.expenses,
-  basisForTax: (state) => state.basisForTax,
-  tax: (state) => state.tax,
+  amount: (state) => state.amount,
+  amountType: (state) => state.amountType,
+  expenseRate: (state) => state.expenseRate,
 }

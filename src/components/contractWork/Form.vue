@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -10,17 +10,20 @@
           label="Wynagrodzenie*"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
         <div class="q-mt-sm block">
           <q-radio
             v-model="amountType"
-            :val="$constants.AMOUNT_TYPES.NET"
+            :val="constants.AMOUNT_TYPES.NET"
             label="netto"
           />
           <q-radio
             v-model="amountType"
-            :val="$constants.AMOUNT_TYPES.GROSS"
+            :val="constants.AMOUNT_TYPES.GROSS"
             label="brutto"
           />
         </div>
@@ -29,13 +32,13 @@
         <div class="q-mt-sm block">
           <div>Koszty uzyskania przychodu*</div>
           <q-radio
-            v-model="expenses"
-            :val="$constants.CONTRACT_WORK.EXPENSES_20"
+            v-model="expenseRate"
+            :val="constants.CONTRACT_WORK.EXPENSES_20"
             label="20%"
           />
           <q-radio
-            v-model="expenses"
-            :val="$constants.CONTRACT_WORK.EXPENSES_50"
+            v-model="expenseRate"
+            :val="constants.CONTRACT_WORK.EXPENSES_50"
             label="50%"
           />
         </div>
@@ -49,60 +52,46 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
   </q-form>
 </template>
 
-<script>
-import ContractWork from 'src/logic/ContractWork'
+<script>import constants from 'src/logic/constants'
+
 export default {
+  emits: ['submitted'],
+  setup () {
+    return { constants }
+  },
   data () {
     return {
       amount: null,
       amountType: null,
-      expenses: null,
+      expenseRate: null,
     }
   },
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.GROSS
-    this.expenses = this.$constants.CONTRACT_WORK.EXPENSES_20
-
-    this.$store.commit('contractWork/CLEAR_DATA')
+    this.amountType = constants.AMOUNT_TYPES.GROSS
+    this.expenseRate = constants.CONTRACT_WORK.EXPENSES_20
+  },
+  computed: {
+    isDisabledButton () {
+      if (!this.amount || this.expenseRate === null) {
+        return true
+      }
+      return false
+    },
   },
   methods: {
-    calculate () {
-      const contractWork = new ContractWork()
-      contractWork.expensesRate = Number(this.expenses)
-      if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        contractWork.net = Number(this.amount)
-        contractWork.calculateForNetAmount()
-      }
-      if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
-        contractWork.gross = Number(this.amount)
-        contractWork.calculateForGrossAmount()
-      }
+    save () {
+      this.$store.commit('contractWork/setAmount', +this.amount)
+      this.$store.commit('contractWork/setAmountType', this.amountType)
+      this.$store.commit('contractWork/setExpenseRate', +this.expenseRate)
 
-      if (contractWork.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
-        this.$q.notify({
-          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
-        })
-      }
-      if (contractWork.expensesRate === 0.5 && contractWork.expenses >= contractWork.maxExpenses) {
-        this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${contractWork.maxExpenses} zł.`,
-        })
-      }
-
-      this.$store.commit('contractWork/SET_NET', contractWork.net)
-      this.$store.commit('contractWork/SET_TAX', contractWork.taxAmount)
-      this.$store.commit('contractWork/SET_GROSS', contractWork.gross)
-      this.$store.commit('contractWork/SET_BASIS_FOR_TAX', contractWork.basisForTax)
-      this.$store.commit('contractWork/SET_EXPENSES', contractWork.expenses)
-
-      this.$emit('scroll')
+      this.$emit('submitted')
     },
   },
 }
