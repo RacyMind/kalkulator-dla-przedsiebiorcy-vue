@@ -110,6 +110,23 @@ function calculateGrossAmountMinusContributions (grossAmount, pensionContributio
 }
 
 /**
+ * Calculates the amount of deduction of the health contribution from tax
+ *
+ * @param {number} grossAmount
+ * @param {number} grossAmountMinusContributions
+ * @returns {number}
+ */
+function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, grossAmountMinusContributions) {
+  let healthRate = constants.ZUS.EMPLOYEE.HEALTH_RATE
+
+  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
+    healthRate = constants.US.EMPLOYEE.HEALTH_RATE
+  }
+
+  return helpers.round(grossAmountMinusContributions * healthRate, 2)
+}
+
+/**
  * Sums contributions of the employee
  *
  * @param {number} pensionContribution
@@ -132,6 +149,7 @@ export default {
   calculateAccidentContributionOfEmployer,
   calculatePpkOfEmployee,
   calculatePpkOfEmployer,
+  calculateAmountOfDeductionOfHealthContributionFromTax,
   sumContributionsOfEmployee,
   calculateGrossAmountMinusContributions,
 }

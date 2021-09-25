@@ -51,14 +51,14 @@ function calculateBasisForTax (grossAmount, expenses, grossAmountMinusContributi
  *
  * @param {number} grossAmount
  * @param {number} basisForTax
- * @param {number} amountOfDeductionOfHealthContributionsFromTax
+ * @param {number} amountOfDeductionOfHealthContributionFromTax
  * @returns {number}
  */
-function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealthContributionsFromTax) {
+function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax) {
   let taxAmount = basisForTax * taxRate
 
   if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
-    taxAmount -= amountOfDeductionOfHealthContributionsFromTax
+    taxAmount -= amountOfDeductionOfHealthContributionFromTax
   }
 
   return helpers.round(taxAmount)
