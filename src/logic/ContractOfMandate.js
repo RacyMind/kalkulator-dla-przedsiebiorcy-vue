@@ -4,39 +4,6 @@ import helpers from 'src/logic/helpers'
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 
 /**
- * Calculates the ta amount
- *
- * @param {number} grossAmount
- * @param {number} basisForTax
- * @param {number} amountTaxDeductibilityOfHealthContributions
- * @returns {number}
- */
-function calculateTaxAmount (grossAmount, basisForTax, amountTaxDeductibilityOfHealthContributions) {
-  let taxAmount = basisForTax * taxRate
-
-  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
-    taxAmount -= amountTaxDeductibilityOfHealthContributions
-  }
-
-  return (helpers.round(taxAmount))
-}
-
-/**
- * Calculates basis for expenses
- *
- * @param {number} grossAmount
- * @param {number} pensionContributions
- * @param {number} rentContributions
- * @param {number} sickContributions
- * @returns {number}
- */
-function calculateBasisForExpenses (grossAmount, pensionContributions, rentContributions, sickContributions) {
-  const contributions = pensionContributions + rentContributions + sickContributions
-
-  return grossAmount - contributions
-}
-
-/**
  * Calculates expenses
  *
  * @param {number} basisForExpenses
@@ -45,8 +12,9 @@ function calculateBasisForExpenses (grossAmount, pensionContributions, rentContr
  * @returns {number}
  */
 function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorExpenses = 0) {
-  const normalPartOfWork = 1 - partOfWorkWithAuthorExpenses
-  let expenses = basisForExpenses * normalPartOfWork * expenseRate
+  const partOfWorkWithoutAuthorExpenses = 1 - partOfWorkWithAuthorExpenses
+
+  let expenses = basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate
 
   if (partOfWorkWithAuthorExpenses) {
     expenses += basisForExpenses * partOfWorkWithAuthorExpenses * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
@@ -57,4 +25,55 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
   }
 
   return helpers.round(expenses, 2)
+}
+
+/**
+ * Calculates the basis for tax
+ *
+ * @param {number} grossAmount
+ * @param {number} expenses
+ * @param {number} grossAmountMinusContributions
+ * @returns {number}
+ */
+function calculateBasisForTax (grossAmount, expenses, grossAmountMinusContributions) {
+  let basisForTax = grossAmount
+
+  if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
+    basisForTax = basisForTax - expenses -
+      grossAmountMinusContributions
+  }
+
+  return helpers.round(basisForTax)
+}
+
+/**
+ * Calculates the ta amount
+ *
+ * @param {number} grossAmount
+ * @param {number} basisForTax
+ * @param {number} amountOfDeductionOfHealthContributionsFromTax
+ * @returns {number}
+ */
+function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealthContributionsFromTax) {
+  let taxAmount = basisForTax * taxRate
+
+  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
+    taxAmount -= amountOfDeductionOfHealthContributionsFromTax
+  }
+
+  return helpers.round(taxAmount)
+}
+
+/**
+ * Calculates the net amount
+ *
+ * @param {number} grossAmount
+ * @param {number} taxAmount
+ * @param {number} contributions
+ * @param {number} ppkAmount
+ * @returns {number}
+ */
+function calculateNetAmount (grossAmount, taxAmount, contributions, ppkAmount) {
+  return helpers.round(grossAmount - taxAmount - ppkAmount -
+    contributions, 2)
 }
