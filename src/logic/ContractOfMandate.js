@@ -82,13 +82,13 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
 function getMonthlyResult (
   grossAmount,
   accidentContributionRate,
+  ppkContributionRate,
+  partOfWorkWithAuthorExpenses,
   isPensionContribution,
   isRentContribution,
   isSickContribution,
   isHealthContribution,
-  ppkContributionRate,
   isYoung,
-  partOfWorkWithAuthorExpenses,
   ) {
   let expenseRate = 0
   let accidentContribution = 0
@@ -137,4 +137,18 @@ function getMonthlyResult (
 
   const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, ppkContribution)
+
+  return {
+    netAmount: netAmount,
+    grossAmount: grossAmount,
+    accidentContribution: accidentContribution,
+    pensionContribution: pensionContribution,
+    rentContribution: rentContribution,
+    sickContribution: sickContribution,
+    ppkContribution: ppkContribution,
+    healthContribution: healthContribution,
+    expenses: expenses,
+    basisForTax: basisForTax,
+    taxAmount: taxAmount,
+  }
 }
