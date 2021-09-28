@@ -7,18 +7,8 @@ import constants from 'src/logic/constants'
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculatePensionContributionOfEmployee (basisForRentAndPension) {
+function calculatePensionContribution (basisForRentAndPension) {
   return helpers.round(constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * basisForRentAndPension, 2)
-}
-
-/**
- * Calculates the pension contribution of the employer
- *
- * @param {number} basisForRentAndPension
- * @returns {number}
- */
-function calculatePensionContributionOfEmployer (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYER.PENSION_RATE / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -27,18 +17,8 @@ function calculatePensionContributionOfEmployer (basisForRentAndPension) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculateRentContributionOfEmployee (basisForRentAndPension) {
+function calculateRentContribution (basisForRentAndPension) {
   return helpers.round(constants.ZUS.EMPLOYEE.RENT_RATE / 100 * basisForRentAndPension, 2)
-}
-
-/**
- * Calculates the rent contribution of the employer
- *
- * @param {number} basisForRentAndPension
- * @returns {number}
- */
-function calculateRentContributionOfEmployer (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYER.RENT_RATE / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -47,7 +27,7 @@ function calculateRentContributionOfEmployer (basisForRentAndPension) {
  * @param {number} grossAmount
  * @returns {number}
  */
-function calculateSickContributionOfEmployee (grossAmount) {
+function calculateSickContribution (grossAmount) {
   return helpers.round(constants.ZUS.EMPLOYEE.SICK_RATE / 100 * grossAmount, 2)
 }
 
@@ -57,18 +37,18 @@ function calculateSickContributionOfEmployee (grossAmount) {
  * @param {number} amount
  * @returns {number}
  */
-function calculateHealthContributionOfEmployee (amount) {
+function calculateHealthContribution (amount) {
   return helpers.round(constants.ZUS.EMPLOYEE.HEALTH_RATE / 100 * amount, 2)
 }
 
 /**
- * Calculates the accident contribution of the employer
+ * Calculates the accident contribution of the employee
  *
  * @param {number} grossAMount
  * @param {number} accidentRate
  * @returns {number}
  */
-function calculateAccidentContributionOfEmployer (grossAMount, accidentRate) {
+function calculateAccidentContribution (grossAMount, accidentRate) {
   return helpers.round(accidentRate * grossAMount, 2)
 }
 
@@ -79,18 +59,7 @@ function calculateAccidentContributionOfEmployer (grossAMount, accidentRate) {
  * @param {number} ppkRate
  * @returns {number}
  */
-function calculatePpkOfEmployee (grossAmount, ppkRate) {
-  return helpers.round(ppkRate * grossAmount, 2)
-}
-
-/**
- * Calculates the PPK of the employer
- *
- * @param {number} grossAmount
- * @param {number} ppkRate
- * @returns {number}
- */
-function calculatePpkOfEmployer (grossAmount, ppkRate) {
+function calculatePpkContribution (grossAmount, ppkRate) {
   return helpers.round(ppkRate * grossAmount, 2)
 }
 
@@ -133,23 +102,21 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, gro
  * @param {number} rentContribution
  * @param {number} sickContribution
  * @param {number} healthContribution
+ * @param {number} accidentContribution
  * @returns {*}
  */
-function sumContributionsOfEmployee (pensionContribution, rentContribution, sickContribution, healthContribution) {
-  return pensionContribution + rentContribution + sickContribution + healthContribution
+function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution) {
+  return pensionContribution + rentContribution + sickContribution + healthContribution + accidentContribution
 }
 
 export default {
-  calculatePensionContributionOfEmployee,
-  calculatePensionContributionOfEmployer,
-  calculateRentContributionOfEmployee,
-  calculateRentContributionOfEmployer,
-  calculateSickContributionOfEmployee,
-  calculateHealthContributionOfEmployee,
-  calculateAccidentContributionOfEmployer,
-  calculatePpkOfEmployee,
-  calculatePpkOfEmployer,
+  calculatePensionContribution,
+  calculateRentContribution,
+  calculateSickContribution,
+  calculateHealthContribution,
+  calculateAccidentContribution,
+  calculatePpkContribution,
   calculateAmountOfDeductionOfHealthContributionFromTax,
-  sumContributionsOfEmployee,
+  sumContributions,
   calculateGrossAmountMinusContributions,
 }
