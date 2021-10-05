@@ -1,53 +1,44 @@
 export default {
-  SET_NET (state, net) {
-    state.net = net
+  setGrossAmount (state, grossAmount) {
+    state.grossAmount = grossAmount
   },
-  SET_GROSS (state, gross) {
-    state.gross = gross
+  setAccidentContributionRate (state, accidentContributionRate) {
+    state.accidentContributionRate = accidentContributionRate
   },
-  SET_TAX (state, tax) {
-    state.tax = tax
+  setPpkEmployeeContributionRate (state, ppkEmployeeContributionRate) {
+    state.ppkEmployeeContributionRate = ppkEmployeeContributionRate
   },
-  SET_BASIS_FOR_TAX (state, basisForTax) {
-    state.basisForTax = basisForTax
+  setPpkEmployerContributionRate (state, ppkEmployerContributionRate) {
+    state.ppkEmployerContributionRate = ppkEmployerContributionRate
   },
-  SET_EXPENSES (state, expenses) {
-    state.expenses = expenses
+  setPartOfWorkWithAuthorExpenses (state, partOfWorkWithAuthorExpenses) {
+    state.partOfWorkWithAuthorExpenses = partOfWorkWithAuthorExpenses
   },
-  SET_AUTHOR_EXPENSES_PART (state, authorExpensePart) {
-    state.authorExpensePart = authorExpensePart
+  setIsPensionContribution (state, isPensionContribution) {
+    state.isPensionContribution = isPensionContribution
   },
-  SET_EMPLOYEE_ZUS (state, employeeZus) {
-    state.employeeZus = employeeZus
+  setIsRentContribution (state, isRentContribution) {
+    state.isRentContribution = isRentContribution
   },
-  SET_EMPLOYER_ZUS (state, employerZus) {
-    state.employerZus = employerZus
+  setIsSickContribution (state, isSickContribution) {
+    state.isSickContribution = isSickContribution
   },
-  SET_EMPLOYEE_PPK (state, employeePpk) {
-    state.employeePpk = employeePpk
+  setIsHealthContribution (state, isHealthContribution) {
+    state.isHealthContribution = isHealthContribution
   },
-  SET_EMPLOYER_PPK (state, employerPpk) {
-    state.employerPpk = employerPpk
+  setIsYoung (state, isYoung) {
+    state.isYoung = isYoung
   },
-  CLEAR_DATA (state) {
-    state.net = null
-    state.gross = null
-    state.basisForTax = null
-    state.expenses = null
-    state.authorExpensePart = null
-    state.tax = null
-    state.employeeZus = {
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-    }
-    state.employerZus = {
-      accident: null,
-      rent: null,
-      pension: null,
-    }
-    state.employeePpk = null
-    state.employerPpk = null
+  clearData (state) {
+    state.grossAmount = null
+    state.accidentContributionRate = 0
+    state.ppkEmployeeContributionRate = 0
+    state.ppkEmployerContributionRate = 0
+    state.partOfWorkWithAuthorExpenses = 0
+    state.isPensionContribution = false
+    state.isRentContribution = false
+    state.isSickContribution = false
+    state.isHealthContribution = false
+    state.isYoung = false
   },
 }

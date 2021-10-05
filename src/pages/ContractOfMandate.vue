@@ -10,32 +10,32 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
-        @scroll="scrollTo"
+        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <TotalTable />
+      <!--      <TotalTable />-->
       <SectionHeader>
         <div class="row justify-between">
           <div>
             <q-icon name="o_credit_card" />
             Podsumowanie dla pracownika
           </div>
-          <q-btn
+          <!--          <q-btn
             color="white"
             size="sm"
             label="pokaż cały rok"
             :disable="!gross"
             outline
             @click="openEmployeeModal = true"
-          />
+          />-->
         </div>
       </SectionHeader>
       <EmployeeTable />
-      <SectionHeader>
+      <!--      <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
@@ -69,7 +69,7 @@
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
         <WholeYearForEmployer />
-      </q-dialog>
+      </q-dialog>-->
     </div>
     <Footer />
   </q-page>
@@ -87,7 +87,6 @@ import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
 import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
 import Footer from 'components/Footer'
-import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 export default {
   data () {
@@ -98,11 +97,7 @@ export default {
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
-  },
-  computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-    }),
+    this.$store.commit('contractOfMandate/clearData')
   },
   methods: {
     scrollTo () {

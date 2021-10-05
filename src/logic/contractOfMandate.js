@@ -33,22 +33,22 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
  *
  * @param {number} grossAmount
  * @param {number} expenses
- * @param {number} grossAmountMinusemployeeContributions
+ * @param {number} grossAmountMinusEmployeeContributions
  * @returns {number}
  */
-function calculateBasisForTax (grossAmount, expenses, grossAmountMinusemployeeContributions) {
+function calculateBasisForTax (grossAmount, expenses, grossAmountMinusEmployeeContributions) {
   let basisForTax = grossAmount
 
-  if (this.gross > constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
     basisForTax = basisForTax - expenses -
-      grossAmountMinusemployeeContributions
+      grossAmountMinusEmployeeContributions
   }
 
   return helpers.round(basisForTax)
 }
 
 /**
- * Calculates the ta amount
+ * Calculates the tax amount
  *
  * @param {number} grossAmount
  * @param {number} basisForTax
@@ -79,9 +79,21 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
     employeeContributions, 2)
 }
 
-function getMonthlyResult (
+/**
+ * Returns the monthly results of an employee
+ *
+ * @param {number} grossAmount
+ * @param {number} ppkContributionRate
+ * @param {number} partOfWorkWithAuthorExpenses
+ * @param {boolean} isPensionContribution
+ * @param {boolean} isRentContribution
+ * @param {boolean} isSickContribution
+ * @param {boolean} isHealthContribution
+ * @param {boolean} isYoung
+ * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount, healthContribution: number, taxAmount: number, accidentContribution: number, pensionContribution: number, expenses: number}}
+ */
+function getMonthlyResultOfEmployee (
   grossAmount,
-  accidentContributionRate,
   ppkContributionRate,
   partOfWorkWithAuthorExpenses,
   isPensionContribution,
@@ -91,7 +103,6 @@ function getMonthlyResult (
   isYoung,
   ) {
   let expenseRate = 0
-  let accidentContribution = 0
   let pensionContribution = 0
   let rentContribution = 0
   let sickContribution = 0
@@ -106,14 +117,11 @@ function getMonthlyResult (
     expenseRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
   }
 
-  if (accidentContributionRate) {
-    accidentContribution = employeeContributions.calculateAccidentContribution(grossAmount, accidentContributionRate)
-  }
   if (isPensionContribution) {
-    pensionContribution = employeeContributions.calculateRentContribution(grossAmount)
+    pensionContribution = employeeContributions.calculatePensionContribution(grossAmount)
   }
   if (isRentContribution) {
-    rentContribution = employeeContributions.calculatePensionContribution(grossAmount)
+    rentContribution = employeeContributions.calculateRentContribution(grossAmount)
   }
   if (isSickContribution) {
     sickContribution = employeeContributions.calculateSickContribution(grossAmount)
@@ -125,7 +133,7 @@ function getMonthlyResult (
   const grossAmountMinusEmployeeContributions = employeeContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution)
 
   if (isHealthContribution) {
-    healthContribution = employeeContributions.calculateHealthContribution(grossAmount)
+    healthContribution = employeeContributions.calculateHealthContribution(grossAmountMinusEmployeeContributions)
     amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(grossAmount, grossAmountMinusEmployeeContributions)
   }
 
@@ -135,13 +143,12 @@ function getMonthlyResult (
     taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
   }
 
-  const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution)
+  const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, ppkContribution)
 
   return {
     netAmount: netAmount,
     grossAmount: grossAmount,
-    accidentContribution: accidentContribution,
     pensionContribution: pensionContribution,
     rentContribution: rentContribution,
     sickContribution: sickContribution,
@@ -152,3 +159,5 @@ function getMonthlyResult (
     taxAmount: taxAmount,
   }
 }
+
+export { getMonthlyResultOfEmployee }

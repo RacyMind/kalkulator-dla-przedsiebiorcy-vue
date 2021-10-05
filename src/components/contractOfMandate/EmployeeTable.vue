@@ -5,7 +5,7 @@
         Wynagrodzenie netto
       </div>
       <div>
-        {{ pln(net) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ pln(expenses) }}
+        {{ pln(result.expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ pln(basisForTax) }}
+        {{ pln(result.basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ pln(tax) }}
+        {{ pln(result.taxAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ pln(zusTotal) }}
+        {{ pln(totalZusContributions) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ pln(employeeZus.health) }}
+        {{ pln(result.healthContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ pln(employeeZus.sick) }}
+        {{ pln(result.sickContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ pln(employeeZus.rent) }}
+        {{ pln(result.rentContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ pln(employeeZus.pension) }}
+        {{ pln(result.pensionContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -77,7 +77,7 @@
         PPK
       </div>
       <div>
-        {{ pln(employeePpk) }}
+        {{ pln(result.ppkContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -85,43 +85,78 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ pln(gross) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getMonthlyResultOfEmployee } from 'src/logic/contractOfMandate'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
   setup () {
-    return { pln }
+    const store = useStore()
+    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
+    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
+    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
+    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
+
+    return {
+      pln,
+      grossAmount,
+      ppkEmployeeContributionRate,
+      partOfWorkWithAuthorExpenses,
+      isPensionContribution,
+      isRentContribution,
+      isSickContribution,
+      isHealthContribution,
+      isYoung,
+    }
   },
   computed: {
-    ...mapGetters({
-      net: 'contractOfMandate/net',
-      gross: 'contractOfMandate/gross',
-      basisForTax: 'contractOfMandate/basisForTax',
-      expenses: 'contractOfMandate/expenses',
-      tax: 'contractOfMandate/tax',
-      employeeZus: 'contractOfMandate/employeeZus',
-      employeePpk: 'contractOfMandate/employeePpk',
-    }),
-    zusTotal () {
-      if (this.isZusEmpty(this.employeeZus)) {
-        return null
+    result () {
+      return getMonthlyResultOfEmployee(
+        this.grossAmount,
+        this.ppkEmployeeContributionRate,
+        this.partOfWorkWithAuthorExpenses,
+        this.isPensionContribution,
+        this.isRentContribution,
+        this.isSickContribution,
+        this.isHealthContribution,
+        this.isYoung,
+      )
+    },
+    totalZusContributions () {
+      return [
+        this.result.pensionContribution,
+        this.result.rentContribution,
+        this.result.sickContribution,
+        this.result.healthContribution,
+      ].reduce((current, sum) => current + sum)
+    },
+  },
+  watch: {
+    grossAmount: function (val) {
+      if (val) {
+        this.showNotifications()
       }
-      return Object.values(this.employeeZus).reduce((current, sum) => current + sum)
     },
   },
   methods: {
-    isZusEmpty (zus) {
-      if (!zus.health && !zus.rent &&
-        !zus.pension && !zus.sick) {
-        return true
+    showNotifications () {
+      if (this.grossAmount && this.result.grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+        this.$q.notify({
+          message: `Dla wynagrodzenia brutto do ${constants.LUMP_SUM_UP_TO_AMOUNT} zł płaci się podatek zryczałtowany.`,
+        })
       }
-      return false
     },
   },
 }

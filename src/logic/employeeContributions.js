@@ -102,11 +102,10 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, gro
  * @param {number} rentContribution
  * @param {number} sickContribution
  * @param {number} healthContribution
- * @param {number} accidentContribution
- * @returns {*}
+ * @returns {number}
  */
-function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution) {
-  return pensionContribution + rentContribution + sickContribution + healthContribution + accidentContribution
+function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution) {
+  return pensionContribution + rentContribution + sickContribution + healthContribution
 }
 
 export default {
