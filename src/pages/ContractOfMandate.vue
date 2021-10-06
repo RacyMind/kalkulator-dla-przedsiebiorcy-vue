@@ -35,11 +35,11 @@
         </div>
       </SectionHeader>
       <EmployeeTable />
-      <!--      <SectionHeader>
+      <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics />
+      <!--      <EmployeeStatistics />-->
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -47,29 +47,29 @@
             <q-icon name="o_credit_card" />
             Podsumowanie dla pracodawcy
           </div>
-          <q-btn
+          <!--          <q-btn
             color="white"
             size="sm"
             label="pokaż cały rok"
             :disable="!gross"
             outline
             @click="openEmployerModal = true"
-          />
+          />-->
         </div>
       </SectionHeader>
       <EmployerTable />
-      <SectionHeader>
-        <q-icon name="o_pie_chart" />
-        Wykres dla pracodawcy
-      </SectionHeader>
-      <EmployerStatistics />
+      <!--       <SectionHeader>
+         <q-icon name="o_pie_chart" />
+         Wykres dla pracodawcy
+       </SectionHeader>
+       <EmployerStatistics />
 
-      <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee />
-      </q-dialog>
-      <q-dialog v-model="openEmployerModal">
-        <WholeYearForEmployer />
-      </q-dialog>-->
+       <q-dialog v-model="openEmployeeModal">
+         <WholeYearForEmployee />
+       </q-dialog>
+       <q-dialog v-model="openEmployerModal">
+         <WholeYearForEmployer />
+       </q-dialog>-->
     </div>
     <Footer />
   </q-page>

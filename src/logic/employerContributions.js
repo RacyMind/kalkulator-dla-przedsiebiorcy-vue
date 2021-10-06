@@ -20,6 +20,18 @@ function calculatePensionContribution (basisForRentAndPension) {
 function calculateRentContribution (basisForRentAndPension) {
   return helpers.round(constants.ZUS.EMPLOYER.RENT_RATE / 100 * basisForRentAndPension, 2)
 }
+
+/**
+ * Calculates the accident contribution of the employer
+ *
+ * @param {number} grossAMount
+ * @param {number} accidentRate
+ * @returns {number}
+ */
+function calculateAccidentContribution (grossAMount, accidentRate) {
+  return helpers.round(accidentRate * grossAMount, 2)
+}
+
 /**
  * Calculates the PPK of the employer
  *
@@ -34,5 +46,6 @@ function calculatePpkContribution (grossAmount, ppkRate) {
 export default {
   calculatePensionContribution,
   calculateRentContribution,
+  calculateAccidentContribution,
   calculatePpkContribution,
 }

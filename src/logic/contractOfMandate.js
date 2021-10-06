@@ -1,6 +1,7 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 import employeeContributions from 'src/logic/employeeContributions'
+import employerContributions from 'src/logic/employerContributions'
 
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 
@@ -89,7 +90,7 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
  * @param {boolean} isSickContribution
  * @param {boolean} isHealthContribution
  * @param {boolean} isYoung
- * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount, healthContribution: number, taxAmount: number, accidentContribution: number, pensionContribution: number, expenses: number}}
+ * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
  */
 function getMonthlyResultOfEmployee (
   grossAmount,
@@ -159,4 +160,51 @@ function getMonthlyResultOfEmployee (
   }
 }
 
-export { getMonthlyResultOfEmployee }
+/**
+ * Returns the monthly results of an employer
+ *
+ * @param {number} grossAmount
+ * @param {number} accidentContributionRate
+ * @param {number} ppkContributionRate
+ * @param {boolean} isPensionContribution
+ * @param {boolean} isRentContribution
+ * @returns {{totalAmount: number, ppkContribution: number, rentContribution: number, grossAmount: number, accidentContribution: number, pensionContribution: number}}
+ */
+function getMonthlyResultOfEmployer (
+  grossAmount,
+  accidentContributionRate,
+  ppkContributionRate,
+  isPensionContribution,
+  isRentContribution,
+) {
+  let pensionContribution = 0
+  let rentContribution = 0
+  let accidentContribution = 0
+  let ppkContribution = 0
+
+  if (isPensionContribution) {
+    pensionContribution = employerContributions.calculatePensionContribution(grossAmount)
+  }
+  if (isRentContribution) {
+    rentContribution = employerContributions.calculateRentContribution(grossAmount)
+  }
+  if (accidentContributionRate) {
+    accidentContribution = employerContributions.calculateAccidentContribution(grossAmount, accidentContributionRate)
+  }
+  if (ppkContributionRate) {
+    ppkContribution = employerContributions.calculatePpkContribution(grossAmount, ppkContributionRate)
+  }
+
+  const totalAmount = grossAmount + pensionContribution + rentContribution + accidentContribution + ppkContribution
+
+  return {
+    totalAmount: totalAmount,
+    grossAmount: grossAmount,
+    pensionContribution: pensionContribution,
+    rentContribution: rentContribution,
+    accidentContribution: accidentContribution,
+    ppkContribution: ppkContribution,
+  }
+}
+
+export { getMonthlyResultOfEmployee, getMonthlyResultOfEmployer }
