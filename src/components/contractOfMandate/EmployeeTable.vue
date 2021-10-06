@@ -103,7 +103,7 @@ export default {
     const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
     const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
     const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
     const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
     const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
     const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])

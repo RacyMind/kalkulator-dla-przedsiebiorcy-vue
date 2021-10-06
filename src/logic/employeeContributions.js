@@ -86,10 +86,10 @@ function calculateGrossAmountMinusContributions (grossAmount, pensionContributio
  * @returns {number}
  */
 function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, grossAmountMinusContributions) {
-  let healthRate = constants.ZUS.EMPLOYEE.HEALTH_RATE
+  let healthRate = constants.ZUS.EMPLOYEE.HEALTH_RATE / 100
 
   if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
-    healthRate = constants.US.EMPLOYEE.HEALTH_RATE
+    healthRate = constants.US.EMPLOYEE.HEALTH_RATE / 100
   }
 
   return helpers.round(grossAmountMinusContributions * healthRate, 2)

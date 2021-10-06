@@ -32,16 +32,15 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
  * Calculates the basis for tax
  *
  * @param {number} grossAmount
- * @param {number} expenses
  * @param {number} grossAmountMinusEmployeeContributions
+ * @param {number} expenses
  * @returns {number}
  */
-function calculateBasisForTax (grossAmount, expenses, grossAmountMinusEmployeeContributions) {
+function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses) {
   let basisForTax = grossAmount
 
-  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
-    basisForTax = basisForTax - expenses -
-      grossAmountMinusEmployeeContributions
+  if (grossAmountMinusEmployeeContributions > constants.LUMP_SUM_UP_TO_AMOUNT) {
+    basisForTax = grossAmountMinusEmployeeContributions - expenses
   }
 
   return helpers.round(basisForTax)
@@ -139,7 +138,7 @@ function getMonthlyResultOfEmployee (
 
   if (!isYoung) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
-    basisForTax = calculateBasisForTax(grossAmount, expenses, grossAmountMinusEmployeeContributions)
+    basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
     taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
   }
 

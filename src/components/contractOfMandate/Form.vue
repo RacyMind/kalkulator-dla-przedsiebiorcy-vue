@@ -8,9 +8,13 @@
           min="0"
           step="0.01"
           label="Wynagrodzenie*"
+          suffix="zł"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
         <div class="q-mt-sm block">
           <div class="row">
@@ -42,8 +46,13 @@
             min="0"
             max="100"
             step="1"
-            label="Część pracy (%)*"
+            label="Część pracy*"
             color="brand"
+            suffix="%"
+            :rules="[
+              val => !!val || '* Wpisz wartość',
+            ]"
+            lazy-rules
           />
         </div>
       </div>
@@ -89,9 +98,13 @@
                 class="full-width"
                 min="0"
                 step="0.01"
-                label="Składka wypadkowa (%)*"
+                label="Składka wypadkowa*"
                 color="brand"
-                required
+                suffix="%"
+                :rules="[
+                  val => !!val || '* Wpisz wartość',
+                ]"
+                lazy-rules
               />
               <q-toggle
                 v-model="isPpkContribution"
@@ -109,8 +122,13 @@
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
                     :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
                     step="0.01"
-                    label="Pracodawca (%)"
+                    label="Pracodawca"
                     color="brand"
+                    suffix="%"
+                    :rules="[
+                      val => !!val || '* Wpisz wartość',
+                    ]"
+                    lazy-rules
                   />
                 </div>
                 <div class="col-6 q-pl-md-sm">
@@ -121,8 +139,13 @@
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
                     :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
                     step="0.01"
-                    label="Pracownik (%)"
+                    label="Pracownik"
                     color="brand"
+                    suffix="%"
+                    :rules="[
+                      val => !!val || '* Wpisz wartość',
+                    ]"
+                    lazy-rules
                   />
                 </div>
               </div>
@@ -255,6 +278,7 @@ export default {
       this.$store.commit('contractOfMandate/setIsRentContribution', this.isRentContribution)
       this.$store.commit('contractOfMandate/setIsSickContribution', this.isSickContribution)
       this.$store.commit('contractOfMandate/setIsHealthContribution', this.isHealthContribution)
+      this.$store.commit('contractOfMandate/setIsYoung', this.isYoung)
 
       this.$emit('submitted')
     },
