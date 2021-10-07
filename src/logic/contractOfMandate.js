@@ -121,7 +121,7 @@ function getMonthlyResultOfEmployee (
   isSickContribution,
   isHealthContribution,
   isYoung,
-  ) {
+) {
   let expenseRate = 0
   let pensionContribution = 0
   let rentContribution = 0
@@ -133,15 +133,17 @@ function getMonthlyResultOfEmployee (
   let taxAmount = 0
   let expenses = 0
 
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
+
   if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
     expenseRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
   }
 
   if (isPensionContribution) {
-    pensionContribution = employeeContributions.calculatePensionContribution(grossAmount)
+    pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
   if (isRentContribution) {
-    rentContribution = employeeContributions.calculateRentContribution(grossAmount)
+    rentContribution = employeeContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
   if (isSickContribution) {
     sickContribution = employeeContributions.calculateSickContribution(grossAmount)
@@ -238,6 +240,7 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   const results = []
   let i = 0
   totalBasisForRentAndPensionContributions = 0
+
   monthlyInputs.forEach(input => {
     const result = getMonthlyResultOfEmployer(...Object.values(input))
     result.month = constants.LOCALE_DATE.months[i]
@@ -247,23 +250,21 @@ function getYearlyResultOfEmployer (monthlyInputs) {
     i++
   })
 
-  if (results.length) {
-    results.push({
-      month: constants.LABELS.WHOLE_YEAR,
-      totalAmount: results.map(result => result.totalAmount)
-        .reduce((current, sum) => current + sum, 0),
-      grossAmount: results.map(result => result.grossAmount)
-        .reduce((current, sum) => current + sum, 0),
-      pensionContribution: results.map(result => result.pensionContribution)
-        .reduce((current, sum) => current + sum, 0),
-      rentContribution: results.map(result => result.rentContribution)
-        .reduce((current, sum) => current + sum, 0),
-      accidentContribution: results.map(result => result.accidentContribution)
-        .reduce((current, sum) => current + sum, 0),
-      ppkContribution: results.map(result => result.ppkContribution)
-        .reduce((current, sum) => current + sum, 0),
-    })
-  }
+  results.push({
+    month: constants.LABELS.WHOLE_YEAR,
+    totalAmount: results.map(result => result.totalAmount)
+      .reduce((current, sum) => current + sum, 0),
+    grossAmount: results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0),
+    pensionContribution: results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0),
+    rentContribution: results.map(result => result.rentContribution)
+      .reduce((current, sum) => current + sum, 0),
+    accidentContribution: results.map(result => result.accidentContribution)
+      .reduce((current, sum) => current + sum, 0),
+    ppkContribution: results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0),
+  })
 
   return {
     rows: results,
@@ -271,4 +272,55 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   }
 }
 
-export { getMonthlyResultOfEmployee, getMonthlyResultOfEmployer, getYearlyResultOfEmployer }
+/**
+ * Returns the yearly results of an employee
+ *
+ * @param {[]} monthlyInputs
+ * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
+ */
+function getYearlyResultOfEmployee (monthlyInputs) {
+  const results = []
+  let i = 0
+  totalBasisForRentAndPensionContributions = 0
+
+  monthlyInputs.forEach(input => {
+    const result = getMonthlyResultOfEmployee(...Object.values(input))
+    result.month = constants.LOCALE_DATE.months[i]
+    results.push(result)
+
+    totalBasisForRentAndPensionContributions += result.grossAmount
+    i++
+  })
+
+  results.push({
+    month: constants.LABELS.WHOLE_YEAR,
+    netAmount: results.map(result => result.netAmount)
+      .reduce((current, sum) => current + sum, 0),
+    grossAmount: results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0),
+    pensionContribution: results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0),
+    rentContribution: results.map(result => result.rentContribution)
+      .reduce((current, sum) => current + sum, 0),
+    sickContribution: results.map(result => result.sickContribution)
+      .reduce((current, sum) => current + sum, 0),
+    healthContribution: results.map(result => result.healthContribution)
+      .reduce((current, sum) => current + sum, 0),
+    ppkContribution: results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0),
+    taxAmount: results.map(result => result.taxAmount)
+      .reduce((current, sum) => current + sum, 0),
+  })
+
+  return {
+    rows: results,
+    totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
+  }
+}
+
+export {
+  getMonthlyResultOfEmployee,
+  getMonthlyResultOfEmployer,
+  getYearlyResultOfEmployer,
+  getYearlyResultOfEmployee,
+}
