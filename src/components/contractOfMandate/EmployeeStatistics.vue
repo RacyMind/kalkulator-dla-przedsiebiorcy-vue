@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net"
+      v-if="result.netAmount"
       :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
@@ -10,33 +10,63 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
+import { getMonthlyResultOfEmployee } from 'src/logic/contractOfMandate'
 
 export default {
+  setup () {
+    const store = useStore()
+    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
+    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
+    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
+    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
+    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
+
+    return {
+      grossAmount,
+      ppkEmployeeContributionRate,
+      partOfWorkWithAuthorExpenses,
+      isPensionContribution,
+      isRentContribution,
+      isSickContribution,
+      isHealthContribution,
+      isYoung,
+    }
+  },
   data () {
     return {
       componentKey: 0,
     }
   },
   computed: {
-    ...mapGetters({
-      net: 'contractOfMandate/net',
-      tax: 'contractOfMandate/tax',
-      employeeZus: 'contractOfMandate/employeeZus',
-      employeePpk: 'contractOfMandate/employeePpk',
-    }),
+    result () {
+      return getMonthlyResultOfEmployee(
+        this.grossAmount,
+        this.ppkEmployeeContributionRate,
+        this.partOfWorkWithAuthorExpenses,
+        this.isPensionContribution,
+        this.isRentContribution,
+        this.isSickContribution,
+        this.isHealthContribution,
+        this.isYoung,
+      )
+    },
     chartData () {
       return {
         datasets: [{
           data: [
-            this.net.toFixed(2),
-            this.tax.toFixed(2),
-            this.employeeZus.health.toFixed(2),
-            this.employeeZus.sick.toFixed(2),
-            this.employeeZus.rent.toFixed(2),
-            this.employeeZus.pension.toFixed(2),
-            this.employeePpk.toFixed(2),
+            this.result.netAmount,
+            this.result.taxAmount,
+            this.result.healthContribution,
+            this.result.sickContribution,
+            this.result.rentContribution,
+            this.result.pensionContribution,
+            this.result.ppkContribution,
           ],
           backgroundColor: [
             this.$constants.COLORS.CHART1,
@@ -61,22 +91,7 @@ export default {
     },
   },
   watch: {
-    net (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    tax (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employeeZus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employeePpk (prevState, newState) {
+    result (prevState, newState) {
       if (prevState !== newState) {
         this.forceRerender()
       }

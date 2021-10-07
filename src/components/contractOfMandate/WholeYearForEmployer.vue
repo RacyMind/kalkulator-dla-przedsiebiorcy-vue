@@ -12,7 +12,7 @@
     <q-table
       title=" Podsumowanie dla pracodawcy"
       :grid="$q.screen.xs || $q.screen.sm"
-      :rows="data"
+      :rows="results.rows"
       :columns="columns"
       row-key="name"
       hide-bottom
@@ -20,7 +20,7 @@
       <template v-slot:body-cell="props">
         <q-td
           :props="props"
-          :class="(props.row.month=='Cały rok')?'bg-primary text-white':'bg-white text-black'"
+          :class="(props.row.month === constants.LABELS.WHOLE_YEAR) ? 'bg-primary text-white' : 'bg-white text-black'"
         >
           {{props.value}}
         </q-td>
@@ -30,15 +30,35 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getYearlyResultOfEmployer } from 'src/logic/contractOfMandate'
 import { pln } from 'src/use/currencyFormat'
-import ContractOfMandate from 'src/logic/ContractOfMandate'
 
 export default {
+  setup () {
+    const store = useStore()
+    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const ppkEmployerContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployerContributionRate'])
+    const accidentContributionRate = computed(() => store.getters['contractOfMandate/accidentContributionRate'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
+    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+
+    return {
+      pln,
+      constants,
+      grossAmount,
+      ppkEmployerContributionRate,
+      accidentContributionRate,
+      isPensionContribution,
+      isRentContribution,
+    }
+  },
   data () {
     return {
-      totalBasisForTax: 0,
-      totalBasicAmountForRentAndPension: 0,
+      monthlyInputs: [],
+      results: [],
       columns: [
         {
           name: 'month',
@@ -52,7 +72,7 @@ export default {
           label: 'Brutto',
           required: true,
           align: 'left',
-          field: row => row.gross,
+          field: row => row.grossAmount,
           format: val => `${pln(val)}`,
         },
         {
@@ -60,7 +80,7 @@ export default {
           label: 'Skł. wypadkowa',
           required: true,
           align: 'left',
-          field: row => row.accident,
+          field: row => row.accidentContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -68,7 +88,7 @@ export default {
           label: 'Skł. rentowa',
           required: true,
           align: 'left',
-          field: row => row.rent,
+          field: row => row.rentContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -76,7 +96,7 @@ export default {
           label: 'Skł. emerytalna',
           required: true,
           align: 'left',
-          field: row => row.pension,
+          field: row => row.pensionContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -84,7 +104,7 @@ export default {
           label: 'PPK',
           required: true,
           align: 'left',
-          field: row => row.ppk,
+          field: row => row.ppkContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -96,98 +116,34 @@ export default {
           format: val => `${pln(val)}`,
         },
       ],
-      data: [],
     }
   },
   created () {
-    this.setData()
-
-    if (this.totalBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      this.$q.notify({
-        message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
-      })
-    }
+    this.updateMonthlyInputs()
+    this.results = getYearlyResultOfEmployer(this.monthlyInputs)
   },
-  computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      employerZus: 'contractOfMandate/employerZus',
-      employerPpk: 'contractOfMandate/employerPpk',
-    }),
+  watch: {
+    results () {
+      this.showNotifications()
+    },
   },
   methods: {
-    setData () {
-      const total = {
-        month: 'Cały rok',
-        gross: 0,
-        pension: 0,
-        accident: 0,
-        rent: 0,
-        ppk: 0,
-        totalAmount: 0,
-      }
-
+    updateMonthlyInputs () {
       for (let i = 0; i < 12; i++) {
-        const result = this.getResultForOneMonth()
-
-        this.data[i] = {
-          month: this.$constants.LOCALE_DATE.months[i],
-          gross: result.gross,
-          pension: result.pension,
-          accident: result.accident,
-          rent: result.rent,
-          ppk: result.ppk,
-          totalAmount: result.totalAmount,
+        this.monthlyInputs[i] = {
+          grossAmount: this.grossAmount,
+          accidentContributionRate: this.accidentContributionRate,
+          ppkEmployerContributionRate: this.ppkEmployerContributionRate,
+          isPensionContribution: this.isPensionContribution,
+          isRentContribution: this.isRentContribution,
         }
-
-        total.gross += result.gross
-        total.pension += result.pension
-        total.accident += result.accident
-        total.rent += result.rent
-        total.ppk += result.ppk
-        total.totalAmount += result.totalAmount
       }
-
-      this.data.push(total)
     },
-    getResultForOneMonth () {
-      const model = new ContractOfMandate()
-      const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
-
-      model.gross = this.gross
-      model.employerPpk = this.employerPpk
-      model.basicAmountForRentAndPension = model.gross
-
-      const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
-
-      if (currentBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-        model.basicAmountForRentAndPension = 0
-      } else {
-        if (newBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-          model.basicAmountForRentAndPension = this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - currentBasicAmountForRentAndPension
-        }
-      }
-
-      this.totalBasicAmountForRentAndPension += model.gross
-
-      model.employerZus.accident = this.employerZus.accident
-      if (this.employerZus.pension) {
-        model.calculateZUSEmployerPension()
-      }
-      if (this.employerZus.rent) {
-        model.calculateZUSEmployerRent()
-      }
-
-      const totalAmount = model.gross + model.employerZus.rent +
-        model.employerZus.pension + model.employerZus.accident + model.employerPpk
-
-      return {
-        gross: model.gross,
-        rent: model.employerZus.rent,
-        pension: model.employerZus.pension,
-        accident: model.employerZus.accident,
-        ppk: model.employerPpk,
-        totalAmount: totalAmount,
+    showNotifications () {
+      if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+        this.$q.notify({
+          message: `Przekroczono limit 30-krotności składek ZUS (${constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+        })
       }
     },
   },

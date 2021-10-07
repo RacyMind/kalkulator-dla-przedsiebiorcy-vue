@@ -317,4 +317,7 @@ export default {
     CHART6: '#a31718',
     CHART7: '#00A7D9',
   },
+  LABELS: {
+    WHOLE_YEAR: 'Cały rok',
+  },
 }

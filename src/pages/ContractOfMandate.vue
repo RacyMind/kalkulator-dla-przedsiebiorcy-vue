@@ -39,7 +39,7 @@
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <!--      <EmployeeStatistics />-->
+      <EmployeeStatistics />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -47,29 +47,29 @@
             <q-icon name="o_credit_card" />
             Podsumowanie dla pracodawcy
           </div>
-          <!--          <q-btn
+          <q-btn
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployerModal = true"
-          />-->
+          />
         </div>
       </SectionHeader>
       <EmployerTable />
-      <!--       <SectionHeader>
-         <q-icon name="o_pie_chart" />
-         Wykres dla pracodawcy
-       </SectionHeader>
-       <EmployerStatistics />
+      <SectionHeader>
+        <q-icon name="o_pie_chart" />
+        Wykres dla pracodawcy
+      </SectionHeader>
+      <EmployerStatistics />
 
-       <q-dialog v-model="openEmployeeModal">
+      <!--       <q-dialog v-model="openEmployeeModal">
          <WholeYearForEmployee />
-       </q-dialog>
-       <q-dialog v-model="openEmployerModal">
-         <WholeYearForEmployer />
        </q-dialog>-->
+      <q-dialog v-model="openEmployerModal">
+        <WholeYearForEmployer />
+      </q-dialog>
     </div>
     <Footer />
   </q-page>
@@ -88,6 +88,7 @@ import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmplo
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -98,6 +99,11 @@ export default {
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/clearData')
+  },
+  computed: {
+    ...mapGetters({
+      grossAmount: 'contractOfMandate/grossAmount',
+    }),
   },
   methods: {
     scrollTo () {

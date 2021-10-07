@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="gross"
+      v-if="result.grossAmount"
       :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
@@ -10,30 +10,52 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { getMonthlyResultOfEmployer } from 'src/logic/contractOfMandate'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
 
 export default {
+  setup () {
+    const store = useStore()
+    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const ppkEmployerContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployerContributionRate'])
+    const accidentContributionRate = computed(() => store.getters['contractOfMandate/accidentContributionRate'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
+    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+
+    return {
+      grossAmount,
+      ppkEmployerContributionRate,
+      accidentContributionRate,
+      isPensionContribution,
+      isRentContribution,
+    }
+  },
   data () {
     return {
       componentKey: 0,
     }
   },
   computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      employerZus: 'contractOfMandate/employerZus',
-      employerPpk: 'contractOfMandate/employerPpk',
-    }),
+    result () {
+      return getMonthlyResultOfEmployer(
+        this.grossAmount,
+        this.accidentContributionRate,
+        this.ppkEmployerContributionRate,
+        this.isPensionContribution,
+        this.isRentContribution,
+      )
+    },
     chartData () {
       return {
         datasets: [{
           data: [
-            this.gross.toFixed(2),
-            this.employerZus.accident.toFixed(2),
-            this.employerZus.rent.toFixed(2),
-            this.employerZus.pension.toFixed(2),
-            this.employerPpk.toFixed(2),
+            this.result.grossAmount,
+            this.result.accidentContribution,
+            this.result.rentContribution,
+            this.result.pensionContribution,
+            this.result.ppkContribution,
           ],
           backgroundColor: [
             this.$constants.COLORS.CHART1,
@@ -54,17 +76,7 @@ export default {
     },
   },
   watch: {
-    gross (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerZus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerPpk (prevState, newState) {
+    result (prevState, newState) {
       if (prevState !== newState) {
         this.forceRerender()
       }
