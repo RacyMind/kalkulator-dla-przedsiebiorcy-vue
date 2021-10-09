@@ -5,6 +5,8 @@ import employerContributions from 'src/logic/employerContributions'
 
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 let totalBasisForRentAndPensionContributions = 0
+let totalExpenses = 0
+let totalGrossAmont = 0
 
 /**
  * Calculates expenses
@@ -25,6 +27,16 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
 
   if (expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
     expenses = constants.AMOUNT_OF_TAX_THRESHOLD
+  }
+
+  const newTotalExpenses = expenses + totalExpenses
+
+  // Total expenses can't cross the tax threshold
+  if (totalExpenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+    return 0
+  }
+  if (newTotalExpenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+    return constants.AMOUNT_OF_TAX_THRESHOLD - totalExpenses
   }
 
   return helpers.round(expenses, 2)
@@ -87,12 +99,13 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
  * @returns {number}
  */
 function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisForRentAndPensionContributions) {
-  const newBasicAmountForRentAndPension = grossAmount + totalBasisForRentAndPensionContributions
+  const newTotalBasisForRentAndPensionContributions = grossAmount + totalBasisForRentAndPensionContributions
 
+  // The total basis of rend and pension contributions can't cross the limit basis for ZUS
   if (totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
     return 0
   }
-  if (newBasicAmountForRentAndPension > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+  if (newTotalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
     return constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - totalBasisForRentAndPensionContributions
   }
 
@@ -110,6 +123,8 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
  * @param {boolean} isSickContribution
  * @param {boolean} isHealthContribution
  * @param {boolean} isYoung
+ * @param {number} employerPpkContributionRate
+ * @param {number} month
  * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
  */
 function getMonthlyResultOfEmployee (
@@ -121,6 +136,8 @@ function getMonthlyResultOfEmployee (
   isSickContribution,
   isHealthContribution,
   isYoung,
+  employerPpkContributionRate = 0,
+  month = 0,
 ) {
   let expenseRate = 0
   let pensionContribution = 0
@@ -159,9 +176,16 @@ function getMonthlyResultOfEmployee (
     amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(grossAmount, grossAmountMinusEmployeeContributions)
   }
 
-  if (!isYoung) {
+  // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
+  if (!isYoung || totalGrossAmont + grossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
     basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
+
+    // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
+    if (month > 0) {
+      basisForTax += employerContributions.calculatePpkContribution(grossAmount, employerPpkContributionRate)
+    }
+
     taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
   }
 
@@ -179,6 +203,56 @@ function getMonthlyResultOfEmployee (
     expenses: expenses,
     basisForTax: basisForTax,
     taxAmount: taxAmount,
+  }
+}
+
+/**
+ * Returns the yearly results of an employee
+ *
+ * @param {[]} monthlyInputs
+ * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
+ */
+function getYearlyResultOfEmployee (monthlyInputs) {
+  const results = []
+  let i = 0
+  totalBasisForRentAndPensionContributions = 0
+  totalExpenses = 0
+  totalGrossAmont = 0
+
+  monthlyInputs.forEach(input => {
+    const result = getMonthlyResultOfEmployee(...Object.values(input), i)
+    result.month = constants.LOCALE_DATE.months[i]
+    results.push(result)
+
+    totalBasisForRentAndPensionContributions += result.grossAmount
+    totalExpenses += result.expenses
+    totalGrossAmont += result.grossAmount
+    i++
+  })
+
+  results.push({
+    month: constants.LABELS.WHOLE_YEAR,
+    netAmount: results.map(result => result.netAmount)
+      .reduce((current, sum) => current + sum, 0),
+    grossAmount: results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0),
+    pensionContribution: results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0),
+    rentContribution: results.map(result => result.rentContribution)
+      .reduce((current, sum) => current + sum, 0),
+    sickContribution: results.map(result => result.sickContribution)
+      .reduce((current, sum) => current + sum, 0),
+    healthContribution: results.map(result => result.healthContribution)
+      .reduce((current, sum) => current + sum, 0),
+    ppkContribution: results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0),
+    taxAmount: results.map(result => result.taxAmount)
+      .reduce((current, sum) => current + sum, 0),
+  })
+
+  return {
+    rows: results,
+    totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
   }
 }
 
@@ -263,52 +337,6 @@ function getYearlyResultOfEmployer (monthlyInputs) {
     accidentContribution: results.map(result => result.accidentContribution)
       .reduce((current, sum) => current + sum, 0),
     ppkContribution: results.map(result => result.ppkContribution)
-      .reduce((current, sum) => current + sum, 0),
-  })
-
-  return {
-    rows: results,
-    totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
-  }
-}
-
-/**
- * Returns the yearly results of an employee
- *
- * @param {[]} monthlyInputs
- * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
- */
-function getYearlyResultOfEmployee (monthlyInputs) {
-  const results = []
-  let i = 0
-  totalBasisForRentAndPensionContributions = 0
-
-  monthlyInputs.forEach(input => {
-    const result = getMonthlyResultOfEmployee(...Object.values(input))
-    result.month = constants.LOCALE_DATE.months[i]
-    results.push(result)
-
-    totalBasisForRentAndPensionContributions += result.grossAmount
-    i++
-  })
-
-  results.push({
-    month: constants.LABELS.WHOLE_YEAR,
-    netAmount: results.map(result => result.netAmount)
-      .reduce((current, sum) => current + sum, 0),
-    grossAmount: results.map(result => result.grossAmount)
-      .reduce((current, sum) => current + sum, 0),
-    pensionContribution: results.map(result => result.pensionContribution)
-      .reduce((current, sum) => current + sum, 0),
-    rentContribution: results.map(result => result.rentContribution)
-      .reduce((current, sum) => current + sum, 0),
-    sickContribution: results.map(result => result.sickContribution)
-      .reduce((current, sum) => current + sum, 0),
-    healthContribution: results.map(result => result.healthContribution)
-      .reduce((current, sum) => current + sum, 0),
-    ppkContribution: results.map(result => result.ppkContribution)
-      .reduce((current, sum) => current + sum, 0),
-    taxAmount: results.map(result => result.taxAmount)
       .reduce((current, sum) => current + sum, 0),
   })
 
