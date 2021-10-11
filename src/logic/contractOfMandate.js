@@ -6,7 +6,7 @@ import employerContributions from 'src/logic/employerContributions'
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 let totalBasisForRentAndPensionContributions = 0
 let totalExpenses = 0
-let totalGrossAmont = 0
+let totalGrossAmount = 0
 
 /**
  * Calculates expenses
@@ -116,7 +116,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
  * Returns the monthly results of an employee
  *
  * @param {number} grossAmount
- * @param {number} ppkContributionRate
+ * @param {number} employeePpkContributionRate
  * @param {number} partOfWorkWithAuthorExpenses
  * @param {boolean} isPensionContribution
  * @param {boolean} isRentContribution
@@ -129,7 +129,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
  */
 function getMonthlyResultOfEmployee (
   grossAmount,
-  ppkContributionRate,
+  employeePpkContributionRate,
   partOfWorkWithAuthorExpenses,
   isPensionContribution,
   isRentContribution,
@@ -165,8 +165,8 @@ function getMonthlyResultOfEmployee (
   if (isSickContribution) {
     sickContribution = employeeContributions.calculateSickContribution(grossAmount)
   }
-  if (ppkContributionRate) {
-    ppkContribution = employeeContributions.calculatePpkContribution(grossAmount, ppkContributionRate)
+  if (employeePpkContributionRate) {
+    ppkContribution = employeeContributions.calculatePpkContribution(grossAmount, employeePpkContributionRate)
   }
 
   const grossAmountMinusEmployeeContributions = employeeContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution)
@@ -177,7 +177,7 @@ function getMonthlyResultOfEmployee (
   }
 
   // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
-  if (!isYoung || totalGrossAmont + grossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
+  if (!isYoung || totalGrossAmount + grossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
     basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
 
@@ -217,7 +217,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
   let i = 0
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
-  totalGrossAmont = 0
+  totalGrossAmount = 0
 
   monthlyInputs.forEach(input => {
     const result = getMonthlyResultOfEmployee(...Object.values(input), i)
@@ -226,7 +226,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
 
     totalBasisForRentAndPensionContributions += result.grossAmount
     totalExpenses += result.expenses
-    totalGrossAmont += result.grossAmount
+    totalGrossAmount += result.grossAmount
     i++
   })
 
@@ -253,6 +253,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
   return {
     rows: results,
     totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
+    totalGrossAmount: totalGrossAmount,
   }
 }
 

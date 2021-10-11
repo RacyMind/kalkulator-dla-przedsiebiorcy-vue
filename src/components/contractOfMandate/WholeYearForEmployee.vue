@@ -12,7 +12,7 @@
     <q-table
       title=" Podsumowanie dla pracownika"
       :grid="$q.screen.xs || $q.screen.sm"
-      :rows="data"
+      :rows="results.rows"
       :columns="columns"
       row-key="name"
       hide-bottom
@@ -20,7 +20,7 @@
       <template v-slot:body-cell="props">
         <q-td
           :props="props"
-          :class="(props.row.month=='Cały rok')?'bg-primary text-white':'bg-white text-black'"
+          :class="(props.row.month === constants.LABELS.WHOLE_YEAR) ? 'bg-primary text-white' : 'bg-white text-black'"
         >
           {{props.value}}
         </q-td>
@@ -34,16 +34,43 @@
  * TO DO
  * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
  */
-import { mapGetters } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
+import { getYearlyResultOfEmployee } from 'src/logic/contractOfMandate'
 import { pln } from 'src/use/currencyFormat'
-import ContractOfMandate from 'src/logic/ContractOfMandate'
 
 export default {
+  setup () {
+    const store = useStore()
+    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
+    const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
+    const ppkEmployerContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployerContributionRate'])
+    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
+    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
+    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
+    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
+    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
+
+    return {
+      pln,
+      constants,
+      grossAmount,
+      ppkEmployeeContributionRate,
+      ppkEmployerContributionRate,
+      partOfWorkWithAuthorExpenses,
+      isPensionContribution,
+      isRentContribution,
+      isSickContribution,
+      isHealthContribution,
+      isYoung,
+    }
+  },
   data () {
     return {
-      totalExpenses: 0,
-      totalBasisForTax: 0,
-      totalBasicAmountForRentAndPension: 0,
+      monthlyInputs: [],
+      results: [],
       columns: [
         {
           name: 'month',
@@ -57,7 +84,7 @@ export default {
           label: 'Brutto',
           required: true,
           align: 'left',
-          field: row => row.gross,
+          field: row => row.grossAmount,
           format: val => `${pln(val)}`,
         },
         {
@@ -65,7 +92,7 @@ export default {
           label: 'Skł. chorobowa',
           required: true,
           align: 'left',
-          field: row => row.sick,
+          field: row => row.sickContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -73,7 +100,7 @@ export default {
           label: 'Skł. rentowa',
           required: true,
           align: 'left',
-          field: row => row.rent,
+          field: row => row.rentContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -81,7 +108,7 @@ export default {
           label: 'Skł. emerytalna',
           required: true,
           align: 'left',
-          field: row => row.pension,
+          field: row => row.pensionContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -89,7 +116,7 @@ export default {
           label: 'Skł. zdrowotna',
           required: true,
           align: 'left',
-          field: row => row.health,
+          field: row => row.healthContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -105,7 +132,7 @@ export default {
           label: 'PPK',
           required: true,
           align: 'left',
-          field: row => row.ppk,
+          field: row => row.ppkContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -113,168 +140,52 @@ export default {
           label: 'Netto',
           required: true,
           align: 'left',
-          field: row => row.net,
+          field: row => row.netAmount,
           format: val => `${pln(val)}`,
         },
       ],
-      data: [],
-      totalGross: 0,
     }
   },
   created () {
-    this.setData()
-
-    if (this.totalBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-      this.$q.notify({
-        message: `Przekroczono limit 30-krotności składek ZUS (${this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
-      })
-    }
-
-    if (this.employerPpk) {
-      this.$q.notify({
-        message: 'Od lutego do podsrawy opodatkowania doliczana jest składka PPK wpłacana przez pracodawcę.',
-      })
-    }
+    this.updateMonthlyInputs()
+    this.results = getYearlyResultOfEmployee(this.monthlyInputs)
   },
-  computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      authorExpensePart: 'contractOfMandate/authorExpensePart',
-      basisForTax: 'contractOfMandate/basisForTax',
-      employeeZus: 'contractOfMandate/employeeZus',
-      employeePpk: 'contractOfMandate/employeePpk',
-      employerPpk: 'contractOfMandate/employerPpk',
-    }),
+  watch: {
+    results () {
+      this.showNotifications()
+    },
   },
   methods: {
-    setData () {
-      const total = {
-        month: 'Cały rok',
-        gross: 0,
-        pension: 0,
-        sick: 0,
-        rent: 0,
-        health: 0,
-        taxAmount: 0,
-        ppk: 0,
-        net: 0,
-      }
-
+    updateMonthlyInputs () {
       for (let i = 0; i < 12; i++) {
-        const result = this.getResultForOneMonth(i)
-
-        this.data[i] = {
-          month: this.$constants.LOCALE_DATE.months[i],
-          gross: result.gross,
-          pension: result.pension,
-          sick: result.sick,
-          rent: result.rent,
-          health: result.health,
-          taxAmount: result.taxAmount,
-          ppk: result.ppk,
-          net: result.net,
+        this.monthlyInputs[i] = {
+          grossAmount: this.grossAmount,
+          ppkEmployeeContributionRate: this.ppkEmployeeContributionRate,
+          partOfWorkWithAuthorExpenses: this.partOfWorkWithAuthorExpenses,
+          isPensionContribution: this.isPensionContribution,
+          isRentContribution: this.isRentContribution,
+          isSickContribution: this.isSickContribution,
+          isHealthContribution: this.isHealthContribution,
+          isYoung: this.isYoung,
+          ppkEmployerContributionRate: this.ppkEmployerContributionRate,
         }
-
-        total.gross += result.gross
-        total.pension += result.pension
-        total.sick += result.sick
-        total.rent += result.rent
-        total.health += result.health
-        total.taxAmount += result.taxAmount
-        total.ppk += result.ppk
-        total.net += result.net
       }
-
-      this.data.push(total)
     },
-    getResultForOneMonth (month) {
-      const model = new ContractOfMandate()
-      this.totalGross += this.gross
-
-      // Warunek dla 2. progu PITu dla mlodych
-      if (!this.basisForTax && this.totalGross > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-        this.totalBasisForTax = 0
+    showNotifications () {
+      if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+        this.$q.notify({
+          message: `Przekroczono limit 30-krotności składek ZUS (${constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+        })
       }
-
-      const currentBasicAmountForRentAndPension = this.totalBasicAmountForRentAndPension
-      const currentTotalExpenses = this.totalExpenses
-
-      model.gross = this.gross
-      model.employeePpk = this.employeePpk
-      model.basicAmountForRentAndPension = model.gross
-
-      if (model.gross > this.$constants.LUMP_SUM_UP_TO_AMOUNT) {
-        model.expensesRate = this.$constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
+      if (this.isYoung && this.results.totalGrossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
+        this.$q.notify({
+          message: `Przekroczono próg podatkowy (${constants.AMOUNT_OF_TAX_THRESHOLD} zł). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
+        })
       }
-
-      const newBasicAmountForRentAndPension = model.gross + this.totalBasicAmountForRentAndPension
-
-      if (currentBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-        model.basicAmountForRentAndPension = 0
-      } else {
-        if (newBasicAmountForRentAndPension > this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-          model.basicAmountForRentAndPension = this.$constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - currentBasicAmountForRentAndPension
-        }
-      }
-
-      this.totalBasicAmountForRentAndPension += model.gross
-
-      if (this.employeeZus.pension) {
-        model.calculateZUSEmployeePension()
-      }
-      if (this.employeeZus.rent) {
-        model.calculateZUSEmployeeRent()
-      }
-      if (this.employeeZus.sick) {
-        model.calculateZUSEmployeeSick()
-      }
-
-      model.authorExpensePart = this.authorExpensePart
-
-      model.calculateExpenses()
-
-      const newTotalExpenses = model.expenses + this.totalExpenses
-
-      if (currentTotalExpenses > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-        model.expenses = 0
-      } else {
-        if (newTotalExpenses > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-          model.expenses = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentTotalExpenses
-        }
-      }
-
-      if (this.employeeZus.health) {
-        model.calculateZUSEmployeeHealth()
-        model.calculateUSEmployeeHealth()
-      }
-
-      model.calculateBasisForTax()
-
-      if (month > 0) {
-        model.basisForTax += this.employerPpk
-      }
-
-      model.calculateTaxAmount()
-
-      if (!this.basisForTax && this.totalGross <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-        model.taxAmount = 0
-        model.basisForTax = 0
-        model.expenses = 0
-      }
-
-      model.calculateNetAmount()
-
-      this.totalExpenses += model.expenses
-
-      return {
-        rent: model.employeeZus.rent,
-        pension: model.employeeZus.pension,
-        sick: model.employeeZus.sick,
-        health: model.employeeZus.health,
-        taxAmount: model.taxAmount,
-        ppk: model.employeePpk,
-        net: model.net,
-        gross: model.gross,
+      if (this.ppkEmployerContributionRate) {
+        this.$q.notify({
+          message: 'Od lutego do podstawy opodatkowania doliczana jest składka PPK wpłacana przez pracodawcę.',
+        })
       }
     },
   },

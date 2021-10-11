@@ -24,14 +24,14 @@
             <q-icon name="o_credit_card" />
             Podsumowanie dla pracownika
           </div>
-          <!--          <q-btn
+          <q-btn
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployeeModal = true"
-          />-->
+          />
         </div>
       </SectionHeader>
       <EmployeeTable />
@@ -64,9 +64,9 @@
       </SectionHeader>
       <EmployerStatistics />
 
-      <!--       <q-dialog v-model="openEmployeeModal">
-         <WholeYearForEmployee />
-       </q-dialog>-->
+      <q-dialog v-model="openEmployeeModal">
+        <WholeYearForEmployee />
+      </q-dialog>
       <q-dialog v-model="openEmployerModal">
         <WholeYearForEmployer />
       </q-dialog>

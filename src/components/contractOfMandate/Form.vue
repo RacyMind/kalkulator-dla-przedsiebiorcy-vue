@@ -261,14 +261,6 @@ export default {
           break
       }
 
-      if (this.amountType === constants.AMOUNT_TYPES.NET) {
-        const min = Number(this.amount)
-        grossAmount = this.findGrossAmountUsingNetAmount(min, 1.7 * min, 100)
-      }
-      if (this.amountType === constants.AMOUNT_TYPES.GROSS) {
-        grossAmount = Number(this.amount)
-      }
-
       this.$store.commit('contractOfMandate/setGrossAmount', grossAmount)
       this.$store.commit('contractOfMandate/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
       this.$store.commit('contractOfMandate/setPpkEmployeeContributionRate', ppkEmployeeContributionRate)
@@ -303,7 +295,7 @@ export default {
         ppkEmployeeContributionRate = Number(this.employeePpkRate) / 100
       }
 
-      const net = Number(this.amount)
+      const netAmount = Number(this.amount)
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
         const result = getMonthlyResultOfEmployee(
@@ -317,10 +309,10 @@ export default {
           this.isYoung,
         )
 
-        if (Math.abs(result.netAmount - net) <= 0.0005) {
+        if (Math.abs(result.netAmount - netAmount) <= 0.0005) {
           return result.grossAmount
         }
-        if (Math.abs(result.netAmount - net) <= scale) {
+        if (Math.abs(result.netAmount - netAmount) <= scale) {
           return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 10)
         }
       }
