@@ -30,10 +30,6 @@
 </template>
 
 <script>
-/**
- * TO DO
- * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
- */
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import constants from 'src/logic/constants'
@@ -44,8 +40,8 @@ export default {
   setup () {
     const store = useStore()
     const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
-    const ppkEmployerContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployerContributionRate'])
+    const employeePPkContributionRate = computed(() => store.getters['contractOfMandate/employeePPkContributionRate'])
+    const employerPpkContributionRate = computed(() => store.getters['contractOfMandate/employerPpkContributionRate'])
     const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
     const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
     const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
@@ -57,8 +53,8 @@ export default {
       pln,
       constants,
       grossAmount,
-      ppkEmployeeContributionRate,
-      ppkEmployerContributionRate,
+      employeePPkContributionRate,
+      employerPpkContributionRate,
       partOfWorkWithAuthorExpenses,
       isPensionContribution,
       isRentContribution,
@@ -160,14 +156,14 @@ export default {
       for (let i = 0; i < 12; i++) {
         this.monthlyInputs[i] = {
           grossAmount: this.grossAmount,
-          ppkEmployeeContributionRate: this.ppkEmployeeContributionRate,
+          employeePPkContributionRate: this.employeePPkContributionRate,
           partOfWorkWithAuthorExpenses: this.partOfWorkWithAuthorExpenses,
           isPensionContribution: this.isPensionContribution,
           isRentContribution: this.isRentContribution,
           isSickContribution: this.isSickContribution,
           isHealthContribution: this.isHealthContribution,
           isYoung: this.isYoung,
-          ppkEmployerContributionRate: this.ppkEmployerContributionRate,
+          employerPpkContributionRate: this.employerPpkContributionRate,
         }
       }
     },
@@ -182,7 +178,7 @@ export default {
           message: `Przekroczono próg podatkowy (${constants.AMOUNT_OF_TAX_THRESHOLD} zł). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
         })
       }
-      if (this.ppkEmployerContributionRate) {
+      if (this.employerPpkContributionRate) {
         this.$q.notify({
           message: 'Od lutego do podstawy opodatkowania doliczana jest składka PPK wpłacana przez pracodawcę.',
         })

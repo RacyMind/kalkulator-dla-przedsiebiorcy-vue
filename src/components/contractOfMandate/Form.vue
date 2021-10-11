@@ -3,7 +3,7 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
@@ -35,13 +35,13 @@
             label="Zerowy PIT dla młodych"
           />
           <q-toggle
-            v-model="isAuthorExpenses"
+            v-model.number="isAuthorExpenses"
             class="q-mt-sm col-6"
             label="Autorskie koszty uzyskania przychodu (50%)"
           />
           <q-input
             v-if="isAuthorExpenses"
-            v-model="partOfWorkWithAuthorExpenses"
+            v-model.number="partOfWorkWithAuthorExpenses"
             type="number"
             min="0"
             max="100"
@@ -237,8 +237,8 @@ export default {
   methods: {
     save () {
       let partOfWorkWithAuthorExpenses = 0
-      let ppkEmployeeContributionRate = 0
-      let ppkEmployerContributionRate = 0
+      let employeePPkContributionRate = 0
+      let employerPpkContributionRate = 0
       let grossAmount = 0
 
       if (this.isAuthorExpenses) {
@@ -246,8 +246,8 @@ export default {
       }
 
       if (this.isPpkContribution) {
-        ppkEmployeeContributionRate = Number(this.employeePpkRate) / 100
-        ppkEmployerContributionRate = Number(this.employerPpkRate) / 100
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
+        employerPpkContributionRate = Number(this.employerPpkRate) / 100
       }
 
       const min = Number(this.amount)
@@ -263,8 +263,8 @@ export default {
 
       this.$store.commit('contractOfMandate/setGrossAmount', grossAmount)
       this.$store.commit('contractOfMandate/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
-      this.$store.commit('contractOfMandate/setPpkEmployeeContributionRate', ppkEmployeeContributionRate)
-      this.$store.commit('contractOfMandate/setPpkEmployerContributionRate', ppkEmployerContributionRate)
+      this.$store.commit('contractOfMandate/setemployeePPkContributionRate', employeePPkContributionRate)
+      this.$store.commit('contractOfMandate/setemployerPpkContributionRate', employerPpkContributionRate)
       this.$store.commit('contractOfMandate/setPartOfWorkWithAuthorExpenses', partOfWorkWithAuthorExpenses)
       this.$store.commit('contractOfMandate/setIsPensionContribution', this.isPensionContribution)
       this.$store.commit('contractOfMandate/setIsRentContribution', this.isRentContribution)
@@ -285,14 +285,14 @@ export default {
      */
     findGrossAmountUsingNetAmount (min, max, scale) {
       let partOfWorkWithAuthorExpenses = 0
-      let ppkEmployeeContributionRate = 0
+      let employeePPkContributionRate = 0
 
       if (this.isAuthorExpenses) {
         partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
       }
 
       if (this.isPpkContribution) {
-        ppkEmployeeContributionRate = Number(this.employeePpkRate) / 100
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
       }
 
       const netAmount = Number(this.amount)
@@ -300,7 +300,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         const result = getMonthlyResultOfEmployee(
           iterator,
-          ppkEmployeeContributionRate,
+          employeePPkContributionRate,
           partOfWorkWithAuthorExpenses,
           this.isPensionContribution,
           this.isRentContribution,

@@ -274,6 +274,10 @@ function getMonthlyResultOfEmployer (
   isPensionContribution,
   isRentContribution,
 ) {
+  if (!grossAmount) {
+    grossAmount = 0
+  }
+
   let pensionContribution = 0
   let rentContribution = 0
   let accidentContribution = 0

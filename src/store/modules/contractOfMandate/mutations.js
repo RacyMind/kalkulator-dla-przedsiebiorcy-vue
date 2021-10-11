@@ -5,11 +5,11 @@ export default {
   setAccidentContributionRate (state, accidentContributionRate) {
     state.accidentContributionRate = accidentContributionRate
   },
-  setPpkEmployeeContributionRate (state, ppkEmployeeContributionRate) {
-    state.ppkEmployeeContributionRate = ppkEmployeeContributionRate
+  setemployeePPkContributionRate (state, employeePPkContributionRate) {
+    state.employeePPkContributionRate = employeePPkContributionRate
   },
-  setPpkEmployerContributionRate (state, ppkEmployerContributionRate) {
-    state.ppkEmployerContributionRate = ppkEmployerContributionRate
+  setemployerPpkContributionRate (state, employerPpkContributionRate) {
+    state.employerPpkContributionRate = employerPpkContributionRate
   },
   setPartOfWorkWithAuthorExpenses (state, partOfWorkWithAuthorExpenses) {
     state.partOfWorkWithAuthorExpenses = partOfWorkWithAuthorExpenses
@@ -32,8 +32,8 @@ export default {
   clearData (state) {
     state.grossAmount = null
     state.accidentContributionRate = 0
-    state.ppkEmployeeContributionRate = 0
-    state.ppkEmployerContributionRate = 0
+    state.employeePPkContributionRate = 0
+    state.employerPpkContributionRate = 0
     state.partOfWorkWithAuthorExpenses = 0
     state.isPensionContribution = false
     state.isRentContribution = false

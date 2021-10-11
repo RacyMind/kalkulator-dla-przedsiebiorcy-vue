@@ -19,7 +19,7 @@ export default {
   setup () {
     const store = useStore()
     const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const ppkEmployeeContributionRate = computed(() => store.getters['contractOfMandate/ppkEmployeeContributionRate'])
+    const employeePPkContributionRate = computed(() => store.getters['contractOfMandate/employeePPkContributionRate'])
     const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
     const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
     const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
@@ -29,7 +29,7 @@ export default {
 
     return {
       grossAmount,
-      ppkEmployeeContributionRate,
+      employeePPkContributionRate,
       partOfWorkWithAuthorExpenses,
       isPensionContribution,
       isRentContribution,
@@ -47,7 +47,7 @@ export default {
     result () {
       return getMonthlyResultOfEmployee(
         this.grossAmount,
-        this.ppkEmployeeContributionRate,
+        this.employeePPkContributionRate,
         this.partOfWorkWithAuthorExpenses,
         this.isPensionContribution,
         this.isRentContribution,

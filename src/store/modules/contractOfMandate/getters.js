@@ -1,8 +1,8 @@
 export default {
   grossAmount: (state) => state.grossAmount,
   accidentContributionRate: (state) => state.accidentContributionRate,
-  ppkEmployeeContributionRate: (state) => state.ppkEmployeeContributionRate,
-  ppkEmployerContributionRate: (state) => state.ppkEmployerContributionRate,
+  employeePPkContributionRate: (state) => state.employeePPkContributionRate,
+  employerPpkContributionRate: (state) => state.employerPpkContributionRate,
   partOfWorkWithAuthorExpenses: (state) => state.partOfWorkWithAuthorExpenses,
   isPensionContribution: (state) => state.isPensionContribution,
   isRentContribution: (state) => state.isRentContribution,
