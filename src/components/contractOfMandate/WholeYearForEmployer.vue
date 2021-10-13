@@ -9,126 +9,39 @@
       round
       dense
       v-close-popup />
-    <q-table
+    <WholeYearTable
       title="Podsumowanie dla pracodawcy"
-      :grid="$q.screen.xs || $q.screen.sm"
-      :rows="results.rows"
       :columns="columns"
-      row-key="name"
-      hide-bottom
-      :pagination="{rowsPerPage: 13}">
-      <template v-slot:body-cell="props">
-        <q-td
-          :props="props"
-          :class="(props.row.month === constants.LABELS.WHOLE_YEAR) ? 'bg-primary text-white' : 'bg-white text-black'"
-        >
-          {{ props.value }}
-        </q-td>
-      </template>
-      <template v-slot:body-cell-gross="props">
-        <q-td
-          :props="props"
-          :class="(props.row.month === constants.LABELS.WHOLE_YEAR) ? 'bg-primary text-white' : 'bg-white text-black'"
-        >
-          <q-popup-edit
-            v-if="monthlyInputs[props.rowIndex]"
-            v-model.number="monthlyInputs[props.rowIndex].grossAmount">
-            <q-input
-              v-model.number="monthlyInputs[props.rowIndex].grossAmount"
-              type="number"
-              min="0"
-              step="0.01"
-              suffix="zł"
-              color="brand"
-              :rules="[
-                val => !!val || '* Wpisz kwotę',
-              ]"
-              lazy-rule/>
-          </q-popup-edit>
-          {{ props.value }}
-          <q-icon
-            class="text-primary"
-            name="edit" />
-        </q-td>
-      </template>
-      <template v-slot:item="props">
-        <div
-          class="full-width q-table__grid-item">
-          <q-card
-            class="q-table__grid-item-card q-table__card">
-            <div
-              v-for="col in props.cols"
-              :key="col.name"
-              class="q-table__grid-item-row">
-              <q-popup-edit
-                v-if="monthlyInputs[props.rowIndex] && col.name === 'gross'"
-                v-model.number="monthlyInputs[props.rowIndex].grossAmount">
-                <q-input
-                  v-model.number="monthlyInputs[props.rowIndex].grossAmount"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  suffix="zł"
-                  color="brand"
-                  :rules="[
-                    val => !!val || '* Wpisz kwotę',
-                  ]"
-                  lazy-rule/>
-              </q-popup-edit>
-              <div class="q-table__grid-item-title">
-                {{ col.label }}
-              </div>
-              <div class="q-table__grid-item-value">
-                {{ col.value }}
-                <q-icon
-                  v-if="col.name === 'gross'"
-                  class="text-primary"
-                  name="edit" />
-              </div>
-            </div>
-          </q-card>
-        </div>
-      </template>
-    </q-table>
+      :rows="results.rows"
+      @grossAmountUpdated="updateGrossAmounts"
+    />
   </q-card>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 import constants from 'src/logic/constants'
-import { getYearlyResultOfEmployer } from 'src/logic/contractOfMandate'
+import { useYearlyEmployerResult } from 'src/use/contractOfMandate/useYearlyEmployerResult'
 import { pln } from 'src/use/currencyFormat'
+import WholeYearTable from 'src/components/WholeYearTable'
 
 export default {
   setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employerPpkContributionRate = computed(() => store.getters['contractOfMandate/employerPpkContributionRate'])
-    const accidentContributionRate = computed(() => store.getters['contractOfMandate/accidentContributionRate'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
-
+    const { results, monthlyInputs } = useYearlyEmployerResult()
     return {
       pln,
       constants,
-      grossAmount,
-      employerPpkContributionRate,
-      accidentContributionRate,
-      isPensionContribution,
-      isRentContribution,
+      results,
+      monthlyInputs,
     }
   },
   data () {
     return {
-      monthlyInputs: [],
-      results: [],
       columns: [
         {
           name: 'month',
           required: true,
           align: 'left',
-          field: row => row.month,
+          field: row => constants.LOCALE_DATE.months[row.month],
           format: val => `${val}`,
         },
         {
@@ -182,32 +95,16 @@ export default {
       ],
     }
   },
-  created () {
-    this.updateMonthlyInputs()
-    this.results = getYearlyResultOfEmployer(this.monthlyInputs)
-  },
   watch: {
-    monthlyInputs: {
-      handler: function () {
-        this.results = getYearlyResultOfEmployer(this.monthlyInputs)
-      },
-      deep: true,
-    },
     results () {
       this.showNotifications()
     },
   },
   methods: {
-    updateMonthlyInputs () {
-      for (let i = 0; i < 12; i++) {
-        this.monthlyInputs[i] = {
-          grossAmount: this.grossAmount,
-          accidentContributionRate: this.accidentContributionRate,
-          employerPpkContributionRate: this.employerPpkContributionRate,
-          isPensionContribution: this.isPensionContribution,
-          isRentContribution: this.isRentContribution,
-        }
-      }
+    updateGrossAmounts (grossAmounts) {
+      grossAmounts.forEach((grossAmount, index) => {
+        this.monthlyInputs[index].grossAmount = grossAmount
+      })
     },
     showNotifications () {
       if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
@@ -216,6 +113,9 @@ export default {
         })
       }
     },
+  },
+  components: {
+    WholeYearTable,
   },
 }
 </script>

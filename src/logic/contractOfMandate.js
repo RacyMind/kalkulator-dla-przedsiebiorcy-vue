@@ -115,9 +115,9 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
 /**
  * Returns the monthly results of an employee
  *
- * @param {number} grossAmount
- * @param {number} employeePpkContributionRate
- * @param {number} partOfWorkWithAuthorExpenses
+ * @param {ComputedRef<*>} grossAmount
+ * @param {ComputedRef<*>} employeePpkContributionRate
+ * @param {ComputedRef<*>} partOfWorkWithAuthorExpenses
  * @param {boolean} isPensionContribution
  * @param {boolean} isRentContribution
  * @param {boolean} isSickContribution
@@ -221,7 +221,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
 
   monthlyInputs.forEach(input => {
     const result = getMonthlyResultOfEmployee(...Object.values(input), i)
-    result.month = constants.LOCALE_DATE.months[i]
+    result.month = i
     results.push(result)
 
     totalBasisForRentAndPensionContributions += result.grossAmount
@@ -231,7 +231,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
   })
 
   results.push({
-    month: constants.LABELS.WHOLE_YEAR,
+    month: constants.LOCALE_DATE.wholeYearIndex,
     netAmount: results.map(result => result.netAmount)
       .reduce((current, sum) => current + sum, 0),
     grossAmount: results.map(result => result.grossAmount)
@@ -322,7 +322,7 @@ function getYearlyResultOfEmployer (monthlyInputs) {
 
   monthlyInputs.forEach(input => {
     const result = getMonthlyResultOfEmployer(...Object.values(input))
-    result.month = constants.LOCALE_DATE.months[i]
+    result.month = i
     results.push(result)
 
     totalBasisForRentAndPensionContributions += result.grossAmount
@@ -330,7 +330,7 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   })
 
   results.push({
-    month: constants.LABELS.WHOLE_YEAR,
+    month: constants.LOCALE_DATE.wholeYearIndex,
     totalAmount: results.map(result => result.totalAmount)
       .reduce((current, sum) => current + sum, 0),
     grossAmount: results.map(result => result.grossAmount)
@@ -351,7 +351,7 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   }
 }
 
-export {
+export default {
   getMonthlyResultOfEmployee,
   getMonthlyResultOfEmployer,
   getYearlyResultOfEmployer,

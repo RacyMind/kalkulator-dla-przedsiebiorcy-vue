@@ -59,39 +59,19 @@
   </div>
 </template>
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { getMonthlyResultOfEmployer } from 'src/logic/contractOfMandate'
 import { pln } from 'src/use/currencyFormat'
+import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
 
 export default {
   setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employerPpkContributionRate = computed(() => store.getters['contractOfMandate/employerPpkContributionRate'])
-    const accidentContributionRate = computed(() => store.getters['contractOfMandate/accidentContributionRate'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+    const { result } = useMonthlyEmployerResult()
 
     return {
       pln,
-      grossAmount,
-      employerPpkContributionRate,
-      accidentContributionRate,
-      isPensionContribution,
-      isRentContribution,
+      result,
     }
   },
   computed: {
-    result () {
-      return getMonthlyResultOfEmployer(
-        this.grossAmount,
-        this.accidentContributionRate,
-        this.employerPpkContributionRate,
-        this.isPensionContribution,
-        this.isRentContribution,
-      )
-    },
     totalZusContributions () {
       return [
         this.result.pensionContribution,

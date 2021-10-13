@@ -2,7 +2,6 @@
   <div class="q-pa-md">
     <PieChart
       v-if="result.netAmount"
-      :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -10,52 +9,18 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import constants from 'src/logic/constants'
 import PieChart from 'components/PieChart'
-import { getMonthlyResultOfEmployee } from 'src/logic/contractOfMandate'
+import { useMonthlyEmployeeResult } from 'src/use/contractOfMandate/useMonthlyEmployeeResult'
 
 export default {
   setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employeePPkContributionRate = computed(() => store.getters['contractOfMandate/employeePPkContributionRate'])
-    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
-    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
-    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
-    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
-
+    const { result } = useMonthlyEmployeeResult()
     return {
-      grossAmount,
-      employeePPkContributionRate,
-      partOfWorkWithAuthorExpenses,
-      isPensionContribution,
-      isRentContribution,
-      isSickContribution,
-      isHealthContribution,
-      isYoung,
-    }
-  },
-  data () {
-    return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    result () {
-      return getMonthlyResultOfEmployee(
-        this.grossAmount,
-        this.employeePPkContributionRate,
-        this.partOfWorkWithAuthorExpenses,
-        this.isPensionContribution,
-        this.isRentContribution,
-        this.isSickContribution,
-        this.isHealthContribution,
-        this.isYoung,
-      )
-    },
     chartData () {
       return {
         datasets: [{
@@ -69,13 +34,13 @@ export default {
             this.result.ppkContribution,
           ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
-            this.$constants.COLORS.CHART6,
-            this.$constants.COLORS.CHART7,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
+            constants.COLORS.CHART3,
+            constants.COLORS.CHART4,
+            constants.COLORS.CHART5,
+            constants.COLORS.CHART6,
+            constants.COLORS.CHART7,
           ],
         }],
         labels: [
@@ -88,18 +53,6 @@ export default {
           'PPK',
         ],
       }
-    },
-  },
-  watch: {
-    result (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {

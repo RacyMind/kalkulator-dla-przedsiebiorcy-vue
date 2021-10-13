@@ -91,49 +91,21 @@
   </div>
 </template>
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 import constants from 'src/logic/constants'
-import { getMonthlyResultOfEmployee } from 'src/logic/contractOfMandate'
+import { useMonthlyEmployeeResult } from 'src/use/contractOfMandate/useMonthlyEmployeeResult'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
   setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employeePPkContributionRate = computed(() => store.getters['contractOfMandate/employeePPkContributionRate'])
-    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
-    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
-    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
-    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
+    const { result, grossAmount } = useMonthlyEmployeeResult()
 
     return {
       pln,
+      result,
       grossAmount,
-      employeePPkContributionRate,
-      partOfWorkWithAuthorExpenses,
-      isPensionContribution,
-      isRentContribution,
-      isSickContribution,
-      isHealthContribution,
-      isYoung,
     }
   },
   computed: {
-    result () {
-      return getMonthlyResultOfEmployee(
-        this.grossAmount,
-        this.employeePPkContributionRate,
-        this.partOfWorkWithAuthorExpenses,
-        this.isPensionContribution,
-        this.isRentContribution,
-        this.isSickContribution,
-        this.isHealthContribution,
-        this.isYoung,
-      )
-    },
     totalZusContributions () {
       return [
         this.result.pensionContribution,

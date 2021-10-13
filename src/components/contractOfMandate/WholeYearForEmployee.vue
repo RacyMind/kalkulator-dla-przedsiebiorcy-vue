@@ -9,70 +9,40 @@
       round
       dense
       v-close-popup />
-    <q-table
-      title=" Podsumowanie dla pracownika"
-      :grid="$q.screen.xs || $q.screen.sm"
-      :rows="results.rows"
+    <WholeYearTable
+      title="Podsumowanie dla pracownika"
       :columns="columns"
-      row-key="name"
-      hide-bottom
-      :pagination="{rowsPerPage: 13}">
-      <template v-slot:body-cell="props">
-        <q-td
-          :props="props"
-          :class="(props.row.month === constants.LABELS.WHOLE_YEAR) ? 'bg-primary text-white' : 'bg-white text-black'"
-        >
-          {{props.value}}
-        </q-td>
-      </template>
-    </q-table>
+      :rows="results.rows"
+      @grossAmountUpdated="updateGrossAmounts"/>
   </q-card>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 import constants from 'src/logic/constants'
-import { getYearlyResultOfEmployee } from 'src/logic/contractOfMandate'
+import { useYearlyEmployeeResult } from 'src/use/contractOfMandate/useYearlyEmployeeResult'
 import { pln } from 'src/use/currencyFormat'
+import WholeYearTable from 'src/components/WholeYearTable'
 
 export default {
-  setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employeePPkContributionRate = computed(() => store.getters['contractOfMandate/employeePPkContributionRate'])
-    const employerPpkContributionRate = computed(() => store.getters['contractOfMandate/employerPpkContributionRate'])
-    const partOfWorkWithAuthorExpenses = computed(() => store.getters['contractOfMandate/partOfWorkWithAuthorExpenses'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
-    const isSickContribution = computed(() => store.getters['contractOfMandate/isSickContribution'])
-    const isHealthContribution = computed(() => store.getters['contractOfMandate/isHealthContribution'])
-    const isYoung = computed(() => store.getters['contractOfMandate/isYoung'])
-
-    return {
-      pln,
-      constants,
-      grossAmount,
-      employeePPkContributionRate,
-      employerPpkContributionRate,
-      partOfWorkWithAuthorExpenses,
-      isPensionContribution,
-      isRentContribution,
-      isSickContribution,
-      isHealthContribution,
-      isYoung,
-    }
-  },
+    setup () {
+      const { results, monthlyInputs, isYoung, employerPpkContributionRate } = useYearlyEmployeeResult()
+      return {
+        pln,
+        constants,
+        results,
+        monthlyInputs,
+        isYoung,
+        employerPpkContributionRate,
+      }
+    },
   data () {
     return {
-      monthlyInputs: [],
-      results: [],
       columns: [
         {
           name: 'month',
           required: true,
           align: 'left',
-          field: row => row.month,
+          field: row => constants.LOCALE_DATE.months[row.month],
           format: val => `${val}`,
         },
         {
@@ -142,30 +112,16 @@ export default {
       ],
     }
   },
-  created () {
-    this.updateMonthlyInputs()
-    this.results = getYearlyResultOfEmployee(this.monthlyInputs)
-  },
   watch: {
     results () {
       this.showNotifications()
     },
   },
   methods: {
-    updateMonthlyInputs () {
-      for (let i = 0; i < 12; i++) {
-        this.monthlyInputs[i] = {
-          grossAmount: this.grossAmount,
-          employeePPkContributionRate: this.employeePPkContributionRate,
-          partOfWorkWithAuthorExpenses: this.partOfWorkWithAuthorExpenses,
-          isPensionContribution: this.isPensionContribution,
-          isRentContribution: this.isRentContribution,
-          isSickContribution: this.isSickContribution,
-          isHealthContribution: this.isHealthContribution,
-          isYoung: this.isYoung,
-          employerPpkContributionRate: this.employerPpkContributionRate,
-        }
-      }
+    updateGrossAmounts (grossAmounts) {
+      grossAmounts.forEach((grossAmount, index) => {
+        this.monthlyInputs[index].grossAmount = grossAmount
+      })
     },
     showNotifications () {
       if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
@@ -184,6 +140,9 @@ export default {
         })
       }
     },
+  },
+  components: {
+    WholeYearTable,
   },
 }
 </script>

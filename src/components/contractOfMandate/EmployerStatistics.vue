@@ -10,43 +10,18 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { getMonthlyResultOfEmployer } from 'src/logic/contractOfMandate'
+import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
 import PieChart from 'components/PieChart'
 
 export default {
   setup () {
-    const store = useStore()
-    const grossAmount = computed(() => store.getters['contractOfMandate/grossAmount'])
-    const employerPpkContributionRate = computed(() => store.getters['contractOfMandate/employerPpkContributionRate'])
-    const accidentContributionRate = computed(() => store.getters['contractOfMandate/accidentContributionRate'])
-    const isPensionContribution = computed(() => store.getters['contractOfMandate/isPensionContribution'])
-    const isRentContribution = computed(() => store.getters['contractOfMandate/isRentContribution'])
+    const { result } = useMonthlyEmployerResult()
 
     return {
-      grossAmount,
-      employerPpkContributionRate,
-      accidentContributionRate,
-      isPensionContribution,
-      isRentContribution,
-    }
-  },
-  data () {
-    return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    result () {
-      return getMonthlyResultOfEmployer(
-        this.grossAmount,
-        this.accidentContributionRate,
-        this.employerPpkContributionRate,
-        this.isPensionContribution,
-        this.isRentContribution,
-      )
-    },
     chartData () {
       return {
         datasets: [{
@@ -73,18 +48,6 @@ export default {
           'PPK',
         ],
       }
-    },
-  },
-  watch: {
-    result (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {
