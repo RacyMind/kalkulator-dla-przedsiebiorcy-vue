@@ -1,20 +1,10 @@
 <template>
-  <q-card
-    class="relative-position"
-    style="width: auto; max-width: 90vw;">
-    <q-btn
-      icon="close"
-      class="absolute-top-right z-top"
-      flat
-      round
-      dense
-      v-close-popup />
-    <WholeYearTable
-      title="Podsumowanie dla pracownika"
-      :columns="columns"
-      :rows="results.rows"
-      @grossAmountUpdated="updateGrossAmounts"/>
-  </q-card>
+  <WholeYearTable
+    title="Podsumowanie dla pracownika"
+    :columns="columns"
+    :rows="results.rows"
+    @grossAmountUpdated="updateGrossAmounts"
+  />
 </template>
 
 <script>

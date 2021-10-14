@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
 import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
 import PieChart from 'components/PieChart'
 
@@ -33,11 +34,11 @@ export default {
             this.result.ppkContribution,
           ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
+            constants.COLORS.CHART3,
+            constants.COLORS.CHART4,
+            constants.COLORS.CHART5,
           ],
         }],
         labels: [
