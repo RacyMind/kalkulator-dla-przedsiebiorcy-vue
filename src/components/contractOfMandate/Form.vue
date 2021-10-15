@@ -1,27 +1,31 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
           label="Wynagrodzenie*"
+          suffix="zł"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
         <div class="q-mt-sm block">
           <div class="row">
             <q-radio
               v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.NET"
+              :val="constants.AMOUNT_TYPES.NET"
               label="netto"
             />
             <q-radio
               v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.GROSS"
+              :val="constants.AMOUNT_TYPES.GROSS"
               label="brutto"
             />
           </div>
@@ -31,19 +35,24 @@
             label="Zerowy PIT dla młodych"
           />
           <q-toggle
-            v-model="isAuthorExpenses"
+            v-model.number="isAuthorExpenses"
             class="q-mt-sm col-6"
             label="Autorskie koszty uzyskania przychodu (50%)"
           />
           <q-input
             v-if="isAuthorExpenses"
-            v-model="authorExpenses"
+            v-model.number="partOfWorkWithAuthorExpenses"
             type="number"
             min="0"
             max="100"
             step="1"
-            label="Część pracy (%)*"
+            label="Część pracy*"
             color="brand"
+            suffix="%"
+            :rules="[
+              val => !!val || '* Wpisz wartość',
+            ]"
+            lazy-rules
           />
         </div>
       </div>
@@ -57,13 +66,13 @@
             />
             <div class="row">
               <q-toggle
-                v-model="isHealth"
+                v-model="isHealthContribution"
                 :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka zdrowotna"
               />
               <q-toggle
-                v-model="isSick"
+                v-model="isSickContribution"
                 :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka chorobowa"
@@ -71,46 +80,55 @@
             </div>
             <div class="row">
               <q-toggle
-                v-model="isRent"
+                v-model="isRentContribution"
                 :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka rentowa"
               />
               <q-toggle
-                v-model="isPension"
+                v-model="isPensionContribution"
                 :disable="isStudent"
                 class="q-mt-sm col-6"
                 label="Składka emerytalna"
               />
               <q-input
-                v-model="accident"
+                v-model="accidentContributionRate"
                 :disable="isStudent"
                 type="number"
                 class="full-width"
                 min="0"
                 step="0.01"
-                label="Składka wypadkowa (%)*"
+                label="Składka wypadkowa*"
                 color="brand"
-                required
+                suffix="%"
+                :rules="[
+                  val => !!val || '* Wpisz wartość',
+                ]"
+                lazy-rules
               />
               <q-toggle
-                v-model="isPpk"
+                v-model="isPpkContribution"
                 class="q-mt-sm"
                 label="PPK"
               />
               <div
-                v-if="isPpk"
+                v-if="isPpkContribution"
                 class="row full-width">
                 <div class="col-6">
                   <q-input
                     v-model="employerPpkRate"
                     type="number"
                     class="full-width"
-                    :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
-                    :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                    :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
+                    :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
                     step="0.01"
-                    label="Pracodawca (%)"
+                    label="Pracodawca"
                     color="brand"
+                    suffix="%"
+                    :rules="[
+                      val => !!val || '* Wpisz wartość',
+                    ]"
+                    lazy-rules
                   />
                 </div>
                 <div class="col-6 q-pl-md-sm">
@@ -118,11 +136,16 @@
                     v-model="employeePpkRate"
                     type="number"
                     class="full-width"
-                    :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
-                    :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                    :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
+                    :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
                     step="0.01"
-                    label="Pracownik (%)"
+                    label="Pracownik"
                     color="brand"
+                    suffix="%"
+                    :rules="[
+                      val => !!val || '* Wpisz wartość',
+                    ]"
+                    lazy-rules
                   />
                 </div>
               </div>
@@ -147,49 +170,50 @@
 </template>
 
 <script>
-import ContractOfMandate from 'src/logic/ContractOfMandate'
+import constants from 'src/logic/constants'
+import contractOfMandate from 'src/logic/contractOfMandate'
 
 export default {
+  emits: ['submitted'],
+  setup () {
+    return { constants }
+  },
   data () {
     return {
-      contractOfMandate: null,
       amount: null,
       amountType: null,
-      accident: 0,
+      accidentContributionRate: 0,
       employeePpkRate: 0,
       employerPpkRate: 0,
       isYoung: false,
       isStudent: false,
-      isHealth: true,
-      isSick: true,
-      isRent: true,
-      isPension: true,
-      isPpk: false,
+      isHealthContribution: true,
+      isSickContribution: true,
+      isRentContribution: true,
+      isPensionContribution: true,
+      isPpkContribution: false,
       isAuthorExpenses: false,
-      authorExpenses: 100,
+      partOfWorkWithAuthorExpenses: 100,
     }
   },
-  emits: ['scroll'],
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.GROSS
-    this.accident = this.$constants.ACCIDENT_RATE
-    this.employerPpkRate = this.$constants.PPK.EMPLOYER.DEFAULT_RATE
-    this.employeePpkRate = this.$constants.PPK.EMPLOYEE.DEFAULT_RATE
-
-    this.$store.commit('contractOfMandate/CLEAR_DATA')
+    this.amountType = constants.AMOUNT_TYPES.GROSS
+    this.accidentContributionRate = constants.ACCIDENT_RATE
+    this.employerPpkRate = constants.PPK.EMPLOYER.DEFAULT_RATE
+    this.employeePpkRate = constants.PPK.EMPLOYEE.DEFAULT_RATE
   },
   computed: {
     isDisabledButton () {
       if (!this.amount) {
         return true
       }
-      if (this.accident.length === 0) {
+      if (this.accidentContributionRate.length === 0) {
         return true
       }
-      if (this.isAuthorExpenses && this.authorExpenses.length === 0) {
+      if (this.isAuthorExpenses && this.partOfWorkWithAuthorExpenses.length === 0) {
         return true
       }
-      if (this.isPpk && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
+      if (this.isPpkContribution && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
         return true
       }
       return false
@@ -198,11 +222,11 @@ export default {
   watch: {
     isStudent: function (val) {
       if (val) {
-        this.isHealth = false
-        this.isSick = false
-        this.isRent = false
-        this.isPension = false
-        this.accident = 0
+        this.isHealthContribution = false
+        this.isSickContribution = false
+        this.isRentContribution = false
+        this.isPensionContribution = false
+        this.accidentContributionRate = 0
 
         this.$q.notify({
           message: 'Dla studenta / ucznia nie odprowadza się składek ZUS.',
@@ -211,71 +235,88 @@ export default {
     },
   },
   methods: {
-    calculate () {
-      this.contractOfMandate = new ContractOfMandate()
+    save () {
+      let partOfWorkWithAuthorExpenses = 0
+      let employeePPkContributionRate = 0
+      let employerPpkContributionRate = 0
+      let grossAmount = 0
 
       if (this.isAuthorExpenses) {
-        this.contractOfMandate.authorExpensePart = Number(this.authorExpenses) / 100
+        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
       }
 
-      if (this.accident) {
-        this.contractOfMandate.zusAccidentEmployerRate = Number(this.accident) / 100
+      if (this.isPpkContribution) {
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
+        employerPpkContributionRate = Number(this.employerPpkRate) / 100
       }
 
-      if (this.isPpk) {
-        this.contractOfMandate.employeePpkRate = Number(this.employeePpkRate) / 100
-        this.contractOfMandate.employerPpkRate = Number(this.employerPpkRate) / 100
+      const min = Number(this.amount)
+
+      switch (this.amountType) {
+        case constants.AMOUNT_TYPES.NET:
+          grossAmount = this.findGrossAmountUsingNetAmount(min, 1.7 * min, 100)
+          break
+        case constants.AMOUNT_TYPES.GROSS:
+          grossAmount = Number(this.amount)
+          break
       }
 
-      if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
-        const min = Number(this.amount)
-        this.calculateForNetAmount(min, 1.7 * min, 100)
-      }
-      if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
-        this.calculateForGrossAmount()
-      }
+      this.$store.commit('contractOfMandate/setGrossAmount', grossAmount)
+      this.$store.commit('contractOfMandate/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
+      this.$store.commit('contractOfMandate/setemployeePPkContributionRate', employeePPkContributionRate)
+      this.$store.commit('contractOfMandate/setemployerPpkContributionRate', employerPpkContributionRate)
+      this.$store.commit('contractOfMandate/setPartOfWorkWithAuthorExpenses', partOfWorkWithAuthorExpenses)
+      this.$store.commit('contractOfMandate/setIsPensionContribution', this.isPensionContribution)
+      this.$store.commit('contractOfMandate/setIsRentContribution', this.isRentContribution)
+      this.$store.commit('contractOfMandate/setIsSickContribution', this.isSickContribution)
+      this.$store.commit('contractOfMandate/setIsHealthContribution', this.isHealthContribution)
+      this.$store.commit('contractOfMandate/setIsYoung', this.isYoung)
 
-      if (this.contractOfMandate.gross <= this.$constants.LUMP_SUM_UP_TO_AMOUNT && this.contractOfMandate.taxAmount > 0) {
-        this.$q.notify({
-          message: 'Dla wynagrodzenia brutto do 200 zł płaci się podatek zryczałtowany.',
-        })
-      }
-
-      this.$store.commit('contractOfMandate/SET_NET', this.contractOfMandate.net)
-      this.$store.commit('contractOfMandate/SET_TAX', this.contractOfMandate.taxAmount)
-      this.$store.commit('contractOfMandate/SET_GROSS', this.contractOfMandate.gross)
-      this.$store.commit('contractOfMandate/SET_BASIS_FOR_TAX', this.contractOfMandate.basisForTax)
-      this.$store.commit('contractOfMandate/SET_EXPENSES', this.contractOfMandate.expenses)
-      this.$store.commit('contractOfMandate/SET_AUTHOR_EXPENSES_PART', this.contractOfMandate.authorExpensePart)
-      this.$store.commit('contractOfMandate/SET_EMPLOYEE_ZUS', this.contractOfMandate.employeeZus)
-      this.$store.commit('contractOfMandate/SET_EMPLOYER_ZUS', this.contractOfMandate.employerZus)
-      this.$store.commit('contractOfMandate/SET_EMPLOYEE_PPK', this.contractOfMandate.employeePpk)
-      this.$store.commit('contractOfMandate/SET_EMPLOYER_PPK', this.contractOfMandate.employerPpk)
-
-      this.$emit('scroll')
+      this.$emit('submitted')
     },
 
-    calculateForNetAmount (min, max, scale) {
-      const net = Number(this.amount)
+    /**
+     * Looks for a gross amount
+     *
+     * @param {number} min
+     * @param {number} max
+     * @param {number} scale
+     * @returns {number}
+     */
+    findGrossAmountUsingNetAmount (min, max, scale) {
+      let partOfWorkWithAuthorExpenses = 0
+      let employeePPkContributionRate = 0
+
+      if (this.isAuthorExpenses) {
+        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
+      }
+
+      if (this.isPpkContribution) {
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
+      }
+
+      const netAmount = Number(this.amount)
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
-        this.contractOfMandate.gross = iterator
+        const result = contractOfMandate.getMonthlyResultOfEmployee(
+          iterator,
+          employeePPkContributionRate,
+          partOfWorkWithAuthorExpenses,
+          this.isPensionContribution,
+          this.isRentContribution,
+          this.isSickContribution,
+          this.isHealthContribution,
+          this.isYoung,
+        )
 
-        this.contractOfMandate.calculateAll(this.accident, this.isPension, this.isRent, this.isSick, this.isHealth, this.isYoung, this.isPpk)
-
-        if (Math.abs(this.contractOfMandate.net - net) <= 0.0005) {
-          return
+        if (Math.abs(result.netAmount - netAmount) <= 0.0005) {
+          return result.grossAmount
         }
-        if (Math.abs(this.contractOfMandate.net - net) <= scale) {
-          return this.calculateForNetAmount(this.contractOfMandate.net - scale, this.contractOfMandate.gross + scale, scale / 10)
+        if (Math.abs(result.netAmount - netAmount) <= scale) {
+          return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 10)
         }
       }
-      return null
-    },
-    calculateForGrossAmount () {
-      this.contractOfMandate.gross = Number(this.amount)
-
-      this.contractOfMandate.calculateAll(this.accident, this.isPension, this.isRent, this.isSick, this.isHealth, this.isYoung, this.isPpk)
+      return 0
     },
   },
 }

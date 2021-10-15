@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="gross"
-      :key="componentKey"
+      v-if="result.grossAmount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -10,37 +9,35 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
+import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
 
 export default {
-  data () {
+  setup () {
+    const { result } = useMonthlyEmployerResult()
+
     return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      employerZus: 'contractOfMandate/employerZus',
-      employerPpk: 'contractOfMandate/employerPpk',
-    }),
     chartData () {
       return {
         datasets: [{
           data: [
-            this.gross.toFixed(2),
-            this.employerZus.accident.toFixed(2),
-            this.employerZus.rent.toFixed(2),
-            this.employerZus.pension.toFixed(2),
-            this.employerPpk.toFixed(2),
+            this.result.grossAmount,
+            this.result.accidentContribution,
+            this.result.rentContribution,
+            this.result.pensionContribution,
+            this.result.ppkContribution,
           ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
+            constants.COLORS.CHART3,
+            constants.COLORS.CHART4,
+            constants.COLORS.CHART5,
           ],
         }],
         labels: [
@@ -51,28 +48,6 @@ export default {
           'PPK',
         ],
       }
-    },
-  },
-  watch: {
-    gross (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerZus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerPpk (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {

@@ -1,23 +1,14 @@
 export default function () {
   return {
-    net: null,
-    gross: null,
-    basisForTax: null,
-    expenses: null,
-    authorExpensePart: null,
-    tax: null,
-    employeeZus: {
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-    },
-    employerZus: {
-      accident: null,
-      rent: null,
-      pension: null,
-    },
-    employeePpk: null,
-    employerPpk: null,
+    grossAmount: null,
+    accidentContributionRate: 0,
+    employeePPkContributionRate: 0,
+    employerPpkContributionRate: 0,
+    partOfWorkWithAuthorExpenses: 0,
+    isPensionContribution: false,
+    isRentContribution: false,
+    isSickContribution: false,
+    isHealthContribution: false,
+    isYoung: false,
   }
 }

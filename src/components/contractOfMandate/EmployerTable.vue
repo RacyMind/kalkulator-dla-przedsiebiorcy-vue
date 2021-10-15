@@ -5,7 +5,7 @@
         Wynagrodzenie brutto
       </div>
       <div>
-        {{ pln(gross) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ pln(zusTotal) }}
+        {{ pln(totalZusContributions) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ pln(employerZus.accident) }}
+        {{ pln(result.accidentContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ pln(employerZus.rent) }}
+        {{ pln(result.rentContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,15 +37,15 @@
         Składka emerytalna
       </div>
       <div>
-        {{ pln(employerZus.pension) }}
+        {{ pln(result.pensionContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        PPK
+        Składka PPK
       </div>
       <div>
-        {{ pln(employerPpk) }}
+        {{ pln(result.ppkContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
@@ -53,41 +53,31 @@
         Suma kosztów pracodawcy
       </div>
       <div>
-        {{ pln(totalAmount) }}
+        {{ pln(result.totalAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import { pln } from 'src/use/currencyFormat'
+import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 
 export default {
   setup () {
-    return { pln }
+    const { result } = useMonthlyEmployerResult()
+
+    return {
+      pln,
+      result,
+    }
   },
   computed: {
-    ...mapGetters({
-      gross: 'contractOfMandate/gross',
-      employerZus: 'contractOfMandate/employerZus',
-      employerPpk: 'contractOfMandate/employerPpk',
-    }),
-    zusTotal () {
-      if (this.isZusEmpty(this.employerZus)) {
-        return null
-      }
-      return Object.values(this.employerZus).reduce((current, sum) => current + sum)
-    },
-    totalAmount () {
-      return this.gross + this.zusTotal + this.employerPpk
-    },
-  },
-  methods: {
-    isZusEmpty (zus) {
-      if (!zus.accident && !zus.rent && !zus.pension) {
-        return true
-      }
-      return false
+    totalZusContributions () {
+      return [
+        this.result.pensionContribution,
+        this.result.rentContribution,
+        this.result.accidentContribution,
+      ].reduce((current, sum) => current + sum)
     },
   },
 }

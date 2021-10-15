@@ -5,19 +5,26 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
+        <q-icon name="o_date_range" />
+        Rok podatkowy
+      </SectionHeader>
+      <ChooseYear
+        v-model="year"
+        class="q-my-lg q-px-md"/>
+      <SectionHeader>
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
-        @scroll="scrollTo"
+        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <TotalTable />
+      <SummarySalaryTable />
       <SectionHeader>
         <div class="row justify-between">
           <div>
@@ -28,18 +35,18 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployeeModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployeeTable />
+      <EmployeeTable :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics />
+      <EmployeeStatistics :year="year" />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -51,7 +58,7 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployerModal = true"
           />
@@ -65,7 +72,7 @@
       <EmployerStatistics />
 
       <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee />
+        <WholeYearForEmployee :year="year" />
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
         <WholeYearForEmployer />
@@ -76,10 +83,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
+import ChooseYear from 'components/ChooseYear'
 import Form from 'components/contractOfMandate/Form'
-import TotalTable from 'components/contractOfMandate/TotalTable'
+import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable'
 import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
 import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics'
 import EmployerTable from 'components/contractOfMandate/EmployerTable'
@@ -87,21 +96,24 @@ import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
 import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
 import Footer from 'components/Footer'
-import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 export default {
   data () {
     return {
       openEmployeeModal: false,
       openEmployerModal: false,
+      year: null,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
+    this.$store.commit('contractOfMandate/clearData')
+
+    this.year = new Date().getFullYear()
   },
   computed: {
     ...mapGetters({
-      gross: 'contractOfMandate/gross',
+      grossAmount: 'contractOfMandate/grossAmount',
     }),
   },
   methods: {
@@ -112,8 +124,9 @@ export default {
   components: {
     SectionHeader,
     Advert,
+    ChooseYear,
     Form,
-    TotalTable,
+    SummarySalaryTable,
     EmployeeTable,
     EmployeeStatistics,
     EmployerTable,
