@@ -16,6 +16,7 @@ function calculateBasisForTax (grossAmount, expenses) {
 
 /**
  * Calculates the tax amount
+ *
  * @param {number} basisForTax
  * @returns {number}
  */
@@ -55,4 +56,4 @@ function getResult (grossAmount, expenses) {
   }
 }
 
-export { getResult }
+export default { getResult }

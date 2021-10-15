@@ -3,10 +3,11 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
+          suffix="zł"
           label="Przychód*"
           autofocus
           color="brand"
@@ -18,16 +19,13 @@
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
-          v-model="expenses"
+          v-model.number="expenses"
           type="number"
+          suffix="zł"
           min="0"
           step="0.01"
           label="Koszty uzyskania przychodu*"
           color="brand"
-          :rules="[
-            val => !!val || '* Wpisz kwotę',
-          ]"
-          lazy-rules
         />
       </div>
     </div>
