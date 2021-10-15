@@ -18,7 +18,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        PPK
+        Składka PPK
       </div>
       <div>
         {{ pln(totalPpkContributions) }}

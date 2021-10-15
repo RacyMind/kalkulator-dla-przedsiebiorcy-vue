@@ -2,10 +2,10 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Wynagrodzenie netto
+        Wynagrodzenie brutto
       </div>
       <div>
-        {{ pln(result.netAmount) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -74,7 +74,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        PPK
+        Składka PPK
       </div>
       <div>
         {{ pln(result.ppkContribution) }}
@@ -82,22 +82,25 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Wynagrodzenie brutto
+        Wynagrodzenie netto
       </div>
       <div>
-        {{ pln(result.grossAmount) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
 import constants from 'src/logic/constants'
-import { useMonthlyEmployeeResult } from 'src/use/contractOfMandate/useMonthlyEmployeeResult'
+import { useMonthlyEmployeeResult } from 'src/use/useContractOfMandate'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
-  setup () {
-    const { result, grossAmount } = useMonthlyEmployeeResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result, grossAmount } = useMonthlyEmployeeResult(props)
 
     return {
       pln,

@@ -4,6 +4,7 @@ import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
 
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
+let amountOfTaxThreshold = constants.AMOUNT_OF_TAX_THRESHOLD
 let totalBasisForRentAndPensionContributions = 0
 let totalExpenses = 0
 let totalGrossAmount = 0
@@ -25,18 +26,18 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
     expenses += basisForExpenses * partOfWorkWithAuthorExpenses * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
   }
 
-  if (expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
-    expenses = constants.AMOUNT_OF_TAX_THRESHOLD
+  if (expenses > amountOfTaxThreshold) {
+    expenses = amountOfTaxThreshold
   }
 
   const newTotalExpenses = expenses + totalExpenses
 
   // Total expenses can't cross the tax threshold
-  if (totalExpenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+  if (totalExpenses > amountOfTaxThreshold) {
     return 0
   }
-  if (newTotalExpenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
-    return constants.AMOUNT_OF_TAX_THRESHOLD - totalExpenses
+  if (newTotalExpenses > amountOfTaxThreshold) {
+    return amountOfTaxThreshold - totalExpenses
   }
 
   return helpers.round(expenses, 2)
@@ -115,9 +116,9 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
 /**
  * Returns the monthly results of an employee
  *
- * @param {ComputedRef<*>} grossAmount
- * @param {ComputedRef<*>} employeePpkContributionRate
- * @param {ComputedRef<*>} partOfWorkWithAuthorExpenses
+ * @param {number} grossAmount
+ * @param {number} employeePpkContributionRate
+ * @param {number} partOfWorkWithAuthorExpenses
  * @param {boolean} isPensionContribution
  * @param {boolean} isRentContribution
  * @param {boolean} isSickContribution
@@ -125,7 +126,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
  * @param {boolean} isYoung
  * @param {number} employerPpkContributionRate
  * @param {number} month
- * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
+ * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: ComputedRef<*>, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
  */
 function getMonthlyResultOfEmployee (
   grossAmount,
@@ -177,7 +178,7 @@ function getMonthlyResultOfEmployee (
   }
 
   // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
-  if (!isYoung || totalGrossAmount + grossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
+  if (!isYoung || totalGrossAmount + grossAmount > amountOfTaxThreshold) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
     basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
 
@@ -351,9 +352,22 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   }
 }
 
+/**
+ * Sets parameters for the year
+ * @param year
+ */
+function changeYear (year) {
+  if (year >= 2022) {
+    amountOfTaxThreshold = constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD
+  } else {
+    amountOfTaxThreshold = constants.AMOUNT_OF_TAX_THRESHOLD
+  }
+}
+
 export default {
   getMonthlyResultOfEmployee,
   getMonthlyResultOfEmployer,
   getYearlyResultOfEmployer,
   getYearlyResultOfEmployee,
+  changeYear,
 }

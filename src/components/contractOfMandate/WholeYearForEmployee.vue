@@ -9,13 +9,16 @@
 
 <script>
 import constants from 'src/logic/constants'
-import { useYearlyEmployeeResult } from 'src/use/contractOfMandate/useYearlyEmployeeResult'
+import { useYearlyEmployeeResult } from 'src/use/useContractOfMandate'
 import { pln } from 'src/use/currencyFormat'
 import WholeYearTable from 'src/components/WholeYearTable'
 
 export default {
-    setup () {
-      const { results, monthlyInputs, isYoung, employerPpkContributionRate } = useYearlyEmployeeResult()
+  props: {
+    year: Number,
+  },
+    setup (props) {
+      const { results, monthlyInputs, isYoung, employerPpkContributionRate } = useYearlyEmployeeResult(props)
       return {
         pln,
         constants,
@@ -102,9 +105,20 @@ export default {
       ],
     }
   },
+  computed: {
+    amountOfTaxThreshold () {
+      if (this.year >= 2022) {
+        return constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD
+      }
+      return constants.AMOUNT_OF_TAX_THRESHOLD
+    },
+  },
   watch: {
-    results () {
-      this.showNotifications()
+    results: {
+      handler: function () {
+        this.showNotifications()
+      },
+      immediate: true,
     },
   },
   methods: {
@@ -119,9 +133,9 @@ export default {
           message: `Przekroczono limit 30-krotności składek ZUS (${constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
         })
       }
-      if (this.isYoung && this.results.totalGrossAmount > constants.AMOUNT_OF_TAX_THRESHOLD) {
+      if (this.isYoung && this.results.totalGrossAmount > this.amountOfTaxThreshold) {
         this.$q.notify({
-          message: `Przekroczono próg podatkowy (${constants.AMOUNT_OF_TAX_THRESHOLD} zł). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
+          message: `Przekroczono próg podatkowy (${this.amountOfTaxThreshold} zł). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
         })
       }
       if (this.employerPpkContributionRate) {

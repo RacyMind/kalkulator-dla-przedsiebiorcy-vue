@@ -8,12 +8,15 @@
   />
 </template>
 <script>
-import { useMonthlyEmployeeResult } from 'src/use/contractOfMandate/useMonthlyEmployeeResult'
-import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
+
+import { useMonthlyEmployeeResult, useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 import SummarySalaryTable from 'src/components/SummarySalaryTable'
 export default {
-  setup () {
-    const { result: employeeResult } = useMonthlyEmployeeResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result: employeeResult } = useMonthlyEmployeeResult(props)
     const { result: employerResult } = useMonthlyEmployerResult()
 
     return {

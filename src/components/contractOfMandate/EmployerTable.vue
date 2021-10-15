@@ -42,7 +42,7 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        PPK
+        Składka PPK
       </div>
       <div>
         {{ pln(result.ppkContribution) }}
@@ -60,7 +60,7 @@
 </template>
 <script>
 import { pln } from 'src/use/currencyFormat'
-import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
+import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 
 export default {
   setup () {

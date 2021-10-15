@@ -9,7 +9,7 @@
 
 <script>
 import constants from 'src/logic/constants'
-import { useYearlyEmployerResult } from 'src/use/contractOfMandate/useYearlyEmployerResult'
+import { useYearlyEmployerResult } from 'src/use/useContractOfMandate'
 import { pln } from 'src/use/currencyFormat'
 import WholeYearTable from 'src/components/WholeYearTable'
 
@@ -85,8 +85,11 @@ export default {
     }
   },
   watch: {
-    results () {
-      this.showNotifications()
+    results: {
+      handler: function () {
+        this.showNotifications()
+      },
+      immediate: true,
     },
   },
   methods: {

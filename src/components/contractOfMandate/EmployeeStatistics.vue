@@ -11,11 +11,14 @@
 <script>
 import constants from 'src/logic/constants'
 import PieChart from 'components/PieChart'
-import { useMonthlyEmployeeResult } from 'src/use/contractOfMandate/useMonthlyEmployeeResult'
+import { useMonthlyEmployeeResult } from 'src/use/useContractOfMandate'
 
 export default {
-  setup () {
-    const { result } = useMonthlyEmployeeResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useMonthlyEmployeeResult(props)
     return {
       result,
     }

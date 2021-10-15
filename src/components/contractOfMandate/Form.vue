@@ -171,7 +171,7 @@
 
 <script>
 import constants from 'src/logic/constants'
-import { getMonthlyResultOfEmployee } from 'src/logic/contractOfMandate'
+import contractOfMandate from 'src/logic/contractOfMandate'
 
 export default {
   emits: ['submitted'],
@@ -298,7 +298,7 @@ export default {
       const netAmount = Number(this.amount)
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
-        const result = getMonthlyResultOfEmployee(
+        const result = contractOfMandate.getMonthlyResultOfEmployee(
           iterator,
           employeePPkContributionRate,
           partOfWorkWithAuthorExpenses,

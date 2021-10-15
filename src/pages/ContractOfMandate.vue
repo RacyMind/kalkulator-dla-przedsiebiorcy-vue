@@ -5,6 +5,13 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
+        <q-icon name="o_date_range" />
+        Rok podatkowy
+      </SectionHeader>
+      <ChooseYear
+        v-model="year"
+        class="q-my-lg q-px-md"/>
+      <SectionHeader>
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
@@ -34,12 +41,12 @@
           />
         </div>
       </SectionHeader>
-      <EmployeeTable />
+      <EmployeeTable :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics />
+      <EmployeeStatistics :year="year" />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -65,7 +72,7 @@
       <EmployerStatistics />
 
       <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee />
+        <WholeYearForEmployee :year="year" />
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
         <WholeYearForEmployer />
@@ -76,8 +83,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
+import ChooseYear from 'components/ChooseYear'
 import Form from 'components/contractOfMandate/Form'
 import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable'
 import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
@@ -88,17 +97,19 @@ import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmplo
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
-import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       openEmployeeModal: false,
       openEmployerModal: false,
+      year: null,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/clearData')
+
+    this.year = new Date().getFullYear()
   },
   computed: {
     ...mapGetters({
@@ -113,6 +124,7 @@ export default {
   components: {
     SectionHeader,
     Advert,
+    ChooseYear,
     Form,
     SummarySalaryTable,
     EmployeeTable,

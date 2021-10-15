@@ -2,7 +2,6 @@
   <div class="q-pa-md">
     <PieChart
       v-if="result.grossAmount"
-      :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -11,7 +10,7 @@
 
 <script>
 import constants from 'src/logic/constants'
-import { useMonthlyEmployerResult } from 'src/use/contractOfMandate/useMonthlyEmployerResult'
+import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 import PieChart from 'components/PieChart'
 
 export default {
