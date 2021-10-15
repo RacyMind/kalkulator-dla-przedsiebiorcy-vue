@@ -28,29 +28,18 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { getResult } from 'src/logic/Invoice'
+
+import { useInvoice } from 'src/use/useInvoice'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
   setup () {
-    const store = useStore()
-    const amount = computed(() => store.getters['invoice/amount'])
-    const amountType = computed(() => store.getters['invoice/amountType'])
-    const taxRate = computed(() => store.getters['invoice/taxRate'])
+    const { result } = useInvoice()
 
     return {
       pln,
-      amount,
-      amountType,
-      taxRate,
+      result,
     }
-  },
-  computed: {
-    result () {
-      return getResult(this.amount, this.amountType, this.taxRate)
-    },
   },
 }
 </script>

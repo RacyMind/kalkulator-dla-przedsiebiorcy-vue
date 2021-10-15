@@ -67,4 +67,4 @@ function getResult (amount, amountType, taxRate) {
   }
 }
 
-export { getResult }
+export default { getResult }
