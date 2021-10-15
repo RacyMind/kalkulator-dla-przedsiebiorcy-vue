@@ -29,7 +29,7 @@ export default {
   setIsYoung (state, isYoung) {
     state.isYoung = isYoung
   },
-  clearData (state) {
+  resetData (state) {
     state.grossAmount = null
     state.accidentContributionRate = 0
     state.employeePPkContributionRate = 0
