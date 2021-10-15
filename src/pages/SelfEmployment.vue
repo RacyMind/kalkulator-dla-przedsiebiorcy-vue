@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-selfEmployment"
+    class="q-py-md full-width c-selfEmployment"
     style="max-width:800px;">
     <div class="full-width bg-white">
       <SectionHeader>

@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-contractOfEmployment"
+    class="q-py-md full-width c-contractOfEmployment"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">

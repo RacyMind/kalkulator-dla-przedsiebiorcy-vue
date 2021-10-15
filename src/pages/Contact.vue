@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-contact"
+    class="q-py-md full-width c-contact"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">

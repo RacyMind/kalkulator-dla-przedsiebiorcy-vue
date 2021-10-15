@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-cashRegisterLimit"
+    class="q-py-md full-width c-cashRegisterLimit"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">

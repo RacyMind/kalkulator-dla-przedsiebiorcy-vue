@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-vatLimit"
+    class="q-py-md full-width c-vatLimit"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">

@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-pa-md full-width c-interest"
+    class="q-py-md full-width c-interest"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
