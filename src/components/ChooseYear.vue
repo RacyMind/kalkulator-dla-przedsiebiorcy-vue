@@ -13,22 +13,19 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
 export default {
   props: ['modelValue'],
   data () {
     return {
       year: null,
-      years: [2021, 2022],
+      years: constants.AVAILABLE_YEARS,
     }
   },
   watch: {
     modelValue: {
       handler: function () {
-        if (this.modelValue > 2022) {
-          this.year = 2022
-        } else {
-          this.year = this.modelValue
-        }
+        this.year = this.modelValue
       },
       immediate: true,
     },

@@ -63,8 +63,11 @@ import { pln } from 'src/use/currencyFormat'
 import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 
 export default {
-  setup () {
-    const { result } = useMonthlyEmployerResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useMonthlyEmployerResult(props)
 
     return {
       pln,

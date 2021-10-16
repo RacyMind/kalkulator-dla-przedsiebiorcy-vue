@@ -17,7 +17,7 @@ export default {
   },
   setup (props) {
     const { result: employeeResult } = useMonthlyEmployeeResult(props)
-    const { result: employerResult } = useMonthlyEmployerResult()
+    const { result: employerResult } = useMonthlyEmployerResult(props)
 
     return {
       employeeResult,

@@ -105,14 +105,6 @@ export default {
       ],
     }
   },
-  computed: {
-    amountOfTaxThreshold () {
-      if (this.year >= 2022) {
-        return constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD
-      }
-      return constants.AMOUNT_OF_TAX_THRESHOLD
-    },
-  },
   watch: {
     results: {
       handler: function () {
@@ -128,14 +120,14 @@ export default {
       })
     },
     showNotifications () {
-      if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+      if (this.results.totalBasisForRentAndPensionContributions > constants.PARAMS[this.year].LIMIT_BASIC_AMOUNT_FOR_ZUS) {
         this.$q.notify({
-          message: `Przekroczono limit 30-krotności składek ZUS (${constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+          message: `Przekroczono limit 30-krotności składek ZUS (${pln(constants.PARAMS[this.year].LIMIT_BASIC_AMOUNT_FOR_ZUS)}). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
         })
       }
-      if (this.isYoung && this.results.totalGrossAmount > this.amountOfTaxThreshold) {
+      if (this.isYoung && this.results.totalGrossAmount > constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: `Przekroczono próg podatkowy (${this.amountOfTaxThreshold} zł). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
+          message: `Przekroczono próg podatkowy (${pln(constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD)}). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
         })
       }
       if (this.employerPpkContributionRate) {

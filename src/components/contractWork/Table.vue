@@ -79,12 +79,12 @@ export default {
     showNotifications () {
       if (this.amount && this.result.grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
-          message: `Dla wynagrodzenia brutto do ${constants.LUMP_SUM_UP_TO_AMOUNT} zł płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
       if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.CONTRACT_WORK.MAX_EXPENSES / 2) {
         this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${constants.CONTRACT_WORK.MAX_EXPENSES / 2} zł.`,
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.CONTRACT_WORK.MAX_EXPENSES / 2)}.`,
         })
       }
     },

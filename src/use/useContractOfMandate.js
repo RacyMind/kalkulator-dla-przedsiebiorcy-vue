@@ -5,7 +5,7 @@ import contractOfMandate from 'src/logic/contractOfMandate'
 function setWatchers (props) {
   const year = toRef(props, 'year')
   watch(year, () => {
-    contractOfMandate.changeYear(year.value)
+    contractOfMandate.setYear(year.value)
   }, { immediate: true })
 }
 
@@ -84,14 +84,6 @@ export function useYearlyEmployeeResult (props) {
     employerPpkContributionRate,
   } = inputData()
 
-  const year = toRef(props, 'year')
-
-  contractOfMandate.changeYear(year.value)
-
-  watch(year, () => {
-    contractOfMandate.changeYear(year.value)
-  })
-
   const monthlyInputs = reactive([])
 
   const updateMonthlyInputs = () => {
@@ -128,7 +120,9 @@ export function useYearlyEmployeeResult (props) {
   }
 }
 
-export function useMonthlyEmployerResult () {
+export function useMonthlyEmployerResult (props) {
+  setWatchers(props)
+
   const {
     grossAmount,
     employerPpkContributionRate,
@@ -151,7 +145,9 @@ export function useMonthlyEmployerResult () {
   }
 }
 
-export function useYearlyEmployerResult () {
+export function useYearlyEmployerResult (props) {
+  setWatchers(props)
+
   const {
     grossAmount,
     employerPpkContributionRate,

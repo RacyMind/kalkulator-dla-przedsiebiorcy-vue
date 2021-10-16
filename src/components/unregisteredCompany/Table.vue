@@ -71,7 +71,7 @@ export default {
       const limitForUnregisteredCompany = constants.MINIMUM_SALARY / 2
       if (this.result.grossAmount > limitForUnregisteredCompany) {
         this.$q.notify({
-          message: `Przekroczono limit przychodu (${limitForUnregisteredCompany} zł)  dla działalności niezarejestrowanej.`,
+          message: `Przekroczono limit przychodu (${pln(limitForUnregisteredCompany)})  dla działalności niezarejestrowanej.`,
         })
       }
     },

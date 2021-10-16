@@ -127,9 +127,9 @@ export default {
   },
   methods: {
     showNotifications () {
-      if (this.grossAmount && this.result.grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.grossAmount && this.result.grossAmount <= constants.PARAMS[this.year].LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
-          message: `Dla wynagrodzenia brutto do ${constants.LUMP_SUM_UP_TO_AMOUNT} zł płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[this.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
     },
