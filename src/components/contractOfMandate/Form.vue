@@ -35,7 +35,7 @@
             label="Zerowy PIT dla młodych"
           />
           <q-toggle
-            v-model.number="isAuthorExpenses"
+            v-model="isAuthorExpenses"
             class="q-mt-sm col-6"
             label="Autorskie koszty uzyskania przychodu (50%)"
           />
@@ -92,7 +92,7 @@
                 label="Składka emerytalna"
               />
               <q-input
-                v-model="accidentContributionRate"
+                v-model.number="accidentContributionRate"
                 :disable="isStudent"
                 type="number"
                 class="full-width"
@@ -116,7 +116,7 @@
                 class="row full-width">
                 <div class="col-6">
                   <q-input
-                    v-model="employerPpkRate"
+                    v-model.number="employerPpkRate"
                     type="number"
                     class="full-width"
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-6 q-pl-md-sm">
                   <q-input
-                    v-model="employeePpkRate"
+                    v-model.number="employeePpkRate"
                     type="number"
                     class="full-width"
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"

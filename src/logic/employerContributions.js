@@ -6,6 +6,8 @@ let year = helpers.getDefaultYear()
 let params = {
   pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
   rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
+  fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
+  fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
 }
 
 /**
@@ -18,6 +20,8 @@ function setYear (newYear) {
   params = {
     pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
     rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
+    fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
+    fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
   }
 }
 
@@ -42,6 +46,26 @@ function calculateRentContribution (basisForRentAndPension) {
 }
 
 /**
+ * Calculates the FP contribution of the employer
+ *
+ * @param {number} grossAMount
+ * @returns {number}
+ */
+function calculateFpContribution (grossAMount) {
+  return helpers.round(params.fpContributionRate / 100 * grossAMount, 2)
+}
+
+/**
+ * Calculates the FGSP contribution of the employer
+ *
+ * @param {number} grossAMount
+ * @returns {number}
+ */
+function calculateFgspContribution (grossAMount) {
+  return helpers.round(params.fgspContributionRate / 100 * grossAMount, 2)
+}
+
+/**
  * Calculates the accident contribution of the employer
  *
  * @param {number} grossAMount
@@ -53,7 +77,7 @@ function calculateAccidentContribution (grossAMount, accidentRate) {
 }
 
 /**
- * Calculates the PPK of the employer
+ * Calculates the PPK contribution of the employer
  *
  * @param {number} grossAmount
  * @param {number} ppkRate
@@ -69,4 +93,6 @@ export default {
   calculateRentContribution,
   calculateAccidentContribution,
   calculatePpkContribution,
+  calculateFgspContribution,
+  calculateFpContribution,
 }

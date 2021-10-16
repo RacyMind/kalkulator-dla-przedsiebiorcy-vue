@@ -3,30 +3,34 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
           label="Wynagrodzenie*"
+          suffix="zł"
           autofocus
           color="brand"
-          required
+          :rules="[
+            val => !!val || '* Wpisz kwotę',
+          ]"
+          lazy-rules
         />
         <div class="q-mt-sm block">
           <div class="row">
             <q-radio
               v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.NET"
+              :val="constants.AMOUNT_TYPES.NET"
               label="netto"
             />
             <q-radio
               v-model="amountType"
-              :val="$constants.AMOUNT_TYPES.GROSS"
+              :val="constants.AMOUNT_TYPES.GROSS"
               label="brutto"
             />
           </div>
           <q-toggle
-            v-model="young"
+            v-model="isYoung"
             class="q-mt-sm"
             label="Zerowy PIT dla młodych"
           />
@@ -47,7 +51,7 @@
           />
           <q-input
             v-if="isAuthorExpenses"
-            v-model="authorExpenses"
+            v-model.number="partOfWorkWithAuthorExpenses"
             type="number"
             min="0"
             max="100"
@@ -60,50 +64,64 @@
       <div class="col-12 col-md-6 q-pl-md-sm">
         <div class="column">
           <q-input
-            v-model="accident"
+            v-model.number="accidentContributionRate"
             type="number"
             class="full-width"
             min="0"
             step="0.01"
             label="Składka wypadkowa (%)*"
             color="brand"
-            required
+            suffix="%"
+            :rules="[
+              val => !!val || '* Wpisz wartość',
+            ]"
+            lazy-rules
           />
           <q-toggle
-            v-model="fp"
+            v-model="isFpContribution"
             class="q-mt-sm"
             label="Składka na Fundusz Pracy"
           />
           <q-toggle
-            v-model="ppk"
+            v-model="isPpkContribution"
             class="q-mt-sm"
             label="PPK"
           />
           <div
-            v-if="ppk"
+            v-if="isPpkContribution"
             class="row">
             <div class="col-6">
               <q-input
-                v-model="employerPpkRate"
+                v-model.number="employerPpkRate"
                 type="number"
                 class="full-width"
-                :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
-                :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                :min="constants.PARAMS[year].PPK.EMPLOYER.MINIMUM_RATE"
+                :max="constants.PARAMS[year].PPK.EMPLOYER.MAXIMUM_RATE"
                 step="0.01"
                 label="Pracodawca (%)"
                 color="brand"
+                suffix="%"
+                :rules="[
+                  val => !!val || '* Wpisz wartość',
+                ]"
+                lazy-rules
               />
             </div>
             <div class="col-6 q-pl-md-sm">
               <q-input
-                v-model="employeePpkRate"
+                v-model.number="employeePpkRate"
                 type="number"
                 class="full-width"
-                :min="$constants.PPK.EMPLOYER.MINIMUM_RATE"
-                :max="$constants.PPK.EMPLOYER.MAXIMUM_RATE"
+                :min="constants.PARAMS[year].PPK.EMPLOYER.MINIMUM_RATE"
+                :max="constants.PARAMS[year].PPK.EMPLOYER.MAXIMUM_RATE"
                 step="0.01"
                 label="Pracownik (%)"
                 color="brand"
+                suffix="%"
+                :rules="[
+                  val => !!val || '* Wpisz wartość',
+                ]"
+                lazy-rules
               />
             </div>
           </div>
@@ -126,47 +144,51 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
 import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 
 export default {
+  props: {
+    year: Number,
+  },
+  emits: ['submitted'],
+  setup () {
+    return { constants }
+  },
   data () {
     return {
-      contractOfEmployment: null,
       amount: null,
       amountType: null,
       workInLivePlace: true,
-      young: false,
-      fp: true,
-      accident: 0,
-      ppk: false,
+      isYoung: false,
+      isFpContribution: true,
+      accidentContributionRate: 0,
+      isPpkContribution: false,
       employeePpkRate: 0,
       employerPpkRate: 0,
       isAuthorExpenses: false,
-      authorExpenses: 100,
+      partOfWorkWithAuthorExpenses: 100,
       isFreeAmount: true,
     }
   },
-  emits: ['scroll'],
   created () {
-    this.amountType = this.$constants.AMOUNT_TYPES.GROSS
-    this.accident = this.$constants.ACCIDENT_RATE
-    this.employerPpkRate = this.$constants.PPK.EMPLOYER.DEFAULT_RATE
-    this.employeePpkRate = this.$constants.PPK.EMPLOYEE.DEFAULT_RATE
-
-    this.$store.commit('contractOfEmployment/CLEAR_DATA')
+    this.amountType = this.constants.AMOUNT_TYPES.GROSS
+    this.accidentContributionRate = constants.PARAMS[this.year].ACCIDENT_RATE
+    this.employerPpkRate = constants.PARAMS[this.year].PPK.EMPLOYER.DEFAULT_RATE
+    this.employeePpkRate = constants.PARAMS[this.year].PPK.EMPLOYEE.DEFAULT_RATE
   },
   computed: {
     isDisabledButton () {
       if (!this.amount) {
         return true
       }
-      if (this.accident.length === 0) {
+      if (this.accidentContributionRate.length === 0) {
         return true
       }
-      if (this.isAuthorExpenses && this.authorExpenses.length === 0) {
+      if (this.isAuthorExpenses && this.partOfWorkWithAuthorExpenses.length === 0) {
         return true
       }
-      if (this.ppk && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
+      if (this.isPpkContribution && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
         return true
       }
       return false
@@ -182,52 +204,50 @@ export default {
       }
 
       if (this.isAuthorExpenses) {
-        this.contractOfEmployment.authorExpensePart = Number(this.authorExpenses) / 100
+        this.contractOfEmployment.authorExpensePart = Number(this.partOfWorkWithAuthorExpenses) / 100
       }
 
       if (this.workInLivePlace) {
-        expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
+        expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
       } else {
-        expenses = this.$constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
+        expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
       }
 
       this.contractOfEmployment.expenses = expenses
 
-      this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accident) / 100
+      this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accidentContributionRate) / 100
 
-      if (this.ppk) {
+      if (this.isPpkContribution) {
         this.contractOfEmployment.employeePpkRate = Number(this.employeePpkRate) / 100
         this.contractOfEmployment.employerPpkRate = Number(this.employerPpkRate) / 100
       }
 
-      if (this.amountType === this.$constants.AMOUNT_TYPES.NET) {
+      if (this.amountType === this.constants.AMOUNT_TYPES.NET) {
         const min = Number(this.amount)
 
         this.calculateForNetAmount(min, 2 * min, 100)
       }
-      if (this.amountType === this.$constants.AMOUNT_TYPES.GROSS) {
+      if (this.amountType === this.constants.AMOUNT_TYPES.GROSS) {
         this.calculateForGrossAmount()
       }
 
-      if (this.contractOfEmployment.basisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
+      if (this.contractOfEmployment.basisForTax > this.constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.constants.TAX_RATES.SECOND_RATE}%.`,
         })
       }
 
-      this.$store.commit('contractOfEmployment/SET_NET', this.contractOfEmployment.net)
-      this.$store.commit('contractOfEmployment/SET_TAX', this.contractOfEmployment.taxAmount)
-      this.$store.commit('contractOfEmployment/SET_GROSS', this.contractOfEmployment.gross)
-      this.$store.commit('contractOfEmployment/SET_BASIS_FOR_TAX', this.contractOfEmployment.basisForTax)
-      this.$store.commit('contractOfEmployment/SET_EXPENSES', expenses)
-      this.$store.commit('contractOfEmployment/SET_AUTHOR_EXPENSES_PART', this.contractOfEmployment.authorExpensePart)
-      this.$store.commit('contractOfEmployment/SET_EMPLOYEE_ZUS', this.contractOfEmployment.employeeZus)
-      this.$store.commit('contractOfEmployment/SET_EMPLOYER_ZUS', this.contractOfEmployment.employerZus)
-      this.$store.commit('contractOfEmployment/SET_EMPLOYEE_PPK', this.contractOfEmployment.employeePpk)
-      this.$store.commit('contractOfEmployment/SET_EMPLOYER_PPK', this.contractOfEmployment.employerPpk)
-      this.$store.commit('contractOfEmployment/SET_FREE_AMOUNT', this.contractOfEmployment.freeAmount)
+      this.$store.commit('contractOfEmployment/setGrossAmount', grossAmount)
+      this.$store.commit('contractOfEmployment/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
+      this.$store.commit('contractOfEmployment/setEmployeePPkContributionRate', employeePPkContributionRate)
+      this.$store.commit('contractOfEmployment/setEmployerPpkContributionRate', employerPpkContributionRate)
+      this.$store.commit('contractOfEmployment/setPartOfWorkWithAuthorExpenses', partOfWorkWithAuthorExpenses)
+      this.$store.commit('contractOfEmployment/setIsYoung', this.isYoung)
+      this.$store.commit('contractOfEmployment/setWorkInLivePlace', this.workInLivePlace)
+      this.$store.commit('contractOfEmployment/setIsFreeAmount', this.isFreeAmount)
+      this.$store.commit('contractOfEmployment/setIsFpContribution', this.isFpContribution)
 
-      this.$emit('scroll')
+      this.$emit('submitted')
     },
 
     calculateForNetAmount (min, max, scale) {
@@ -236,7 +256,7 @@ export default {
       for (let iterator = max; iterator >= min; iterator -= scale) {
         this.contractOfEmployment.gross = iterator
 
-        this.contractOfEmployment.calculateAll(this.young, this.fp, this.ppk)
+        this.contractOfEmployment.calculateAll(this.isYoung, this.isFpContribution, this.isPpkContribution)
 
         if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
           return
@@ -250,7 +270,7 @@ export default {
     calculateForGrossAmount () {
       this.contractOfEmployment.gross = Number(this.amount)
 
-      this.contractOfEmployment.calculateAll(this.young, this.fp, this.ppk)
+      this.contractOfEmployment.calculateAll(this.isYoung, this.isFpContribution, this.isPpkContribution)
     },
   },
 }
