@@ -3,11 +3,36 @@ import helpers from 'src/logic/helpers'
 import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
 
-const taxRate = constants.TAX_RATES.FIRST_RATE / 100
-let amountOfTaxThreshold = constants.AMOUNT_OF_TAX_THRESHOLD
+let year = helpers.getDefaultYear()
+
+let params = {
+  taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+  amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+  limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+}
+
 let totalBasisForRentAndPensionContributions = 0
 let totalExpenses = 0
 let totalGrossAmount = 0
+
+/**
+ * Sets parameters for the year
+ * @param newYear
+ */
+function setYear (newYear) {
+  year = newYear
+
+  params = {
+    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  }
+
+  employerContributions.setYear(newYear)
+  employeeContributions.setYear(newYear)
+}
 
 /**
  * Calculates expenses
@@ -26,18 +51,18 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
     expenses += basisForExpenses * partOfWorkWithAuthorExpenses * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
   }
 
-  if (expenses > amountOfTaxThreshold) {
-    expenses = amountOfTaxThreshold
+  if (expenses > params.amountOfTaxThreshold) {
+    expenses = params.amountOfTaxThreshold
   }
 
   const newTotalExpenses = expenses + totalExpenses
 
   // Total expenses can't cross the tax threshold
-  if (totalExpenses > amountOfTaxThreshold) {
+  if (totalExpenses > params.amountOfTaxThreshold) {
     return 0
   }
-  if (newTotalExpenses > amountOfTaxThreshold) {
-    return amountOfTaxThreshold - totalExpenses
+  if (newTotalExpenses > params.amountOfTaxThreshold) {
+    return params.amountOfTaxThreshold - totalExpenses
   }
 
   return helpers.round(expenses, 2)
@@ -54,7 +79,7 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
 function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses) {
   let basisForTax = grossAmount
 
-  if (grossAmountMinusEmployeeContributions > constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmountMinusEmployeeContributions > params.lumpSumUpToAmount) {
     basisForTax = grossAmountMinusEmployeeContributions - expenses
   }
 
@@ -70,9 +95,9 @@ function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContribution
  * @returns {number}
  */
 function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax) {
-  let taxAmount = basisForTax * taxRate
+  let taxAmount = basisForTax * params.taxRate
 
-  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmount > params.lumpSumUpToAmount) {
     taxAmount -= amountOfDeductionOfHealthContributionFromTax
   }
 
@@ -103,11 +128,11 @@ function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisFo
   const newTotalBasisForRentAndPensionContributions = grossAmount + totalBasisForRentAndPensionContributions
 
   // The total basis of rend and pension contributions can't cross the limit basis for ZUS
-  if (totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+  if (totalBasisForRentAndPensionContributions > params.limitBasicAmountForZus) {
     return 0
   }
-  if (newTotalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
-    return constants.LIMIT_BASIC_AMOUNT_FOR_ZUS - totalBasisForRentAndPensionContributions
+  if (newTotalBasisForRentAndPensionContributions > params.limitBasicAmountForZus) {
+    return params.limitBasicAmountForZus - totalBasisForRentAndPensionContributions
   }
 
   return grossAmount
@@ -153,7 +178,7 @@ function getMonthlyResultOfEmployee (
 
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
 
-  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmount > params.lumpSumUpToAmount) {
     expenseRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
   }
 
@@ -178,7 +203,7 @@ function getMonthlyResultOfEmployee (
   }
 
   // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
-  if (!isYoung || totalGrossAmount + grossAmount > amountOfTaxThreshold) {
+  if (!isYoung || totalGrossAmount + grossAmount > params.amountOfTaxThreshold) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
     basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
 
@@ -352,22 +377,10 @@ function getYearlyResultOfEmployer (monthlyInputs) {
   }
 }
 
-/**
- * Sets parameters for the year
- * @param year
- */
-function changeYear (year) {
-  if (year >= 2022) {
-    amountOfTaxThreshold = constants.AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD
-  } else {
-    amountOfTaxThreshold = constants.AMOUNT_OF_TAX_THRESHOLD
-  }
-}
-
 export default {
   getMonthlyResultOfEmployee,
   getMonthlyResultOfEmployer,
   getYearlyResultOfEmployer,
   getYearlyResultOfEmployee,
-  changeYear,
+  setYear,
 }

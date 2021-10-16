@@ -17,6 +17,7 @@
       </SectionHeader>
       <Form
         class="q-my-lg q-px-md"
+        :year="year"
         @submitted="scrollTo"
       />
       <Advert />
@@ -24,7 +25,7 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <SummarySalaryTable />
+      <SummarySalaryTable :year="year" />
       <SectionHeader>
         <div class="row justify-between">
           <div>
@@ -64,18 +65,18 @@
           />
         </div>
       </SectionHeader>
-      <EmployerTable />
+      <EmployerTable :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracodawcy
       </SectionHeader>
-      <EmployerStatistics />
+      <EmployerStatistics :year="year" />
 
       <q-dialog v-model="openEmployeeModal">
         <WholeYearForEmployee :year="year" />
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
-        <WholeYearForEmployer />
+        <WholeYearForEmployer :year="year" />
       </q-dialog>
     </div>
     <Footer />
@@ -109,12 +110,17 @@ export default {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/resetData')
 
-    this.year = new Date().getFullYear()
+    this.year = helpers.getDefaultYear()
   },
   computed: {
     ...mapGetters({
       grossAmount: 'contractOfMandate/grossAmount',
     }),
+  },
+  watch: {
+    year () {
+      this.$store.commit('contractOfMandate/resetData')
+    },
   },
   methods: {
     scrollTo () {

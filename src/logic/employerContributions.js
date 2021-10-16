@@ -1,6 +1,26 @@
 import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
 
+let year = helpers.getDefaultYear()
+
+let params = {
+  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
+  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
+}
+
+/**
+ * Sets parameters for the year
+ * @param newYear
+ */
+function setYear (newYear) {
+  year = newYear
+
+  params = {
+    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
+  }
+}
+
 /**
  * Calculates the pension contribution of the employer
  *
@@ -8,7 +28,7 @@ import constants from 'src/logic/constants'
  * @returns {number}
  */
 function calculatePensionContribution (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYER.PENSION_RATE / 100 * basisForRentAndPension, 2)
+  return helpers.round(params.pensionContributionRate / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -18,7 +38,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @returns {number}
  */
 function calculateRentContribution (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYER.RENT_RATE / 100 * basisForRentAndPension, 2)
+  return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -44,6 +64,7 @@ function calculatePpkContribution (grossAmount, ppkRate) {
 }
 
 export default {
+  setYear,
   calculatePensionContribution,
   calculateRentContribution,
   calculateAccidentContribution,

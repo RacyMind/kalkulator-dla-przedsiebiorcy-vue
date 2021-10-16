@@ -14,8 +14,11 @@ import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
 import PieChart from 'components/PieChart'
 
 export default {
-  setup () {
-    const { result } = useMonthlyEmployerResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useMonthlyEmployerResult(props)
 
     return {
       result,

@@ -14,8 +14,11 @@ import { pln } from 'src/use/currencyFormat'
 import WholeYearTable from 'src/components/WholeYearTable'
 
 export default {
-  setup () {
-    const { results, monthlyInputs } = useYearlyEmployerResult()
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { results, monthlyInputs } = useYearlyEmployerResult(props)
     return {
       pln,
       constants,
@@ -99,9 +102,9 @@ export default {
       })
     },
     showNotifications () {
-      if (this.results.totalBasisForRentAndPensionContributions > constants.LIMIT_BASIC_AMOUNT_FOR_ZUS) {
+      if (this.results.totalBasisForRentAndPensionContributions > constants.PARAMS[this.year].LIMIT_BASIC_AMOUNT_FOR_ZUS) {
         this.$q.notify({
-          message: `Przekroczono limit 30-krotności składek ZUS (${constants.LIMIT_BASIC_AMOUNT_FOR_ZUS} zł). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
+          message: `Przekroczono limit 30-krotności składek ZUS (${pln(constants.PARAMS[this.year].LIMIT_BASIC_AMOUNT_FOR_ZUS)}). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
         })
       }
     },

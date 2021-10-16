@@ -174,6 +174,9 @@ import constants from 'src/logic/constants'
 import contractOfMandate from 'src/logic/contractOfMandate'
 
 export default {
+  props: {
+    year: Number,
+  },
   emits: ['submitted'],
   setup () {
     return { constants }
@@ -198,9 +201,9 @@ export default {
   },
   created () {
     this.amountType = constants.AMOUNT_TYPES.GROSS
-    this.accidentContributionRate = constants.ACCIDENT_RATE
-    this.employerPpkRate = constants.PPK.EMPLOYER.DEFAULT_RATE
-    this.employeePpkRate = constants.PPK.EMPLOYEE.DEFAULT_RATE
+    this.accidentContributionRate = constants.PARAMS[this.year].ACCIDENT_RATE
+    this.employerPpkRate = constants.PARAMS[this.year].PPK.EMPLOYER.DEFAULT_RATE
+    this.employeePpkRate = constants.PARAMS[this.year].PPK.EMPLOYEE.DEFAULT_RATE
   },
   computed: {
     isDisabledButton () {

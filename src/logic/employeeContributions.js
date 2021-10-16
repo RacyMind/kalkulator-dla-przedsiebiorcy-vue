@@ -1,6 +1,34 @@
 import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
 
+let year = helpers.getDefaultYear()
+
+let params = {
+  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
+  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
+  sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
+  healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
+  healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
+  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+}
+
+/**
+ * Sets parameters for the year
+ * @param newYear
+ */
+function setYear (newYear) {
+  year = newYear
+
+  params = {
+    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
+    sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
+    healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
+    healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
+    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+  }
+}
+
 /**
  * Calculates the pension contribution of the employee
  *
@@ -8,7 +36,7 @@ import constants from 'src/logic/constants'
  * @returns {number}
  */
 function calculatePensionContribution (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYEE.PENSION_RATE / 100 * basisForRentAndPension, 2)
+  return helpers.round(params.pensionContributionRate / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -18,7 +46,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @returns {number}
  */
 function calculateRentContribution (basisForRentAndPension) {
-  return helpers.round(constants.ZUS.EMPLOYEE.RENT_RATE / 100 * basisForRentAndPension, 2)
+  return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
 /**
@@ -28,7 +56,7 @@ function calculateRentContribution (basisForRentAndPension) {
  * @returns {number}
  */
 function calculateSickContribution (grossAmount) {
-  return helpers.round(constants.ZUS.EMPLOYEE.SICK_RATE / 100 * grossAmount, 2)
+  return helpers.round(params.sickContributionRate / 100 * grossAmount, 2)
 }
 
 /**
@@ -38,7 +66,7 @@ function calculateSickContribution (grossAmount) {
  * @returns {number}
  */
 function calculateHealthContribution (amount) {
-  return helpers.round(constants.ZUS.EMPLOYEE.HEALTH_RATE / 100 * amount, 2)
+  return helpers.round(params.healthContributionRate / 100 * amount, 2)
 }
 
 /**
@@ -86,10 +114,10 @@ function calculateGrossAmountMinusContributions (grossAmount, pensionContributio
  * @returns {number}
  */
 function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, grossAmountMinusContributions) {
-  let healthRate = constants.ZUS.EMPLOYEE.HEALTH_RATE / 100
+  let healthRate = params.healthContributionRate / 100
 
-  if (grossAmount > constants.LUMP_SUM_UP_TO_AMOUNT) {
-    healthRate = constants.US.EMPLOYEE.HEALTH_RATE / 100
+  if (grossAmount > params.lumpSumUpToAmount) {
+    healthRate = params.healthContributionRateForTaxOffice / 100
   }
 
   return helpers.round(grossAmountMinusContributions * healthRate, 2)
@@ -109,6 +137,7 @@ function sumContributions (pensionContribution, rentContribution, sickContributi
 }
 
 export default {
+  setYear,
   calculatePensionContribution,
   calculateRentContribution,
   calculateSickContribution,

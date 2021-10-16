@@ -1,4 +1,75 @@
 const AMOUNT_OF_TAX_THRESHOLD = 85528
+
+const defaultParams = {
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
+  ZUS: {
+    EMPLOYEE: {
+      PENSION_RATE: 9.76,
+      RENT_RATE: 1.5,
+      SICK_RATE: 2.45,
+      HEALTH_RATE: 9,
+    },
+    EMPLOYER: {
+      PENSION_RATE: 9.76,
+      RENT_RATE: 6.5,
+      FP_RATE: 2.45,
+      FGSP_RATE: 0.1,
+    },
+    OWNER: {
+      PENSION_RATE: 19.52,
+      RENT_RATE: 8,
+      SICK_RATE: 2.45,
+      HEALTH_RATE: 9,
+      FP_RATE: 2.45,
+      BASIS_AMOUNT_FOR_HEALTH: 4242.38,
+      BIG_AMOUNT: 3155.40,
+      SMALL_AMOUNT: 840,
+    },
+  },
+  ACCIDENT_RATE: 1.67,
+  PPK: {
+    EMPLOYEE: {
+      MINIMUM_RATE: 0.5,
+      MAXIMUM_RATE: 4,
+      DEFAULT_RATE: 2,
+    },
+    EMPLOYER: {
+      MINIMUM_RATE: 1.5,
+      MAXIMUM_RATE: 4,
+      DEFAULT_RATE: 1.5,
+    },
+  },
+  LUMP_SUM_UP_TO_AMOUNT: 200,
+  AMOUNT_OF_TAX_THRESHOLD: 85528,
+  TAX_RATES: {
+    FIRST_RATE: 17,
+    SECOND_RATE: 32,
+    LINEAR_RATE: 19,
+    BELKA_RATE: 19,
+  },
+  US: {
+    EMPLOYEE: {
+      HEALTH_RATE: 7.75,
+    },
+    OWNER: {
+      HEALTH_RATE: 7.75,
+    },
+  },
+}
+const from2021 = {
+  ...defaultParams,
+}
+const from2022 = {
+  ...from2021,
+  AMOUNT_OF_TAX_THRESHOLD: 120000,
+  US: {
+    ...from2021.US,
+    EMPLOYEE: {
+      ...from2021.US.EMPLOYEE,
+      HEALTH_RATE: 0,
+    },
+  },
+}
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
@@ -317,5 +388,10 @@ export default {
     CHART5: '#BB4985',
     CHART6: '#a31718',
     CHART7: '#00A7D9',
+  },
+  AVAILABLE_YEARS: [2021, 2022],
+  PARAMS: {
+    2021: from2021,
+    2022: from2022,
   },
 }

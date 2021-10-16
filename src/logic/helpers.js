@@ -1,4 +1,5 @@
 import { scroll } from 'quasar'
+import constants from 'src/logic/constants'
 
 /**
  * Scrolls to the element
@@ -26,4 +27,24 @@ function round (number, precision = 0) {
   }
   return +number.toFixed(precision)
 }
-export default { scrollToElement, round }
+
+/**
+ * Returns default year
+ *
+ * @returns {number}
+ */
+function getDefaultYear () {
+  const currentYear = new Date().getFullYear()
+
+  if (constants.AVAILABLE_YEARS.includes(currentYear)) {
+    return currentYear
+  }
+
+  return constants.AVAILABLE_YEARS[constants.AVAILABLE_YEARS.length - 1]
+}
+
+export default {
+  scrollToElement,
+  round,
+  getDefaultYear,
+}
