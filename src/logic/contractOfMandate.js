@@ -121,10 +121,9 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
 /**
  * Calculates basisForRentAndPensionContributions
  * @param {number} grossAmount
- * @param {number} totalBasisForRentAndPensionContributions
  * @returns {number}
  */
-function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisForRentAndPensionContributions) {
+function calculateBasisForRentAndPensionContributions (grossAmount) {
   const newTotalBasisForRentAndPensionContributions = grossAmount + totalBasisForRentAndPensionContributions
 
   // The total basis of rend and pension contributions can't cross the limit basis for ZUS
@@ -176,7 +175,7 @@ function getMonthlyResultOfEmployee (
   let taxAmount = 0
   let expenses = 0
 
-  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
 
   if (grossAmount > params.lumpSumUpToAmount) {
     expenseRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
@@ -308,7 +307,7 @@ function getMonthlyResultOfEmployer (
   let rentContribution = 0
   let accidentContribution = 0
   let ppkContribution = 0
-  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
 
   if (isPensionContribution) {
     pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)

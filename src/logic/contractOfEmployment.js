@@ -10,8 +10,9 @@ let params = {
   secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
   freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
   amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
   limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
+  expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
 }
 
 let totalBasisForRentAndPensionContributions = 0
@@ -31,8 +32,9 @@ function setYear (newYear) {
     secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
     freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
     limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+    expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
+    expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
   }
 
   employerContributions.setYear(newYear)
@@ -48,10 +50,10 @@ function setYear (newYear) {
  * @returns {number}
  */
 function calculateExpenses (basisForExpenses, workInLivePlace, partOfWorkWithAuthorExpenses = 0) {
-  let expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
+  let expenses = params.expensesIfYouWorkWhereYouDontLive
 
   if (workInLivePlace) {
-    expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
+    expenses = params.expensesIfYouWorkWhereYouLive
   }
 
   if (partOfWorkWithAuthorExpenses) {
@@ -84,11 +86,7 @@ function calculateExpenses (basisForExpenses, workInLivePlace, partOfWorkWithAut
  * @returns {number}
  */
 function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses) {
-  let basisForTax = grossAmount
-
-  if (grossAmountMinusEmployeeContributions > params.lumpSumUpToAmount) {
-    basisForTax = grossAmountMinusEmployeeContributions - expenses
-  }
+  const basisForTax = grossAmountMinusEmployeeContributions - expenses
 
   return helpers.round(basisForTax)
 }
@@ -108,6 +106,7 @@ function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealth
   if (isFreeAmount) {
     freeAmountOfTax = params.freeAmountOfTax
   }
+
   let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
 
   if (grossAmount > params.amountOfTaxThreshold) {
@@ -121,9 +120,8 @@ function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealth
 
   // If the total basis for the tax tax is grater than the amount of the tax threshold, there is second tax rate
   if (totalBasisForTax > params.amountOfTaxThreshold) {
-    taxAmount = basisForTax * params.secondTaxRate
-  }
-  if (newTotalBasisForTax > params.amountOfTaxThreshold) {
+    taxAmount = basisForTax * params.secondTaxRate - amountOfDeductionOfHealthContributionFromTax
+  } else if (newTotalBasisForTax > params.amountOfTaxThreshold) {
     // first rate
     taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
     // second rate
@@ -154,10 +152,9 @@ function calculateNetAmount (grossAmount, taxAmount, employeeContributions, ppkA
 /**
  * Calculates basisForRentAndPensionContributions
  * @param {number} grossAmount
- * @param {number} totalBasisForRentAndPensionContributions
  * @returns {number}
  */
-function calculateBasisForRentAndPensionContributions (grossAmount, totalBasisForRentAndPensionContributions) {
+function calculateBasisForRentAndPensionContributions (grossAmount) {
   const newTotalBasisForRentAndPensionContributions = grossAmount + totalBasisForRentAndPensionContributions
 
   // The total basis of rend and pension contributions can't cross the limit basis for ZUS
@@ -200,7 +197,7 @@ function getMonthlyResultOfEmployee (
   let taxAmount = 0
   let expenses = 0
 
-  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
 
   const pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   const rentContribution = employeeContributions.calculateRentContribution(basisForRentAndPensionContributions)
@@ -292,6 +289,7 @@ function getYearlyResultOfEmployee (monthlyInputs) {
     rows: results,
     totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
     totalGrossAmount: totalGrossAmount,
+    totalBasisForTax: totalBasisForTax,
   }
 }
 
@@ -317,7 +315,7 @@ function getMonthlyResultOfEmployer (
   let fpContribution = 0
   let fgspContribution = 0
 
-  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount, totalBasisForRentAndPensionContributions)
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
 
   const pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   const rentContribution = employerContributions.calculateRentContribution(basisForRentAndPensionContributions)

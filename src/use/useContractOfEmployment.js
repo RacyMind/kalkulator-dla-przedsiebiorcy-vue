@@ -61,7 +61,6 @@ export function useMonthlyEmployeeResult (props) {
 
   return {
     result,
-    grossAmount,
   }
 }
 
@@ -109,8 +108,6 @@ export function useYearlyEmployeeResult (props) {
   return {
     results,
     monthlyInputs,
-    isYoung,
-    employerPpkContributionRate,
   }
 }
 

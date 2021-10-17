@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="gross"
-      :key="componentKey"
+      v-if="result.grossAmount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -10,75 +9,54 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
+import { useMonthlyEmployerResult } from 'src/use/useContractOfEmployment'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
 
 export default {
-  data () {
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useMonthlyEmployerResult(props)
+
     return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    ...mapGetters({
-      gross: 'contractOfEmployment/gross',
-      employerZus: 'contractOfEmployment/employerZus',
-      employerPpk: 'contractOfEmployment/employerPpk',
-    }),
     chartData () {
       return {
         datasets: [{
           data: [
-            this.gross.toFixed(2),
-            this.employerZus.accident.toFixed(2),
-            this.employerZus.rent.toFixed(2),
-            this.employerZus.pension.toFixed(2),
-            this.employerZus.fp.toFixed(2),
-            this.employerZus.fgsp.toFixed(2),
-            this.employerPpk.toFixed(2),
+            this.result.grossAmount,
+            this.result.accidentContribution,
+            this.result.rentContribution,
+            this.result.pensionContribution,
+            this.result.ppkContribution,
+            this.result.fpContribution,
+            this.result.fgspContribution,
           ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
-            this.$constants.COLORS.CHART6,
-            this.$constants.COLORS.CHART7,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
+            constants.COLORS.CHART3,
+            constants.COLORS.CHART4,
+            constants.COLORS.CHART5,
+            constants.COLORS.CHART6,
+            constants.COLORS.CHART7,
           ],
         }],
         labels: [
-          'Wynagrodzenie netto',
-          'Zaliczka na podatek dochodowy',
-          'Składka zdrowotna',
-          'Składka chorobowa',
+          'Wynagrodzenie brutto',
+          'Składka wypadkowa',
           'Składka rentowa',
           'Składka emerytalna',
-          'PPK',
+          'Składka PPK',
+          'Składka na Fundusz Pracy',
+          'Składka na FGŚP',
         ],
       }
-    },
-  },
-  watch: {
-    gross (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerZus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employerPpk (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {

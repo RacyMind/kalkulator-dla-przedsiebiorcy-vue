@@ -7,7 +7,7 @@
       Firma
     </h6>
     <MenuLink
-      v-for="link in $constants.MENU.BUSINESS"
+      v-for="link in constants.MENU.BUSINESS"
       :key="link.title"
       v-bind="link"
     />
@@ -18,18 +18,7 @@
       Praca
     </h6>
     <MenuLink
-      v-for="link in $constants.MENU.WORK"
-      :key="link.title"
-      v-bind="link"
-    />
-    <h6
-      class="q-my-md"
-      style="margin-left: 32px;"
-    >
-      Polski Ład
-    </h6>
-    <MenuLink
-      v-for="link in $constants.MENU.POLSKI_LAD"
+      v-for="link in constants.MENU.WORK"
       :key="link.title"
       v-bind="link"
     />
@@ -40,7 +29,7 @@
       Oprocentowanie
     </h6>
     <MenuLink
-      v-for="link in $constants.MENU.PERCENTAGE"
+      v-for="link in constants.MENU.PERCENTAGE"
       :key="link.title"
       v-bind="link"
     />
@@ -51,7 +40,7 @@
       Waluty
     </h6>
     <MenuLink
-      v-for="link in $constants.MENU.CURRENCIES"
+      v-for="link in constants.MENU.CURRENCIES"
       :key="link.title"
       v-bind="link"
     />
@@ -62,7 +51,7 @@
       Aplikacja
     </h6>
     <MenuLink
-      v-for="link in $constants.MENU.APP"
+      v-for="link in constants.MENU.APP"
       :key="link.title"
       v-bind="link"
     />
@@ -70,8 +59,14 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
 import MenuLink from 'components/MenuLink'
 export default {
+  setup () {
+    return {
+      constants,
+    }
+  },
   components: {
     MenuLink,
   },

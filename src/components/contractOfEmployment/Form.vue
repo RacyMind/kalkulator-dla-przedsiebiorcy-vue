@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
@@ -56,8 +56,13 @@
             min="0"
             max="100"
             step="1"
-            label="Część pracy (%)*"
+            label="Część pracy*"
             color="brand"
+            suffix="%"
+            :rules="[
+              val => !!val || '* Wpisz wartość',
+            ]"
+            lazy-rules
           />
         </div>
       </div>
@@ -69,7 +74,7 @@
             class="full-width"
             min="0"
             step="0.01"
-            label="Składka wypadkowa (%)*"
+            label="Składka wypadkowa*"
             color="brand"
             suffix="%"
             :rules="[
@@ -98,7 +103,7 @@
                 :min="constants.PARAMS[year].PPK.EMPLOYER.MINIMUM_RATE"
                 :max="constants.PARAMS[year].PPK.EMPLOYER.MAXIMUM_RATE"
                 step="0.01"
-                label="Pracodawca (%)"
+                label="Pracodawca"
                 color="brand"
                 suffix="%"
                 :rules="[
@@ -115,7 +120,7 @@
                 :min="constants.PARAMS[year].PPK.EMPLOYER.MINIMUM_RATE"
                 :max="constants.PARAMS[year].PPK.EMPLOYER.MAXIMUM_RATE"
                 step="0.01"
-                label="Pracownik (%)"
+                label="Pracownik"
                 color="brand"
                 suffix="%"
                 :rules="[
@@ -195,46 +200,30 @@ export default {
     },
   },
   methods: {
-    calculate () {
-      let expenses
-      this.contractOfEmployment = new ContractOfEmployment()
-
-      if (!this.isFreeAmount) {
-        this.contractOfEmployment.freeAmount = 0
-      }
+    save () {
+      let partOfWorkWithAuthorExpenses = 0
+      let employeePPkContributionRate = 0
+      let employerPpkContributionRate = 0
+      let grossAmount = 0
 
       if (this.isAuthorExpenses) {
-        this.contractOfEmployment.authorExpensePart = Number(this.partOfWorkWithAuthorExpenses) / 100
+        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
       }
-
-      if (this.workInLivePlace) {
-        expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE
-      } else {
-        expenses = this.constants.CONTRACT_OF_EMPLOYMENT.EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE
-      }
-
-      this.contractOfEmployment.expenses = expenses
-
-      this.contractOfEmployment.zusAccidentEmployerRate = Number(this.accidentContributionRate) / 100
 
       if (this.isPpkContribution) {
-        this.contractOfEmployment.employeePpkRate = Number(this.employeePpkRate) / 100
-        this.contractOfEmployment.employerPpkRate = Number(this.employerPpkRate) / 100
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
+        employerPpkContributionRate = Number(this.employerPpkRate) / 100
       }
 
-      if (this.amountType === this.constants.AMOUNT_TYPES.NET) {
-        const min = Number(this.amount)
+      const min = Number(this.amount)
 
-        this.calculateForNetAmount(min, 2 * min, 100)
-      }
-      if (this.amountType === this.constants.AMOUNT_TYPES.GROSS) {
-        this.calculateForGrossAmount()
-      }
-
-      if (this.contractOfEmployment.basisForTax > this.constants.AMOUNT_OF_TAX_THRESHOLD) {
-        this.$q.notify({
-          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.constants.TAX_RATES.SECOND_RATE}%.`,
-        })
+      switch (this.amountType) {
+        case constants.AMOUNT_TYPES.NET:
+          grossAmount = this.findGrossAmountUsingNetAmount(min, 1.7 * min, 100)
+          break
+        case constants.AMOUNT_TYPES.GROSS:
+          grossAmount = Number(this.amount)
+          break
       }
 
       this.$store.commit('contractOfEmployment/setGrossAmount', grossAmount)
@@ -250,27 +239,47 @@ export default {
       this.$emit('submitted')
     },
 
-    calculateForNetAmount (min, max, scale) {
-      const net = Number(this.amount)
+    /**
+     * Looks for a gross amount
+     *
+     * @param {number} min
+     * @param {number} max
+     * @param {number} scale
+     * @returns {number}
+     */
+    findGrossAmountUsingNetAmount (min, max, scale) {
+      let partOfWorkWithAuthorExpenses = 0
+      let employeePPkContributionRate = 0
+
+      if (this.isAuthorExpenses) {
+        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
+      }
+
+      if (this.isPpkContribution) {
+        employeePPkContributionRate = Number(this.employeePpkRate) / 100
+      }
+
+      const netAmount = Number(this.amount)
 
       for (let iterator = max; iterator >= min; iterator -= scale) {
-        this.contractOfEmployment.gross = iterator
+        const result = ContractOfEmployment.getMonthlyResultOfEmployee(
+          iterator,
+          employeePPkContributionRate,
+          partOfWorkWithAuthorExpenses,
+          this.workInLivePlace,
+          this.isFreeAmount,
+          this.isFpContribution,
+          this.isYoung,
+        )
 
-        this.contractOfEmployment.calculateAll(this.isYoung, this.isFpContribution, this.isPpkContribution)
-
-        if (Math.abs(this.contractOfEmployment.net - net) <= 0.0005) {
-          return
+        if (Math.abs(result.netAmount - netAmount) <= 0.0005) {
+          return result.grossAmount
         }
-        if (Math.abs(this.contractOfEmployment.net - net) <= scale) {
-          return this.calculateForNetAmount(this.contractOfEmployment.net - scale, this.contractOfEmployment.gross + scale, scale / 10)
+        if (Math.abs(result.netAmount - netAmount) <= scale) {
+          return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 10)
         }
       }
-      return null
-    },
-    calculateForGrossAmount () {
-      this.contractOfEmployment.gross = Number(this.amount)
-
-      this.contractOfEmployment.calculateAll(this.isYoung, this.isFpContribution, this.isPpkContribution)
+      return 0
     },
   },
 }

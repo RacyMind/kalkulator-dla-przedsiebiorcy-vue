@@ -346,18 +346,6 @@ export default {
       },
     ],
     POLSKI_LAD: [
-      {
-        title: 'Samozatrudnienie',
-        caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
-        className: 'c-polskiLad',
-        link: '/polski-lad/samozatrudnienie',
-      },
-      {
-        title: 'Umowa o pracę',
-        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
-        className: 'c-polskiLad',
-        link: '/polski-lad/umowa-o-prace',
-      },
     ],
   },
   LOCALE_DATE: {

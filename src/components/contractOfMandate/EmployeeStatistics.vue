@@ -53,7 +53,7 @@ export default {
           'Składka chorobowa',
           'Składka rentowa',
           'Składka emerytalna',
-          'PPK',
+          'Składka PPK',
         ],
       }
     },
