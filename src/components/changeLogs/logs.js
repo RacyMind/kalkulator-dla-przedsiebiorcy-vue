@@ -3,7 +3,7 @@ export default {
     {
       version: '3.13.0',
       publish_date: '2021-09-20',
-      content: '<ul><li>Refaktoryzacja modułu umowy dzieło:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca</li><li>Dodano opcję zmiany roku podatkowego.</li></ul></li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',
+      content: '<ul><li>Refaktoryzacja modułu umowy dzieło</li><li>Refaktoryzacja modułu umowy zlecenie:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca</li><li>Dodano opcję zmiany roku podatkowego.</li></ul></li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',
 
     },
     {

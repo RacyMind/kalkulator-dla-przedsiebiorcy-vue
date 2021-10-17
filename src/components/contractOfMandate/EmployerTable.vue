@@ -68,7 +68,6 @@ export default {
   },
   setup (props) {
     const { result } = useMonthlyEmployerResult(props)
-
     return {
       pln,
       result,

@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net"
-      :key="componentKey"
+      v-if="result.netAmount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -10,42 +9,41 @@
 </template>
 
 <script>
+import constants from 'src/logic/constants'
 import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
+import { useMonthlyEmployeeResult } from 'src/use/useContractOfEmployment'
 
 export default {
-  data () {
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useMonthlyEmployeeResult(props)
     return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    ...mapGetters({
-      net: 'contractOfEmployment/net',
-      tax: 'contractOfEmployment/tax',
-      employeeZus: 'contractOfEmployment/employeeZus',
-      employeePpk: 'contractOfEmployment/employeePpk',
-    }),
     chartData () {
       return {
         datasets: [{
           data: [
-            this.net.toFixed(2),
-            this.tax.toFixed(2),
-            this.employeeZus.health.toFixed(2),
-            this.employeeZus.sick.toFixed(2),
-            this.employeeZus.rent.toFixed(2),
-            this.employeeZus.pension.toFixed(2),
-            this.employeePpk.toFixed(2),
+            this.result.netAmount,
+            this.result.taxAmount,
+            this.result.healthContribution,
+            this.result.sickContribution,
+            this.result.rentContribution,
+            this.result.pensionContribution,
+            this.result.ppkContribution,
           ],
           backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
-            this.$constants.COLORS.CHART6,
-            this.$constants.COLORS.CHART7,
+            constants.COLORS.CHART1,
+            constants.COLORS.CHART2,
+            constants.COLORS.CHART3,
+            constants.COLORS.CHART4,
+            constants.COLORS.CHART5,
+            constants.COLORS.CHART6,
+            constants.COLORS.CHART7,
           ],
         }],
         labels: [
@@ -55,36 +53,9 @@ export default {
           'Składka chorobowa',
           'Składka rentowa',
           'Składka emerytalna',
-          'PPK',
+          'Składka PPK',
         ],
       }
-    },
-  },
-  watch: {
-    net (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    tax (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employeeZus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    employeePpk (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {

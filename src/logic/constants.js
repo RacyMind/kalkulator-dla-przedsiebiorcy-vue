@@ -41,6 +41,7 @@ const defaultParams = {
   },
   LUMP_SUM_UP_TO_AMOUNT: 200,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
+  FREE_AMOUNT_OF_TAX: 525.12 / 12,
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
@@ -55,6 +56,8 @@ const defaultParams = {
       HEALTH_RATE: 7.75,
     },
   },
+  EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
+  EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE: 300,
 }
 const from2021 = {
   ...defaultParams,
@@ -62,6 +65,7 @@ const from2021 = {
 const from2022 = {
   ...from2021,
   AMOUNT_OF_TAX_THRESHOLD: 120000,
+  FREE_AMOUNT_OF_TAX: 5100 / 12,
   US: {
     ...from2021.US,
     EMPLOYEE: {
@@ -175,6 +179,7 @@ export default {
   CONTRACT_OF_EMPLOYMENT: {
     EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
     EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE: 300,
+    AUTHOR_EXPENSES_RATE: 0.5,
   },
   ACCIDENT_RATE: 1.67,
   US: {
@@ -341,18 +346,6 @@ export default {
       },
     ],
     POLSKI_LAD: [
-      {
-        title: 'Samozatrudnienie',
-        caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
-        className: 'c-polskiLad',
-        link: '/polski-lad/samozatrudnienie',
-      },
-      {
-        title: 'Umowa o pracę',
-        caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
-        className: 'c-polskiLad',
-        link: '/polski-lad/umowa-o-prace',
-      },
     ],
   },
   LOCALE_DATE: {

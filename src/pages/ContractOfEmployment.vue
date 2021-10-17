@@ -5,19 +5,27 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
+        <q-icon name="o_date_range" />
+        Rok podatkowy
+      </SectionHeader>
+      <ChooseYear
+        v-model="year"
+        class="q-my-lg q-px-md"/>
+      <SectionHeader>
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
       <Form
+        :year="year"
         class="q-my-lg q-px-md"
-        @scroll="scrollTo"
+        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <TotalTable />
+      <SummarySalaryTable :year="year" />
       <SectionHeader>
         <div class="row justify-between">
           <div>
@@ -28,18 +36,18 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployeeModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployeeTable />
+      <EmployeeTable :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics />
+      <EmployeeStatistics :year="year" />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -51,24 +59,24 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openEmployerModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployerTable />
+      <EmployerTable :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracodawcy
       </SectionHeader>
-      <EmployerStatistics />
+      <EmployerStatistics :year="year" />
 
       <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee />
+        <WholeYearForEmployee :year="year" />
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
-        <WholeYearForEmployer />
+        <WholeYearForEmployer :year="year" />
       </q-dialog>
     </div>
     <Footer />
@@ -76,10 +84,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import helpers from 'src/logic/helpers'
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
+import ChooseYear from 'components/ChooseYear'
 import Form from 'components/contractOfEmployment/Form'
-import TotalTable from 'components/contractOfEmployment/TotalTable'
+import SummarySalaryTable from 'components/contractOfEmployment/SummarySalaryTable'
 import EmployeeTable from 'components/contractOfEmployment/EmployeeTable'
 import EmployeeStatistics from 'components/contractOfEmployment/EmployeeStatistics'
 import EmployerTable from 'components/contractOfEmployment/EmployerTable'
@@ -87,22 +98,29 @@ import EmployerStatistics from 'components/contractOfEmployment/EmployerStatisti
 import WholeYearForEmployee from 'components/contractOfEmployment/WholeYearForEmployee'
 import WholeYearForEmployer from 'components/contractOfEmployment/WholeYearForEmployer'
 import Footer from 'components/Footer'
-import { mapGetters } from 'vuex'
-import helpers from 'src/logic/helpers'
 export default {
   data () {
     return {
       openEmployeeModal: false,
       openEmployerModal: false,
+      year: null,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o pracę')
+    this.$store.commit('contractOfEmployment/resetData')
+
+    this.year = helpers.getDefaultYear()
   },
   computed: {
     ...mapGetters({
-      gross: 'contractOfEmployment/gross',
+      grossAmount: 'contractOfEmployment/grossAmount',
     }),
+  },
+  watch: {
+    year () {
+      this.$store.commit('contractOfEmployment/resetData')
+    },
   },
   methods: {
     scrollTo () {
@@ -114,8 +132,9 @@ export default {
     WholeYearForEmployer,
     SectionHeader,
     Advert,
+    ChooseYear,
     Form,
-    TotalTable,
+    SummarySalaryTable,
     EmployeeTable,
     EmployeeStatistics,
     EmployerTable,

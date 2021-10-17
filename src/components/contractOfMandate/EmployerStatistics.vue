@@ -48,7 +48,7 @@ export default {
           'Składka wypadkowa',
           'Składka rentowa',
           'Składka emerytalna',
-          'PPK',
+          'Składka PPK',
         ],
       }
     },
