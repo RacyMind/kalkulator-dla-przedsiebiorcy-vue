@@ -4,12 +4,20 @@
     style="max-width:800px;">
     <div class="full-width bg-white">
       <SectionHeader>
+        <q-icon name="o_date_range" />
+        Rok podatkowy
+      </SectionHeader>
+      <ChooseYear
+        v-model="year"
+        class="q-my-lg q-px-md"/>
+      <SectionHeader>
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
       <Form
+        :year="year"
         class="q-my-lg q-px-md"
-        @scroll="scrollTo"
+        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -22,21 +30,21 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!gross"
+            :disable="!grossAmount"
             outline
             @click="openModal = true"
           />
         </div>
       </SectionHeader>
-      <Table />
+      <Table :year="year" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <Statistics />
+      <Statistics :year="year" />
 
       <q-dialog v-model="openModal">
-        <WholeYear />
+        <WholeYear :year="year" />
       </q-dialog>
     </div>
     <Footer />
@@ -53,19 +61,29 @@ import WholeYear from 'components/selfEmployment/WholeYear'
 import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
+import ChooseYear from 'components/ChooseYear'
 export default {
   data () {
     return {
       openModal: false,
+      year: null,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Samozatrudnienie')
+    this.$store.commit('selfEmployment/resetData')
+
+    this.year = helpers.getDefaultYear()
   },
   computed: {
     ...mapGetters({
-      gross: 'selfEmployment/gross',
+      grossAmount: 'selfEmployment/grossAmount',
     }),
+  },
+  watch: {
+    year () {
+      this.$store.commit('selfEmployment/resetData')
+    },
   },
   methods: {
     scrollTo () {
@@ -75,6 +93,7 @@ export default {
   components: {
     SectionHeader,
     Advert,
+    ChooseYear,
     Form,
     Table,
     Statistics,

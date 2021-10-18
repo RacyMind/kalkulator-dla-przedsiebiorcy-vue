@@ -81,7 +81,7 @@ function calculateAccidentContribution (grossAMount, accidentRate) {
 }
 
 /**
- * Calculates the PPK contribution,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, of the employee
+ * Calculates the PPK contribution of the employee
  *
  * @param {number} grossAmount
  * @param {number} ppkRate
