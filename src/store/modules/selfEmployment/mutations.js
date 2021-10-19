@@ -1,55 +1,52 @@
 export default {
-  SET_NET (state, net) {
-    state.net = net
+  setGrossAmount (state, grossAmount) {
+    state.grossAmount = grossAmount
   },
-  SET_GROSS (state, gross) {
-    state.gross = gross
-  },
-  SET_TAX (state, tax) {
-    state.tax = tax
-  },
-  SET_FREE_AMOUNT (state, freeAmount) {
-    state.freeAmount = freeAmount
-  },
-  SET_BASIS_FOR_TAX (state, basisForTax) {
-    state.basisForTax = basisForTax
-  },
-  SET_EXPENSES (state, expenses) {
-    state.expenses = expenses
-  },
-  SET_ZUS (state, zus) {
-    state.zus = zus
-  },
-  SET_ZUS_ACCIDENT_RATE (state, zusAccidentRate) {
-    state.zusAccidentRate = zusAccidentRate
-  },
-  SET_TAX_TYPE (state, taxType) {
+  setTaxType (state, taxType) {
     state.taxType = taxType
   },
-  SET_AID (state, aid) {
-    state.aid = aid
+  setTaxRateForLumpSum (state, taxRateForLumpSum) {
+    state.taxRateForLumpSum = taxRateForLumpSum
   },
-  SET_SICK (state, sick) {
-    state.sick = sick
+  setAccidentContributionRate (state, accidentContributionRate) {
+    state.accidentContributionRate = accidentContributionRate
   },
-  CLEAR_DATA (state) {
-    state.net = null
-    state.gross = null
-    state.basisForTax = null
-    state.expenses = null
-    state.freeAmount = null
-    state.tax = null
+  setExpenses (state, expenses) {
+    state.expenses = expenses
+  },
+  setIsFreeAmount (state, isFreeAmount) {
+    state.isFreeAmount = isFreeAmount
+  },
+  setIsSickContribution (state, isSickContribution) {
+    state.isSickContribution = isSickContribution
+  },
+  setIsFpContribution (state, isFpContribution) {
+    state.isFpContribution = isFpContribution
+  },
+  setIsSmallZus (state, isSmallZus) {
+    state.isSmallZus = isSmallZus
+  },
+  setIsAidForStart (state, isAidForStart) {
+    state.isAidForStart = isAidForStart
+  },
+  setIsFullTimeJob (state, isFullTimeJob) {
+    state.isFullTimeJob = isFullTimeJob
+  },
+  setCustomBasisForZus (state, customBasisForZus) {
+    state.customBasisForZus = customBasisForZus
+  },
+  resetData (state) {
+    state.grossAmount = null
     state.taxType = null
-    state.zusAccidentRate = null
-    state.aid = false
-    state.sick = false
-    state.zus = {
-      accident: null,
-      health: null,
-      sick: null,
-      rent: null,
-      pension: null,
-      fp: null,
-    }
+    state.taxRateForLumpSum = null
+    state.accidentContributionRate = null
+    state.expenses = null
+    state.isFreeAmount = false
+    state.isSickContribution = false
+    state.isFpContribution = false
+    state.isSmallZus = false
+    state.isAid = false
+    state.isFullTimeJob = false
+    state.customBasisForZus = null
   },
 }

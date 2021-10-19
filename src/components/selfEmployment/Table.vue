@@ -2,10 +2,10 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Dochód netto
+        Przychód netto
       </div>
       <div>
-        {{ pln(net) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -13,7 +13,7 @@
         Koszty przychodu
       </div>
       <div>
-        {{ pln(expenses) }}
+        {{ pln(result.expenses) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -21,7 +21,7 @@
         Podstawa opodatkowania
       </div>
       <div>
-        {{ pln(basisForTax) }}
+        {{ pln(result.basisForTax) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -29,7 +29,7 @@
         Zaliczka na podatek dochodowy
       </div>
       <div>
-        {{ pln(tax) }}
+        {{ pln(result.taxAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -37,7 +37,7 @@
         Składki ZUS
       </div>
       <div class="text-weight-bold">
-        {{ pln(zusTotal) }}
+        {{ pln(totalZusContributions) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -45,7 +45,7 @@
         Składka zdrowotna
       </div>
       <div>
-        {{ pln(zus.health) }}
+        {{ pln(result.healthContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -53,7 +53,7 @@
         Składka chorobowa
       </div>
       <div>
-        {{ pln(zus.sick) }}
+        {{ pln(result.sickContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -61,7 +61,7 @@
         Składka rentowa
       </div>
       <div>
-        {{ pln(zus.rent) }}
+        {{ pln(result.rentContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -69,7 +69,7 @@
         Składka emerytalna
       </div>
       <div>
-        {{ pln(zus.pension) }}
+        {{ pln(result.pensionContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -77,7 +77,7 @@
         Składka wypadkowa
       </div>
       <div>
-        {{ pln(zus.accident) }}
+        {{ pln(result.accidentContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm">
@@ -85,50 +85,65 @@
         Składka na Fundusz Pracy
       </div>
       <div>
-        {{ pln(zus.fp) }}
+        {{ pln(result.fpContribution) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Przychód netto
+        Dochód netto
       </div>
       <div>
-        {{ pln(gross) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import constants from 'src/logic/constants'
+import { useMonthlyResult, inputData } from 'src/use/useSelfEmployment'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
-  setup () {
-    return { pln }
+  props: {
+    year: Number,
   },
-  computed: {
-    ...mapGetters({
-      net: 'selfEmployment/net',
-      gross: 'selfEmployment/gross',
-      basisForTax: 'selfEmployment/basisForTax',
-      expenses: 'selfEmployment/expenses',
-      tax: 'selfEmployment/tax',
-      zus: 'selfEmployment/zus',
-    }),
-    zusTotal () {
-      if (this.isZusEmpty(this.zus)) {
-        return null
+    setup (props) {
+      const { result } = useMonthlyResult(props)
+      const { grossAmount, taxType } = inputData()
+
+      return {
+        pln,
+        result,
+        grossAmount,
+        taxType,
       }
-      return Object.values(this.zus).reduce((current, sum) => current + sum)
+    },
+  computed: {
+    totalZusContributions () {
+      return [
+        this.result.pensionContribution,
+        this.result.rentContribution,
+        this.result.sickContribution,
+        this.result.healthContribution,
+        this.result.accidentContribution,
+        this.result.fpContribution,
+      ].reduce((current, sum) => current + sum)
+    },
+  },
+  watch: {
+    grossAmount: function (val) {
+      if (val) {
+        this.showNotifications()
+      }
     },
   },
   methods: {
-    isZusEmpty (zus) {
-      if (!zus.health && !zus.rent &&
-        !zus.pension && !zus.sick && !zus.fp) {
-        return true
+    showNotifications () {
+      if (this.taxType === constants.TAX_TYPES.GENERAL && this.result.totalBasisForTax > constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD) {
+        this.$q.notify({
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${pln(constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD)}). Dla kwoty powyżej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+        })
       }
-      return false
     },
   },
 }

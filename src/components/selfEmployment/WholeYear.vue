@@ -1,62 +1,50 @@
 <template>
-  <q-card
-    class="relative-position"
-    style="width: auto; max-width: 90vw;">
-    <q-btn
-      icon="close"
-      class="absolute-top-right z-top"
-      flat
-      round
-      dense
-      v-close-popup />
-    <q-table
-      title=" Podsumowanie"
-      :grid="$q.screen.xs || $q.screen.sm"
-      :rows="data"
-      :columns="columns"
-      row-key="name"
-      hide-bottom
-      :pagination="{rowsPerPage: 13}">
-      <template v-slot:body-cell="props">
-        <q-td
-          :props="props"
-          :class="(props.row.month=='Cały rok')?'bg-primary text-white':'bg-white text-black'"
-        >
-          {{props.value}}
-        </q-td>
-      </template>
-    </q-table>
-  </q-card>
+  <WholeYearTable
+    title="Podsumowanie"
+    :columns="columns"
+    :rows="results.rows"
+    @grossAmountUpdated="updateGrossAmounts"
+  />
 </template>
 
 <script>
-/**
- * TO DO
- * Przy uldze dla mlodych wchodzi podatek dla 2. progu https://poradnikprzedsiebiorcy.pl/-przekroczenie-progu-podatkowego-przez-osobe-objeta-ulga-pit-dla-mlodych
- */
-import { mapGetters } from 'vuex'
+import constants from 'src/logic/constants'
+import { useYearlyResult, inputData } from 'src/use/useSelfEmployment'
 import { pln } from 'src/use/currencyFormat'
-import SelfEmployment from 'src/logic/SelfEmployment'
+import WholeYearTable from 'src/components/WholeYearTable'
 
 export default {
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { results, monthlyInputs } = useYearlyResult(props)
+    const { taxType } = inputData()
+
+    return {
+      pln,
+      constants,
+      results,
+      monthlyInputs,
+      taxType,
+    }
+  },
   data () {
     return {
-      totalBasisForTax: 0,
-      totalBasicAmountForRentAndPension: 0,
       columns: [
         {
           name: 'month',
           required: true,
           align: 'left',
-          field: row => row.month,
+          field: row => constants.LOCALE_DATE.months[row.month],
           format: val => `${val}`,
         },
         {
           name: 'gross',
-          label: 'Przychód netto',
+          label: 'Brutto',
           required: true,
           align: 'left',
-          field: row => row.gross,
+          field: row => row.grossAmount,
           format: val => `${pln(val)}`,
         },
         {
@@ -64,7 +52,7 @@ export default {
           label: 'Skł. chorobowa',
           required: true,
           align: 'left',
-          field: row => row.sick,
+          field: row => row.sickContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -72,7 +60,7 @@ export default {
           label: 'Skł. rentowa',
           required: true,
           align: 'left',
-          field: row => row.rent,
+          field: row => row.rentContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -80,7 +68,7 @@ export default {
           label: 'Skł. emerytalna',
           required: true,
           align: 'left',
-          field: row => row.pension,
+          field: row => row.pensionContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -88,7 +76,7 @@ export default {
           label: 'Skł. zdrowotna',
           required: true,
           align: 'left',
-          field: row => row.health,
+          field: row => row.healthContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -96,7 +84,7 @@ export default {
           label: 'Skł. wypadkowa',
           required: true,
           align: 'left',
-          field: row => row.accident,
+          field: row => row.accidentContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -104,7 +92,7 @@ export default {
           label: 'Skł. na Fundusz Pracy',
           required: true,
           align: 'left',
-          field: row => row.fp,
+          field: row => row.fpContribution,
           format: val => `${pln(val)}`,
         },
         {
@@ -117,7 +105,7 @@ export default {
         },
         {
           name: 'expenses',
-          label: 'Koszty przycchodu',
+          label: 'Koszty przychodu',
           required: true,
           align: 'left',
           field: row => row.expenses,
@@ -128,182 +116,36 @@ export default {
           label: 'Dochód netto',
           required: true,
           align: 'left',
-          field: row => row.net,
+          field: row => row.netAmount,
           format: val => `${pln(val)}`,
         },
       ],
-      data: [],
     }
   },
-  created () {
-    this.setData()
-
-    if (this.taxType === this.$constants.TAX_TYPES.GENERAL && this.totalBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-      this.$q.notify({
-        message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${this.$constants.AMOUNT_OF_TAX_THRESHOLD} zł). Dla kwoty powyzej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
-      })
-    }
-  },
-  computed: {
-    ...mapGetters({
-      gross: 'selfEmployment/gross',
-      expenses: 'selfEmployment/expenses',
-      zus: 'selfEmployment/zus',
-      taxType: 'selfEmployment/taxType',
-      tax: 'selfEmployment/tax',
-      aid: 'selfEmployment/aid',
-      sick: 'selfEmployment/sick',
-      zusAccidentRate: 'selfEmployment/zusAccidentRate',
-      freeAmount: 'selfEmployment/freeAmount',
-    }),
+  watch: {
+    results: {
+      handler: function () {
+        this.showNotifications()
+      },
+      immediate: true,
+    },
   },
   methods: {
-    setData () {
-      const total = {
-        month: 'Cały rok',
-        gross: 0,
-        pension: 0,
-        sick: 0,
-        rent: 0,
-        health: 0,
-        accident: 0,
-        fp: 0,
-        taxAmount: 0,
-        net: 0,
-        expenses: 0,
-      }
-
-      for (let i = 0; i < 12; i++) {
-        const result = this.getResultForOneMonth(i)
-
-        this.data[i] = {
-          month: this.$constants.LOCALE_DATE.months[i],
-          gross: result.gross,
-          pension: result.pension,
-          sick: result.sick,
-          rent: result.rent,
-          health: result.health,
-          accident: result.accident,
-          fp: result.fp,
-          taxAmount: result.taxAmount,
-          net: result.net,
-          expenses: result.expenses,
-        }
-
-        total.gross += result.gross
-        total.pension += result.pension
-        total.sick += result.sick
-        total.rent += result.rent
-        total.health += result.health
-        total.accident += result.accident
-        total.fp += result.fp
-        total.taxAmount += result.taxAmount
-        total.net += result.net
-        total.expenses += result.expenses
-      }
-
-      this.data.push(total)
+    updateGrossAmounts (grossAmounts) {
+      grossAmounts.forEach((grossAmount, index) => {
+        this.monthlyInputs[index].grossAmount = grossAmount
+      })
     },
-    getResultForOneMonth (month) {
-      const model = new SelfEmployment()
-      const currentBasisForTax = this.totalBasisForTax
-      model.gross = this.gross
-      model.expenses = this.expenses
-      model.taxType = this.taxType
-      model.freeAmount = this.freeAmount
-
-      if (this.zus.accident) {
-        model.zus.accident = this.zus.accident
-      }
-      if (this.zus.pension) {
-        model.zus.pension = this.zus.pension
-      }
-      if (this.zus.rent) {
-        model.zus.rent = this.zus.rent
-      }
-      if (this.zus.sick) {
-        model.zus.sick = this.zus.sick
-      }
-      if (this.zus.fp) {
-        model.zus.fp = this.zus.fp
-      }
-      if (month > 5 && this.aid) {
-        model.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
-        model.zusAccidentRate = Number(this.zusAccidentRate)
-
-        model.calculateZUSAccident()
-        model.calculateZUSPension()
-        model.calculateZUSRent()
-        model.calculateZUSAccident()
-
-        if (this.sick) {
-          model.calculateZUSSick()
-        }
-      }
-
-      model.zus.health = this.zus.health
-      model.calculateUSHealth()
-
-      model.calculateBasisForTax()
-
-      const newTotalBasisForTax = currentBasisForTax + model.basisForTax
-
-      this.totalBasisForTax += model.basisForTax
-
-      if (this.taxType === this.$constants.TAX_TYPES.GENERAL) {
-        if (currentBasisForTax > this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-          model.calculateTaxBySecondTaxRate()
-
-          model.taxAmount = model.taxAmount - model.USHealth
-        } else {
-          if (newTotalBasisForTax <= this.$constants.AMOUNT_OF_TAX_THRESHOLD) {
-            model.calculateTaxByFirstTaxRate()
-
-            model.taxAmount = model.taxAmount - model.USHealth - model.freeAmount
-          } else {
-            const basisForFirstRateTax = this.$constants.AMOUNT_OF_TAX_THRESHOLD - currentBasisForTax
-            const basisForTax = model.basisForTax
-            model.basisForTax = basisForFirstRateTax
-            model.calculateTaxByFirstTaxRate()
-            const firstRateTaxAmount = model.taxAmount
-
-            model.basisForTax = Math.abs(basisForTax - basisForFirstRateTax)
-            model.calculateTaxBySecondTaxRate()
-
-            model.taxAmount = firstRateTaxAmount + model.taxAmount - model.USHealth - model.freeAmount
-          }
-        }
-      }
-      if (this.taxType === this.$constants.TAX_TYPES.LINEAR) {
-        model.calculateTaxByLinearTaxRate()
-
-        model.taxAmount = this.tax
-      }
-      if (this.taxType === this.$constants.TAX_TYPES.LUMP_SUM) {
-        model.taxAmount = this.tax
-      }
-
-      if (model.taxAmount < 0) {
-        model.taxAmount = 0
-      }
-
-      model.taxAmount = Math.round(model.taxAmount)
-
-      model.calculateNetAmount()
-
-      return {
-        rent: model.zus.rent,
-        pension: model.zus.pension,
-        sick: model.zus.sick,
-        health: model.zus.health,
-        accident: model.zus.accident,
-        fp: model.zus.fp,
-        taxAmount: model.taxAmount,
-        expenses: model.expenses,
-        net: model.net,
-        gross: model.gross,
+    showNotifications () {
+      if (this.taxType === constants.TAX_TYPES.GENERAL && this.results.totalBasisForTax > constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD) {
+        this.$q.notify({
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${pln(constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD)}). Dla kwoty powyżej progu stawka podatku wynosi ${this.$constants.TAX_RATES.SECOND_RATE}%.`,
+        })
       }
     },
+  },
+  components: {
+    WholeYearTable,
   },
 }
 </script>

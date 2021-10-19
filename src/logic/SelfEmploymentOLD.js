@@ -1,6 +1,6 @@
 import constants from 'src/logic/constants'
 
-class SelfEmployment {
+class SelfEmploymentOLD {
   /**
    * Kwota netto
    * @type {number}
