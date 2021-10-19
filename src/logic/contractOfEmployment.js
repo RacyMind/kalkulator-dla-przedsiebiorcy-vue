@@ -212,6 +212,7 @@ function getMonthlyResultOfEmployee (
   // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
   if (!isYoung || totalGrossAmount + grossAmount > params.amountOfTaxThreshold) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, workInLivePlace, partOfWorkWithAuthorExpenses)
+
     basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
 
     // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income

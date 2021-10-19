@@ -39,6 +39,23 @@
             class="q-mt-sm"
             label=" Praca w miejscu zamieszkania"
           />
+          <template v-if="year >= 2022">
+            <q-toggle
+              v-model="isAidForSenior"
+              class="q-mt-sm"
+              label="Zerowy PIT dla seniora"
+            />
+            <q-toggle
+              v-model="isAidForBigFamily"
+              class="q-mt-sm"
+              label="Zerowy PIT dla rodzin 4+"
+            />
+            <q-toggle
+              v-model="isAidForMiddleClass"
+              class="q-mt-sm"
+              label="Ulga dla klasy średniej"
+            />
+          </template>
           <q-toggle
             v-model="isFreeAmount"
             class="q-mt-sm"
@@ -174,6 +191,9 @@ export default {
       isAuthorExpenses: false,
       partOfWorkWithAuthorExpenses: 100,
       isFreeAmount: true,
+      isAidForBigFamily: false,
+      isAidForSenior: false,
+      isAidForMiddleClass: false,
     }
   },
   created () {
