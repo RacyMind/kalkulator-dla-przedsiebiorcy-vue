@@ -80,12 +80,11 @@ function calculateExpenses (basisForExpenses, workInLivePlace, partOfWorkWithAut
 /**
  * Calculates the basis for tax
  *
- * @param {number} grossAmount
  * @param {number} grossAmountMinusEmployeeContributions
  * @param {number} expenses
  * @returns {number}
  */
-function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses) {
+function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses) {
   const basisForTax = grossAmountMinusEmployeeContributions - expenses
 
   return helpers.round(basisForTax)
@@ -210,10 +209,10 @@ function getMonthlyResultOfEmployee (
   const amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(grossAmount, grossAmountMinusEmployeeContributions)
 
   // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
-  if (!isYoung || totalGrossAmount + grossAmount > params.amountOfTaxThreshold) {
+  const newTotalGrossAmount = totalGrossAmount + grossAmount
+  if (!isYoung || newTotalGrossAmount > params.amountOfTaxThreshold) {
     expenses = calculateExpenses(grossAmountMinusEmployeeContributions, workInLivePlace, partOfWorkWithAuthorExpenses)
-
-    basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
+    basisForTax = calculateBasisForTax(grossAmountMinusEmployeeContributions, expenses)
 
     // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
     if (month > 0) {

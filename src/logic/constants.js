@@ -42,12 +42,52 @@ const defaultParams = {
   LUMP_SUM_UP_TO_AMOUNT: 200,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
   FREE_AMOUNT_OF_TAX: 525.12 / 12,
+  MINIMUM_SALARY: 2800,
+  AVERAGE_SALARY: 5504.52,
   TAX_RATES: {
     FIRST_RATE: 17,
     SECOND_RATE: 32,
     LINEAR_RATE: 19,
     BELKA_RATE: 19,
   },
+  TAX_RATES_FOR_LAMP_SUM: [
+    {
+      label: '2%',
+      value: 2,
+    },
+    {
+      label: '3%',
+      value: 3,
+    },
+    {
+      label: '5,5%',
+      value: 5.5,
+    },
+    {
+      label: '8,5%',
+      value: 8.5,
+    },
+    {
+      label: '10%',
+      value: 10,
+    },
+    {
+      label: '12.5%',
+      value: 12.5,
+    },
+    {
+      label: '15%',
+      value: 15,
+    },
+    {
+      label: '17%',
+      value: 17,
+    },
+    {
+      label: '20%',
+      value: 20,
+    },
+  ],
   US: {
     EMPLOYEE: {
       HEALTH_RATE: 7.75,
@@ -66,13 +106,59 @@ const from2022 = {
   ...from2021,
   AMOUNT_OF_TAX_THRESHOLD: 120000,
   FREE_AMOUNT_OF_TAX: 5100 / 12,
+  MINIMUM_SALARY: 3010,
+  ZUS: {
+    ...from2021.ZUS,
+    OWNER: {
+      ...from2021.ZUS.OWNER,
+      HEALTH_RATE_FOR_LINEAR_TAX: 4.9,
+    },
+  },
   US: {
     ...from2021.US,
     EMPLOYEE: {
       ...from2021.US.EMPLOYEE,
       HEALTH_RATE: 0,
     },
+    OWNER: {
+      ...from2021.US.OWNER,
+      HEALTH_RATE: 0,
+    },
   },
+  TAX_RATES_FOR_LAMP_SUM: [
+    {
+      label: '2%',
+      value: 2,
+    },
+    {
+      label: '3%',
+      value: 3,
+    },
+    {
+      label: '5,5%',
+      value: 5.5,
+    },
+    {
+      label: '8,5%',
+      value: 8.5,
+    },
+    {
+      label: '10%',
+      value: 10,
+    },
+    {
+      label: '12.5%',
+      value: 12.5,
+    },
+    {
+      label: '15%',
+      value: 15,
+    },
+    {
+      label: '17%',
+      value: 17,
+    },
+  ],
 }
 export default {
   APP: {
@@ -377,10 +463,11 @@ export default {
     CHART1: '#e32514',
     CHART2: '#edb113',
     CHART3: '#ed6d13',
-    CHART4: '#ed6d13',
+    CHART4: '#360d13',
     CHART5: '#BB4985',
     CHART6: '#a31718',
     CHART7: '#00A7D9',
+    CHART8: '#70B749',
   },
   AVAILABLE_YEARS: [2021, 2022],
   PARAMS: {
