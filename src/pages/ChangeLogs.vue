@@ -9,11 +9,26 @@
         Historia zmian
       </SectionHeader>
       <Advert />
-      <ChangeLog
+      <div
         v-for="log in logs"
-        :key="log.version"
-        :log="log"
-      />
+        :key="log.version">
+        <ChangeLog
+          :log="log"
+        />
+        <q-separator v-if="log !== logs[logs.length - 1]" />
+      </div>
+
+      <div class="text-center">
+        <q-btn
+          v-if="!showAll"
+          v-model="showAll"
+          class="q-mb-md"
+          color="brand"
+          size="md"
+          label="Pokaż wszystko"
+          @click="showAll = true"
+        />
+      </div>
     </div>
     <Footer />
   </q-page>
@@ -29,12 +44,19 @@ import Footer from 'components/Footer'
 export default {
   data () {
     return {
-      logs: [],
+      showAll: false,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Historia zmian')
-    this.logs = logs.LOGS
+  },
+  computed: {
+    logs () {
+      if (!this.showAll) {
+        return logs.LOGS.slice(0, 5)
+      }
+      return logs.LOGS
+    },
   },
   components: {
     SectionHeader,
