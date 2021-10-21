@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '4.0.1',
+      publish_date: '2021-10-21',
+      content: '<ul><li>Naprawiono błąd w obliczaniu kwoty brutto w umowie zlecenie, gdy był aktywny student i zerowy pit dla młodych.</li>',
+    },
+    {
       version: '4.0.0',
       publish_date: '2021-10-21',
       content: '<ul><li>Refaktoryzacja modułu samozatrudnienia:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.<li>Uwzględnia zmiany wprowadzane przez Polski Ład.</li></li></ul></li><li>Refaktoryzacja modułu umowy o pracę:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.<li>Uwzględnia zmiany wprowadzane przez Polski Ład.</li></li></ul></li><li>Refaktoryzacja modułu umowy zlecenie:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.</li></ul></li><li>Refaktoryzacja modułu umowy dzieło.</li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',

@@ -318,7 +318,7 @@ export default {
           return result.grossAmount
         }
         if (Math.abs(result.netAmount - netAmount) <= scale) {
-          return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 10)
+          return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 2)
         }
       }
       return 0
