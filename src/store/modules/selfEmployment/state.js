@@ -12,5 +12,8 @@ export default function () {
     isAidForStart: false,
     isFullTimeJob: false,
     customBasisForZus: null,
+    isAidForBigFamily: false,
+    isAidForSenior: false,
+    isAidForMiddleClass: false,
   }
 }

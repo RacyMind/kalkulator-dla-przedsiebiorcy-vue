@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import SelfEmployment from 'src/logic/SelfEmployment'
+import SelfEmploymentOLD from 'src/logic/SelfEmploymentOLD'
 import getDaysInMonth from 'date-fns/getDaysInMonth'
 
 export default {
@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     calculate () {
-      this.selfEmployment = new SelfEmployment()
+      this.selfEmployment = new SelfEmploymentOLD()
       this.selfEmployment.zusAccidentRate = Number(this.accidentRate) / 100
 
       if (this.isSmallZus) {

@@ -26,6 +26,15 @@ export default {
   setIsFpContribution (state, isFpContribution) {
     state.isFpContribution = isFpContribution
   },
+  setIsAidForBigFamily (state, isAidForBigFamily) {
+    state.isAidForBigFamily = isAidForBigFamily
+  },
+  setIsAidForSenior (state, isAidForSenior) {
+    state.isAidForSenior = isAidForSenior
+  },
+  setIsAidForMiddleClass (state, isAidForMiddleClass) {
+    state.isAidForMiddleClass = isAidForMiddleClass
+  },
   resetData (state) {
     state.grossAmount = null
     state.accidentContributionRate = 0
@@ -36,5 +45,8 @@ export default {
     state.workInLivePlace = false
     state.isFreeAmount = false
     state.isFpContribution = false
+    state.isAidForBigFamily = false
+    state.isAidForSenior = false
+    state.isAidForMiddleClass = false
   },
 }

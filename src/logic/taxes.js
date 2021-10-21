@@ -7,7 +7,7 @@ let params = {
   firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
   secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
   linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-  freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+  taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
   amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
 }
 
@@ -22,7 +22,7 @@ function setYear (newYear) {
     firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
     secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
     linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-    freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
   }
 }
@@ -34,6 +34,7 @@ function setYear (newYear) {
  * @param {number} amountOfDeductionOfHealthContributionFromTax
  * @param {boolean} isFreeAmount
  * @param {number} totalBasisForTax
+ * @param {boolean} isAidForMiddleClass
  * @returns {number}
  */
 function calculateIncomeTaxUsingGeneralRules (
@@ -42,14 +43,15 @@ function calculateIncomeTaxUsingGeneralRules (
   amountOfDeductionOfHealthContributionFromTax,
   isFreeAmount,
   totalBasisForTax,
+  isAidForMiddleClass = false,
 ) {
-  let freeAmountOfTax = 0
+  let taxReducingAmount = 0
 
   if (isFreeAmount) {
-    freeAmountOfTax = params.freeAmountOfTax
+    taxReducingAmount = params.taxReducingAmount
   }
 
-  let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
+  let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount
 
   const newTotalBasisForTax = basisForTax + totalBasisForTax
 
@@ -58,9 +60,13 @@ function calculateIncomeTaxUsingGeneralRules (
     taxAmount = basisForTax * params.secondTaxRate - amountOfDeductionOfHealthContributionFromTax
   } else if (newTotalBasisForTax > params.amountOfTaxThreshold) {
     // first rate
-    taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
+    taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount
     // second rate
     taxAmount += (newTotalBasisForTax - params.amountOfTaxThreshold) * params.secondTaxRate
+  }
+
+  if (isAidForMiddleClass) {
+    taxAmount -= calculateAidForMiddleClass(grossAmount)
   }
 
   if (taxAmount < 0) {
@@ -110,9 +116,28 @@ function calculateIncomeTaxUsingLumpSumRules (
   return helpers.round(taxAmount)
 }
 
+/**
+ * Calculates the aid for a middle class of society
+ *
+ * @param {number} grossAmount
+ * @returns {number}
+ */
+function calculateAidForMiddleClass (grossAmount) {
+  grossAmount = helpers.round(grossAmount)
+
+  if (grossAmount >= 5701 && grossAmount < 8549) {
+    return helpers.round(grossAmount * 0.0668 - 380.50, 2)
+  }
+  if (grossAmount >= 8549 && grossAmount < 11141) {
+    return helpers.round(grossAmount * -0.0735 + 819.08, 2)
+  }
+  return 0
+}
+
 export default {
   setYear,
   calculateIncomeTaxUsingLumpSumRules,
   calculateIncomeTaxUsingLinearRules,
   calculateIncomeTaxUsingGeneralRules,
+  calculateAidForMiddleClass,
 }

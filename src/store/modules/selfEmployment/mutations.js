@@ -35,6 +35,15 @@ export default {
   setCustomBasisForZus (state, customBasisForZus) {
     state.customBasisForZus = customBasisForZus
   },
+  setIsAidForBigFamily (state, isAidForBigFamily) {
+    state.isAidForBigFamily = isAidForBigFamily
+  },
+  setIsAidForSenior (state, isAidForSenior) {
+    state.isAidForSenior = isAidForSenior
+  },
+  setIsAidForMiddleClass (state, isAidForMiddleClass) {
+    state.isAidForMiddleClass = isAidForMiddleClass
+  },
   resetData (state) {
     state.grossAmount = null
     state.taxType = null
@@ -48,5 +57,8 @@ export default {
     state.isAid = false
     state.isFullTimeJob = false
     state.customBasisForZus = null
+    state.isAidForBigFamily = false
+    state.isAidForSenior = false
+    state.isAidForMiddleClass = false
   },
 }

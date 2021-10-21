@@ -124,7 +124,7 @@ module.exports = function (/* ctx */) {
         short_name: 'Kalkulator finansowy',
         version: '3.0.1',
         description: 'Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń.',
-        display: 'standalone',
+        display: 'minimal-ui',
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#d12526',

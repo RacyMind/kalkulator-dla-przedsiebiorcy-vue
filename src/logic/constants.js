@@ -1,5 +1,3 @@
-const AMOUNT_OF_TAX_THRESHOLD = 85528
-
 const defaultParams = {
   LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
   ZUS: {
@@ -41,7 +39,9 @@ const defaultParams = {
   },
   LUMP_SUM_UP_TO_AMOUNT: 200,
   AMOUNT_OF_TAX_THRESHOLD: 85528,
-  FREE_AMOUNT_OF_TAX: 525.12 / 12,
+  GROSS_AMOUNT_LIMIT_FOR_AID: 85528,
+  FREE_AMOUNT_OF_TAX: 8000,
+  TAX_REDUCING_AMOUNT: 525.12 / 12,
   MINIMUM_SALARY: 2800,
   AVERAGE_SALARY: 5504.52,
   TAX_RATES: {
@@ -105,7 +105,8 @@ const from2021 = {
 const from2022 = {
   ...from2021,
   AMOUNT_OF_TAX_THRESHOLD: 120000,
-  FREE_AMOUNT_OF_TAX: 5100 / 12,
+  FREE_AMOUNT_OF_TAX: 30000,
+  TAX_REDUCING_AMOUNT: 5100 / 12,
   MINIMUM_SALARY: 3010,
   ZUS: {
     ...from2021.ZUS,
@@ -147,8 +148,16 @@ const from2022 = {
       value: 10,
     },
     {
+      label: '12%',
+      value: 12,
+    },
+    {
       label: '12.5%',
       value: 12.5,
+    },
+    {
+      label: '14%',
+      value: 14,
     },
     {
       label: '15%',
@@ -163,7 +172,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '3.12.0',
+    VERSION: '4.0.0',
   },
   VAT_VALUES: [
     {
@@ -256,7 +265,6 @@ export default {
   CONTRACT_WORK: {
     EXPENSES_20: 0.2,
     EXPENSES_50: 0.5,
-    MAX_EXPENSES: AMOUNT_OF_TAX_THRESHOLD,
   },
   CONTRACT_OF_MANDATE: {
     EXPENSES_RATE: 0.2,
@@ -429,6 +437,12 @@ export default {
         caption: '',
         className: 'c-aboutApp',
         link: 'https://kalkulatorfinansowy.app',
+      },
+      {
+        title: 'Polub na Facebooku',
+        caption: '@kalkulator.finansowy',
+        className: 'c-aboutApp',
+        link: 'https://www.facebook.com/kalkulator.finansowy',
       },
     ],
     POLSKI_LAD: [

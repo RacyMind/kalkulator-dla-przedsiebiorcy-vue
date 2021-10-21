@@ -2,6 +2,7 @@ import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
+import taxes from './taxes'
 
 let year = helpers.getDefaultYear()
 
@@ -9,7 +10,9 @@ let params = {
   firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
   secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
   freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+  taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
   amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
   limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
   expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
   expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
@@ -31,12 +34,20 @@ function setYear (newYear) {
     firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
     secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
     freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
     limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
     expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
     expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
   }
 
+  totalBasisForRentAndPensionContributions = 0
+  totalBasisForTax = 0
+  totalExpenses = 0
+  totalGrossAmount = 0
+
+  taxes.setYear(newYear)
   employerContributions.setYear(newYear)
   employeeContributions.setYear(newYear)
 }
@@ -91,50 +102,6 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses) 
 }
 
 /**
- * Calculates the tax amount
- *
- * @param {number} grossAmount
- * @param {number} basisForTax
- * @param {number} amountOfDeductionOfHealthContributionFromTax
- * @param {boolean} isFreeAmount
- * @returns {number}
- */
-function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount) {
-  let freeAmountOfTax = 0
-
-  if (isFreeAmount) {
-    freeAmountOfTax = params.freeAmountOfTax
-  }
-
-  let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
-
-  if (grossAmount > params.amountOfTaxThreshold) {
-    // first rate
-    taxAmount = params.amountOfTaxThreshold * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
-    // second rate
-    taxAmount += (basisForTax - params.amountOfTaxThreshold) * params.secondTaxRate
-  }
-
-  const newTotalBasisForTax = basisForTax + totalBasisForTax
-
-  // If the total basis for the tax tax is grater than the amount of the tax threshold, there is second tax rate
-  if (totalBasisForTax > params.amountOfTaxThreshold) {
-    taxAmount = basisForTax * params.secondTaxRate - amountOfDeductionOfHealthContributionFromTax
-  } else if (newTotalBasisForTax > params.amountOfTaxThreshold) {
-    // first rate
-    taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - freeAmountOfTax
-    // second rate
-    taxAmount += (newTotalBasisForTax - params.amountOfTaxThreshold) * params.secondTaxRate
-  }
-
-  if (taxAmount < 0) {
-    taxAmount = 0
-  }
-
-  return helpers.round(taxAmount)
-}
-
-/**
  * Calculates the net amount
  *
  * @param {number} grossAmount
@@ -177,6 +144,9 @@ function calculateBasisForRentAndPensionContributions (grossAmount) {
  * @param {boolean} isFreeAmount
  * @param {boolean} isFpContribution
  * @param {boolean} isYoung
+ * @param {boolean} isAidForBigFamily
+ * @param {boolean} isAidForSenior
+ * @param {boolean} isAidForMiddleClass
  * @param {number} employerPpkContributionRate
  * @param {number} month
  * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
@@ -189,6 +159,9 @@ function getMonthlyResultOfEmployee (
   isFreeAmount,
   isFpContribution,
   isYoung,
+  isAidForBigFamily = false,
+  isAidForSenior = false,
+  isAidForMiddleClass = false,
   employerPpkContributionRate = 0,
   month = 0,
 ) {
@@ -208,18 +181,51 @@ function getMonthlyResultOfEmployee (
   const healthContribution = employeeContributions.calculateHealthContribution(grossAmountMinusEmployeeContributions)
   const amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(grossAmount, grossAmountMinusEmployeeContributions)
 
-  // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
   const newTotalGrossAmount = totalGrossAmount + grossAmount
-  if (!isYoung || newTotalGrossAmount > params.amountOfTaxThreshold) {
-    expenses = calculateExpenses(grossAmountMinusEmployeeContributions, workInLivePlace, partOfWorkWithAuthorExpenses)
-    basisForTax = calculateBasisForTax(grossAmountMinusEmployeeContributions, expenses)
+  let amountToCalculateTax = 0
+
+  if (isAidForBigFamily || isAidForSenior) {
+    let limitFreeAmountOfTax = params.grossAmountLimitForAid
+
+    if (isFreeAmount) {
+      limitFreeAmountOfTax += params.freeAmountOfTax
+    }
+
+    if (newTotalGrossAmount > limitFreeAmountOfTax) {
+       amountToCalculateTax = newTotalGrossAmount - limitFreeAmountOfTax
+    }
+    if (totalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = grossAmountMinusEmployeeContributions
+    }
+    isFreeAmount = false
+  } else if (isYoung) {
+    const limitFreeAmountOfTax = params.grossAmountLimitForAid
+
+    if (newTotalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = newTotalGrossAmount - limitFreeAmountOfTax
+    }
+    if (totalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = grossAmountMinusEmployeeContributions
+    }
+  } else {
+    amountToCalculateTax = grossAmountMinusEmployeeContributions
+  }
+
+  if (amountToCalculateTax > 0) {
+    expenses = calculateExpenses(amountToCalculateTax, workInLivePlace, partOfWorkWithAuthorExpenses)
+    basisForTax = calculateBasisForTax(amountToCalculateTax, expenses)
 
     // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
     if (month > 0) {
       basisForTax += employerContributions.calculatePpkContribution(grossAmount, employerPpkContributionRate)
     }
 
-    taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount)
+    taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
+  } else {
+    // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
+    if (month > 0) {
+      basisForTax += employerContributions.calculatePpkContribution(grossAmount, employerPpkContributionRate)
+    }
   }
 
   const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution)

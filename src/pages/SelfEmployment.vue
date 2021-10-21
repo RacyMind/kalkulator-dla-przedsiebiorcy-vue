@@ -83,6 +83,12 @@ export default {
   watch: {
     year () {
       this.$store.commit('selfEmployment/resetData')
+
+      if (this.year === 2022) {
+        this.$q.notify({
+          message: 'Wyliczenia dla 2022 roku są szacunkowe. Nie jest znana podstawa składek ZUS na 2022 r., ani przeciętne wynagrodzenie w 4. kwartale 2021 r.',
+        })
+      }
     },
   },
   methods: {

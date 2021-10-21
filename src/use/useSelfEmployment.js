@@ -23,6 +23,9 @@ export function inputData () {
   const isAidForStart = computed(() => store.getters['selfEmployment/isAidForStart'])
   const isFullTimeJob = computed(() => store.getters['selfEmployment/isFullTimeJob'])
   const customBasisForZus = computed(() => store.getters['selfEmployment/customBasisForZus'])
+  const isAidForBigFamily = computed(() => store.getters['selfEmployment/isAidForBigFamily'])
+  const isAidForSenior = computed(() => store.getters['selfEmployment/isAidForSenior'])
+  const isAidForMiddleClass = computed(() => store.getters['selfEmployment/isAidForMiddleClass'])
 
   return {
     grossAmount,
@@ -37,6 +40,9 @@ export function inputData () {
     isAidForStart,
     isFullTimeJob,
     customBasisForZus,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   }
 }
 
@@ -56,6 +62,9 @@ export function useMonthlyResult (props) {
     isAidForStart,
     isFullTimeJob,
     customBasisForZus,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   } = inputData()
 
   const result = computed(fu => {
@@ -72,6 +81,9 @@ export function useMonthlyResult (props) {
       isAidForStart.value,
       isFullTimeJob.value,
       customBasisForZus.value,
+      isAidForBigFamily.value,
+      isAidForSenior.value,
+      isAidForMiddleClass.value,
     )
   })
 
@@ -96,6 +108,9 @@ export function useYearlyResult (props) {
     isAidForStart,
     isFullTimeJob,
     customBasisForZus,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   } = inputData()
 
   const monthlyInputs = reactive([])
@@ -115,18 +130,17 @@ export function useYearlyResult (props) {
         isAidForStart: isAidForStart.value,
         isFullTimeJob: isFullTimeJob.value,
         customBasisForZus: customBasisForZus.value,
+        isAidForBigFamily: isAidForBigFamily.value,
+        isAidForSenior: isAidForSenior.value,
+        isAidForMiddleClass: isAidForMiddleClass.value,
       }
     }
   }
 
   updateMonthlyInputs()
 
-  let results = computed(fu => {
+  const results = computed(fu => {
     return selfEmployment.getYearlyResult(monthlyInputs)
-  })
-
-  watch(monthlyInputs, () => {
-    results = selfEmployment.getYearlyResult(monthlyInputs)
   })
 
   return {

@@ -30,6 +30,10 @@ function setYear (newYear) {
     limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
   }
 
+  totalBasisForRentAndPensionContributions = 0
+  totalExpenses = 0
+  totalGrossAmount = 0
+
   employerContributions.setYear(newYear)
   employeeContributions.setYear(newYear)
 }
