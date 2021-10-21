@@ -62,8 +62,6 @@ import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 import ChooseYear from 'components/ChooseYear'
-import { pln } from 'src/use/currencyFormat'
-import constants from 'src/logic/constants'
 export default {
   data () {
     return {
