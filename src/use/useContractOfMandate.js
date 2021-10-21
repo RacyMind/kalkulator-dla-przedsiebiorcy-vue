@@ -104,12 +104,8 @@ export function useYearlyEmployeeResult (props) {
 
   updateMonthlyInputs()
 
-  let results = computed(fu => {
+  const results = computed(fu => {
     return contractOfMandate.getYearlyResultOfEmployee(monthlyInputs)
-  })
-
-  watch(monthlyInputs, () => {
-    results = contractOfMandate.getYearlyResultOfEmployee(monthlyInputs)
   })
 
   return {
@@ -172,12 +168,8 @@ export function useYearlyEmployerResult (props) {
 
   updateMonthlyInputs()
 
-  let results = computed(fu => {
+  const results = computed(fu => {
     return contractOfMandate.getYearlyResultOfEmployer(monthlyInputs)
-  })
-
-  watch(monthlyInputs, () => {
-    results = contractOfMandate.getYearlyResultOfEmployer(monthlyInputs)
   })
 
   return {

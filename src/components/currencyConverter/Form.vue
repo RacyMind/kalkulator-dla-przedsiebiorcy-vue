@@ -74,12 +74,14 @@ export default {
     this.$store.commit('currencyConverter/CLEAR_DATA')
 
     if (this.rates.length === 0) {
-      await this.$store.dispatch('exchangeRates/loadLatestExchangeRates')
+      this.$store.dispatch('exchangeRates/loadLatestExchangeRates').then(response => {
+        this.$store.commit('exchangeRates/setDate', response.data[0].effectiveDate)
+        this.$store.commit('exchangeRates/setRates', response.data[0].rates)
+        this.$q.notify({
+          message: 'Źródło danych: Narodowy Bank Polski',
+        })
+      })
     }
-
-    this.$q.notify({
-      message: 'Źródło danych: Narodowy Bank Polski',
-    })
   },
   computed: {
     ...mapGetters({

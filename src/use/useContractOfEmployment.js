@@ -20,6 +20,9 @@ export function inputData () {
   const isFpContribution = computed(() => store.getters['contractOfEmployment/isFpContribution'])
   const isYoung = computed(() => store.getters['contractOfEmployment/isYoung'])
   const accidentContributionRate = computed(() => store.getters['contractOfEmployment/accidentContributionRate'])
+  const isAidForBigFamily = computed(() => store.getters['contractOfEmployment/isAidForBigFamily'])
+  const isAidForSenior = computed(() => store.getters['contractOfEmployment/isAidForSenior'])
+  const isAidForMiddleClass = computed(() => store.getters['contractOfEmployment/isAidForMiddleClass'])
 
   return {
     grossAmount,
@@ -31,6 +34,9 @@ export function inputData () {
     isYoung,
     employerPpkContributionRate,
     accidentContributionRate,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   }
 }
 
@@ -45,6 +51,9 @@ export function useMonthlyEmployeeResult (props) {
     isFreeAmount,
     isFpContribution,
     isYoung,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   } = inputData()
 
   const result = computed(fu => {
@@ -56,6 +65,9 @@ export function useMonthlyEmployeeResult (props) {
       isFreeAmount.value,
       isFpContribution.value,
       isYoung.value,
+      isAidForBigFamily.value,
+      isAidForSenior.value,
+      isAidForMiddleClass.value,
     )
   })
 
@@ -76,6 +88,9 @@ export function useYearlyEmployeeResult (props) {
     isFpContribution,
     isYoung,
     employerPpkContributionRate,
+    isAidForBigFamily,
+    isAidForSenior,
+    isAidForMiddleClass,
   } = inputData()
 
   const monthlyInputs = reactive([])
@@ -90,6 +105,9 @@ export function useYearlyEmployeeResult (props) {
         isFreeAmount: isFreeAmount.value,
         isFpContribution: isFpContribution.value,
         isYoung: isYoung.value,
+        isAidForBigFamily: isAidForBigFamily.value,
+        isAidForSenior: isAidForSenior.value,
+        isAidForMiddleClass: isAidForMiddleClass.value,
         employerPpkContributionRate: employerPpkContributionRate.value,
       }
     }
@@ -97,12 +115,8 @@ export function useYearlyEmployeeResult (props) {
 
   updateMonthlyInputs()
 
-  let results = computed(fu => {
+  const results = computed(fu => {
     return contractOfEmployment.getYearlyResultOfEmployee(monthlyInputs)
-  })
-
-  watch(monthlyInputs, () => {
-    results = contractOfEmployment.getYearlyResultOfEmployee(monthlyInputs)
   })
 
   return {
@@ -159,12 +173,8 @@ export function useYearlyEmployerResult (props) {
 
   updateMonthlyInputs()
 
-  let results = computed(fu => {
+  const results = computed(fu => {
     return contractOfEmployment.getYearlyResultOfEmployer(monthlyInputs)
-  })
-
-  watch(monthlyInputs, () => {
-    results = contractOfEmployment.getYearlyResultOfEmployer(monthlyInputs)
   })
 
   return {

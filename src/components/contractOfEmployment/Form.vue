@@ -30,14 +30,14 @@
             />
           </div>
           <q-toggle
-            v-model="isYoung"
-            class="q-mt-sm"
-            label="Zerowy PIT dla młodych"
-          />
-          <q-toggle
             v-model="workInLivePlace"
             class="q-mt-sm"
             label=" Praca w miejscu zamieszkania"
+          />
+          <q-toggle
+            v-model="isYoung"
+            class="q-mt-sm"
+            label="Zerowy PIT dla młodych"
           />
           <template v-if="year >= 2022">
             <q-toggle
@@ -193,7 +193,7 @@ export default {
       isFreeAmount: true,
       isAidForBigFamily: false,
       isAidForSenior: false,
-      isAidForMiddleClass: false,
+      isAidForMiddleClass: true,
     }
   },
   created () {
@@ -246,6 +246,8 @@ export default {
           break
       }
 
+      this.$store.commit('contractOfEmployment/resetData')
+
       this.$store.commit('contractOfEmployment/setGrossAmount', grossAmount)
       this.$store.commit('contractOfEmployment/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
       this.$store.commit('contractOfEmployment/setEmployeePPkContributionRate', employeePPkContributionRate)
@@ -255,6 +257,12 @@ export default {
       this.$store.commit('contractOfEmployment/setWorkInLivePlace', this.workInLivePlace)
       this.$store.commit('contractOfEmployment/setIsFreeAmount', this.isFreeAmount)
       this.$store.commit('contractOfEmployment/setIsFpContribution', this.isFpContribution)
+
+      if (this.year >= 2022) {
+        this.$store.commit('contractOfEmployment/setIsAidForBigFamily', this.isAidForBigFamily)
+        this.$store.commit('contractOfEmployment/setIsAidForSenior', this.isAidForSenior)
+        this.$store.commit('contractOfEmployment/setIsAidForMiddleClass', this.isAidForMiddleClass)
+      }
 
       this.$emit('submitted')
     },
@@ -290,6 +298,9 @@ export default {
           this.isFreeAmount,
           this.isFpContribution,
           this.isYoung,
+          this.isAidForBigFamily,
+          this.isAidForSenior,
+          this.isAidForMiddleClass,
         )
 
         if (Math.abs(result.netAmount - netAmount) <= 0.0005) {

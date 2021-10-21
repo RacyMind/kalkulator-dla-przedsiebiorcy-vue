@@ -264,6 +264,8 @@ export default {
           break
       }
 
+      this.$store.commit('contractOfMandate/resetData')
+
       this.$store.commit('contractOfMandate/setGrossAmount', grossAmount)
       this.$store.commit('contractOfMandate/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
       this.$store.commit('contractOfMandate/setemployeePPkContributionRate', employeePPkContributionRate)

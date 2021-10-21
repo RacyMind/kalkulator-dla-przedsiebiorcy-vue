@@ -9,5 +9,8 @@ export default function () {
     isFreeAmount: false,
     isYoung: false,
     isFpContribution: false,
+    isAidForBigFamily: false,
+    isAidForSenior: false,
+    isAidForMiddleClass: false,
   }
 }

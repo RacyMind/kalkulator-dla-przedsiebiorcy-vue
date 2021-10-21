@@ -2,10 +2,10 @@
   <div>
     <div class="row justify-between q-px-md q-py-sm">
       <div>
-        Wynagrodzenie netto
+        Wynagrodzenie brutto
       </div>
       <div>
-        {{ pln(result.netAmount) }}
+        {{ pln(result.grossAmount) }}
       </div>
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
@@ -34,10 +34,10 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
       <div>
-        Wynagrodzenie brutto
+        Wynagrodzenie netto
       </div>
       <div>
-        {{ pln(result.grossAmount) }}
+        {{ pln(result.netAmount) }}
       </div>
     </div>
   </div>
@@ -82,9 +82,9 @@ export default {
           message: `Dla wynagrodzenia brutto do ${pln(constants.LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
-      if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.CONTRACT_WORK.MAX_EXPENSES / 2) {
+      if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.CONTRACT_WORK.MAX_EXPENSES / 2)}.`,
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.AMOUNT_OF_TAX_THRESHOLD)}.`,
         })
       }
     },

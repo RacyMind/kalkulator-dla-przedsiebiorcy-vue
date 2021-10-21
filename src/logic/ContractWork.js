@@ -13,8 +13,8 @@ const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 function calculateExpenses (grossAmount, expenseRate) {
   const expenses = helpers.round(grossAmount * expenseRate, 2)
 
-  if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > constants.CONTRACT_WORK.MAX_EXPENSES) {
-    return constants.CONTRACT_WORK.MAX_EXPENSES / 2
+  if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
+    return constants.AMOUNT_OF_TAX_THRESHOLD
   }
   return expenses
 }

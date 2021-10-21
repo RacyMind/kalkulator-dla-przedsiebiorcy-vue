@@ -45,6 +45,24 @@
           class="q-mt-sm"
           label="Kwota wolna od podatku"
         />
+        <template v-if="year >= 2022">
+          <q-toggle
+            v-model="isAidForSenior"
+            class="q-mt-sm"
+            label="Zerowy PIT dla seniora"
+          />
+          <q-toggle
+            v-model="isAidForBigFamily"
+            class="q-mt-sm"
+            label="Zerowy PIT dla rodzin 4+"
+          />
+          <q-toggle
+            v-model="isAidForMiddleClass"
+            :disable="taxType.value !== constants.TAX_TYPES.GENERAL"
+            class="q-mt-sm"
+            label="Ulga dla klasy średniej"
+          />
+        </template>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <div class="column">
@@ -157,6 +175,9 @@ export default {
       isFpContribution: true,
       isCustomBasisForZus: false,
       customBasisForZus: null,
+      isAidForBigFamily: false,
+      isAidForSenior: false,
+      isAidForMiddleClass: true,
     }
   },
   created () {
@@ -224,6 +245,10 @@ export default {
     taxType: function (val) {
       if (val.value !== this.constants.TAX_TYPES.GENERAL) {
         this.isFreeAmount = false
+        this.isAidForMiddleClass = false
+      } else {
+        this.isAidForMiddleClass = true
+        this.isFreeAmount = true
       }
     },
   },
@@ -234,6 +259,8 @@ export default {
       if (!this.isCustomBasisForZus) {
         customBasisForZus = 0
       }
+
+      this.$store.commit('selfEmployment/resetData')
 
       this.$store.commit('selfEmployment/setGrossAmount', this.amount)
       this.$store.commit('selfEmployment/setTaxType', this.taxType.value)
@@ -247,6 +274,12 @@ export default {
       this.$store.commit('selfEmployment/setIsAidForStart', this.isAidForStart)
       this.$store.commit('selfEmployment/setIsFullTimeJob', this.isFullTimeJob)
       this.$store.commit('selfEmployment/setCustomBasisForZus', customBasisForZus)
+
+      if (this.year >= 2022) {
+        this.$store.commit('selfEmployment/setIsAidForBigFamily', this.isAidForBigFamily)
+        this.$store.commit('selfEmployment/setIsAidForSenior', this.isAidForSenior)
+        this.$store.commit('selfEmployment/setIsAidForMiddleClass', this.isAidForMiddleClass)
+      }
 
       this.$emit('submitted')
     },

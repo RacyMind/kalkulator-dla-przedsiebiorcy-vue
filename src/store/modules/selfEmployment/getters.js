@@ -11,4 +11,7 @@ export default {
   isAidForStart: (state) => state.isAidForStart,
   isFullTimeJob: (state) => state.isFullTimeJob,
   customBasisForZus: (state) => state.customBasisForZus,
+  isAidForBigFamily: (state) => state.isAidForBigFamily,
+  isAidForSenior: (state) => state.isAidForSenior,
+  isAidForMiddleClass: (state) => state.isAidForMiddleClass,
 }

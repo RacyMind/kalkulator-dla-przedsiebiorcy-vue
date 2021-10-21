@@ -8,4 +8,7 @@ export default {
   isFreeAmount: (state) => state.isFreeAmount,
   isYoung: (state) => state.isYoung,
   isFpContribution: (state) => state.isFpContribution,
+  isAidForBigFamily: (state) => state.isAidForBigFamily,
+  isAidForSenior: (state) => state.isAidForSenior,
+  isAidForMiddleClass: (state) => state.isAidForMiddleClass,
 }

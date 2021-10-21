@@ -1,9 +1,9 @@
 export default {
   LOGS: [
     {
-      version: '3.13.0',
-      publish_date: '2021-09-20',
-      content: '<ul><li>Refaktoryzacja modułu umowy dzieło</li><li>Refaktoryzacja modułu umowy zlecenie:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca</li><li>Dodano opcję zmiany roku podatkowego.</li></ul></li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',
+      version: '4.0.0',
+      publish_date: '2021-10-21',
+      content: '<ul><li>Refaktoryzacja modułu samozatrudnienia:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.<li>Uwzględnia zmiany wprowadzane przez Polski Ład.</li></li></ul></li><li>Refaktoryzacja modułu umowy o pracę:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.<li>Uwzględnia zmiany wprowadzane przez Polski Ład.</li></li></ul></li><li>Refaktoryzacja modułu umowy zlecenie:<ul><li>Dodano możliwość zmiany kwoty brutto dla każdego miesiąca.</li><li>Dodano opcję zmiany roku podatkowego.</li></ul></li><li>Refaktoryzacja modułu umowy dzieło.</li><li>Refaktoryzacja modułu działalności niezarejestrowanej.</li></ul>',
 
     },
     {

@@ -8,6 +8,8 @@ let year = helpers.getDefaultYear()
 let params = {
   smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
   bigBasisForZUS: constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT,
+  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+  freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
 }
 
 let totalBasisForTax = 0
@@ -23,7 +25,12 @@ function setYear (newYear) {
   params = {
     smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
     bigBasisForZUS: constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT,
+    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+    freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
   }
+
+  totalBasisForTax = 0
+  totalGrossAmount = 0
 
   taxes.setYear(newYear)
   ownerContributions.setYear(newYear)
@@ -64,12 +71,13 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
  * @param {number} amountOfDeductionOfHealthContributionFromTax
  * @param {number} lumpSumTaxRate
  * @param {boolean} isFreeAmount
+ * @param {boolean} isAidForMiddleClass
  * @returns {number}
  */
-function calculateTaxAmount (grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount) {
+function calculateTaxAmount (grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount, isAidForMiddleClass) {
   switch (taxType) {
     case constants.TAX_TYPES.GENERAL:
-      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
+      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
     case constants.TAX_TYPES.LINEAR:
       return taxes.calculateIncomeTaxUsingLinearRules(basisForTax, amountOfDeductionOfHealthContributionFromTax)
     case constants.TAX_TYPES.LUMP_SUM:
@@ -105,6 +113,9 @@ function calculateNetAmount (grossAmount, taxAmount, contributions, expenses) {
  * @param {boolean} isAidForStart
  * @param {boolean} isFullTimeJob
  * @param {number} customBasisForZus
+ * @param {boolean} isAidForBigFamily
+ * @param {boolean} isAidForSenior
+ * @param {boolean} isAidForMiddleClass
  * @returns {{sickContribution: number, netAmount: number, rentContribution: number, fpContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, accidentContribution: number, pensionContribution: number, expenses: number}}
  */
 function getMonthlyResult (
@@ -120,6 +131,9 @@ function getMonthlyResult (
   isAidForStart,
   isFullTimeJob,
   customBasisForZus,
+  isAidForBigFamily = false,
+  isAidForSenior = false,
+  isAidForMiddleClass = false,
 ) {
   if (!taxType) {
     return {
@@ -172,8 +186,30 @@ function getMonthlyResult (
 
   const grossAmountMinusEmployeeContributions = ownerContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution, accidentContribution)
   const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
-  const basisForTax = calculateBasisForTax(grossAmountMinusEmployeeContributions, expenses, taxType)
-  const taxAmount = calculateTaxAmount(grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount)
+
+  const newTotalGrossAmount = totalGrossAmount + grossAmount
+  let amountToCalculateTax = grossAmountMinusEmployeeContributions
+
+  if (isAidForBigFamily || isAidForSenior) {
+    let limitFreeAmountOfTax = params.grossAmountLimitForAid
+
+    amountToCalculateTax = 0
+
+    if (isFreeAmount) {
+      limitFreeAmountOfTax += params.freeAmountOfTax
+    }
+
+    if (newTotalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = newTotalGrossAmount - limitFreeAmountOfTax
+    }
+    if (totalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = grossAmountMinusEmployeeContributions
+    }
+    isFreeAmount = false
+  }
+
+  const basisForTax = calculateBasisForTax(amountToCalculateTax, expenses, taxType)
+  const taxAmount = calculateTaxAmount(grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount, isAidForMiddleClass)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, expenses)
