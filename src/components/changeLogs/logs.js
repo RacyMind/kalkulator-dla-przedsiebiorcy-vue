@@ -2,8 +2,13 @@ export default {
   LOGS: [
     {
       version: '4.0.1',
+      publish_date: '2021-10-22',
+      content: '<ul><li>Odświeżono ikonę aplikacji</li><li>Poprawiono font dla polskich liter.</li></ul>',
+    },
+    {
+      version: '4.0.1',
       publish_date: '2021-10-21',
-      content: '<ul><li>Naprawiono błąd w obliczaniu kwoty brutto w umowie zlecenie, gdy był aktywny student i zerowy pit dla młodych.</li>',
+      content: '<ul><li>Naprawiono błąd w obliczaniu kwoty brutto w umowie zlecenie, gdy byłe aktywne ulgi dla studenta i zerowy pit dla młodych.</li></ul>',
     },
     {
       version: '4.0.0',

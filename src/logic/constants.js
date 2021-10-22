@@ -172,7 +172,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.0.1',
+    VERSION: '4.0.2',
   },
   VAT_VALUES: [
     {

@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header
+      v-if="moduleTitle"
       class="bg-red-8"
       elevated>
       <q-toolbar>
@@ -50,7 +51,12 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container class="flex flex-center q-mt-md bg-teal-1">
+    <q-page-container
+      class="flex flex-center bg-teal-1"
+      :class="{
+        'q-pt-lg': !moduleTitle
+      }"
+    >
       <router-view/>
     </q-page-container>
   </q-layout>
