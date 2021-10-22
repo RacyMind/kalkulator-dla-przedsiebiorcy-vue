@@ -42,10 +42,7 @@ function setYear (newYear) {
     expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
   }
 
-  totalBasisForRentAndPensionContributions = 0
-  totalBasisForTax = 0
-  totalExpenses = 0
-  totalGrossAmount = 0
+  resetTotalAmounts()
 
   taxes.setYear(newYear)
   employerContributions.setYear(newYear)
@@ -53,18 +50,34 @@ function setYear (newYear) {
 }
 
 /**
+ * Resets total amounts
+ */
+function resetTotalAmounts () {
+  totalBasisForRentAndPensionContributions = 0
+  totalBasisForTax = 0
+  totalExpenses = 0
+  totalGrossAmount = 0
+}
+
+/**
  * Calculates expenses
  *
  * @param {number} basisForExpenses
  * @param {boolean} workInLivePlace
+ * @param {boolean} isYoung
  * @param {number} partOfWorkWithAuthorExpenses
  * @returns {number}
  */
-function calculateExpenses (basisForExpenses, workInLivePlace, partOfWorkWithAuthorExpenses = 0) {
+function calculateExpenses (basisForExpenses, workInLivePlace, isYoung, partOfWorkWithAuthorExpenses = 0) {
   let expenses = params.expensesIfYouWorkWhereYouDontLive
 
   if (workInLivePlace) {
     expenses = params.expensesIfYouWorkWhereYouLive
+  }
+
+  // If the aid for young exists, don't add 50% expenses
+  if (isYoung) {
+    partOfWorkWithAuthorExpenses = 0
   }
 
   if (partOfWorkWithAuthorExpenses) {
@@ -91,11 +104,21 @@ function calculateExpenses (basisForExpenses, workInLivePlace, partOfWorkWithAut
 /**
  * Calculates the basis for tax
  *
+ * @param {number} grossAmount
  * @param {number} grossAmountMinusEmployeeContributions
  * @param {number} expenses
+ * @param {boolean} isYoung
  * @returns {number}
  */
-function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses) {
+function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses, isYoung) {
+  const newTotalGrossAMount = totalGrossAmount + grossAmount
+
+  if (isYoung && newTotalGrossAMount < params.grossAmountLimitForAid) {
+    return 0
+  } else if (isYoung && totalGrossAmount < params.grossAmountLimitForAid) {
+    grossAmountMinusEmployeeContributions = newTotalGrossAMount - params.grossAmountLimitForAid
+  }
+
   const basisForTax = grossAmountMinusEmployeeContributions - expenses
 
   return helpers.round(basisForTax)
@@ -198,22 +221,13 @@ function getMonthlyResultOfEmployee (
       amountToCalculateTax = grossAmountMinusEmployeeContributions
     }
     isFreeAmount = false
-  } else if (isYoung) {
-    const limitFreeAmountOfTax = params.grossAmountLimitForAid
-
-    if (newTotalGrossAmount > limitFreeAmountOfTax) {
-      amountToCalculateTax = newTotalGrossAmount - limitFreeAmountOfTax
-    }
-    if (totalGrossAmount > limitFreeAmountOfTax) {
-      amountToCalculateTax = grossAmountMinusEmployeeContributions
-    }
   } else {
     amountToCalculateTax = grossAmountMinusEmployeeContributions
   }
 
   if (amountToCalculateTax > 0) {
-    expenses = calculateExpenses(amountToCalculateTax, workInLivePlace, partOfWorkWithAuthorExpenses)
-    basisForTax = calculateBasisForTax(amountToCalculateTax, expenses)
+    expenses = calculateExpenses(amountToCalculateTax, workInLivePlace, isYoung, partOfWorkWithAuthorExpenses)
+    basisForTax = calculateBasisForTax(grossAmount, amountToCalculateTax, expenses, isYoung)
 
     // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
     if (month > 0) {
@@ -398,4 +412,5 @@ export default {
   getYearlyResultOfEmployer,
   getYearlyResultOfEmployee,
   setYear,
+  resetTotalAmounts,
 }

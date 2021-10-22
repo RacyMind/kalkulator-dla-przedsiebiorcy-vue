@@ -10,11 +10,21 @@ let params = {
   amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
   lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
   limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
 }
 
 let totalBasisForRentAndPensionContributions = 0
 let totalExpenses = 0
 let totalGrossAmount = 0
+
+/**
+ * Resets total amounts
+ */
+function resetTotalAmounts () {
+  totalBasisForRentAndPensionContributions = 0
+  totalExpenses = 0
+  totalGrossAmount = 0
+}
 
 /**
  * Sets parameters for the year
@@ -28,11 +38,10 @@ function setYear (newYear) {
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
     lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
     limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
   }
 
-  totalBasisForRentAndPensionContributions = 0
-  totalExpenses = 0
-  totalGrossAmount = 0
+  resetTotalAmounts()
 
   employerContributions.setYear(newYear)
   employeeContributions.setYear(newYear)
@@ -43,11 +52,18 @@ function setYear (newYear) {
  *
  * @param {number} basisForExpenses
  * @param {number} expenseRate
+ * @param {boolean} isYoung
  * @param {number} partOfWorkWithAuthorExpenses
  * @returns {number}
  */
-function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorExpenses = 0) {
-  const partOfWorkWithoutAuthorExpenses = 1 - partOfWorkWithAuthorExpenses
+function calculateExpenses (basisForExpenses, expenseRate, isYoung, partOfWorkWithAuthorExpenses = 0) {
+  let partOfWorkWithoutAuthorExpenses = 1 - partOfWorkWithAuthorExpenses
+
+  // If the aid for young exists, don't add 50% expenses
+  if (isYoung) {
+    partOfWorkWithoutAuthorExpenses = 1
+    partOfWorkWithAuthorExpenses = 0
+  }
 
   let expenses = basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate
 
@@ -78,13 +94,26 @@ function calculateExpenses (basisForExpenses, expenseRate, partOfWorkWithAuthorE
  * @param {number} grossAmount
  * @param {number} grossAmountMinusEmployeeContributions
  * @param {number} expenses
+ * @param {boolean} isYoung
  * @returns {number}
  */
-function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses) {
+function calculateBasisForTax (grossAmount, grossAmountMinusEmployeeContributions, expenses, isYoung) {
+  const newTotalGrossAMount = totalGrossAmount + grossAmount
+
+  if (isYoung && newTotalGrossAMount < params.grossAmountLimitForAid) {
+    return 0
+  } else if (isYoung && totalGrossAmount < params.grossAmountLimitForAid) {
+    grossAmountMinusEmployeeContributions = newTotalGrossAMount - params.grossAmountLimitForAid
+  }
+
   let basisForTax = grossAmount
 
   if (grossAmountMinusEmployeeContributions > params.lumpSumUpToAmount) {
     basisForTax = grossAmountMinusEmployeeContributions - expenses
+  }
+
+  if (basisForTax < 0) {
+    return 0
   }
 
   return helpers.round(basisForTax)
@@ -103,6 +132,10 @@ function calculateTaxAmount (grossAmount, basisForTax, amountOfDeductionOfHealth
 
   if (grossAmount > params.lumpSumUpToAmount) {
     taxAmount -= amountOfDeductionOfHealthContributionFromTax
+  }
+
+  if (taxAmount < 0) {
+    return 0
   }
 
   return helpers.round(taxAmount)
@@ -175,9 +208,6 @@ function getMonthlyResultOfEmployee (
   let healthContribution = 0
   let ppkContribution = 0
   let amountOfDeductionOfHealthContributionFromTax = 0
-  let basisForTax = 0
-  let taxAmount = 0
-  let expenses = 0
 
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
 
@@ -205,18 +235,15 @@ function getMonthlyResultOfEmployee (
     amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(grossAmount, grossAmountMinusEmployeeContributions)
   }
 
-  // Calculates the tax amount if a person is over 26 years or the gross amount of a young person crosses the tax threshold
-  if (!isYoung || totalGrossAmount + grossAmount > params.amountOfTaxThreshold) {
-    expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, partOfWorkWithAuthorExpenses)
-    basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses)
+  const expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, isYoung, partOfWorkWithAuthorExpenses)
+  let basisForTax = calculateBasisForTax(grossAmount, grossAmountMinusEmployeeContributions, expenses, isYoung)
 
-    // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
-    if (month > 0) {
-      basisForTax += employerContributions.calculatePpkContribution(grossAmount, employerPpkContributionRate)
-    }
-
-    taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
+  // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
+  if (month > 0) {
+    basisForTax += employerContributions.calculatePpkContribution(grossAmount, employerPpkContributionRate)
   }
+
+  const taxAmount = calculateTaxAmount(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
 
   const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, ppkContribution)
@@ -386,4 +413,5 @@ export default {
   getYearlyResultOfEmployer,
   getYearlyResultOfEmployee,
   setYear,
+  resetTotalAmounts,
 }

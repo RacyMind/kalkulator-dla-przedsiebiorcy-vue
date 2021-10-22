@@ -37,6 +37,14 @@ function setYear (newYear) {
 }
 
 /**
+ * Resets total amounts
+ */
+function resetTotalAmounts () {
+  totalBasisForTax = 0
+  totalGrossAmount = 0
+}
+
+/**
  * Calculates the basis for tax
  *
  * @param {number} grossAmountMinusEmployeeContributions
@@ -291,4 +299,5 @@ export default {
   getMonthlyResult,
   getYearlyResult,
   setYear,
+  resetTotalAmounts,
 }
