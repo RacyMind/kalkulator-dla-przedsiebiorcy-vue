@@ -36,10 +36,10 @@ module.exports = function (/* ctx */) {
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'material-icons-outlined',
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
 
@@ -124,7 +124,7 @@ module.exports = function (/* ctx */) {
         short_name: 'Kalkulator finansowy',
         version: '4.0.0',
         description: 'Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń.',
-        display: 'browser',
+        display: 'minimal-ui',
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#d12526',
