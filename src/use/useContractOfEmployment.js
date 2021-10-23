@@ -57,6 +57,7 @@ export function useMonthlyEmployeeResult (props) {
   } = inputData()
 
   const result = computed(fu => {
+    contractOfEmployment.resetTotalAmounts()
     return contractOfEmployment.getMonthlyResultOfEmployee(
       grossAmount.value,
       employeePPkContributionRate.value,
@@ -136,6 +137,7 @@ export function useMonthlyEmployerResult (props) {
   } = inputData()
 
   const result = computed(fu => {
+    contractOfEmployment.resetTotalAmounts()
     return contractOfEmployment.getMonthlyResultOfEmployer(
       grossAmount.value,
       accidentContributionRate.value,

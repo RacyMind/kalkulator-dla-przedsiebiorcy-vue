@@ -140,6 +140,7 @@ export function useYearlyResult (props) {
   updateMonthlyInputs()
 
   const results = computed(fu => {
+    selfEmployment.resetTotalAmounts()
     return selfEmployment.getYearlyResult(monthlyInputs)
   })
 
