@@ -29,7 +29,7 @@ function setYear (newYear) {
     freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
   }
 
-  this.resetTotalAmounts()
+  resetTotalAmounts()
 
   taxes.setYear(newYear)
   ownerContributions.setYear(newYear)
