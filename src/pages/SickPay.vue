@@ -9,7 +9,7 @@
         Wypełnij formularz
       </SectionHeader>
       <Form
-        class="q-my-lg q-px-md"
+        class="q-mt-md q-mb-lg q-px-md"
         @scroll="scrollTo"
       />
       <Advert />
