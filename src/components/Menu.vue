@@ -26,6 +26,17 @@
       class="q-my-md"
       style="margin-left: 32px;"
     >
+      Informator
+    </h6>
+    <MenuLink
+      v-for="link in constants.MENU.INFORMATOR"
+      :key="link.title"
+      v-bind="link"
+    />
+    <h6
+      class="q-my-md"
+      style="margin-left: 32px;"
+    >
       Oprocentowanie
     </h6>
     <MenuLink
