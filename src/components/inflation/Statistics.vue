@@ -14,7 +14,9 @@
       <p>
         {{ dates[dates.length - 1] }}: {{ rates[rates.length - 1] }}%
       </p>
-      <LineChart :chart-data="chartData"/>
+      <LineChart
+        :chart-options="chartOptions"
+        :chart-data="chartData"/>
     </template>
     <span v-else>Brak danych</span>
     <p
@@ -67,6 +69,16 @@ export default {
       dates: [],
       rates: [],
       loading: false,
+      chartOptions: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Inflacja w %',
+            },
+          }],
+        },
+      },
     }
   },
   created () {
