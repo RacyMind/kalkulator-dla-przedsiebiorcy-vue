@@ -12,7 +12,7 @@
     </div>
     <template v-else-if="rates.length">
       <p>
-        {{ dates[dates.length - 1] }}: {{ rates[rates.length - 1] }}%
+        {{ dates[dates.length - 1] }}: {{ rates[rates.length - 1].y }}%
       </p>
       <LineChart
         :chart-options="chartOptions"
@@ -70,11 +70,20 @@ export default {
       rates: [],
       loading: false,
       chartOptions: {
+        legend: {
+          display: false,
+        },
         scales: {
           yAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Inflacja w %',
+            },
+          }],
+          xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'quarter',
             },
           }],
         },
@@ -113,7 +122,10 @@ export default {
           return `${constants.LOCALE_DATE.months[data.miesiac - 1]} ${data.rok}`
         })
         this.rates = data.map(data => {
-          return data.wartosc
+          return {
+            x: new Date(`${data.rok}-${data.miesiac}`),
+            y: data.wartosc,
+          }
         })
       }).finally(() => {
         this.loading = false
