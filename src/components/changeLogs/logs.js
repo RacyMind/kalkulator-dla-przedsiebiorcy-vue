@@ -3,7 +3,7 @@ export default {
     {
       version: '4.1.0',
       publish_date: '2021-10-25',
-      content: '<ul><li>Dodano stawkę godzinową w umowie zlecenie.</li><li>Poprawiono service worker dla PWA.</li><li>Poprawiono obliczenia przy zerowym PIT dla młodych i 50% kosztach uzyskania przychodu.</li><li>Drobne poprawki w interfejsie.</li></ul>',
+      content: '<ul><li>Dodano moduł inflacji.</li><li>Dodano stawkę godzinową w umowie zlecenie.</li><li>Poprawiono service worker dla PWA.</li><li>Poprawiono obliczenia przy zerowym PIT dla młodych i 50% kosztach uzyskania przychodu.</li><li>Drobne poprawki w interfejsie.</li></ul>',
     },
     {
       version: '4.0.2',

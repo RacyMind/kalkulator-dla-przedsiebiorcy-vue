@@ -448,7 +448,7 @@ export default {
     INFORMATOR: [
       {
         title: 'Inflacja',
-        caption: 'Moduł pokazuje wykres inflacji w Polsce',
+        caption: 'Moduł pokazuje wykres z inflacją w Polsce',
         className: 'c-informator',
         link: '/inflacja',
       },
