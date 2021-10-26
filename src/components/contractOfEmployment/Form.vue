@@ -157,7 +157,7 @@
           class="full-width"
           color="brand"
           size="lg"
-          label="Oblicz"
+          :label="isMarriage ? `Zapisz` : `Oblicz`"
           :disable="isDisabledButton"
         />
       </div>
@@ -172,6 +172,11 @@ import ContractOfEmployment from 'src/logic/ContractOfEmployment'
 export default {
   props: {
     year: Number,
+    isMarriage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['submitted'],
   setup () {
@@ -244,6 +249,24 @@ export default {
         case constants.AMOUNT_TYPES.GROSS:
           grossAmount = Number(this.amount)
           break
+      }
+      if (this.isMarriage) {
+        const inputData = {
+          grossAmount: grossAmount,
+          accidentContributionRate: Number(this.accidentContributionRate) / 100,
+          employeePPkContributionRate: employeePPkContributionRate,
+          employerPpkContributionRate: employerPpkContributionRate,
+          partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses,
+          workInLivePlace: this.workInLivePlace,
+          isFreeAmount: this.isFreeAmount,
+          isYoung: this.isYoung,
+          isFpContribution: this.isFpContribution,
+          isAidForBigFamily: this.isAidForBigFamily,
+          isAidForSenior: this.isAidForSenior,
+          isAidForMiddleClass: this.isAidForMiddleClass,
+        }
+
+        this.$emit('submitted', inputData)
       }
 
       this.$store.commit('contractOfEmployment/resetData')

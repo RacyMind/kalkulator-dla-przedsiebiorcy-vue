@@ -385,6 +385,12 @@ export default {
         link: '/umowa-o-dzielo',
       },
       {
+        title: 'Rozliczenie z małżonkiem',
+        caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
+        className: 'c-work',
+        link: '/rozliczenie-z-malzonkiem',
+      },
+      {
         title: 'Zasiłek chorobowy',
         caption: 'Moduł oblicza wysokość zasiłku chorobowego',
         className: 'c-sickPay',
@@ -490,6 +496,10 @@ export default {
     CHART8: '#70B749',
   },
   AVAILABLE_YEARS: [2021, 2022],
+  AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
+    CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
+    SELF_EMPLOYMENT: 'selfEmployment',
+  },
   PARAMS: {
     2021: from2021,
     2022: from2022,
