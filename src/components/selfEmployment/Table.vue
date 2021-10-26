@@ -88,7 +88,7 @@
         {{ pln(result.fpContribution) }}
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm bg-primary text-white text-weight-bold">
+    <div class="row justify-between q-px-md q-py-sm bg-primary text-white">
       <div>
         Dochód netto
       </div>
