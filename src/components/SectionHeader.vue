@@ -1,5 +1,5 @@
 <template>
-  <div class="sectionHeader bg-brand q-py-sm q-px-md text-h6 text-weight-regular">
+  <div class="sectionHeader bg-brand q-py-xs q-px-md text-subtitle1 text-weight-medium">
     <slot />
   </div>
 </template>

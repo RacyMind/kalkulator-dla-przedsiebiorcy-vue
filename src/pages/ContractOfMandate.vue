@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { mapGetters } from 'vuex'
 import SectionHeader from 'components/SectionHeader'
 import Advert from 'components/Advert'
@@ -99,18 +100,21 @@ import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmplo
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 export default {
+  setup () {
+    const year = ref(helpers.getDefaultYear())
+    return {
+      year,
+    }
+  },
   data () {
     return {
       openEmployeeModal: false,
       openEmployerModal: false,
-      year: null,
     }
   },
   created () {
     this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/resetData')
-
-    this.year = helpers.getDefaultYear()
   },
   computed: {
     ...mapGetters({

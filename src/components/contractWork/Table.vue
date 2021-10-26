@@ -43,30 +43,24 @@
   </div>
 </template>
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 import constants from 'src/logic/constants'
-import { getResult } from 'src/logic/ContractWork'
+import { useResult, inputData } from 'src/use/useContractWork'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
-  setup () {
-    const store = useStore()
-    const amount = computed(() => store.getters['contractWork/amount'])
-    const amountType = computed(() => store.getters['contractWork/amountType'])
-    const expenseRate = computed(() => store.getters['contractWork/expenseRate'])
+  props: {
+    year: Number,
+  },
+  setup (props) {
+    const { result } = useResult(props)
+    const { amount, expenseRate } = inputData()
 
     return {
       pln,
       amount,
-      amountType,
       expenseRate,
+      result,
     }
-  },
-  computed: {
-    result () {
-      return getResult(this.amount, this.amountType, this.expenseRate)
-    },
   },
   watch: {
     amount: function (val) {
@@ -77,14 +71,14 @@ export default {
   },
   methods: {
     showNotifications () {
-      if (this.amount && this.result.grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+      if (this.amount && this.result.grossAmount <= constants.PARAMS[this.year].LUMP_SUM_UP_TO_AMOUNT) {
         this.$q.notify({
-          message: `Dla wynagrodzenia brutto do ${pln(constants.LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[this.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
-      if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.AMOUNT_OF_TAX_THRESHOLD) {
+      if (this.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && this.result.expenses >= constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD) {
         this.$q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.AMOUNT_OF_TAX_THRESHOLD)}.`,
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.PARAMS[this.year].AMOUNT_OF_TAX_THRESHOLD)}.`,
         })
       }
     },
