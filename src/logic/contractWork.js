@@ -1,7 +1,27 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
-const taxRate = constants.TAX_RATES.FIRST_RATE / 100
+let year = helpers.getDefaultYear()
+
+let params = {
+  taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+  amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+}
+
+/**
+ * Sets parameters for the year
+ * @param newYear
+ */
+function setYear (newYear) {
+  year = newYear
+
+  params = {
+    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+  }
+}
 
 /**
  * Calculates expenses
@@ -13,8 +33,8 @@ const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 function calculateExpenses (grossAmount, expenseRate) {
   const expenses = helpers.round(grossAmount * expenseRate, 2)
 
-  if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > constants.AMOUNT_OF_TAX_THRESHOLD) {
-    return constants.AMOUNT_OF_TAX_THRESHOLD
+  if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > params.amountOfTaxThreshold) {
+    return params.amountOfTaxThreshold
   }
   return expenses
 }
@@ -37,7 +57,7 @@ function calculateBasisForTax (grossAmount, expenses) {
  * @returns {number}
  */
 function calculateTaxAmount (basisForTax) {
-  return helpers.round(basisForTax * taxRate)
+  return helpers.round(basisForTax * params.taxRate)
 }
 
 /**
@@ -48,7 +68,7 @@ function calculateTaxAmount (basisForTax) {
  * @returns {number}
  */
 function calculateGrossAmount (netAmount, expenseRate) {
-  return helpers.round(netAmount / (1 - taxRate * (1 - expenseRate)), 2)
+  return helpers.round(netAmount / (1 - params.taxRate * (1 - expenseRate)), 2)
 }
 
 /**
@@ -73,7 +93,7 @@ function getResultUsingNetAmount (amount, expenseRate) {
   const netAmount = amount
   let grossAmount = calculateGrossAmount(amount, expenseRate)
 
-  if (grossAmount <= constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmount <= params.lumpSumUpToAmount) {
     expenseRate = 0
     grossAmount = calculateGrossAmount(amount, expenseRate)
   }
@@ -102,7 +122,7 @@ function getResultUsingNetAmount (amount, expenseRate) {
 function getResultUsingGrossAmount (amount, expenseRate) {
   const grossAmount = amount
 
-  if (grossAmount < constants.LUMP_SUM_UP_TO_AMOUNT) {
+  if (grossAmount < params.lumpSumUpToAmount) {
     expenseRate = 0
   }
 
@@ -147,4 +167,7 @@ function getResult (amount, amountType, expenseRate) {
   }
 }
 
-export { getResult }
+export default {
+  getResult,
+  setYear,
+}

@@ -105,7 +105,7 @@ export function useYearlyEmployeeResult (props) {
 
   updateMonthlyInputs()
 
-  const results = computed(fu => {
+  const results = computed(() => {
     return contractOfMandate.getYearlyResultOfEmployee(monthlyInputs)
   })
 
@@ -128,7 +128,7 @@ export function useMonthlyEmployerResult (props) {
     isRentContribution,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     contractOfMandate.resetTotalAmounts()
     return contractOfMandate.getMonthlyResultOfEmployer(
       grossAmount.value,
@@ -170,7 +170,7 @@ export function useYearlyEmployerResult (props) {
 
   updateMonthlyInputs()
 
-  const results = computed(fu => {
+  const results = computed(() => {
     return contractOfMandate.getYearlyResultOfEmployer(monthlyInputs)
   })
 

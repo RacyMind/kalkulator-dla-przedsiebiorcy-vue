@@ -19,7 +19,7 @@ export function userUnregisteredCompany () {
     expenses,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     return unregisteredCompany.getResult(
       amount.value,
       expenses.value,
