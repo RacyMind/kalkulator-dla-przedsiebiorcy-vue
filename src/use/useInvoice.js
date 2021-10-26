@@ -22,7 +22,7 @@ export function useInvoice () {
     taxRate,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     return invoice.getResult(
       amount.value,
       amountType.value,

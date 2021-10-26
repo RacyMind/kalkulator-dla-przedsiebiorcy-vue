@@ -31,7 +31,7 @@ export function useResult (props) {
     expenseRate,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     return contractWork.getResult(
       amount.value,
       amountType.value,
