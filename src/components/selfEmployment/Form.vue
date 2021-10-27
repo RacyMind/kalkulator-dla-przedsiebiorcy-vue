@@ -141,7 +141,7 @@
           class="full-width"
           color="brand"
           size="lg"
-          label="Oblicz"
+          :label="isMarriage ? `Zapisz` : `Oblicz`"
           :disable="isDisabledButton"
         />
       </div>
@@ -155,6 +155,11 @@ import constants from 'src/logic/constants'
 export default {
   props: {
     year: Number,
+    isMarriage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['submitted'],
   setup () {
@@ -258,6 +263,29 @@ export default {
 
       if (!this.isCustomBasisForZus) {
         customBasisForZus = 0
+      }
+
+      if (this.isMarriage) {
+        const inputData = {
+          grossAmount: this.amount,
+          accidentContributionRate: Number(this.accidentContributionRate) / 100,
+          taxType: this.taxType.value,
+          taxRateForLumpSum: this.taxRateForLumpSum.value / 100,
+          expenses: this.expenses,
+          isSickContribution: this.isSickContribution,
+          isFreeAmount: this.isFreeAmount,
+          isSmallZus: this.isSmallZus,
+          isFpContribution: this.isFpContribution,
+          isAidForStart: this.isAidForStart,
+          isFullTimeJob: this.isFullTimeJob,
+          customBasisForZus: customBasisForZus,
+          isAidForBigFamily: this.isAidForBigFamily,
+          isAidForSenior: this.isAidForSenior,
+          isAidForMiddleClass: this.isAidForMiddleClass,
+        }
+
+        this.$emit('submitted', inputData)
+        return
       }
 
       this.$store.commit('selfEmployment/resetData')

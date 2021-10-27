@@ -250,6 +250,7 @@ export default {
           grossAmount = Number(this.amount)
           break
       }
+
       if (this.isMarriage) {
         const inputData = {
           grossAmount: grossAmount,
@@ -267,6 +268,7 @@ export default {
         }
 
         this.$emit('submitted', inputData)
+        return
       }
 
       this.$store.commit('contractOfEmployment/resetData')
