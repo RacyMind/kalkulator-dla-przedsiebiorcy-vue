@@ -150,15 +150,16 @@
         </div>
       </div>
     </div>
-    <div class="row q-mt-lg">
+    <div
+      v-if="!isMarriage"
+      class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
           class="full-width"
           color="brand"
           size="lg"
-          :label="isMarriage ? `Zapisz` : `Oblicz`"
-          :disable="isDisabledButton"
+          label="Zapisz"
         />
       </div>
     </div>

@@ -35,6 +35,8 @@ function setYear (newYear) {
  * @param {boolean} isFreeAmount
  * @param {number} totalBasisForTax
  * @param {boolean} isAidForMiddleClass
+ * @param {boolean} isYearly
+ * @param {boolean} isMarriage
  * @returns {number}
  */
 function calculateIncomeTaxUsingGeneralRules (
@@ -44,11 +46,21 @@ function calculateIncomeTaxUsingGeneralRules (
   isFreeAmount,
   totalBasisForTax,
   isAidForMiddleClass = false,
+  isYearly = false,
+  isMarriage = false,
 ) {
   let taxReducingAmount = 0
 
   if (isFreeAmount) {
     taxReducingAmount = params.taxReducingAmount
+  }
+
+  if (isMarriage) {
+    taxReducingAmount *= 2
+  }
+
+  if (isYearly) {
+    taxReducingAmount *= 12
   }
 
   let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount

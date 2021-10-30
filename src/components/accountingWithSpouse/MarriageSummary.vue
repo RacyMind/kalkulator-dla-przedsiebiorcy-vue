@@ -59,6 +59,10 @@ export default {
   },
   computed: {
     myResult () {
+      if (!this.myInputData) {
+        return null
+      }
+
       switch (this.myAccountingForm) {
         case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT:
           return this.getResultForContractOfEmployment(this.myInputData)
@@ -69,6 +73,10 @@ export default {
       }
     },
     spouseResult () {
+      if (!this.spouseInputData) {
+        return null
+      }
+
       switch (this.spouseAccountingForm) {
         case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT:
           return this.getResultForContractOfEmployment(this.spouseInputData)
@@ -86,7 +94,12 @@ export default {
       const grossAmount = this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount + this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount
       const basisForTax = helpers.round((this.myResult.totalBasisForTax + this.spouseResult.totalBasisForTax) / 2, 2)
       const amountOfDeductionOfHealthContributionFromTax = this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax + this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax
-      const taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(0, basisForTax, amountOfDeductionOfHealthContributionFromTax, true, 0) * 2
+      let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingGeneralRules(0, basisForTax, 0, true, 0, false, true, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
+
+      if (taxAmount < 0) {
+        taxAmount = 0
+      }
+
       const netAmount = grossAmount - taxAmount
 
       return {

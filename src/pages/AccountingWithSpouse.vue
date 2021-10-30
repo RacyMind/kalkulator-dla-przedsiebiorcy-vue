@@ -19,6 +19,7 @@
         v-model="myFormOfAccounting"
         class="q-mt-md q-mb-lg q-px-md"/>
       <ContractOfEmploymentForm
+        ref="myFormOfContractOfEmployment"
         v-if="myFormOfAccounting && myFormOfAccounting.value === constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT"
         :year="year"
         is-marriage
@@ -26,6 +27,7 @@
         @submitted="saveMyData"
       />
       <SelfEmploymentForm
+        ref="myFormOfSelfEmployment"
         v-if="myFormOfAccounting && myFormOfAccounting.value === constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT"
         :year="year"
         is-marriage
@@ -40,6 +42,7 @@
         v-model="spouseFormOfAccounting"
         class="q-mt-md q-mb-lg q-px-md"/>
       <ContractOfEmploymentForm
+        ref="spouseFormOfContractOfEmployment"
         v-if="spouseFormOfAccounting && spouseFormOfAccounting.value === constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT"
         :year="year"
         is-marriage
@@ -47,12 +50,24 @@
         @submitted="saveSpouseData"
       />
       <SelfEmploymentForm
+        ref="spouseFormOfSelfEmployment"
         v-if="spouseFormOfAccounting && spouseFormOfAccounting.value === constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT"
         :year="year"
         is-marriage
         class="q-mt-md q-mb-lg q-px-md"
         @submitted="saveSpouseData"
       />
+      <div class="row q-mt-md q-mb-lg q-px-md">
+        <div class="col-12">
+          <q-btn
+            class="full-width"
+            color="brand"
+            size="lg"
+            label="Oblicz"
+            @click="calculate"
+          />
+        </div>
+      </div>
       <SectionHeader ref="mySummaryHeader">
         <q-icon name="o_credit_card" />
         Moje rozliczenie
@@ -112,22 +127,51 @@ export default {
       spouseData: null,
     }
   },
-    created () {
-      this.$store.commit('app/SET_MODULE_TITLE', 'Rozliczenie z małżonkiem')
-    },
-    watch: {
-      year () {
-        //
+  created () {
+    this.$store.commit('app/SET_MODULE_TITLE', 'Rozliczenie z małżonkiem')
+  },
+  computed: {
+      myForm () {
+        if (!this.myFormOfAccounting) {
+          return null
+        }
+        switch (this.myFormOfAccounting.value) {
+          case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT:
+            return this.$refs.myFormOfContractOfEmployment
+          case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT:
+            return this.$refs.myFormOfSelfEmployment
+        }
+        return null
       },
+    spouseForm () {
+      if (!this.spouseFormOfAccounting) {
+        return null
+      }
+      switch (this.spouseFormOfAccounting.value) {
+        case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT:
+          return this.$refs.spouseFormOfContractOfEmployment
+        case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT:
+          return this.$refs.spouseFormOfSelfEmployment
+      }
+      return null
     },
+  },
+  watch: {
+    year () {
+      //
+    },
+  },
   methods: {
+    calculate () {
+      this.myForm.save()
+      this.spouseForm.save()
+      helpers.scrollToElement(this.$refs.mySummaryHeader.$el)
+    },
     saveMyData (data) {
       this.myData = data
-      helpers.scrollToElement(this.$refs.spouseHeader.$el)
     },
     saveSpouseData (data) {
       this.spouseData = data
-      helpers.scrollToElement(this.$refs.mySummaryHeader.$el)
     },
   },
     components: {
