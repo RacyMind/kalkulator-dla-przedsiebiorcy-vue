@@ -53,6 +53,32 @@
         class="q-mt-md q-mb-lg q-px-md"
         @submitted="saveSpouseData"
       />
+      <SectionHeader ref="mySummaryHeader">
+        <q-icon name="o_credit_card" />
+        Moje rozliczenie
+      </SectionHeader>
+      <PersonSummary
+        :accounting-form=" myFormOfAccounting ? myFormOfAccounting.value : ''"
+        :input-data="myData"
+      />
+      <SectionHeader ref="spouseSummaryHeader">
+        <q-icon name="o_credit_card" />
+        Rozliczenie małżonka
+      </SectionHeader>
+      <PersonSummary
+        :accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"
+        :input-data="spouseData"
+      />
+      <SectionHeader ref="spouseSummaryHeader">
+        <q-icon name="o_credit_card" />
+        Wspólne rozliczenie
+      </SectionHeader>
+      <MarriageSummary
+        :my-accounting-form=" myFormOfAccounting ? myFormOfAccounting.value : ''"
+        :my-input-data="myData"
+        :spouse-accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"
+        :spouse-input-data="spouseData"
+      />
     </div>
     <Footer />
   </q-page>
@@ -68,6 +94,8 @@ import SectionHeader from 'components/SectionHeader'
 import Footer from 'components/Footer'
 import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
 import SelfEmploymentForm from 'src/components/selfEmployment/Form'
+import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
+import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
 export default {
     setup () {
       const year = ref(helpers.getDefaultYear())
@@ -79,12 +107,13 @@ export default {
   data () {
     return {
       myFormOfAccounting: null,
+      myData: null,
       spouseFormOfAccounting: null,
+      spouseData: null,
     }
   },
     created () {
       this.$store.commit('app/SET_MODULE_TITLE', 'Rozliczenie z małżonkiem')
-      this.$store.commit('accountingWithSpouse/clearAllData')
     },
     watch: {
       year () {
@@ -93,13 +122,12 @@ export default {
     },
   methods: {
     saveMyData (data) {
-      this.$store.commit('accountingWithSpouse/setMyData', data)
-      this.$store.commit('accountingWithSpouse/setMyAccountingForm', this.myFormOfAccounting.value)
+      this.myData = data
       helpers.scrollToElement(this.$refs.spouseHeader.$el)
     },
     saveSpouseData (data) {
-      this.$store.commit('accountingWithSpouse/setSpouseData', data)
-      this.$store.commit('accountingWithSpouse/setSpouseAccountingForm', this.spouseFormOfAccounting.value)
+      this.spouseData = data
+      helpers.scrollToElement(this.$refs.mySummaryHeader.$el)
     },
   },
     components: {
@@ -109,6 +137,8 @@ export default {
       FormsOfAccounting,
       ContractOfEmploymentForm,
       SelfEmploymentForm,
+      PersonSummary,
+      MarriageSummary,
     },
 }
 </script>
