@@ -42,17 +42,19 @@
         />
         <q-toggle
           v-model="isFreeAmount"
-          :disable="taxType.value !== constants.TAX_TYPES.GENERAL"
+          :disable="taxType.value !== constants.TAX_TYPES.GENERAL || isMarriage"
           class="q-mt-sm"
           label="Kwota wolna od podatku"
         />
         <template v-if="year >= 2022">
           <q-toggle
+            v-if="!isMarriage"
             v-model="isAidForSenior"
             class="q-mt-sm"
             label="Zerowy PIT dla seniora"
           />
           <q-toggle
+            v-if="!isMarriage"
             v-model="isAidForBigFamily"
             class="q-mt-sm"
             label="Zerowy PIT dla rodzin 4+"

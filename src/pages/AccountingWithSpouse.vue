@@ -73,6 +73,7 @@
         Moje rozliczenie
       </SectionHeader>
       <PersonSummary
+        :year="year"
         :accounting-form=" myFormOfAccounting ? myFormOfAccounting.value : ''"
         :input-data="myData"
       />
@@ -81,6 +82,7 @@
         Rozliczenie małżonka
       </SectionHeader>
       <PersonSummary
+        :year="year"
         :accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"
         :input-data="spouseData"
       />
@@ -89,6 +91,7 @@
         Wspólne rozliczenie
       </SectionHeader>
       <MarriageSummary
+        :year="year"
         :my-accounting-form=" myFormOfAccounting ? myFormOfAccounting.value : ''"
         :my-input-data="myData"
         :spouse-accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"

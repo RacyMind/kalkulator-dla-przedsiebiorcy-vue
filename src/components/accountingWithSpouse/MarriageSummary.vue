@@ -20,6 +20,12 @@
         :value="pln(commonResult.netAmount)"
       />
     </template>
+    <div
+      v-else
+      class="q-pa-md"
+    >
+      Brak danych
+    </div>
   </div>
 </template>
 
@@ -28,8 +34,7 @@ import ListRow from 'src/components/partials/ListRow'
 import contractOfEmployment from 'src/logic/contractOfEmployment'
 import selfEmployment from 'src/logic/selfEmployment'
 import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import taxes from 'src/logic/taxes'
+import jointAccounting from 'src/logic/jointAccounting'
 import { pln } from 'src/use/currencyFormat'
 
 export default {
@@ -50,6 +55,7 @@ export default {
       type: String,
       required: true,
     },
+    year: Number,
   },
   setup () {
     return {
@@ -91,23 +97,27 @@ export default {
         return null
       }
 
-      const grossAmount = this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount + this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount
-      const basisForTax = helpers.round((this.myResult.totalBasisForTax + this.spouseResult.totalBasisForTax) / 2, 2)
-      const amountOfDeductionOfHealthContributionFromTax = this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax + this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax
-      let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingGeneralRules(0, basisForTax, 0, true, 0, false, true, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
+      jointAccounting.setYear(this.year)
 
-      if (taxAmount < 0) {
-        taxAmount = 0
+      const myData = {
+        grossAmount: this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount,
+        contributionTotal: this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].contributionTotal,
+        basisForTax: this.myResult.totalBasisForTax,
+        amountOfDeductionOfHealthContributionFromTax: this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax,
+        isAidForMiddleClass: this.myInputData.isAidForMiddleClass,
+        isAidForBigFamily: this.myInputData.isAidForBigFamily,
       }
 
-      const netAmount = grossAmount - taxAmount
-
-      return {
-        grossAmount,
-        basisForTax,
-        taxAmount,
-        netAmount,
+      const spouseData = {
+        grossAmount: this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].grossAmount,
+        contributionTotal: this.myResult.rows[constants.LOCALE_DATE.wholeYearIndex].contributionTotal,
+        basisForTax: this.spouseResult.totalBasisForTax,
+        amountOfDeductionOfHealthContributionFromTax: this.spouseResult.rows[constants.LOCALE_DATE.wholeYearIndex].amountOfDeductionOfHealthContributionFromTax,
+        isAidForMiddleClass: this.spouseInputData.isAidForMiddleClass,
+        isAidForBigFamily: this.spouseInputData.isAidForBigFamily,
       }
+
+      return jointAccounting.getResult(myData, spouseData)
     },
   },
   methods: {

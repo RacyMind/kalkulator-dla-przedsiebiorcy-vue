@@ -35,17 +35,20 @@
             label=" Praca w miejscu zamieszkania"
           />
           <q-toggle
+            v-if="!isMarriage"
             v-model="isYoung"
             class="q-mt-sm"
             label="Zerowy PIT dla młodych"
           />
           <template v-if="year >= 2022">
             <q-toggle
+              v-if="!isMarriage"
               v-model="isAidForSenior"
               class="q-mt-sm"
               label="Zerowy PIT dla seniora"
             />
             <q-toggle
+              v-if="!isMarriage"
               v-model="isAidForBigFamily"
               class="q-mt-sm"
               label="Zerowy PIT dla rodzin 4+"
@@ -58,6 +61,7 @@
           </template>
           <q-toggle
             v-model="isFreeAmount"
+            :disable="isMarriage"
             class="q-mt-sm"
             label="Kwota wolna od podatku"
           />

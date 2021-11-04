@@ -20,6 +20,12 @@
         :value="pln(result.rows[constants.LOCALE_DATE.wholeYearIndex].netAmount)"
       />
     </template>
+    <div
+      v-else
+      class="q-pa-md"
+    >
+      Brak danych
+    </div>
   </div>
 </template>
 
@@ -40,6 +46,7 @@ export default {
       type: String,
       required: true,
     },
+    year: Number,
   },
   setup () {
     return {
@@ -51,32 +58,35 @@ export default {
     result () {
       switch (this.accountingForm) {
         case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.CONTRACT_OF_EMPLOYMENT:
-          return this.getResultForContractOfEmployment()
+          return this.getResultForContractOfEmployment(this.inputData)
         case constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT:
-          return this.getResultForSelfEmployment()
+          return this.getResultForSelfEmployment(this.inputData)
         default:
           return null
       }
     },
   },
   methods: {
-    getResultForContractOfEmployment () {
+    getResultForContractOfEmployment (inputData) {
       const monthlyInputs = []
       for (let i = 0; i < 12; i++) {
         monthlyInputs[i] = {
-          grossAmount: this.inputData.grossAmount,
-          employeePPkContributionRate: this.inputData.employeePPkContributionRate,
-          partOfWorkWithAuthorExpenses: this.inputData.partOfWorkWithAuthorExpenses,
-          workInLivePlace: this.inputData.workInLivePlace,
-          isFreeAmount: this.inputData.isFreeAmount,
-          isFpContribution: this.inputData.isFpContribution,
-          isYoung: this.inputData.isYoung,
-          isAidForBigFamily: this.inputData.isAidForBigFamily,
-          isAidForSenior: this.inputData.isAidForSenior,
-          isAidForMiddleClass: this.inputData.isAidForMiddleClass,
-          employerPpkContributionRate: this.inputData.employerPpkContributionRate,
+          grossAmount: inputData.grossAmount,
+          employeePPkContributionRate: inputData.employeePPkContributionRate,
+          partOfWorkWithAuthorExpenses: inputData.partOfWorkWithAuthorExpenses,
+          workInLivePlace: inputData.workInLivePlace,
+          isFreeAmount: inputData.isFreeAmount,
+          isFpContribution: inputData.isFpContribution,
+          isYoung: inputData.isYoung,
+          isAidForBigFamily: inputData.isAidForBigFamily,
+          isAidForSenior: inputData.isAidForSenior,
+          isAidForMiddleClass: inputData.isAidForMiddleClass,
+          employerPpkContributionRate: inputData.employerPpkContributionRate,
         }
       }
+
+      contractOfEmployment.setYear(this.year)
+
       return contractOfEmployment.getYearlyResultOfEmployee(monthlyInputs)
     },
     getResultForSelfEmployment () {
@@ -100,6 +110,9 @@ export default {
           isAidForMiddleClass: this.inputData.isAidForMiddleClass,
         }
       }
+
+      selfEmployment.setYear(this.year)
+
       return selfEmployment.getYearlyResult(monthlyInputs)
     },
   },
