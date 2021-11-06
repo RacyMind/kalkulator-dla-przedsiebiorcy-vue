@@ -1,15 +1,11 @@
 import helpers from 'src/logic/helpers'
 import taxes from './taxes'
 
-let year = helpers.getDefaultYear()
-
 /**
  * Sets parameters for the year
  * @param newYear
  */
 function setYear (newYear) {
-  year = newYear
-
   taxes.setYear(newYear)
 }
 
