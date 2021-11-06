@@ -187,7 +187,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount) {
  * @param {boolean} isYoung
  * @param {number} employerPpkContributionRate
  * @param {number} month
- * @returns {{sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: ComputedRef<*>, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
+ * @returns {{contributionTotal: number, sickContribution: number, ppkContribution: number, netAmount: number, rentContribution: number, basisForTax: number, grossAmount: number, healthContribution: number, taxAmount: number, pensionContribution: number, expenses: number}}
  */
 function getMonthlyResultOfEmployee (
   grossAmount,
@@ -259,6 +259,7 @@ function getMonthlyResultOfEmployee (
     expenses: expenses,
     basisForTax: basisForTax,
     taxAmount: taxAmount,
+    contributionTotal: pensionContribution + rentContribution + sickContribution + ppkContribution + healthContribution,
   }
 }
 
@@ -303,6 +304,8 @@ function getYearlyResultOfEmployee (monthlyInputs) {
     ppkContribution: results.map(result => result.ppkContribution)
       .reduce((current, sum) => current + sum, 0),
     taxAmount: results.map(result => result.taxAmount)
+      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
   })
 
