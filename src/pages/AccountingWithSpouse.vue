@@ -99,7 +99,7 @@
         :spouse-input-data="spouseData"
       />
       <p class="q-py-md bg-teal-1 text-grey">
-        Wersja beta. Jeżeli widzisz błąd w obliczeniach. Poinformuj mnie o tym.
+        Wersja beta. Jeżeli widzisz błąd w obliczeniach, poinformuj mnie o tym.
       </p>
     </div>
     <Footer />
