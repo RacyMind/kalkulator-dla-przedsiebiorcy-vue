@@ -1,13 +1,7 @@
 import helpers from 'src/logic/helpers'
 import taxes from './taxes'
-import constants from 'src/logic/constants'
 
 let year = helpers.getDefaultYear()
-
-let params = {
-  freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
-  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
-}
 
 /**
  * Sets parameters for the year
@@ -15,11 +9,6 @@ let params = {
  */
 function setYear (newYear) {
   year = newYear
-
-  params = {
-  freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
-  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
-}
 
   taxes.setYear(newYear)
 }

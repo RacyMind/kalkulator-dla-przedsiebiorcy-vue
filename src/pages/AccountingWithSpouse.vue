@@ -64,6 +64,7 @@
             color="brand"
             size="lg"
             label="Oblicz"
+            :disable="isDisabledButton"
             @click="calculate"
           />
         </div>
@@ -97,6 +98,9 @@
         :spouse-accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"
         :spouse-input-data="spouseData"
       />
+      <p class="q-py-md bg-teal-1 text-grey">
+        Wersja beta. Jeżeli widzisz błąd w obliczeniach. Poinformuj mnie o tym.
+      </p>
     </div>
     <Footer />
   </q-page>
@@ -158,14 +162,27 @@ export default {
       }
       return null
     },
+    isDisabledButton () {
+      if (!this.myFormOfAccounting || !this.spouseFormOfAccounting) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     year () {
-      //
+      this.myData = null
+      this.spouseData = null
     },
   },
   methods: {
     calculate () {
+      if (this.myForm.isDisabledButton || this.spouseForm.isDisabledButton) {
+        this.$q.notify({
+          message: 'Wprowadź wszystkie dane',
+        })
+        return
+      }
       this.myForm.save()
       this.spouseForm.save()
       helpers.scrollToElement(this.$refs.mySummaryHeader.$el)
