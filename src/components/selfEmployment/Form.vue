@@ -143,10 +143,11 @@
       <div class="col-12">
         <q-btn
           type="submit"
+          :disable="isDisabledButton"
           class="full-width"
           color="brand"
           size="lg"
-          label="Zapisz"
+          label="Oblicz"
         />
       </div>
     </div>
