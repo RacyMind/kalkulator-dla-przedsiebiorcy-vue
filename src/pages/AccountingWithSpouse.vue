@@ -98,7 +98,7 @@
         :spouse-accounting-form=" spouseFormOfAccounting ? spouseFormOfAccounting.value : ''"
         :spouse-input-data="spouseData"
       />
-      <p class="q-py-md bg-teal-1 text-grey">
+      <p class="q-py-md q-px-xs-md q-px-md-none bg-teal-1 text-grey">
         Wersja beta. Jeżeli widzisz błąd w obliczeniach, poinformuj mnie o tym.
       </p>
     </div>
