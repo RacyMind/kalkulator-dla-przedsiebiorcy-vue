@@ -91,7 +91,7 @@ function calculateHealthContribution (amount, taxType, totalGrossAmount) {
       let rateForBasis = 60
 
       if (totalGrossAmount > 60000) {
-        rateForBasis = 120
+        rateForBasis = 100
       }
 
       if (totalGrossAmount > 300000) {
