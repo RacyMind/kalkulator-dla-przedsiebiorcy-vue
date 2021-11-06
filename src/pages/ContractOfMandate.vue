@@ -10,13 +10,13 @@
       </SectionHeader>
       <ChooseYear
         v-model="year"
-        class="q-my-lg q-px-md"/>
+        class="q-mt-md q-mb-lg q-px-md"/>
       <SectionHeader>
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
       <Form
-        class="q-my-lg q-px-md"
+        class="q-mt-md q-mb-lg q-px-md"
         :year="year"
         @submitted="scrollTo"
       />

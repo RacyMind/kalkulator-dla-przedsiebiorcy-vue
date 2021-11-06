@@ -129,7 +129,7 @@
                 lazy-rules
               />
             </div>
-            <div class="col-6 q-pl-md-sm">
+            <div class="col-6 q-pl-sm">
               <q-input
                 v-model.number="employeePpkRate"
                 type="number"

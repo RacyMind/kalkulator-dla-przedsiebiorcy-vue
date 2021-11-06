@@ -3,7 +3,9 @@
     <LineChart
       v-if="currency"
       :key="componentKey"
-      :chart-data="chartData"/>
+      :chart-data="chartData"
+      :chart-options="chartOptions"
+    />
     <span v-else>Brak danych</span>
   </div>
 </template>
@@ -18,6 +20,19 @@ export default {
   data () {
     return {
       componentKey: 0,
+      chartOptions: {
+        legend: {
+          display: false,
+        },
+        scales: {
+          xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'day',
+            },
+          }],
+        },
+      },
     }
   },
   computed: {
@@ -28,7 +43,12 @@ export default {
       return this.currency.rates.map(rate => rate.effectiveDate)
     },
     rates () {
-      return this.currency.rates.map(rate => rate.mid)
+      return this.currency.rates.map(rate => {
+        return {
+          x: new Date(rate.effectiveDate),
+          y: rate.mid,
+        }
+      })
     },
     chartData () {
       return {

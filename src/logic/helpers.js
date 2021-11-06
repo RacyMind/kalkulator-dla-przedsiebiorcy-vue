@@ -42,7 +42,6 @@ function getDefaultYear () {
 
   return constants.AVAILABLE_YEARS[constants.AVAILABLE_YEARS.length - 1]
 }
-
 export default {
   scrollToElement,
   round,

@@ -172,7 +172,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.0.2',
+    VERSION: '4.1.0',
   },
   VAT_VALUES: [
     {
@@ -445,7 +445,13 @@ export default {
         link: 'https://www.facebook.com/kalkulator.finansowy',
       },
     ],
-    POLSKI_LAD: [
+    INFORMATOR: [
+      {
+        title: 'Inflacja',
+        caption: 'Moduł pokazuje wykres z inflacją w Polsce',
+        className: 'c-informator',
+        link: '/inflacja',
+      },
     ],
   },
   LOCALE_DATE: {
@@ -471,7 +477,7 @@ export default {
     CHANGES_LOGS: '#00A7D9',
     CONTACT: '#00A7D9',
     SICK_PAY: '#ed6d13',
-    POLSKI_LAD: '#FF8356',
+    INFORMATOR: '#FF8356',
     CASH_REGISTER_LIMIT: '#a31718',
     VAT_LIMIT: '#a31718',
     CHART1: '#e32514',

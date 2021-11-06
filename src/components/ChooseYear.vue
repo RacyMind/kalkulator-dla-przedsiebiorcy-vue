@@ -4,7 +4,7 @@
       v-model="year"
       @update:model-value="changed"
       :options="years"
-      label="Rok podatkowy*"
+      label="Wybierz rok podatkowy*"
       color="brand"
       emit-value
       required

@@ -1,5 +1,7 @@
 <template>
-  <q-card>
+  <q-card
+    class="c-logCard"
+    flat>
     <q-card-section>
       <p>
         <b>Wersja:</b> {{log.version}}<br>
@@ -15,3 +17,8 @@ export default {
   props: ['log'],
 }
 </script>
+<style>
+  #q-app .c-logCard ul{
+    margin-bottom: 0;
+  }
+</style>

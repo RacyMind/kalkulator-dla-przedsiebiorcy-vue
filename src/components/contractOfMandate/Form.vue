@@ -15,6 +15,7 @@
             val => !!val || '* Wpisz kwotę',
           ]"
           lazy-rules
+          :readonly="isHourlyAmount"
         />
         <div class="q-mt-sm block">
           <div class="row">
@@ -28,6 +29,47 @@
               :val="constants.AMOUNT_TYPES.GROSS"
               label="brutto"
             />
+          </div>
+          <div class="row full-width">
+            <q-toggle
+              v-model="isHourlyAmount"
+              class="q-mt-sm"
+              label="Stawka godzinowa"
+            />
+          </div>
+          <div
+            v-if="isHourlyAmount"
+            class="row full-width">
+            <div class="col-6">
+              <q-input
+                v-model.number="hourlyAmount"
+                type="number"
+                min="0"
+                step="0.01"
+                label="Stawka godzinowa*"
+                suffix="zł"
+                color="brand"
+                :rules="[
+                  val => !!val || '* Wpisz kwotę',
+                ]"
+                lazy-rules
+              />
+            </div>
+            <div class="col-6 q-pl-sm">
+              <q-input
+                v-model.number="hourCount"
+                type="number"
+                class="full-width"
+                :min="1"
+                step="1"
+                label="Ilość godzin*"
+                color="brand"
+                :rules="[
+                  val => !!val || '* Wpisz ilość godzin',
+                ]"
+                lazy-rules
+              />
+            </div>
           </div>
           <q-toggle
             v-model="isYoung"
@@ -131,7 +173,7 @@
                     lazy-rules
                   />
                 </div>
-                <div class="col-6 q-pl-md-sm">
+                <div class="col-6 q-pl-sm">
                   <q-input
                     v-model.number="employeePpkRate"
                     type="number"
@@ -197,6 +239,9 @@ export default {
       isPpkContribution: false,
       isAuthorExpenses: false,
       partOfWorkWithAuthorExpenses: 100,
+      isHourlyAmount: false,
+      hourlyAmount: null,
+      hourCount: null,
     }
   },
   created () {
@@ -234,6 +279,16 @@ export default {
         this.$q.notify({
           message: 'Dla studenta / ucznia nie odprowadza się składek ZUS.',
         })
+      }
+    },
+    hourlyAmount () {
+      if (this.isHourlyAmount) {
+        this.amount = this.hourlyAmount * this.hourCount
+      }
+    },
+    hourCount () {
+      if (this.isHourlyAmount) {
+        this.amount = this.hourlyAmount * this.hourCount
       }
     },
   },
