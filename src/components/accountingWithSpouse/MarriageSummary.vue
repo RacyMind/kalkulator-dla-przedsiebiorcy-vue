@@ -40,19 +40,15 @@ import { pln } from 'src/use/currencyFormat'
 export default {
   props: {
     myInputData: {
-      type: Object,
       required: true,
     },
     myAccountingForm: {
-      type: String,
       required: true,
     },
     spouseInputData: {
-      type: Object,
       required: true,
     },
     spouseAccountingForm: {
-      type: String,
       required: true,
     },
     year: Number,

@@ -39,11 +39,9 @@ import { pln } from 'src/use/currencyFormat'
 export default {
   props: {
     inputData: {
-      type: Object,
       required: true,
     },
     accountingForm: {
-      type: String,
       required: true,
     },
     year: Number,
