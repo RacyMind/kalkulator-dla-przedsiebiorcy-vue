@@ -3,7 +3,7 @@ export default {
     {
       version: '4.2.0',
       publish_date: '2021-11-06',
-      content: '<ul><li>Dodano moduł rozliczania z małzonkiem (wersja beta).</li><li>Akrualizacja kwot bazowych dla 2022 roku.<li>Dodano wybór roku w umowie dzieło.</li><li>Drobne zmiany w interfejsie.</li></ul>',
+      content: '<ul><li>Dodano moduł rozliczania z małżonkiem (wersja beta).</li><li>Aktualizacja kwot bazowych dla 2022 roku.<li>Dodano wybór roku w umowie dzieło.</li><li>Drobne zmiany w interfejsie.</li></ul>',
     },
     {
       version: '4.1.0',
