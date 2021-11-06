@@ -177,12 +177,6 @@ export default {
   },
   methods: {
     calculate () {
-      if (this.myForm.isDisabledButton || this.spouseForm.isDisabledButton) {
-        this.$q.notify({
-          message: 'Wprowadź wszystkie dane',
-        })
-        return
-      }
       this.myForm.save()
       this.spouseForm.save()
       helpers.scrollToElement(this.$refs.mySummaryHeader.$el)

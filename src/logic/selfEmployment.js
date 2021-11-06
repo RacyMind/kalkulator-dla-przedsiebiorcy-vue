@@ -66,6 +66,10 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
       break
   }
 
+  if (basisForTax < 0) {
+    return 0
+  }
+
   return helpers.round(basisForTax)
 }
 
