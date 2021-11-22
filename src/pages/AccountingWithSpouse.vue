@@ -69,6 +69,7 @@
           />
         </div>
       </div>
+      <Advert />
       <SectionHeader ref="mySummaryHeader">
         <q-icon name="o_credit_card" />
         Moje rozliczenie
@@ -118,6 +119,7 @@ import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
 import SelfEmploymentForm from 'src/components/selfEmployment/Form'
 import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
 import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
+import Advert from 'components/Advert'
 export default {
     setup () {
       const year = ref(helpers.getDefaultYear())
@@ -189,6 +191,7 @@ export default {
     },
   },
     components: {
+      Advert,
       SectionHeader,
       Footer,
       ChooseYear,

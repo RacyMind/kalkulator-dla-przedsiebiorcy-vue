@@ -173,7 +173,7 @@
 
 <script>
 import constants from 'src/logic/constants'
-import ContractOfEmployment from 'src/logic/ContractOfEmployment'
+import ContractOfEmployment from 'src/logic/contractOfEmployment'
 
 export default {
   props: {
