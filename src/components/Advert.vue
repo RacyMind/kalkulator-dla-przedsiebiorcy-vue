@@ -12,7 +12,7 @@
       outline
       type="a"
       target="_blank"
-      href="https://zrzutka.pl/g5gw4x"
+      href="https://zrzutka.pl/z/auddyt"
     />
   </div>
 </template>
