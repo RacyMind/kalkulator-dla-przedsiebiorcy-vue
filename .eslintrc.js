@@ -1,41 +1,62 @@
+const { resolve } = require('path')
 module.exports = {
   // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
   // This option interrupts the configuration hierarchy at this file
   // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
   root: true,
-
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    parser: '@babel/eslint-parser',
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module', // Allows for the use of imports
+    parser: "@typescript-eslint/parser",
+    sourceType: "module",
+    tsconfigRootDir: __dirname,
+    project: resolve(__dirname, './tsconfig.json'),
+    extraFileExtensions: ['.vue'],
+    ecmaFeatures: {
+      jsx: true
+    }
   },
 
   env: {
     browser: true,
   },
 
+
   // Rules order is important, please avoid shuffling them
   extends: [
     // Base ESLint recommended rules
-    // 'eslint:recommended',
+    'eslint:recommended',
+    "@vue/typescript",
 
-    // Uncomment any of the lines below to choose desired strictness,
-    // but leave only one uncommented!
-    // See https://eslint.vuejs.org/rules/#available-rules
-    'plugin:vue/vue3-essential', // Priority A: Essential (Error Prevention)
-    // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
-    // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
+    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
+    // ESLint typescript rules
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    // consider disabling this class of rules if linting takes too long
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
 
-    'standard',
-
+    // https://eslint.vuejs.org/rules/#priority-a-essential-error-prevention
+    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules
+    'plugin:vue/essential',
   ],
 
+  overrides: [{
+    files: ['*.ts', '*.tsx'],
+    rules: {
+      // The core 'no-unused-vars' rules (in the eslint:recommeded ruleset)
+      // does not work with type definitions
+      'no-unused-vars': 'off',
+    }
+  }],
+
   plugins: [
+    // required to apply rules which need type information
+    '@typescript-eslint',
+
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
     // required to lint *.vue files
     'vue',
-
   ],
+
 
   globals: {
     ga: true, // Google Analytics
@@ -133,5 +154,10 @@ module.exports = {
         ],
       },
     ],
+
+    // TypeScript
+    "no-unsafe-any": 'off',
+    'quotes': ['warn', 'single'],
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
 }
