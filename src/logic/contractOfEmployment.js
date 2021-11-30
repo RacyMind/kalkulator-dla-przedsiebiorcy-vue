@@ -256,6 +256,8 @@ function getMonthlyResultOfEmployee (
     expenses: expenses,
     basisForTax: basisForTax,
     taxAmount: taxAmount,
+    amountOfDeductionOfHealthContributionFromTax: amountOfDeductionOfHealthContributionFromTax,
+    contributionTotal: pensionContribution + rentContribution + sickContribution + ppkContribution + healthContribution,
   }
 }
 
@@ -302,6 +304,10 @@ function getYearlyResultOfEmployee (monthlyInputs) {
     ppkContribution: results.map(result => result.ppkContribution)
       .reduce((current, sum) => current + sum, 0),
     taxAmount: results.map(result => result.taxAmount)
+      .reduce((current, sum) => current + sum, 0),
+    amountOfDeductionOfHealthContributionFromTax: results.map(result => result.amountOfDeductionOfHealthContributionFromTax)
+      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
   })
 

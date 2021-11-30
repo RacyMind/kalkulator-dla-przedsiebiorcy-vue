@@ -2,7 +2,6 @@
   <div class="q-pa-md">
     <PieChart
       v-if="result.netAmount"
-      :key="componentKey"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
@@ -10,34 +9,21 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { getResult } from 'src/logic/ContractWork'
 import constants from 'src/logic/constants'
 import PieChart from 'components/PieChart'
+import { useResult } from 'src/use/useContractWork'
 
 export default {
-  setup () {
-    const store = useStore()
-    const amount = computed(() => store.getters['contractWork/amount'])
-    const amountType = computed(() => store.getters['contractWork/amountType'])
-    const expenseRate = computed(() => store.getters['contractWork/expenseRate'])
-
-    return {
-      amount,
-      amountType,
-      expenseRate,
-    }
+  props: {
+    year: Number,
   },
-  data () {
+  setup (props) {
+    const { result } = useResult(props)
     return {
-      componentKey: 0,
+      result,
     }
   },
   computed: {
-    result () {
-      return getResult(this.amount, this.amountType, this.expenseRate)
-    },
     chartData () {
       return {
         datasets: [{
@@ -55,18 +41,6 @@ export default {
           'Zaliczka na podatek dochodowy',
         ],
       }
-    },
-  },
-  watch: {
-    result (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
     },
   },
   components: {

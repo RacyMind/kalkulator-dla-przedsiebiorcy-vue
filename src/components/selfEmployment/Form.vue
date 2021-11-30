@@ -28,6 +28,7 @@
         <q-select
           v-model="taxType"
           :options="taxTypes"
+          :disable="isMarriage"
           label="Forma opodatkowania*"
           color="brand"
           required
@@ -41,17 +42,19 @@
         />
         <q-toggle
           v-model="isFreeAmount"
-          :disable="taxType.value !== constants.TAX_TYPES.GENERAL"
+          :disable="taxType.value !== constants.TAX_TYPES.GENERAL || isMarriage"
           class="q-mt-sm"
           label="Kwota wolna od podatku"
         />
         <template v-if="year >= 2022">
           <q-toggle
+            v-if="!isMarriage"
             v-model="isAidForSenior"
             class="q-mt-sm"
             label="Zerowy PIT dla seniora"
           />
           <q-toggle
+            v-if="!isMarriage"
             v-model="isAidForBigFamily"
             class="q-mt-sm"
             label="Zerowy PIT dla rodzin 4+"
@@ -134,15 +137,17 @@
         />
       </div>
     </div>
-    <div class="row q-mt-lg">
+    <div
+      v-if="!isMarriage"
+      class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
+          :disable="isDisabledButton"
           class="full-width"
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -155,6 +160,11 @@ import constants from 'src/logic/constants'
 export default {
   props: {
     year: Number,
+    isMarriage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['submitted'],
   setup () {
@@ -258,6 +268,29 @@ export default {
 
       if (!this.isCustomBasisForZus) {
         customBasisForZus = 0
+      }
+
+      if (this.isMarriage) {
+        const inputData = {
+          grossAmount: this.amount,
+          accidentContributionRate: Number(this.accidentContributionRate) / 100,
+          taxType: this.taxType.value,
+          taxRateForLumpSum: this.taxRateForLumpSum.value / 100,
+          expenses: this.expenses,
+          isSickContribution: this.isSickContribution,
+          isFreeAmount: this.isFreeAmount,
+          isSmallZus: this.isSmallZus,
+          isFpContribution: this.isFpContribution,
+          isAidForStart: this.isAidForStart,
+          isFullTimeJob: this.isFullTimeJob,
+          customBasisForZus: customBasisForZus,
+          isAidForBigFamily: this.isAidForBigFamily,
+          isAidForSenior: this.isAidForSenior,
+          isAidForMiddleClass: this.isAidForMiddleClass,
+        }
+
+        this.$emit('submitted', inputData)
+        return
       }
 
       this.$store.commit('selfEmployment/resetData')

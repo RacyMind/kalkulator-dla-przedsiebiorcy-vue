@@ -35,17 +35,20 @@
             label=" Praca w miejscu zamieszkania"
           />
           <q-toggle
+            v-if="!isMarriage"
             v-model="isYoung"
             class="q-mt-sm"
             label="Zerowy PIT dla młodych"
           />
           <template v-if="year >= 2022">
             <q-toggle
+              v-if="!isMarriage"
               v-model="isAidForSenior"
               class="q-mt-sm"
               label="Zerowy PIT dla seniora"
             />
             <q-toggle
+              v-if="!isMarriage"
               v-model="isAidForBigFamily"
               class="q-mt-sm"
               label="Zerowy PIT dla rodzin 4+"
@@ -58,6 +61,7 @@
           </template>
           <q-toggle
             v-model="isFreeAmount"
+            :disable="isMarriage"
             class="q-mt-sm"
             label="Kwota wolna od podatku"
           />
@@ -150,15 +154,17 @@
         </div>
       </div>
     </div>
-    <div class="row q-mt-lg">
+    <div
+      v-if="!isMarriage"
+      class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
+          :disable="isDisabledButton"
           class="full-width"
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -167,11 +173,16 @@
 
 <script>
 import constants from 'src/logic/constants'
-import ContractOfEmployment from 'src/logic/ContractOfEmployment'
+import ContractOfEmployment from 'src/logic/contractOfEmployment'
 
 export default {
   props: {
     year: Number,
+    isMarriage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['submitted'],
   setup () {
@@ -244,6 +255,26 @@ export default {
         case constants.AMOUNT_TYPES.GROSS:
           grossAmount = Number(this.amount)
           break
+      }
+
+      if (this.isMarriage) {
+        const inputData = {
+          grossAmount: grossAmount,
+          accidentContributionRate: Number(this.accidentContributionRate) / 100,
+          employeePPkContributionRate: employeePPkContributionRate,
+          employerPpkContributionRate: employerPpkContributionRate,
+          partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses,
+          workInLivePlace: this.workInLivePlace,
+          isFreeAmount: this.isFreeAmount,
+          isYoung: this.isYoung,
+          isFpContribution: this.isFpContribution,
+          isAidForBigFamily: this.isAidForBigFamily,
+          isAidForSenior: this.isAidForSenior,
+          isAidForMiddleClass: this.isAidForMiddleClass,
+        }
+
+        this.$emit('submitted', inputData)
+        return
       }
 
       this.$store.commit('contractOfEmployment/resetData')

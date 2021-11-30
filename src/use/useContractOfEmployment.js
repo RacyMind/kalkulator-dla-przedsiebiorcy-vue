@@ -56,7 +56,7 @@ export function useMonthlyEmployeeResult (props) {
     isAidForMiddleClass,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     contractOfEmployment.resetTotalAmounts()
     return contractOfEmployment.getMonthlyResultOfEmployee(
       grossAmount.value,
@@ -116,7 +116,7 @@ export function useYearlyEmployeeResult (props) {
 
   updateMonthlyInputs()
 
-  const results = computed(fu => {
+  const results = computed(() => {
     return contractOfEmployment.getYearlyResultOfEmployee(monthlyInputs)
   })
 
@@ -136,7 +136,7 @@ export function useMonthlyEmployerResult (props) {
     isFpContribution,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     contractOfEmployment.resetTotalAmounts()
     return contractOfEmployment.getMonthlyResultOfEmployer(
       grossAmount.value,
@@ -175,7 +175,7 @@ export function useYearlyEmployerResult (props) {
 
   updateMonthlyInputs()
 
-  const results = computed(fu => {
+  const results = computed(() => {
     return contractOfEmployment.getYearlyResultOfEmployer(monthlyInputs)
   })
 

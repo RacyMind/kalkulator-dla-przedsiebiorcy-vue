@@ -8,6 +8,7 @@
           min="0"
           step="0.01"
           label="Wynagrodzenie*"
+          suffix="zł"
           autofocus
           color="brand"
           :rules="[

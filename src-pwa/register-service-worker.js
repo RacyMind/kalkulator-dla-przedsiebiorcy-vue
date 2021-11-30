@@ -39,7 +39,7 @@ register(process.env.SERVICE_WORKER_FILE, {
             registration.unregister()
           } */
           if (!refreshing) {
-            window.location.reload()
+            window.location.reload(true)
             refreshing = true
           }
         })

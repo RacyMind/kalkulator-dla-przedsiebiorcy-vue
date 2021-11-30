@@ -24,6 +24,7 @@ const routes = [
       { path: 'limit-zwolnienia-z-vat', component: () => import('pages/VatLimit') },
       { path: 'skladki-zus-za-czesc-miesiaca', component: () => import('pages/PartialZusContributions') },
       { path: 'inflacja', component: () => import('pages/Inflation') },
+      { path: 'rozliczenie-z-malzonkiem', component: () => import('pages/AccountingWithSpouse') },
     ],
   },
 

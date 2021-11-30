@@ -66,6 +66,10 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
       break
   }
 
+  if (basisForTax < 0) {
+    return 0
+  }
+
   return helpers.round(basisForTax)
 }
 
@@ -233,6 +237,8 @@ function getMonthlyResult (
     expenses: expenses,
     basisForTax: basisForTax,
     taxAmount: taxAmount,
+    amountOfDeductionOfHealthContributionFromTax: amountOfDeductionOfHealthContributionFromTax,
+    contributionTotal: pensionContribution + rentContribution + sickContribution + accidentContribution + healthContribution,
   }
 }
 
@@ -285,6 +291,10 @@ function getYearlyResult (monthlyInputs) {
     taxAmount: results.map(result => result.taxAmount)
       .reduce((current, sum) => current + sum, 0),
     expenses: results.map(result => result.expenses)
+      .reduce((current, sum) => current + sum, 0),
+    amountOfDeductionOfHealthContributionFromTax: results.map(result => result.amountOfDeductionOfHealthContributionFromTax)
+      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
   })
 

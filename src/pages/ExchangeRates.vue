@@ -8,8 +8,8 @@
         <q-icon name="o_euro" />
         Kursy walut
       </SectionHeader>
-      <Advert />
       <Table />
+      <Advert />
     </div>
     <Footer />
   </q-page>

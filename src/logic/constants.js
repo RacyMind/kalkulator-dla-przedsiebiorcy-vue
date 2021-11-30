@@ -104,15 +104,19 @@ const from2021 = {
 }
 const from2022 = {
   ...from2021,
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 177660,
   AMOUNT_OF_TAX_THRESHOLD: 120000,
   FREE_AMOUNT_OF_TAX: 30000,
   TAX_REDUCING_AMOUNT: 5100 / 12,
   MINIMUM_SALARY: 3010,
+  AVERAGE_SALARY: 5922,
   ZUS: {
     ...from2021.ZUS,
     OWNER: {
       ...from2021.ZUS.OWNER,
       HEALTH_RATE_FOR_LINEAR_TAX: 4.9,
+      BIG_AMOUNT: 3553.2,
+      SMALL_AMOUNT: 903,
     },
   },
   US: {
@@ -172,7 +176,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.1.0',
+    VERSION: '4.2.0',
   },
   VAT_VALUES: [
     {
@@ -385,6 +389,12 @@ export default {
         link: '/umowa-o-dzielo',
       },
       {
+        title: 'Rozliczenie z małżonkiem',
+        caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
+        className: 'c-work',
+        link: '/rozliczenie-z-malzonkiem',
+      },
+      {
         title: 'Zasiłek chorobowy',
         caption: 'Moduł oblicza wysokość zasiłku chorobowego',
         className: 'c-sickPay',
@@ -490,6 +500,10 @@ export default {
     CHART8: '#70B749',
   },
   AVAILABLE_YEARS: [2021, 2022],
+  AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
+    CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
+    SELF_EMPLOYMENT: 'selfEmployment',
+  },
   PARAMS: {
     2021: from2021,
     2022: from2022,

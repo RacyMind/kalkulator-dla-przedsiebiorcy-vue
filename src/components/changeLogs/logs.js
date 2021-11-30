@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '4.2.0',
+      publish_date: '2021-11-06',
+      content: '<ul><li>Dodano moduł rozliczania z małżonkiem (wersja beta).</li><li>Aktualizacja kwot bazowych dla 2022 roku.<li>Dodano wybór roku w umowie dzieło.</li><li>Drobne zmiany w interfejsie.</li></ul>',
+    },
+    {
       version: '4.1.0',
       publish_date: '2021-10-25',
       content: '<ul><li>Dodano moduł inflacji.</li><li>Dodano stawkę godzinową w umowie zlecenie.</li><li>Poprawiono service worker dla PWA.</li><li>Poprawiono obliczenia przy zerowym PIT dla młodych i 50% kosztach uzyskania przychodu.</li><li>Drobne poprawki w interfejsie.</li></ul>',
