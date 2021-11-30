@@ -1,6 +1,17 @@
 {
   "extends": "@quasar/app/tsconfig-preset",
   "compilerOptions": {
-    "baseUrl": "."
-  }
+    "baseUrl": ".",
+    "jsx": "preserve"
+  },
+  "include": [
+    // repeated from base config's "include" setting
+    "src",
+    "tests",
+    "babel.config.js",
+    "eslintrc.js",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
