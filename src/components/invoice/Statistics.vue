@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, toRefs} from "vue"
+import {computed, PropType, toRefs} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import { usePieChart } from 'src/use/usePieChart'
-import {InvoiceInputFields} from "components/invoice/interfaces/InvoiceInputFields"
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import invoice from './invoice'
 
 export default {
@@ -20,10 +20,10 @@ export default {
     input: {
       type: Object as PropType<InvoiceInputFields>,
       required: true,
-    }
+    },
   },
   setup(props: any) {
-    const labels:String[] =  [
+    const labels:string[] =  [
       'Kwota netto',
       'Kwota podatku',
     ]
@@ -37,8 +37,8 @@ export default {
         [
           result.value.netAmount,
           result.value.taxAmount,
-        ]
-      )
+        ],
+      ),
     )
 
     return {

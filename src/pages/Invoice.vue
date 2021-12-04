@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineExpose } from "vue"
+import { ref, defineExpose } from 'vue'
 import { useStore } from 'vuex'
 import SectionHeader from 'components/SectionHeader.vue'
 import Form from 'src/components/invoice/Form.vue'
@@ -42,11 +42,11 @@ import Statistics from 'components/invoice/Statistics.vue'
 import Advert from 'components/Advert.vue'
 import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
-import { InvoiceInputFields } from "src/components/invoice/interfaces/InvoiceInputFields"
-import constants from "src/logic/constants"
+import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInputFields'
+import constants from 'src/logic/constants'
 
 export default {
-  setup(props:any, context:any) {
+  setup() {
     const store = useStore()
     store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
 

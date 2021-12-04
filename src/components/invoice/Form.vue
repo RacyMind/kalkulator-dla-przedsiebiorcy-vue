@@ -55,11 +55,11 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from "vue"
+import {computed, ref} from 'vue'
 import constants from 'src/logic/constants'
 import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
-import {AmountType} from "src/types/AmountType"
-import {VatTaxRate} from "src/types/VatTaxRate"
+import {AmountType} from 'src/types/AmountType'
+import {VatTaxRate} from 'src/types/VatTaxRate'
 
 export default {
   setup(props: any, context: any) {
@@ -87,14 +87,14 @@ export default {
     const taxRate = ref(vatTaxRates[vatTaxRates.length - 1])
 
     const isDisabledButton = computed(() => {
-      return !amount.value || taxRate.value === null;
+      return !amount.value || taxRate.value === null
     })
 
     const save = () => {
       const input: InvoiceInputFields = {
         amount: Number(amount.value),
         amountType: amountType.value as AmountType,
-        taxRate: Number(taxRate.value.value) as VatTaxRate
+        taxRate: Number(taxRate.value.value) as VatTaxRate,
       }
       context.emit('submitted', input)
     }

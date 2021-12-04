@@ -20,7 +20,7 @@
 <script lang="ts">
 import { PropType, toRefs, computed } from 'vue'
 import { pln } from 'src/use/currencyFormat'
-import {InvoiceInputFields} from "components/invoice/interfaces/InvoiceInputFields"
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import invoice from './invoice'
 import ListRow from 'components/partials/ListRow.vue'
 
@@ -29,7 +29,7 @@ export default {
     input: {
       type: Object as PropType<InvoiceInputFields>,
       required: true,
-    }
+    },
   },
   setup(props: any) {
     const { input } = toRefs(props)
