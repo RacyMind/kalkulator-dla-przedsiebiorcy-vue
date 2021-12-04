@@ -27,14 +27,25 @@
   </div>
 </template>
 
-<script>
-
-import { useInvoice } from 'src/use/useInvoice'
+<script lang="ts">
+import { PropType, toRefs, computed } from 'vue'
 import { pln } from 'src/use/currencyFormat'
+import {InvoiceInputFields} from "components/invoice/interfaces/InvoiceInputFields"
+import invoice from './invoice'
 
 export default {
-  setup () {
-    const { result } = useInvoice()
+  props: {
+    input: {
+      type: Object as PropType<InvoiceInputFields>,
+      required: true,
+    }
+  },
+  setup(props: any) {
+    const {input} = toRefs(props)
+
+    const result = computed(() => {
+      return invoice.getResult(input.value)
+    })
 
     return {
       pln,

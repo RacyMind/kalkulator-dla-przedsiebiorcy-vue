@@ -54,40 +54,46 @@
   </q-form>
 </template>
 
-<script>
+<script lang="ts">
+import {computed, ref} from "vue"
 import constants from 'src/logic/constants'
+import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
+import {AmountType} from "src/types/AmountType"
+import {VatTaxRate} from "src/types/VatTaxRate"
 
 export default {
-  emits: ['submitted'],
-  setup () {
-    return { constants }
-  },
-  data () {
-    return {
-      amount: null,
-      amountType: 'net',
-      taxRate: null,
-    }
-  },
-  created () {
-    this.taxRate = this.constants.DEFAULT_VAT_VALUE
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount || this.taxRate === null) {
+  emits: [
+    'submitted',
+  ],
+  setup(props:any, context:any) {
+    const amount = ref(null)
+    const amountType = ref('net')
+    const taxRate = ref(constants.DEFAULT_VAT_VALUE)
+
+    const isDisabledButton = computed(() => {
+      if (!amount.value || taxRate.value === null) {
         return true
       }
       return false
-    },
-  },
-  methods: {
-    save () {
-      this.$store.commit('invoice/setAmount', Number(this.amount))
-      this.$store.commit('invoice/setAmountType', this.amountType)
-      this.$store.commit('invoice/setTaxRate', Number(this.taxRate.value) / 100)
+    })
 
-      this.$emit('submitted')
-    },
+    const save = () => {
+      const input: InvoiceInputFields = {
+        amount: Number(amount.value),
+        amountType: amountType.value as AmountType,
+        taxRate: Number(taxRate.value.value) / 100 as VatTaxRate
+      }
+      context.emit('submitted', input)
+    }
+
+    return {
+      constants,
+      save,
+      amount,
+      amountType,
+      taxRate,
+      isDisabledButton,
+    }
   },
 }
 </script>
