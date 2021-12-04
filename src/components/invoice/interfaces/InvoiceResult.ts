@@ -1,5 +1,5 @@
 export interface InvoiceResult {
-  netAmount: number,
-  taxAmount: number,
-  grossAmount: number,
+  readonly netAmount: number,
+  readonly taxAmount: number,
+  readonly grossAmount: number,
 }
