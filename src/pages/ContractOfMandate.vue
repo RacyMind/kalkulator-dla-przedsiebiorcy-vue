@@ -86,7 +86,7 @@
 <script>
 import { ref } from 'vue'
 import { mapGetters } from 'vuex'
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Advert from 'components/Advert'
 import ChooseYear from 'components/ChooseYear'
 import Form from 'components/contractOfMandate/Form'

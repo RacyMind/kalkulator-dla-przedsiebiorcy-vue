@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Statistics from 'components/inflation/Statistics'
 import Advert from 'components/Advert'
 import Footer from 'components/Footer'
