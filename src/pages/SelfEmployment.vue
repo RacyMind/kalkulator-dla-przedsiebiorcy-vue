@@ -61,7 +61,7 @@ import WholeYear from 'components/selfEmployment/WholeYear'
 import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import ChooseYear from 'components/ChooseYear'
+import ChooseYear from 'components/partials/ChooseYear'
 export default {
   data () {
     return {

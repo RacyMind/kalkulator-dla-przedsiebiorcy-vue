@@ -111,7 +111,7 @@
 import { ref } from 'vue'
 import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
-import ChooseYear from 'src/components/ChooseYear'
+import ChooseYear from 'src/components/partials/ChooseYear'
 import FormsOfAccounting from 'src/components/partials/FormsOfAccounting'
 import SectionHeader from 'components/SectionHeader'
 import Footer from 'components/Footer'
