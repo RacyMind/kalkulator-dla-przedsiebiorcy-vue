@@ -94,7 +94,7 @@ export default {
       const input: InvoiceInputFields = {
         amount: Number(amount.value),
         amountType: amountType.value as AmountType,
-        taxRate: Number(taxRate.value.value) as VatTaxRate,
+        taxRate: taxRate.value.value as VatTaxRate,
       }
       context.emit('submitted', input)
     }
