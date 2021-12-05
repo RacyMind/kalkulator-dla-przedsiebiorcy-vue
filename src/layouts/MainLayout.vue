@@ -32,7 +32,7 @@
       content-class="bg-grey-2"
     >
       <q-list>
-        <Menu/>
+        <Menu :hide-search-input="false" />
         <div class="text-center">
           <q-btn
             class="q-my-md"
@@ -64,7 +64,7 @@
 
 <script>
 import SupportProject from 'components/SupportProject'
-import Menu from 'components/Menu'
+import Menu from 'components/partials/menu/Menu'
 import { mapGetters } from 'vuex'
 
 export default {
