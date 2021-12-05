@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <q-select
-      v-model.number="year"
-      @update:model-value="changeYear"
-      :options="years"
-      label="Wybierz rok podatkowy*"
-      color="brand"
-      emit-value
-      required
-    />
-  </div>
+  <q-select
+    v-model.number="year"
+    @update:model-value="changeYear"
+    :options="years"
+    label="Wybierz rok podatkowy*"
+    color="brand"
+    emit-value
+    required
+  />
 </template>
 
 <script lang="ts">
