@@ -1,5 +1,5 @@
-export function usePieChart(labels: String[], values: Number[]) {
-  const colors: String[] = [
+export function usePieChart(labels: string[], values: number[]) {
+  const colors: string[] = [
     '#e32514',
     '#edb113',
     '#ed6d13',
