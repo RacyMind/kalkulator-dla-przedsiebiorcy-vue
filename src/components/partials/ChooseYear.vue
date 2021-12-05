@@ -24,10 +24,8 @@ export default {
   },
   setup(props:any, context:any) {
     const { modelValue } = toRefs(props)
-
-    const years = constants.AVAILABLE_YEARS
-
     const year = ref(modelValue.value)
+    const years = constants.AVAILABLE_YEARS
 
     watch(modelValue, () => {
       year.value = modelValue.value
