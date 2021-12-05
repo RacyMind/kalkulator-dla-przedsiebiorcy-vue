@@ -27,7 +27,7 @@ export default {
 
     const years = constants.AVAILABLE_YEARS
 
-    let year = ref(modelValue.value)
+    const year = ref(modelValue.value)
 
     watch(modelValue, () => {
       year.value = modelValue.value
