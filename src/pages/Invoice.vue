@@ -17,7 +17,7 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <Table
+      <Summary
         :input="invoiceInputFields"
       />
       <SectionHeader>
@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts">
-import { ref, defineExpose } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import SectionHeader from 'components/SectionHeader.vue'
 import Form from 'src/components/invoice/Form.vue'
-import Table from 'components/invoice/Table.vue'
+import Summary from 'components/invoice/Summary.vue'
 import Statistics from 'components/invoice/Statistics.vue'
 import Advert from 'components/Advert.vue'
 import Footer from 'components/Footer.vue'
@@ -55,15 +55,13 @@ export default {
       amountType: constants.AMOUNT_TYPES.NET,
       taxRate: 0,
     } as InvoiceInputFields)
+
     const scrollTarget = ref(null) as any
 
     const submitted = (input:InvoiceInputFields) => {
       invoiceInputFields.value = input
       helpers.scrollToElement(scrollTarget?.value?.$el)
     }
-
-    defineExpose( {
-    })
 
     return{
       invoiceInputFields,
@@ -74,7 +72,7 @@ export default {
   components: {
     SectionHeader,
     Form,
-    Table,
+    Summary,
     Statistics,
     Advert,
     Footer,
