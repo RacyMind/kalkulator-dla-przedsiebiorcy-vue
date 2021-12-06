@@ -88,6 +88,9 @@ function calculateHealthContribution (amount, taxType, yearlyIncome) {
       return Math.max(healthContribution, healthContributionForMinimumSalary)
     }
     case constants.TAX_TYPES.LUMP_SUM: {
+      // fix for a monthly result
+      yearlyIncome = Math.max(amount, yearlyIncome)
+
       let rateForBasis = 60
 
       if (yearlyIncome > 60000) {

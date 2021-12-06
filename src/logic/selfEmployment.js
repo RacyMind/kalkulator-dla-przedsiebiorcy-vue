@@ -256,8 +256,37 @@ function getYearlyResult (monthlyInputs) {
   totalGrossAmount = 0
   yearlyIncome = 0
 
-  monthlyInputs.forEach(input => {
-    yearlyIncome += input.grossAmount
+  // calculates yearly income to calculate a health contribution for lump sum
+  monthlyInputs.forEach((input, month) => {
+    let pensionContribution = 0
+    let rentContribution = 0
+    let sickContribution = 0
+    let basisForZus = 0
+
+    const isAidForStart = input.isAidForStart && month <=5
+
+    if (!input.isFullTimeJob && !isAidForStart) {
+
+      if (input.isSmallZus) {
+        basisForZus = params.smallBasisForZUS
+      } else {
+        basisForZus = params.bigBasisForZUS
+      }
+
+      if (input.customBasisForZus) {
+        basisForZus = input.customBasisForZus
+      }
+
+      pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
+      rentContribution = ownerContributions.calculateRentContribution(basisForZus)
+    }
+
+    if (input.isSickContribution && !isAidForStart) {
+      sickContribution = ownerContributions.calculateSickContribution(basisForZus)
+    }
+
+    const monthlyIncome = input.grossAmount - pensionContribution - rentContribution - sickContribution
+    yearlyIncome += monthlyIncome
   })
 
   monthlyInputs.forEach(input => {
