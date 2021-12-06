@@ -14,6 +14,7 @@ let params = {
 
 let totalBasisForTax = 0
 let totalGrossAmount = 0
+let yearlyIncome =0
 
 /**
  * Sets parameters for the year
@@ -179,8 +180,6 @@ function getMonthlyResult (
     basisForZus = customBasisForZus
   }
 
-  const healthContribution = ownerContributions.calculateHealthContribution(grossAmount - expenses, taxType, totalGrossAmount + grossAmount)
-
   if (!isFullTimeJob && !isAidForStart) {
     pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
     rentContribution = ownerContributions.calculateRentContribution(basisForZus)
@@ -196,6 +195,8 @@ function getMonthlyResult (
   }
 
   const grossAmountMinusEmployeeContributions = ownerContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution, accidentContribution)
+
+  const healthContribution = ownerContributions.calculateHealthContribution(grossAmount - expenses, taxType, yearlyIncome)
   const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
 
   const newTotalGrossAmount = totalGrossAmount + grossAmount
@@ -253,6 +254,11 @@ function getYearlyResult (monthlyInputs) {
   let i = 0
   totalBasisForTax = 0
   totalGrossAmount = 0
+  yearlyIncome = 0
+
+  monthlyInputs.forEach(input => {
+    yearlyIncome += input.grossAmount
+  })
 
   monthlyInputs.forEach(input => {
     // Aid can be for six months

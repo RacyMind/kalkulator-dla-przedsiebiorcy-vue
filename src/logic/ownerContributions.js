@@ -72,10 +72,10 @@ function calculateSickContribution (basisForContributions) {
  *
  * @param {number} amount
  * @param {string} taxType
- * @param {number} totalGrossAmount
+ * @param {number} yearlyIncome
  * @returns {number}
  */
-function calculateHealthContribution (amount, taxType, totalGrossAmount) {
+function calculateHealthContribution (amount, taxType, yearlyIncome) {
   if (year < 2022) {
     return helpers.round(params.healthContributionRate / 100 * params.basisForHealthContribution, 2)
   }
@@ -90,11 +90,11 @@ function calculateHealthContribution (amount, taxType, totalGrossAmount) {
     case constants.TAX_TYPES.LUMP_SUM: {
       let rateForBasis = 60
 
-      if (totalGrossAmount > 60000) {
+      if (yearlyIncome > 60000) {
         rateForBasis = 100
       }
 
-      if (totalGrossAmount > 300000) {
+      if (yearlyIncome > 300000) {
         rateForBasis = 180
       }
 
@@ -102,7 +102,8 @@ function calculateHealthContribution (amount, taxType, totalGrossAmount) {
       return helpers.round(params.healthContributionRate / 100 * basisForHealthContribution, 2)
     }
     case constants.TAX_TYPES.GENERAL:
-      return helpers.round(params.healthContributionRate / 100 * amount, 2)
+      const higherAmount = Math.max(params.minimumSalary, amount)
+      return helpers.round(params.healthContributionRate / 100 * higherAmount, 2)
   }
 }
 
