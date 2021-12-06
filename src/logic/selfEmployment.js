@@ -14,7 +14,7 @@ let params = {
 
 let totalBasisForTax = 0
 let totalGrossAmount = 0
-let yearlyIncome =0
+let yearlyIncome = 0
 
 /**
  * Sets parameters for the year
