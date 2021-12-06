@@ -96,7 +96,7 @@ export default {
         amountType: amountType.value as AmountType,
         taxRate: taxRate.value.value as VatTaxRate,
       }
-      context.emit('submitted', input)
+      context.emit('submit', input)
     }
 
     return {

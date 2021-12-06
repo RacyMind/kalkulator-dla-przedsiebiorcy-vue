@@ -10,7 +10,7 @@
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @submitted="submitted"
+        @submit="submit"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -58,7 +58,7 @@ export default {
 
     const scrollTarget = ref(null) as any
 
-    const submitted = (input:InvoiceInputFields) => {
+    const submit = (input:InvoiceInputFields) => {
       invoiceInputFields.value = input
       helpers.scrollToElement(scrollTarget?.value?.$el)
     }
@@ -66,7 +66,7 @@ export default {
     return{
       invoiceInputFields,
       scrollTarget,
-      submitted,
+      submit,
     }
   },
   components: {
