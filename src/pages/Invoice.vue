@@ -10,7 +10,7 @@
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @submit="submit"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -49,7 +49,6 @@ export default {
   setup() {
     const store = useStore()
     store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
-    let net = 'net'
 
     const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,
@@ -59,7 +58,7 @@ export default {
 
     const scrollTarget = ref(null) as any
 
-    const submit = (input:InvoiceInputFields) => {
+    const save = (input:InvoiceInputFields) => {
       invoiceInputFields.value = input
       helpers.scrollToElement(scrollTarget?.value?.$el)
     }
@@ -67,7 +66,7 @@ export default {
     return{
       invoiceInputFields,
       scrollTarget,
-      submit,
+      save,
     }
   },
   components: {

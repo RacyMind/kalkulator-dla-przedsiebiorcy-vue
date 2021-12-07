@@ -58,10 +58,6 @@ function getResult (input:InvoiceInputFields):InvoiceResult {
       netAmount = calculateNetAmount(grossAmount, input.taxRate)
       taxAmount = calculateTaxAmount(netAmount, input.taxRate)
       break
-    default: {
-      const _exhaustiveCheck: never = input.amountType
-      return _exhaustiveCheck
-    }
   }
 
   return {
