@@ -18,7 +18,7 @@
 
 <script>
 import logs from 'components/changeLogs/logs'
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/contact/Form'
 import Footer from 'components/Footer'
 
