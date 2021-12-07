@@ -10,7 +10,7 @@
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @submitted="submitted"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import SectionHeader from 'components/SectionHeader.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'src/components/invoice/Form.vue'
 import Summary from 'components/invoice/Summary.vue'
 import Statistics from 'components/invoice/Statistics.vue'
@@ -50,15 +50,15 @@ export default {
     const store = useStore()
     store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
 
-    const invoiceInputFields = ref({
+    const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,
       amountType: constants.AMOUNT_TYPES.NET,
       taxRate: 0,
-    } as InvoiceInputFields)
+    })
 
     const scrollTarget = ref(null) as any
 
-    const submitted = (input:InvoiceInputFields) => {
+    const save = (input:InvoiceInputFields) => {
       invoiceInputFields.value = input
       helpers.scrollToElement(scrollTarget?.value?.$el)
     }
@@ -66,7 +66,7 @@ export default {
     return{
       invoiceInputFields,
       scrollTarget,
-      submitted,
+      save,
     }
   },
   components: {

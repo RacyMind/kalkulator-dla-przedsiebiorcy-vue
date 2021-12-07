@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/sickPay/Form'
 import Table from 'components/sickPay/Table'
 import Advert from 'components/Advert'
