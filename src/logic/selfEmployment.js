@@ -78,6 +78,7 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
  * Calculates the tax amount
  *
  * @param {number} grossAmount
+ * @param {number} expenses
  * @param {number} basisForTax
  * @param {string} taxType
  * @param {number} amountOfDeductionOfHealthContributionFromTax
@@ -86,10 +87,10 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
  * @param {boolean} isAidForMiddleClass
  * @returns {number}
  */
-function calculateTaxAmount (grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount, isAidForMiddleClass) {
+function calculateTaxAmount (grossAmount, expenses, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount, isAidForMiddleClass) {
   switch (taxType) {
     case constants.TAX_TYPES.GENERAL:
-      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
+      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
     case constants.TAX_TYPES.LINEAR:
       return taxes.calculateIncomeTaxUsingLinearRules(basisForTax, amountOfDeductionOfHealthContributionFromTax)
     case constants.TAX_TYPES.LUMP_SUM:
@@ -221,7 +222,7 @@ function getMonthlyResult (
   }
 
   const basisForTax = calculateBasisForTax(amountToCalculateTax, expenses, taxType)
-  const taxAmount = calculateTaxAmount(grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount, isAidForMiddleClass)
+  const taxAmount = calculateTaxAmount(grossAmount, expenses, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount, isAidForMiddleClass)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, expenses)
