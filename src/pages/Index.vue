@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Menu from 'components/Menu'
+import Menu from 'components/partials/menu/Menu'
 import Footer from 'components/Footer'
 export default {
   created () {

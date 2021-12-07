@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Advert from 'components/Advert'
 import Form from 'components/selfEmployment/Form'
 import Table from 'components/selfEmployment/Table'
@@ -61,7 +61,7 @@ import WholeYear from 'components/selfEmployment/WholeYear'
 import Footer from 'components/Footer'
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
-import ChooseYear from 'components/ChooseYear'
+import ChooseYear from 'components/partials/ChooseYear'
 export default {
   data () {
     return {

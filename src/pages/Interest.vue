@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/interest/Form'
 import Table from 'components/interest/Table'
 import Statistics from 'components/interest/Statistics'
