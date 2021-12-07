@@ -35,7 +35,7 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import SectionHeader from 'components/SectionHeader.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'src/components/invoice/Form.vue'
 import Summary from 'components/invoice/Summary.vue'
 import Statistics from 'components/invoice/Statistics.vue'
