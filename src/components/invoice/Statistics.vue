@@ -8,38 +8,43 @@
   </div>
 </template>
 
-<script>
-import { useInvoice } from 'src/use/useInvoice'
-import PieChart from 'components/PieChart'
-import constants from 'src/logic/constants'
+<script lang="ts">
+import {computed, PropType, toRefs} from 'vue'
+import PieChart from 'components/PieChart.vue'
+import { usePieChart } from 'src/use/usePieChart'
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
+import invoice from './invoice'
 
 export default {
-  setup () {
-    const { result } = useInvoice()
+  props: {
+    input: {
+      type: Object as PropType<InvoiceInputFields>,
+      required: true,
+    },
+  },
+  setup(props: any) {
+    const labels:string[] =  [
+      'Kwota netto',
+      'Kwota podatku',
+    ]
+
+    const { input } = toRefs(props)
+
+    const result = computed(() => invoice.getResult(input.value))
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.netAmount,
+          result.value.taxAmount,
+        ],
+      ),
+    )
 
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.netAmount,
-            this.result.taxAmount,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-          ],
-        }],
-        labels: [
-          'Kwota netto',
-          'Kwota podatku',
-        ],
-      }
-    },
   },
   components: {
     PieChart,

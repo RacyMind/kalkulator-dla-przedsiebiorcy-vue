@@ -1,14 +1,16 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
+import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 
 /**
  * Calculates the net amount
  *
- * @param {number }gross
+ * @param {number} gross
  * @param {number} taxRate
  * @returns {number}
  */
-function calculateNetAmount (gross, taxRate) {
+function calculateNetAmount (gross:number, taxRate:number):number {
   return helpers.round(gross / (1 + taxRate), 2)
 }
 
@@ -19,7 +21,7 @@ function calculateNetAmount (gross, taxRate) {
  * @param {number} taxAmount
  * @returns {number}
  */
-function calculateGrossAmount (net, taxAmount) {
+function calculateGrossAmount (net:number, taxAmount:number):number {
   return net + taxAmount
 }
 
@@ -30,33 +32,31 @@ function calculateGrossAmount (net, taxAmount) {
  * @param {number} taxRate
  * @returns {number}
  */
-function calculateTaxAmount (net, taxRate) {
+function calculateTaxAmount (net:number, taxRate:number):number {
   return helpers.round(net * taxRate, 2)
 }
 
 /**
  * Returns the result
  *
- * @param {number} amount
- * @param {string} amountType
- * @param {number} taxRate
- * @returns {{netAMount: number, grossAmount: number, taxAmount: number}}
+ * @param {InvoiceInputFields} input
+ * @return {InvoiceResult}
  */
-function getResult (amount, amountType, taxRate) {
+function getResult (input:InvoiceInputFields):InvoiceResult {
   let netAmount = 0
   let grossAmount = 0
   let taxAmount = 0
 
-  switch (amountType) {
+  switch (input.amountType) {
     case constants.AMOUNT_TYPES.NET:
-      netAmount = amount
-      taxAmount = calculateTaxAmount(netAmount, taxRate)
+      netAmount = input.amount
+      taxAmount = calculateTaxAmount(netAmount, input.taxRate)
       grossAmount = calculateGrossAmount(netAmount, taxAmount)
       break
     case constants.AMOUNT_TYPES.GROSS:
-      grossAmount = amount
-      netAmount = calculateNetAmount(grossAmount, taxRate)
-      taxAmount = calculateTaxAmount(netAmount, taxRate)
+      grossAmount = input.amount
+      netAmount = calculateNetAmount(grossAmount, input.taxRate)
+      taxAmount = calculateTaxAmount(netAmount, input.taxRate)
       break
   }
 

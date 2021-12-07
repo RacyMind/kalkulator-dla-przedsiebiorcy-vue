@@ -178,28 +178,6 @@ export default {
     NAME: 'Kalkulator finansowy',
     VERSION: '4.2.0',
   },
-  VAT_VALUES: [
-    {
-      label: '0%',
-      value: 0,
-    },
-    {
-      label: '5%',
-      value: 5,
-    },
-    {
-      label: '8%',
-      value: 8,
-    },
-    {
-      label: '23%',
-      value: 23,
-    },
-  ],
-  DEFAULT_VAT_VALUE: {
-    label: '23%',
-    value: 23,
-  },
   AMOUNT_TYPES: {
     NET: 'net',
     GROSS: 'gross',
