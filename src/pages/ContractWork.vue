@@ -38,7 +38,7 @@
 <script>
 import { ref } from 'vue'
 import ChooseYear from 'src/components/partials/ChooseYear'
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Advert from 'components/Advert'
 import Form from 'components/contractWork/Form'
 import Table from 'components/contractWork/Table'
