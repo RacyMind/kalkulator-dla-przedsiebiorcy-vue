@@ -49,12 +49,13 @@ export default {
   setup() {
     const store = useStore()
     store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+    let net = 'net'
 
-    const invoiceInputFields = ref({
+    const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,
       amountType: constants.AMOUNT_TYPES.NET,
       taxRate: 0,
-    } as InvoiceInputFields)
+    })
 
     const scrollTarget = ref(null) as any
 
