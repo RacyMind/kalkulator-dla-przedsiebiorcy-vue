@@ -119,6 +119,7 @@ module.exports = function (/* ctx */) {
     pwa: {
       // workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       // workboxOptions: {}, // only for GenerateSW
+      skipWaiting: true,
       manifest: {
         name: 'Kalkulator finansowy',
         short_name: 'Kalkulator finansowy',
