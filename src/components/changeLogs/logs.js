@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '4.3.0',
+      publish_date: '2021-12-08',
+      content: '<ul><li>Dodano obsługę TypeScript.</li><li>Refaktoryzacja modułu faktur (użyto TypeScript).</li><li>Poprawiono błąd przy obliczaniu składki zdrowotnej dla ryczałtu w 2022 r.</li><li>Poprawiono błąd w uwzględnianiu kosztów przy obliczaniu ulgi dla klasy średniej w Samozatrudnieniu.</li><li>Dodano wyszukiwarkę modułów.</li></ul>',
+    },
+    {
       version: '4.2.0',
       publish_date: '2021-11-06',
       content: '<ul><li>Dodano moduł rozliczania z małżonkiem (wersja beta).</li><li>Aktualizacja kwot bazowych dla 2022 roku.<li>Dodano wybór roku w umowie dzieło.</li><li>Drobne zmiany w interfejsie.</li></ul>',
