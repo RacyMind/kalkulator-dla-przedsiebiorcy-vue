@@ -120,6 +120,7 @@ module.exports = function (/* ctx */) {
       // workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       // workboxOptions: {}, // only for GenerateSW
       skipWaiting: true,
+      clientsClaim: true,
       manifest: {
         name: 'Kalkulator finansowy',
         short_name: 'Kalkulator finansowy',

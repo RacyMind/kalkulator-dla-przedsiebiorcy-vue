@@ -67,7 +67,7 @@ export function useMonthlyResult (props) {
     isAidForMiddleClass,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     return selfEmployment.getMonthlyResult(
       grossAmount.value,
       expenses.value,
@@ -139,7 +139,7 @@ export function useYearlyResult (props) {
 
   updateMonthlyInputs()
 
-  const results = computed(fu => {
+  const results = computed(() => {
     selfEmployment.resetTotalAmounts()
     return selfEmployment.getYearlyResult(monthlyInputs)
   })

@@ -26,10 +26,6 @@ register(process.env.SERVICE_WORKER_FILE, {
 
   updatefound (/* registration */) {
     // console.log('New content is downloading.')
-  },
-
-  updated (/* registration */) {
-    // console.log('Service worker has been updated.')
     Notify.create({
       message: 'Nowa wersja kalkulatora jest dostępna. Odśwież, by  wczytać',
       icon: 'cloud_download',
@@ -37,15 +33,16 @@ register(process.env.SERVICE_WORKER_FILE, {
       timeout: 10000,
       onDismiss () {
         navigator.serviceWorker.getRegistrations().then(function (registrations) {
-          /*
           for (const registration of registrations) {
-            registration.unregister()
+            registration.update()
           }
-          */
-            window.location.reload(true)
         })
       },
     })
+  },
+
+  updated (/* registration */) {
+    // console.log('Service worker has been updated.')
   },
 
   offline () {
