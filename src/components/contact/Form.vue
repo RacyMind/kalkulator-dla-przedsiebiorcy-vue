@@ -117,6 +117,7 @@ export default {
       }
 
       isSending.value = true
+
       axios.post('https://kalkulatorfinansowy.app/contact.php',
         {
           email: email.value,
