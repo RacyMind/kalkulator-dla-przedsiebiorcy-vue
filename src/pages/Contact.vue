@@ -8,29 +8,22 @@
         <q-icon name="o_description" />
         Wypełnij formularz
       </SectionHeader>
-      <Form
-        class="q-mt-md q-px-md q-pb-md"
-      />
+      <Form class="q-mt-md q-px-md q-pb-md" />
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import logs from 'components/changeLogs/logs'
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/contact/Form'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {useStore} from 'vuex'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Form from 'components/contact/Form.vue'
+import Footer from 'components/Footer.vue'
 
 export default {
-  data () {
-    return {
-      logs: [],
-    }
-  },
-  created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Formularz kontaktowy')
-    this.logs = logs.LOGS
+  setup() {
+    const store = useStore()
+    store.commit('app/SET_MODULE_TITLE', 'Formularz kontaktowy')
   },
   components: {
     SectionHeader,
