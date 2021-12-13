@@ -4,7 +4,6 @@
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
           v-model="email"
-          ref="emailRef"
           type="email"
           label="Email*"
           autofocus
@@ -26,7 +25,6 @@
       <div class="col-12">
         <q-select
           v-model="subject"
-          ref="subjectRef"
           :options="subjects"
           label="Temat*"
           color="brand"
@@ -38,7 +36,6 @@
       <div class="col-12">
         <q-input
           v-model="message"
-          ref="messageRef"
           type="textarea"
           label="Wiadomość*"
           color="brand"
@@ -74,7 +71,7 @@
 
 <script lang="ts">
 import {computed, ref} from 'vue'
-import { useQuasar } from 'quasar'
+import {useQuasar} from 'quasar'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 
@@ -89,16 +86,9 @@ export default {
     ]
 
     const email = ref(null)
-    const emailRef = ref(<any>null)
-
     const name = ref(null)
-
     const subject = ref(null)
-    const subjectRef = ref(<any>null)
-
     const message = ref(null)
-    const messageRef = ref(<any>null)
-
     const isSending = ref(false)
 
     const isDisabledButton = computed(() => {
@@ -110,9 +100,6 @@ export default {
 
     const send = () => {
       if (isSending.value) {
-        return
-      }
-      if(emailRef.value.hasError || subjectRef.value.hasError || messageRef.value.hasError)  {
         return
       }
 
@@ -148,11 +135,8 @@ export default {
       subjects,
       name,
       email,
-      emailRef,
       subject,
-      subjectRef,
       message,
-      messageRef,
       isSending,
       isDisabledButton,
       send,
