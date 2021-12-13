@@ -34,6 +34,7 @@ import unregisteredCompany from './unregisteredCompany'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 import ListRow from 'components/partials/ListRow.vue'
 import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
+import helpers from 'src/logic/helpers'
 
 export default {
   props: {
@@ -44,13 +45,15 @@ export default {
   },
   setup(props: any) {
     const $q = useQuasar()
-    const limitForUnregisteredCompany:number = constants.MINIMUM_SALARY / 2
 
     const { input } = toRefs(props)
 
     const result: Readonly<Ref<Readonly<UnregisteredCompanyResult>>> = computed<UnregisteredCompanyResult>(() => {
       return unregisteredCompany.getResult(input.value)
     })
+
+    const currentYear:number = helpers.getDefaultYear()
+    const limitForUnregisteredCompany:number = constants.PARAMS[currentYear].MINIMUM_SALARY / 2
 
     watch(result, () => {
       if (result.value.netIncomeAmount > limitForUnregisteredCompany) {
