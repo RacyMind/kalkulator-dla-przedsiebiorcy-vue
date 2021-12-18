@@ -11,9 +11,7 @@
           label="Przychód*"
           autofocus
           color="brand"
-          :rules="[
-            val => !!val || '* Wpisz kwotę',
-          ]"
+          :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
       </div>
@@ -44,33 +42,35 @@
   </q-form>
 </template>
 
-<script>
-export default {
-  emits: ['submitted'],
-  data () {
-    return {
-      amount: null,
-      expenses: 0,
-    }
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount) {
-        return true
-      }
-      if (this.expenses.length === 0) {
-        return true
-      }
-      return false
-    },
-  },
-  methods: {
-    save () {
-      this.$store.commit('unregisteredCompany/setAmount', +this.amount)
-      this.$store.commit('unregisteredCompany/setExpenses', +this.expenses)
+<script lang="ts">
+import {computed, ref} from 'vue'
+import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import validationRules from 'src/logic/validationRules'
 
-      this.$emit('submitted')
-    },
+export default {
+  setup(props: any, context: any) {
+    const amount = ref(null)
+    const expenses = ref(0)
+
+    const isDisabledButton = computed(() => {
+      return !amount.value
+    })
+
+    const save = () => {
+      const input: UnregisteredCompanyInputFields = {
+        incomeAmount: Number(amount.value),
+        expenses: Number(expenses.value),
+      }
+      context.emit('save', input)
+    }
+
+    return{
+      validationRules,
+      amount,
+      expenses,
+      isDisabledButton,
+      save,
+    }
   },
 }
 </script>

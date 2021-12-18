@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import { PropType, toRefs, computed } from 'vue'
+import {PropType, toRefs, computed, Ref} from 'vue'
 import { pln } from 'src/use/currencyFormat'
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import invoice from './invoice'
 import ListRow from 'components/partials/ListRow.vue'
+import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
 
 export default {
   props: {
@@ -34,7 +35,7 @@ export default {
   setup(props: any) {
     const { input } = toRefs(props)
 
-    const result = computed(() => {
+    const result:Readonly<Ref<Readonly<InvoiceResult>>> = computed(() => {
       return invoice.getResult(input.value)
     })
 
