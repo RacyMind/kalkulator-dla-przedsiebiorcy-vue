@@ -1,6 +1,11 @@
 export default {
   LOGS: [
     {
+      version: '4.4.0',
+      publish_date: '2021-12-08',
+      content: '<ul><li>Refaktoryzacja modułu do działalności niezarejestrowanej.</li></ul>',
+    },
+    {
       version: '4.3.0',
       publish_date: '2021-12-08',
       content: '<ul><li>Dodano obsługę TypeScript.</li><li>Refaktoryzacja modułu faktur (użyto TypeScript).</li><li>Poprawiono błąd przy obliczaniu składki zdrowotnej dla ryczałtu w 2022 r.</li><li>Poprawiono błąd w uwzględnianiu kosztów przy obliczaniu ulgi dla klasy średniej w Samozatrudnieniu.</li><li>Dodano wyszukiwarkę modułów.</li></ul>',
