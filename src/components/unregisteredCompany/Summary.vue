@@ -35,6 +35,7 @@ import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/int
 import ListRow from 'components/partials/ListRow.vue'
 import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
 import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 
 export default {
   props: {
@@ -48,11 +49,11 @@ export default {
 
     const { input } = toRefs(props)
 
-    const result: Readonly<Ref<Readonly<UnregisteredCompanyResult>>> = computed<UnregisteredCompanyResult>(() => {
+    const result: Readonly<Ref<Readonly<UnregisteredCompanyResult>>> = computed(() => {
       return unregisteredCompany.getResult(input.value)
     })
 
-    const currentYear:number = helpers.getDefaultYear()
+    const currentYear:AvailableYear = helpers.getDefaultYear()
     const limitForUnregisteredCompany:number = constants.PARAMS[currentYear].MINIMUM_SALARY / 2
 
     watch(result, () => {

@@ -1,7 +1,7 @@
 export default {
   required: (val:any):string|void => {
     if (!val) {
-      return 'UUzupełnij pole'
+      return 'Uzupełnij pole'
     }
   },
   requiredAmount: (val:any):string|void => {
