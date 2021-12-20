@@ -31,9 +31,7 @@ export default {
   },
   setup(props: any, context: any) {
     const {modelValue} = toRefs(props)
-
     const date = ref(modelValue.value)
-
     const qDateProxyRef = ref(null) as any
 
     watch(modelValue, () => {
@@ -41,7 +39,6 @@ export default {
     })
 
     const changeDate = () => {
-      console.log('date.value', date.value)
       qDateProxyRef.value.hide()
       context.emit('update:modelValue', date.value)
     }
