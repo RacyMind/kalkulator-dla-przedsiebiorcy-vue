@@ -27,7 +27,7 @@
 import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/sickPay/Form'
 import Table from 'components/sickPay/Table'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 

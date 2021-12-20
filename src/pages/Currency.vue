@@ -27,7 +27,7 @@
 import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/exchangeRates/Form'
 import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 

@@ -30,7 +30,7 @@
 
 <script>
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Form from 'components/partialZusContributions/Form'
 import Table from 'components/partialZusContributions/Table'
 import Statistics from 'components/partialZusContributions/Statistics'

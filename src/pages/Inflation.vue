@@ -18,7 +18,7 @@
 <script>
 import SectionHeader from 'components/partials/SectionHeader'
 import Statistics from 'components/inflation/Statistics'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 
 export default {

@@ -38,7 +38,7 @@
 import logs from 'components/changeLogs/logs'
 import SectionHeader from 'components/partials/SectionHeader'
 import ChangeLog from 'components/changeLogs/ChangeLog'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 
 export default {
