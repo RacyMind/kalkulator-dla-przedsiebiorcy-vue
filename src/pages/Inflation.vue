@@ -23,7 +23,7 @@ import Footer from 'components/Footer'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Inflacja')
+    this.$store.commit('app/setModuleTitle', 'Inflacja')
   },
   components: {
     SectionHeader,

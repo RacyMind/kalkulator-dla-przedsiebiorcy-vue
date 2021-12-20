@@ -23,7 +23,7 @@ import Footer from 'components/Footer'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Kursy walut')
+    this.$store.commit('app/setModuleTitle', 'Kursy walut')
   },
   components: {
     SectionHeader,

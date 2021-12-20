@@ -113,7 +113,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
+    this.$store.commit('app/setModuleTitle', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/resetData')
   },
   computed: {

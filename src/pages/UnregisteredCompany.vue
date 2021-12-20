@@ -47,7 +47,7 @@ import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/int
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/SET_MODULE_TITLE', 'Działalność niezarejestrowana')
+    store.commit('app/setModuleTitle', 'Działalność niezarejestrowana')
 
     const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
       incomeAmount: 0,

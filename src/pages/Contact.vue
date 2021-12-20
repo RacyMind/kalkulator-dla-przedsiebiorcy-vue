@@ -23,7 +23,7 @@ import Footer from 'components/Footer.vue'
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/SET_MODULE_TITLE', 'Formularz kontaktowy')
+    store.commit('app/setModuleTitle', 'Formularz kontaktowy')
   },
   components: {
     SectionHeader,

@@ -48,7 +48,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Historia zmian')
+    this.$store.commit('app/setModuleTitle', 'Historia zmian')
   },
   computed: {
     logs () {

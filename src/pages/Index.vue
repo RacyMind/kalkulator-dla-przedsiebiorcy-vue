@@ -27,7 +27,7 @@ import Menu from 'components/partials/menu/Menu'
 import Footer from 'components/Footer'
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', '')
+    this.$store.commit('app/setModuleTitle', '')
   },
   components: {
     Menu,

@@ -1,5 +1,5 @@
 export default {
-  SET_MODULE_TITLE (state, title) {
+  setModuleTitle (state, title) {
     state.moduleTitle = title
   },
 }

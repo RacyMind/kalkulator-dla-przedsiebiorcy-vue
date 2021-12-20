@@ -39,7 +39,7 @@ import helpers from 'src/logic/helpers'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Odsetki')
+    this.$store.commit('app/setModuleTitle', 'Odsetki')
   },
   methods: {
     scrollTo () {
