@@ -70,7 +70,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Samozatrudnienie')
+    this.$store.commit('app/setModuleTitle', 'Samozatrudnienie')
     this.$store.commit('selfEmployment/resetData')
 
     this.year = helpers.getDefaultYear()

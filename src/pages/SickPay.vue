@@ -33,7 +33,7 @@ import helpers from 'src/logic/helpers'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Zasiłek chorobowy')
+    this.$store.commit('app/setModuleTitle', 'Zasiłek chorobowy')
   },
   methods: {
     scrollTo () {

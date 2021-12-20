@@ -48,7 +48,7 @@ import constants from 'src/logic/constants'
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+    store.commit('app/setModuleTitle', 'Faktura VAT')
 
     const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,

@@ -137,7 +137,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Rozliczenie z małżonkiem')
+    this.$store.commit('app/setModuleTitle', 'Rozliczenie z małżonkiem')
   },
   computed: {
       myForm () {

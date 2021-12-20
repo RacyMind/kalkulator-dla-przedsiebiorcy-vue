@@ -39,7 +39,7 @@ import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfa
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/SET_MODULE_TITLE', 'Limit obrotu dla kasy fiskalnej')
+    store.commit('app/setModuleTitle', 'Limit obrotu dla kasy fiskalnej')
 
     const inputFields = ref(<CashRegisterLimitInputFields>{
       startDate: null,

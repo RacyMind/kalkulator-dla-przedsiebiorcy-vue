@@ -107,7 +107,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o pracę')
+    this.$store.commit('app/setModuleTitle', 'Umowa o pracę')
     this.$store.commit('contractOfEmployment/resetData')
 
     this.year = helpers.getDefaultYear()

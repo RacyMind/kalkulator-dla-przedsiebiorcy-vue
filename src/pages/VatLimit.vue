@@ -33,7 +33,7 @@ import helpers from 'src/logic/helpers'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Limit sprzedaży dla zwolnienia z VAT')
+    this.$store.commit('app/setModuleTitle', 'Limit sprzedaży dla zwolnienia z VAT')
   },
   methods: {
     scrollTo () {

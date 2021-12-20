@@ -53,7 +53,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
+    this.$store.commit('app/setModuleTitle', 'Umowa o dzieło')
     this.$store.commit('contractWork/setAmount', null)
   },
   watch: {

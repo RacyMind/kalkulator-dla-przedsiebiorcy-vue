@@ -38,7 +38,7 @@ import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Składki ZUS za część miesiąca')
+    this.$store.commit('app/setModuleTitle', 'Składki ZUS za część miesiąca')
   },
   methods: {
     scrollTo () {
