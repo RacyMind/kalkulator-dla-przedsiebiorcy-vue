@@ -1,31 +1,22 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row">
       <div class="col-12">
         <q-input
-          v-model="sellStartDate"
+          v-model="startDate"
           color="brand"
-          mask="date"
+          mask="##.##.####"
           label="Data rozpoczęcia sprzedaży*"
           required
-          :rules="['date']">
+          :rules="[validationRules.required]"
+          lazy-rules>
           <template v-slot:append>
             <q-icon
               name="event"
               class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy1"
-                transition-show="scale"
-                transition-hide="scale">
-                <q-date
-                  v-model="sellStartDate"
-                  :locale="$constants.LOCALE_DATE"
-                  @input="() => $refs.qDateProxy1.hide()"
-                >
-                </q-date>
-              </q-popup-proxy>
             </q-icon>
           </template>
+          <DatePopup v-model="startDate" />
         </q-input>
       </div>
     </div>
@@ -37,44 +28,48 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!sellStartDate"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
   </q-form>
 </template>
 
-<script>
-import CashRegisterLimit from 'src/logic/CashRegisterLimit'
-import { getDayOfYear, lastDayOfYear, format } from 'date-fns'
+<script lang="ts">
+import {computed, ref} from 'vue'
+import {format, parse} from 'date-fns'
+import DatePopup from 'components/partials/DatePopup.vue'
+import validationRules from 'src/logic/validationRules'
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default {
-  data () {
+  setup(props:any, context:any) {
+    const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
+
+    const isDisabledButton = computed(() => {
+      return !startDate.value
+    })
+
+    const save = () => {
+      const input: CashRegisterLimitInputFields = {
+        startDate: parse(
+          startDate.value,
+          'dd.MM.yyyy',
+          new Date(),
+        ),
+      }
+      context.emit('save', input)
+    }
+
     return {
-      sellStartDate: null,
+      validationRules,
+      startDate,
+      isDisabledButton,
+      save,
     }
   },
-  emits: ['scroll'],
-  created () {
-    this.sellStartDate = format(new Date(), 'yyyy/MM/dd')
-    this.$store.commit('cashRegisterLimit/CLEAR_DATA')
-  },
-  methods: {
-    calculate () {
-      const cashRegisterLimit = new CashRegisterLimit()
-
-      const lastDayOfDateYear = lastDayOfYear(new Date(this.sellStartDate))
-
-      cashRegisterLimit.dayOfYear = getDayOfYear(new Date(this.sellStartDate))
-      cashRegisterLimit.daysOfYear = getDayOfYear(lastDayOfDateYear)
-      cashRegisterLimit.calculate()
-
-      this.$store.commit('cashRegisterLimit/SET_SELL_START_DATE', this.sellStartDate)
-      this.$store.commit('cashRegisterLimit/SET_DAYS_TO_END_YEAR', cashRegisterLimit.daysOfYear - cashRegisterLimit.dayOfYear + 1)
-      this.$store.commit('cashRegisterLimit/SET_AMOUNT', cashRegisterLimit.amount)
-
-      this.$emit('scroll')
-    },
+  components: {
+    DatePopup,
   },
 }
 </script>

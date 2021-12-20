@@ -10,40 +10,58 @@
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @scroll="scrollTo"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <Table />
+      <Summary
+        :input="inputFields"
+      />
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/cashRegisterLimit/Form'
-import Table from 'components/cashRegisterLimit/Table'
-import Advert from 'components/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {useStore} from 'vuex'
+import {ref} from 'vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Form from 'components/cashRegisterLimit/Form.vue'
+import Summary from 'components/cashRegisterLimit/Summary.vue'
+import Advert from 'components/Advert.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default {
-  created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Limit obrotu dla kasy fiskalnej')
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
+  setup() {
+    const store = useStore()
+    store.commit('app/SET_MODULE_TITLE', 'Limit obrotu dla kasy fiskalnej')
+
+    const inputFields = ref(<CashRegisterLimitInputFields>{
+      startDate: null,
+    })
+
+    const scrollTarget = ref(null) as any
+
+    const save = (input: CashRegisterLimitInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      inputFields,
+      scrollTarget,
+      save,
+    }
   },
   components: {
+    Summary,
     SectionHeader,
     Form,
-    Table,
     Advert,
     Footer,
   },
