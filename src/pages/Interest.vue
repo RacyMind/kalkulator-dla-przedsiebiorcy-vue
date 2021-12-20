@@ -33,7 +33,7 @@ import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/interest/Form'
 import Table from 'components/interest/Table'
 import Statistics from 'components/interest/Statistics'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 

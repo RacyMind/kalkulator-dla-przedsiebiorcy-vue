@@ -39,7 +39,7 @@
 import { ref } from 'vue'
 import ChooseYear from 'src/components/partials/ChooseYear'
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Form from 'components/contractWork/Form'
 import Table from 'components/contractWork/Table'
 import Statistics from 'components/contractWork/Statistics'

@@ -87,7 +87,7 @@
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import ChooseYear from 'components/partials/ChooseYear'
 import Form from 'components/contractOfEmployment/Form'
 import SummarySalaryTable from 'components/contractOfEmployment/SummarySalaryTable'

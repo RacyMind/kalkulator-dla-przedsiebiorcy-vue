@@ -53,7 +53,7 @@
 
 <script>
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Form from 'components/selfEmployment/Form'
 import Table from 'components/selfEmployment/Table'
 import Statistics from 'components/selfEmployment/Statistics'
