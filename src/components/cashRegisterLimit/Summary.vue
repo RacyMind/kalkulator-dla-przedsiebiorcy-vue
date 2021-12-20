@@ -37,10 +37,10 @@ export default {
     const { input } = toRefs(props)
 
     const result:Readonly<Ref<Readonly<CashRegisterLimitResult>>> = computed(() => {
-      try{
+      try {
         return cashRegisterLimit.getResult(input.value)
       }
-      catch{
+      catch {
         return {
           startDate: null,
           daysToEndYear: 0,
