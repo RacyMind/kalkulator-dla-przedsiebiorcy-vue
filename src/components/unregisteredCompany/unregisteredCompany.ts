@@ -12,7 +12,7 @@ const taxRate = constants.TAX_RATES.FIRST_RATE / 100
  * @returns {UnregisteredCompanyResult}
  */
 function getResult (input:UnregisteredCompanyInputFields):UnregisteredCompanyResult {
-  const basisForTax = helpers.round(input.incomeAmount - input.expenses)
+  const basisForTax = input.incomeAmount - input.expenses
   const taxAmount = helpers.round(basisForTax * taxRate)
   const netAmount = input.incomeAmount - taxAmount
 
