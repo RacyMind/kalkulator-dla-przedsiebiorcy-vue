@@ -10,12 +10,12 @@
       </SectionHeader>
       <Advert />
       <div
-        v-for="log in logs"
+        v-for="log in logItems"
         :key="log.version">
         <ChangeLog
           :log="log"
         />
-        <q-separator v-if="log !== logs[logs.length - 1]" />
+        <q-separator v-if="log !== logItems[logItems.length - 1]" />
       </div>
 
       <div class="text-center">
@@ -34,29 +34,33 @@
   </q-page>
 </template>
 
-<script>
+<script lang="ts">
+import {useStore} from 'vuex'
+import {computed, ref} from 'vue'
 import logs from 'components/changeLogs/logs'
-import SectionHeader from 'components/partials/SectionHeader'
-import ChangeLog from 'components/changeLogs/ChangeLog'
-import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import ChangeLog from 'components/changeLogs/ChangeLog.vue'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/Footer.vue'
 
 export default {
-  data () {
-    return {
-      showAll: false,
-    }
-  },
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Historia zmian')
-  },
-  computed: {
-    logs () {
-      if (!this.showAll) {
-        return logs.LOGS.slice(0, 5)
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Historia zmian')
+
+    const showAll = ref(false)
+
+    const logItems = computed(() => {
+      if (!showAll.value) {
+        return logs.slice(0, 5)
       }
-      return logs.LOGS
-    },
+      return logs
+    })
+
+    return {
+      showAll,
+      logItems,
+    }
   },
   components: {
     SectionHeader,
