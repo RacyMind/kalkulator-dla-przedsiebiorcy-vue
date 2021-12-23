@@ -7,6 +7,7 @@
           type="number"
           min="0"
           step="0.01"
+          suffix="zł"
           label="Kapitał*"
           autofocus
           color="brand"
@@ -20,7 +21,8 @@
           type="number"
           min="0"
           step="0.01"
-          label="Oprocentowanie* (%)"
+          suffix="%"
+          label="Oprocentowanie*"
           :rules="[validationRules.required]"
           lazy-rules
         />

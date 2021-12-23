@@ -1,61 +1,51 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="net"
-      :key="componentKey"
+      v-if="result.amount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
 </template>
 
-<script>
-import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {computed, PropType, Ref, toRefs} from 'vue'
+import PieChart from 'components/PieChart.vue'
+import interest from 'components/interest/interest'
+import {usePieChart} from 'src/use/usePieChart'
+import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
+import {InterestResult} from 'components/interest/interfaces/InterestResult'
 
 export default {
-  data () {
-    return {
-      componentKey: 0,
-    }
+  props: {
+    input: {
+      type: Object as PropType<InterestInputFields>,
+      required: true,
+    },
   },
-  computed: {
-    ...mapGetters({
-      net: 'interest/net',
-      interest: 'interest/interest',
-    }),
-    chartData () {
-      return {
-        datasets: [{
-          data: [this.net.toFixed(2), this.interest.toFixed(2)],
-          backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-          ],
-        }],
-        labels: [
-          'Kwota',
-          'Odsetki',
+  setup(props: any) {
+    const labels:string[] =  [
+      'Kwota',
+      'Odsetki',
+    ]
+
+    const { input } = toRefs(props)
+
+    const result:Readonly<Ref<Readonly<InterestResult>>> = computed(() => interest.getResult(input.value))
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.amount,
+          result.value.interestAmount,
         ],
-      }
-    },
-  },
-  watch: {
-    net (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    interest (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
-    },
+      ),
+    )
+
+    return {
+      result,
+      chartData,
+    }
   },
   components: {
     PieChart,
