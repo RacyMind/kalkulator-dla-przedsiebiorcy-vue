@@ -5,45 +5,65 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_description" />
+        <q-icon name="o_description"/>
         Wypełnij formularz
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @scroll="scrollTo"
+        @save="save"
       />
-      <Advert />
+      <Advert/>
       <SectionHeader ref="scrollTarget">
-        <q-icon name="o_credit_card" />
+        <q-icon name="o_credit_card"/>
         Podsumowanie
       </SectionHeader>
-      <Table />
+      <Summary
+        :input="inputFields"
+      />
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/investment/Form'
-import Table from 'components/investment/Table'
-import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {useStore} from 'vuex'
+import {ref} from 'vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Form from 'components/investment/Form.vue'
+import Summary from 'components/investment/Summary.vue'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default {
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Lokata')
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Lokata')
+
+    const inputFields = ref(<InvestmentInputFields>{
+      amount: 0,
+      rate: 0,
+      monthCount: 0,
+    })
+
+    const scrollTarget = ref(null) as any
+
+    const save = (input: InvestmentInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      inputFields,
+      scrollTarget,
+      save,
+    }
   },
   components: {
     SectionHeader,
     Form,
-    Table,
+    Summary,
     Advert,
     Footer,
   },

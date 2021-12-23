@@ -1,38 +1,40 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-4 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
           label="Kapitał*"
           autofocus
           color="brand"
-          required
+          :rules="[validationRules.requiredAmount]"
+          lazy-rules
         />
       </div>
       <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
         <q-input
-          v-model="rate"
+          v-model.number="rate"
           type="number"
           min="0"
           step="0.01"
-          label="Oprocentownie* (%)"
-          color="brand"
-          required
+          label="Oprocentowanie* (%)"
+          :rules="[validationRules.required]"
+          lazy-rules
         />
       </div>
       <div class="col-12 col-md-4 q-pl-md-sm">
         <q-input
-          v-model="months"
+          v-model.number="monthCount"
           type="number"
           min="1"
           step="1"
           label="Okres lokaty* (w miesiącach)"
           color="brand"
-          required
+          :rules="[validationRules.required]"
+          lazy-rules
         />
       </div>
     </div>
@@ -44,49 +46,45 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!amount || !rate || !months"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
   </q-form>
 </template>
 
-<script>
-import Investment from 'src/logic/Investment'
+<script lang="ts">
+import {computed, ref} from 'vue'
+import validationRules from 'src/logic/validationRules'
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default {
-  data () {
-    return {
-      amount: null,
-      rate: null,
-      months: 12,
+  setup(props: any, context: any) {
+    const amount = ref(null)
+    const rate = ref(null)
+    const monthCount = ref(12)
+
+    const isDisabledButton = computed(() => {
+      return !amount.value || !rate.value || !monthCount.value
+    })
+
+    const save = () => {
+      const input: InvestmentInputFields = {
+        amount: Number(amount.value),
+        rate: Number(rate.value) / 100,
+        monthCount: Number(monthCount.value),
+      }
+      context.emit('save', input)
     }
-  },
-  emits: ['scroll'],
-  created () {
-    this.$store.commit('investment/SET_AMOUNT', null)
-    this.$store.commit('investment/SET_NET', null)
-    this.$store.commit('investment/SET_TAX', null)
-    this.$store.commit('investment/SET_GROSS', null)
-  },
-  methods: {
-    calculate () {
-      const investment = new Investment()
-      investment.amount = Number(this.amount)
-      investment.rateInterest = Number(this.rate) / 100
-      investment.months = this.months
 
-      investment.calculateInterest()
-      investment.calculateTax()
-      investment.calculateNet()
-
-      this.$store.commit('investment/SET_AMOUNT', investment.amount)
-      this.$store.commit('investment/SET_NET', investment.net)
-      this.$store.commit('investment/SET_TAX', investment.tax)
-      this.$store.commit('investment/SET_GROSS', investment.gross)
-
-      this.$emit('scroll')
-    },
+    return{
+      validationRules,
+      amount,
+      rate,
+      monthCount,
+      isDisabledButton,
+      save,
+    }
   },
 }
 </script>
