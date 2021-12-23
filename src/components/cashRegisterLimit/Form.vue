@@ -7,7 +7,6 @@
           color="brand"
           mask="##.##.####"
           label="Data rozpoczęcia sprzedaży*"
-          required
           :rules="[validationRules.required]"
           lazy-rules>
           <template v-slot:append>

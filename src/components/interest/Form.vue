@@ -3,25 +3,29 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
+          suffix="zł"
           label="Kwota*"
           autofocus
           color="brand"
-          required
+          :rules="[validationRules.requiredAmount]"
+          lazy-rules
         />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
-          v-model="rate"
+          v-model.number="rate"
           type="number"
           min="0"
           step="0.01"
-          label="Odsetki* (%)"
+          suffix="%"
+          label="Odsetki*"
           color="brand"
-          required
+          :rules="[validationRules.required]"
+          lazy-rules
         />
         <q-toggle
           v-model="isBasicCapitalRate"
@@ -40,27 +44,17 @@
         <q-input
           v-model="startDate"
           color="brand"
-          mask="date"
+          mask="##.##.####"
           label="Termin zapłaty*"
-          required
-          :rules="['date']">
+          :rules="[validationRules.required]"
+          lazy-rules>
           <template v-slot:append>
             <q-icon
               name="event"
               class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy1"
-                transition-show="scale"
-                transition-hide="scale">
-                <q-date
-                  v-model="startDate"
-                  :locale="$constants.LOCALE_DATE"
-                  @input="() => $refs.qDateProxy1.hide()"
-                >
-                </q-date>
-              </q-popup-proxy>
             </q-icon>
           </template>
+          <DatePopup v-model="startDate" />
         </q-input>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -68,27 +62,17 @@
           v-model="endDate"
           class="q-pb-none"
           color="brand"
-          mask="date"
+          mask="##.##.####"
           label="Data zapłaty*"
-          required
-          :rules="['date']">
+          :rules="[validationRules.required]"
+          lazy-rules>
           <template v-slot:append>
             <q-icon
               name="event"
               class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy2"
-                transition-show="scale"
-                transition-hide="scale">
-                <q-date
-                  v-model="endDate"
-                  :locale="$constants.LOCALE_DATE"
-                  @input="() => $refs.qDateProxy2.hide()"
-                >
-                </q-date>
-              </q-popup-proxy>
             </q-icon>
           </template>
+          <DatePopup v-model="endDate" />
         </q-input>
       </div>
     </div>
@@ -107,79 +91,94 @@
   </q-form>
 </template>
 
-<script>
-import Interest from 'src/logic/Interest'
+<script lang="ts">
+import {computed, ref, watch} from 'vue'
 import differenceInDays from 'date-fns/differenceInDays'
+import DatePopup from 'components/partials/DatePopup.vue'
+import validationRules from 'src/logic/validationRules'
+import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
+import constants from 'src/logic/constants'
+import {parse} from 'date-fns'
 
 export default {
-  data () {
-    return {
-      amount: null,
-      rate: null,
-      isBasicCapitalRate: false,
-      isBasicLateRate: false,
-      startDate: null,
-      endDate: null,
+  setup(props: any, context: any) {
+    const amount = ref(null)
+    const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
+
+    const startDate = ref('')
+    const endDate = ref('')
+
+    const isBasicCapitalRate = ref(true)
+    const isBasicLateRate = ref(false)
+
+    const formattedStartDate = computed( () => {
+      return parse(
+        startDate.value,
+        'dd.MM.yyyy',
+        new Date(),
+      )
+    })
+
+    const formattedEndDate = computed( () => {
+      return parse(
+        endDate.value,
+        'dd.MM.yyyy',
+        new Date(),
+      )
+    })
+
+    watch(isBasicCapitalRate, () => {
+      if(isBasicCapitalRate.value) {
+        isBasicLateRate.value = false
+        rate.value = constants.BASIC_CAPITAL_INTEREST_RATE
+      }
+    })
+
+    watch(isBasicLateRate, () => {
+      if(isBasicLateRate.value) {
+        isBasicCapitalRate.value = false
+        rate.value = constants.BASIC_LATE_INTEREST_RATE
+      }
+    })
+
+    watch(rate, () => {
+      isBasicCapitalRate.value = rate.value === constants.BASIC_CAPITAL_INTEREST_RATE
+      isBasicLateRate.value = rate.value === constants.BASIC_LATE_INTEREST_RATE
+    })
+
+    const isDisabledButton = computed(() => {
+      if(!amount.value || !rate.value || !startDate.value || !endDate.value) {
+        return true
+      }
+      return formattedStartDate.value >= formattedEndDate.value
+    })
+
+    const save = () => {
+      const input: InterestInputFields = {
+        amount: Number(amount.value),
+        rate: Number(rate.value) / 100,
+        dayCount: differenceInDays(
+          new Date(formattedEndDate.value),
+          new Date(formattedStartDate.value),
+        ),
+      }
+      context.emit('save', input)
+    }
+
+    return{
+      validationRules,
+      amount,
+      rate,
+      startDate,
+      endDate,
+      isBasicCapitalRate,
+      isBasicLateRate,
+      isDisabledButton,
+      save,
     }
   },
-  emits: ['scroll'],
-  created () {
-    this.rate = this.$constants.BASIC_CAPITAL_INTEREST_RATE
-    this.isBasicCapitalRate = true
-
-    this.$store.commit('interest/SET_NET', null)
-    this.$store.commit('interest/SET_INTEREST', null)
-    this.$store.commit('interest/SET_GROSS', null)
-    this.$store.commit('interest/SET_DAYS', 0)
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount || !this.rate || !this.startDate || !this.endDate) {
-        return true
-      }
-      if (this.startDate >= this.endDate) {
-        return true
-      }
-      return false
-    },
-  },
-  watch: {
-    isBasicCapitalRate: function (val) {
-      if (val) {
-        this.isBasicLateRate = false
-        this.rate = this.$constants.BASIC_CAPITAL_INTEREST_RATE
-      }
-    },
-    isBasicLateRate: function (val) {
-      if (val) {
-        this.isBasicCapitalRate = false
-        this.rate = this.$constants.BASIC_LATE_INTEREST_RATE
-      }
-    },
-    rate: function (val) {
-      this.isBasicCapitalRate = Number(val) === this.$constants.BASIC_CAPITAL_INTEREST_RATE
-      this.isBasicLateRate = Number(val) === this.$constants.BASIC_LATE_INTEREST_RATE
-    },
-  },
-  methods: {
-    save () {
-      const interest = new Interest()
-      interest.net = Number(this.amount)
-      interest.rateInterest = Number(this.rate) / 100
-      interest.days = differenceInDays(
-        new Date(this.endDate),
-        new Date(this.startDate),
-      )
-      interest.calculateInterest()
-      interest.calculateGross()
-
-      this.$store.commit('interest/SET_NET', interest.net)
-      this.$store.commit('interest/SET_INTEREST', interest.interest)
-      this.$store.commit('interest/SET_GROSS', interest.gross)
-      this.$store.commit('interest/SET_DAYS', interest.days)
-
-      this.$emit('scroll')
-    },
+  components: {
+    DatePopup,
   },
 }
 </script>
