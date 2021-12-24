@@ -1,16 +1,18 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12">
         <q-input
-          v-model="basic"
+          v-model.number="basicAmount"
           type="number"
           min="0"
           step="0.01"
+          suffix="zł"
           label="Podstawa wymiaru świadczenia*"
           autofocus
           color="brand"
-          required
+          :rules="[validationRules.requiredAmount]"
+          lazy-rules
         />
       </div>
     </div>
@@ -18,7 +20,7 @@
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-select
           v-model="rate"
-          :options="$constants.SICK_PAY_RATES"
+          :options="sickTaxRates"
           label="Stawka zasiłku chorobowego*"
           color="brand"
           required
@@ -26,13 +28,14 @@
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
         <q-input
-          v-model="days"
+          v-model.number="dayCount"
           type="number"
           min="1"
           step="1"
           label="Liczba dni na zwolnieniu*"
           color="brand"
-          required
+          :rules="[validationRules.required]"
+          lazy-rules
         />
       </div>
     </div>
@@ -44,45 +47,60 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="!basic || !rate || !days"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
   </q-form>
 </template>
 
-<script>
-import SickPay from 'src/logic/SickPay'
+<script lang="ts">
+import {computed, ref} from 'vue'
+import constants from 'src/logic/constants'
+import validationRules from 'src/logic/validationRules'
+import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
+import {SickPayRate} from 'components/sickPay/types/SickPayRate'
 
 export default {
-  data () {
-    return {
-      basic: null,
-      rate: null,
-      days: null,
+  setup(props: any, context: any) {
+    const sickTaxRates = [
+      {
+        label: '80%',
+        value: 0.8,
+      },
+      {
+        label: '100%',
+        value: 1,
+      },
+    ]
+
+    const basicAmount = ref(null)
+    const dayCount = ref(null)
+    const rate = ref(sickTaxRates[0])
+
+    const isDisabledButton = computed(() => {
+      return !basicAmount.value || !dayCount.value || rate.value === null
+    })
+
+    const save = () => {
+      const input: SickPayInputFields = {
+        basicAmount: Number(basicAmount.value),
+        dayCount: Number(dayCount.value),
+        rate: <SickPayRate>rate.value.value,
+      }
+      context.emit('save', input)
     }
-  },
-  emits: ['scroll'],
-  created () {
-    this.rate = this.$constants.SICK_PAY_RATES[0]
 
-    this.$store.commit('sickPay/CLEAR_DATA')
-  },
-  methods: {
-    calculate () {
-      const sickPay = new SickPay()
-      sickPay.basic = Number(this.basic)
-      sickPay.rate = Number(this.rate.value) / 100
-      sickPay.days = Number(this.days)
-
-      sickPay.calculate()
-
-      this.$store.commit('sickPay/SET_AMOUNT', sickPay.amount)
-      this.$store.commit('sickPay/SET_BASIC', sickPay.basic)
-      this.$store.commit('sickPay/SET_DAYS', sickPay.days)
-
-      this.$emit('scroll')
-    },
+    return {
+      constants,
+      validationRules,
+      sickTaxRates,
+      basicAmount,
+      dayCount,
+      rate,
+      isDisabledButton,
+      save,
+    }
   },
 }
 </script>
