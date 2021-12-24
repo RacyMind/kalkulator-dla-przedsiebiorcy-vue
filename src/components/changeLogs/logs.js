@@ -2,7 +2,7 @@ export default [
   {
     version: '4.4.0',
     publish_date: '2021-12-08',
-    content: '<ul><li>Refaktoryzacja modułu do działalności niezarejestrowanej.</li><li>Refaktoryzacja modułu Limit obrotu dla kasy fiskalnej.</li><li>Refaktoryzacja modułu Limit sprzedaży dla zwolnienia z VAT.</li><li>Refaktoryzacja modułu Lokata.</li><li>Refaktoryzacja modułu Odsetki.</li></ul>',
+    content: '<ul><li>Refaktoryzacja modułu do działalności niezarejestrowanej.</li><li>Refaktoryzacja modułu Limit obrotu dla kasy fiskalnej.</li><li>Refaktoryzacja modułu Limit sprzedaży dla zwolnienia z VAT.</li><li>Refaktoryzacja modułu Lokata.</li><li>Refaktoryzacja modułu Odsetki.</li><li>Refaktoryzacja modułu Zasiłek chorobowy.</li></ul>',
   },
   {
     version: '4.3.0',
