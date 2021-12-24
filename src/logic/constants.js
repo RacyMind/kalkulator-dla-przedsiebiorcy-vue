@@ -188,16 +188,6 @@ export default {
     LINEAR_RATE: 19,
     BELKA_RATE: 19,
   },
-  SICK_PAY_RATES: [
-    {
-      label: '80%',
-      value: 80,
-    },
-    {
-      label: '100%',
-      value: 100,
-    },
-  ],
   TAX_RATES_FOR_LAMP_SUM: [
     {
       label: '2%',
