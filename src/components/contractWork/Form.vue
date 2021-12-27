@@ -3,7 +3,7 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
@@ -33,12 +33,12 @@
         <div class="q-mt-sm block">
           <div>Koszty uzyskania przychodu*</div>
           <q-radio
-            v-model="expenseRate"
+            v-model.number="expenseRate"
             :val="constants.CONTRACT_WORK.EXPENSES_20"
             label="20%"
           />
           <q-radio
-            v-model="expenseRate"
+            v-model.number="expenseRate"
             :val="constants.CONTRACT_WORK.EXPENSES_50"
             label="50%"
           />
