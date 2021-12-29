@@ -3,7 +3,7 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
@@ -33,12 +33,12 @@
         <div class="q-mt-sm block">
           <div>Koszty uzyskania przychodu*</div>
           <q-radio
-            v-model="expenseRate"
+            v-model.number="expenseRate"
             :val="constants.CONTRACT_WORK.EXPENSES_20"
             label="20%"
           />
           <q-radio
-            v-model="expenseRate"
+            v-model.number="expenseRate"
             :val="constants.CONTRACT_WORK.EXPENSES_50"
             label="50%"
           />
@@ -60,40 +60,49 @@
   </q-form>
 </template>
 
-<script>import constants from 'src/logic/constants'
+<script lang="ts">
+import {computed, PropType, Ref, ref, toRefs} from 'vue'
+import constants from 'src/logic/constants'
+import {AvailableYear} from 'src/types/AvailableYear'
+import {AmountType} from 'src/types/AmountType'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 
 export default {
-  emits: ['submitted'],
-  setup () {
-    return { constants }
-  },
-  data () {
-    return {
-      amount: null,
-      amountType: null,
-      expenseRate: null,
-    }
-  },
-  created () {
-    this.amountType = constants.AMOUNT_TYPES.GROSS
-    this.expenseRate = constants.CONTRACT_WORK.EXPENSES_20
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount || this.expenseRate === null) {
-        return true
-      }
-      return false
+  props: {
+    year: {
+      type: Object as PropType<AvailableYear>,
+      required: true,
     },
   },
-  methods: {
-    save () {
-      this.$store.commit('contractWork/setAmount', +this.amount)
-      this.$store.commit('contractWork/setAmountType', this.amountType)
-      this.$store.commit('contractWork/setExpenseRate', +this.expenseRate)
+  setup(props: any, context: any) {
+    const { year } = toRefs(props)
 
-      this.$emit('submitted')
-    },
+    const amount = ref(null)
+    const amountType = ref(constants.AMOUNT_TYPES.GROSS)
+    const expenseRate:Ref = ref(constants.CONTRACT_WORK.EXPENSES_20)
+
+    const isDisabledButton = computed(() => {
+      return !amount.value || expenseRate.value === null
+    })
+
+    const save = () => {
+      const input: ContractWorkInputFields = {
+        year: year.value,
+        amount: Number(amount.value),
+        amountType: <AmountType>amountType.value,
+        expenseRate: expenseRate.value,
+      }
+      context.emit('save', input)
+    }
+
+    return {
+      constants,
+      amount,
+      amountType,
+      expenseRate,
+      isDisabledButton,
+      save,
+    }
   },
 }
 </script>

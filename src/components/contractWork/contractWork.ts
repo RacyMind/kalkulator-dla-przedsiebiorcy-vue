@@ -1,21 +1,21 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-
-let year = helpers.getDefaultYear()
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
+import {AvailableYear} from 'src/types/AvailableYear'
+import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
 
 let params = {
-  taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-  amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
+  amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,
+  lumpSumUpToAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
 }
 
 /**
  * Sets parameters for the year
- * @param newYear
+ * @param year
  */
-function setYear (newYear) {
-  year = newYear
-
+function setParams (year:AvailableYear) {
   params = {
     taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
@@ -27,10 +27,10 @@ function setYear (newYear) {
  * Calculates expenses
  *
  * @param {number} grossAmount
- * @param {number} expenseRate
+ * @param {ExpenseRate} expenseRate
  * @returns {number}
  */
-function calculateExpenses (grossAmount, expenseRate) {
+function calculateExpenses (grossAmount:number, expenseRate:ExpenseRate):number {
   const expenses = helpers.round(grossAmount * expenseRate, 2)
 
   if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > params.amountOfTaxThreshold) {
@@ -46,7 +46,7 @@ function calculateExpenses (grossAmount, expenseRate) {
  * @param {number} expenses
  * @returns {number}
  */
-function calculateBasisForTax (grossAmount, expenses) {
+function calculateBasisForTax (grossAmount:number, expenses:number):number {
   return helpers.round(grossAmount - expenses)
 }
 
@@ -56,7 +56,7 @@ function calculateBasisForTax (grossAmount, expenses) {
  * @param {number} basisForTax
  * @returns {number}
  */
-function calculateTaxAmount (basisForTax) {
+function calculateTaxAmount (basisForTax:number):number {
   return helpers.round(basisForTax * params.taxRate)
 }
 
@@ -64,10 +64,10 @@ function calculateTaxAmount (basisForTax) {
  * Calculates a gros amount
  *
  * @param {number} netAmount
- * @param {number} expenseRate
+ * @param {ExpenseRate} expenseRate
  * @returns {number}
  */
-function calculateGrossAmount (netAmount, expenseRate) {
+function calculateGrossAmount (netAmount:number, expenseRate:ExpenseRate):number {
   return helpers.round(netAmount / (1 - params.taxRate * (1 - expenseRate)), 2)
 }
 
@@ -78,24 +78,23 @@ function calculateGrossAmount (netAmount, expenseRate) {
  * @param {number} taxAmount
  * @returns {number}
  */
-function calculateNetAmount (grossAmount, taxAmount) {
+function calculateNetAmount (grossAmount:number, taxAmount:number):number {
   return grossAmount - taxAmount
 }
 
 /**
  * Gets the result using a net amount
  *
- * @param {number} amount
- * @param {number} expenseRate
- * @returns {{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
+ * @param {number} netAmount
+ * @param {ExpenseRate} expenseRate
+ * @returns {ContractWorkResult}
  */
-function getResultUsingNetAmount (amount, expenseRate) {
-  const netAmount = amount
-  let grossAmount = calculateGrossAmount(amount, expenseRate)
+function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
+  let grossAmount = calculateGrossAmount(netAmount, expenseRate)
 
   if (grossAmount <= params.lumpSumUpToAmount) {
     expenseRate = 0
-    grossAmount = calculateGrossAmount(amount, expenseRate)
+    grossAmount = calculateGrossAmount(netAmount, expenseRate)
   }
 
   const expenses = calculateExpenses(grossAmount, expenseRate)
@@ -105,23 +104,21 @@ function getResultUsingNetAmount (amount, expenseRate) {
 
   return {
     netAmount: netAmount,
-    expenses: expenses,
-    basisForTax: basisForTax,
     taxAmount: taxAmount,
     grossAmount: grossAmount,
+    expenses: expenses,
+    basisForTax: basisForTax,
   }
 }
 
 /**
  * Gets the result using a gross amount
  *
- * @param {number} amount
+ * @param {number} grossAmount
  * @param {number} expenseRate
- * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}}
+ * @returns {ContractWorkResult}
  */
-function getResultUsingGrossAmount (amount, expenseRate) {
-  const grossAmount = amount
-
+function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
   if (grossAmount < params.lumpSumUpToAmount) {
     expenseRate = 0
   }
@@ -143,31 +140,25 @@ function getResultUsingGrossAmount (amount, expenseRate) {
 /**
  * Gets the result
  *
- * @param {number} amount
- * @param {string} amountType
- * @param {number} expenseRate
- * @returns {{netAmount: number, basisForTax: number, grossAmount, taxAmount: number, expenses: number}|{netAmount, basisForTax: number, grossAmount: (*|number), taxAmount: number, expenses: number}}
+ * @param {ContractWorkInputFields} input
+ * @return {ContractWorkResult}
  */
-function getResult (amount, amountType, expenseRate) {
-  if (!amount || !amountType || !expenseRate) {
-    return {
-      netAmount: 0,
-      expenses: 0,
-      basisForTax: 0,
-      taxAmount: 0,
-      grossAmount: 0,
-    }
+function getResult (input:ContractWorkInputFields):ContractWorkResult {
+  if (!input.amount || !input.amountType || !input.expenseRate || !input.year) {
+    throw new Error('Uncompleted input data')
   }
 
-  switch (amountType) {
+  setParams(input.year)
+
+  switch (input.amountType) {
     case constants.AMOUNT_TYPES.NET:
-      return getResultUsingNetAmount(amount, expenseRate)
+      return getResultUsingNetAmount(input.amount, input.expenseRate)
     case constants.AMOUNT_TYPES.GROSS:
-      return getResultUsingGrossAmount(amount, expenseRate)
+    default:
+      return getResultUsingGrossAmount(input.amount, input.expenseRate)
   }
 }
 
 export default {
   getResult,
-  setYear,
 }
