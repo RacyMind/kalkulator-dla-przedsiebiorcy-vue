@@ -1,8 +1,6 @@
 import { register } from 'register-service-worker'
 import { Notify } from 'quasar'
 
-let refreshing = false
-
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
 // ServiceWorkerRegistration: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration
@@ -35,12 +33,8 @@ register(process.env.SERVICE_WORKER_FILE, {
       timeout: 10000,
       onDismiss () {
         navigator.serviceWorker.getRegistrations().then(function (registrations) {
-          /* for (const registration of registrations) {
-            registration.unregister()
-          } */
-          if (!refreshing) {
-            window.location.reload(true)
-            refreshing = true
+          for (const registration of registrations) {
+            registration.update()
           }
         })
       },
@@ -49,7 +43,6 @@ register(process.env.SERVICE_WORKER_FILE, {
 
   updated (/* registration */) {
     // console.log('Service worker has been updated.')
-    refreshing = false
   },
 
   offline () {

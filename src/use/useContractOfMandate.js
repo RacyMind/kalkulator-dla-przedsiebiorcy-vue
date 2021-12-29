@@ -50,7 +50,7 @@ export function useMonthlyEmployeeResult (props) {
     isYoung,
   } = inputData()
 
-  const result = computed(fu => {
+  const result = computed(() => {
     contractOfMandate.resetTotalAmounts()
     return contractOfMandate.getMonthlyResultOfEmployee(
       grossAmount.value,

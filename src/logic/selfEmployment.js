@@ -14,6 +14,7 @@ let params = {
 
 let totalBasisForTax = 0
 let totalGrossAmount = 0
+let yearlyIncome = 0
 
 /**
  * Sets parameters for the year
@@ -77,6 +78,7 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
  * Calculates the tax amount
  *
  * @param {number} grossAmount
+ * @param {number} expenses
  * @param {number} basisForTax
  * @param {string} taxType
  * @param {number} amountOfDeductionOfHealthContributionFromTax
@@ -85,10 +87,10 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions, expenses, 
  * @param {boolean} isAidForMiddleClass
  * @returns {number}
  */
-function calculateTaxAmount (grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount, isAidForMiddleClass) {
+function calculateTaxAmount (grossAmount, expenses, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, lumpSumTaxRate, isFreeAmount, isAidForMiddleClass) {
   switch (taxType) {
     case constants.TAX_TYPES.GENERAL:
-      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
+      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
     case constants.TAX_TYPES.LINEAR:
       return taxes.calculateIncomeTaxUsingLinearRules(basisForTax, amountOfDeductionOfHealthContributionFromTax)
     case constants.TAX_TYPES.LUMP_SUM:
@@ -179,8 +181,6 @@ function getMonthlyResult (
     basisForZus = customBasisForZus
   }
 
-  const healthContribution = ownerContributions.calculateHealthContribution(grossAmount - expenses, taxType, totalGrossAmount + grossAmount)
-
   if (!isFullTimeJob && !isAidForStart) {
     pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
     rentContribution = ownerContributions.calculateRentContribution(basisForZus)
@@ -196,6 +196,8 @@ function getMonthlyResult (
   }
 
   const grossAmountMinusEmployeeContributions = ownerContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution, accidentContribution)
+
+  const healthContribution = ownerContributions.calculateHealthContribution(grossAmount - expenses, taxType, yearlyIncome)
   const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
 
   const newTotalGrossAmount = totalGrossAmount + grossAmount
@@ -220,7 +222,7 @@ function getMonthlyResult (
   }
 
   const basisForTax = calculateBasisForTax(amountToCalculateTax, expenses, taxType)
-  const taxAmount = calculateTaxAmount(grossAmount, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount, isAidForMiddleClass)
+  const taxAmount = calculateTaxAmount(grossAmount, expenses, basisForTax, taxType, amountOfDeductionOfHealthContributionFromTax, taxRateForLumpSum, isFreeAmount, isAidForMiddleClass)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(grossAmount, taxAmount, totalContributions, expenses)
@@ -253,6 +255,40 @@ function getYearlyResult (monthlyInputs) {
   let i = 0
   totalBasisForTax = 0
   totalGrossAmount = 0
+  yearlyIncome = 0
+
+  // calculates yearly income to calculate a health contribution for lump sum
+  monthlyInputs.forEach((input, month) => {
+    let pensionContribution = 0
+    let rentContribution = 0
+    let sickContribution = 0
+    let basisForZus = 0
+
+    const isAidForStart = input.isAidForStart && month <=5
+
+    if (!input.isFullTimeJob && !isAidForStart) {
+
+      if (input.isSmallZus) {
+        basisForZus = params.smallBasisForZUS
+      } else {
+        basisForZus = params.bigBasisForZUS
+      }
+
+      if (input.customBasisForZus) {
+        basisForZus = input.customBasisForZus
+      }
+
+      pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
+      rentContribution = ownerContributions.calculateRentContribution(basisForZus)
+    }
+
+    if (input.isSickContribution && !isAidForStart) {
+      sickContribution = ownerContributions.calculateSickContribution(basisForZus)
+    }
+
+    const monthlyIncome = input.grossAmount - pensionContribution - rentContribution - sickContribution
+    yearlyIncome += monthlyIncome
+  })
 
   monthlyInputs.forEach(input => {
     // Aid can be for six months

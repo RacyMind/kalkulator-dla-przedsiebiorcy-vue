@@ -10,7 +10,7 @@
 module.exports = function (/* ctx */) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
-    supportTS: false,
+    supportTS: true,
 
     // https://quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
@@ -119,6 +119,8 @@ module.exports = function (/* ctx */) {
     pwa: {
       // workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       // workboxOptions: {}, // only for GenerateSW
+      skipWaiting: true,
+      clientsClaim: true,
       manifest: {
         name: 'Kalkulator finansowy',
         short_name: 'Kalkulator finansowy',

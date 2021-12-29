@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Advert from 'components/Advert'
 import Form from 'components/unregisteredCompany/Form'
 import Table from 'components/unregisteredCompany/Table'

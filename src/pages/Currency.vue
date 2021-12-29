@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import SectionHeader from 'components/SectionHeader'
+import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/exchangeRates/Form'
 import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Advert from 'components/Advert'
