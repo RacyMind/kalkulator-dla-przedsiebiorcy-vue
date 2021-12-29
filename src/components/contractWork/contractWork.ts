@@ -85,17 +85,16 @@ function calculateNetAmount (grossAmount:number, taxAmount:number):number {
 /**
  * Gets the result using a net amount
  *
- * @param {number} amount
+ * @param {number} netAmount
  * @param {ExpenseRate} expenseRate
  * @returns {ContractWorkResult}
  */
-function getResultUsingNetAmount (amount:number, expenseRate:ExpenseRate):ContractWorkResult {
-  const netAmount = amount
-  let grossAmount = calculateGrossAmount(amount, expenseRate)
+function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
+  let grossAmount = calculateGrossAmount(netAmount, expenseRate)
 
   if (grossAmount <= params.lumpSumUpToAmount) {
     expenseRate = 0
-    grossAmount = calculateGrossAmount(amount, expenseRate)
+    grossAmount = calculateGrossAmount(netAmount, expenseRate)
   }
 
   const expenses = calculateExpenses(grossAmount, expenseRate)
@@ -115,13 +114,11 @@ function getResultUsingNetAmount (amount:number, expenseRate:ExpenseRate):Contra
 /**
  * Gets the result using a gross amount
  *
- * @param {number} amount
+ * @param {number} grossAmount
  * @param {number} expenseRate
  * @returns {ContractWorkResult}
  */
-function getResultUsingGrossAmount (amount:number, expenseRate:ExpenseRate):ContractWorkResult {
-  const grossAmount = amount
-
+function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
   if (grossAmount < params.lumpSumUpToAmount) {
     expenseRate = 0
   }
@@ -148,7 +145,7 @@ function getResultUsingGrossAmount (amount:number, expenseRate:ExpenseRate):Cont
  */
 function getResult (input:ContractWorkInputFields):ContractWorkResult {
   if (!input.amount || !input.amountType || !input.expenseRate || !input.year) {
-    throw Error('Uncompleted input data')
+    throw new Error('Uncompleted input data')
   }
 
   setParams(input.year)
