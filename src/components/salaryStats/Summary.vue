@@ -43,7 +43,6 @@ import ListRow from 'components/partials/ListRow.vue'
 
 export default {
   setup() {
-
     return {
       pln,
     }
