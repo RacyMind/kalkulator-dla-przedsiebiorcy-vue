@@ -138,5 +138,11 @@ export default {
       className: 'c-informator',
       link: '/informacje-o-wynagrodzeniu',
     } as MenuItem,
+    {
+      title: 'Terminy w US, ZUS i PFRON',
+      caption: 'Moduł pokazuje istotne terminy w US, ZUS i PFRON',
+      className: 'c-informator',
+      link: '/terminy-w-us-zus-pfron',
+    } as MenuItem,
   ],
 }

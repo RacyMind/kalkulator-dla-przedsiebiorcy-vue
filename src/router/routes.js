@@ -26,6 +26,7 @@ const routes = [
       { path: 'rozliczenie-z-malzonkiem', component: () => import('pages/AccountingWithSpouse') },
       { path: 'inflacja', component: () => import('pages/Inflation') },
       { path: 'informacje-o-wynagrodzeniu', component: () => import('pages/SalaryStats') },
+      { path: 'terminy-w-us-zus-pfron', component: () => import('pages/Terms') },
     ],
   },
 
