@@ -132,5 +132,11 @@ export default {
       className: 'c-informator',
       link: '/inflacja',
     } as MenuItem,
+    {
+      title: 'Informacje o wynagrodzeniu',
+      caption: 'Moduł pokazuje informacje o wynagrodzeniu w Polsce',
+      className: 'c-informator',
+      link: '/informacje-o-wynagrodzeniu',
+    } as MenuItem,
   ],
 }

@@ -23,8 +23,9 @@ const routes = [
       { path: 'dzialalnosc-niezarejestrowana', component: () => import('pages/UnregisteredCompany') },
       { path: 'limit-zwolnienia-z-vat', component: () => import('pages/VatLimit') },
       { path: 'skladki-zus-za-czesc-miesiaca', component: () => import('pages/PartialZusContributions') },
-      { path: 'inflacja', component: () => import('pages/Inflation') },
       { path: 'rozliczenie-z-malzonkiem', component: () => import('pages/AccountingWithSpouse') },
+      { path: 'inflacja', component: () => import('pages/Inflation') },
+      { path: 'informacje-o-wynagrodzeniu', component: () => import('pages/SalaryStats') },
     ],
   },
 
