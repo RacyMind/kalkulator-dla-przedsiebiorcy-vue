@@ -5,11 +5,11 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_insights" />
-        Wykres
+        <q-icon name="o_credit_card" />
+        Dane statystyczne
       </SectionHeader>
+      <Summary />
       <Advert />
-      <Statistics />
     </div>
     <Footer />
   </q-page>
@@ -18,18 +18,18 @@
 <script lang="ts">
 import {useStore} from 'vuex'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Statistics from 'components/inflation/Statistics.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Summary from 'components/salaryStats/Summary.vue'
 
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/setModuleTitle', 'Inflacja')
+    store.commit('app/setModuleTitle', 'Informacje o wynagrodzeniu')
   },
   components: {
+    Summary,
     SectionHeader,
-    Statistics,
     Advert,
     Footer,
   },
