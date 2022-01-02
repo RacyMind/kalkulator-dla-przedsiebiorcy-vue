@@ -176,7 +176,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.3.0',
+    VERSION: '4.4.0',
   },
   AMOUNT_TYPES: {
     NET: 'net',
@@ -279,8 +279,8 @@ export default {
       HEALTH_RATE: 9,
       FP_RATE: 2.45,
       BASIS_AMOUNT_FOR_HEALTH: 4242.38,
-      BIG_AMOUNT: 3155.40,
-      SMALL_AMOUNT: 840,
+      BIG_AMOUNT: 3553.2,
+      SMALL_AMOUNT: 903,
     },
   },
   PPK: {
