@@ -36,6 +36,7 @@ register(process.env.SERVICE_WORKER_FILE, {
           for (const registration of registrations) {
             registration.update()
           }
+          location.reload(true)
         })
       },
     })
