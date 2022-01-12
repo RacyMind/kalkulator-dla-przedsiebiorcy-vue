@@ -4,7 +4,8 @@ import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployeeResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeResult'
+import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
+import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
 
 let params = {
   taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
@@ -178,9 +179,9 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number):numbe
  *
  * @param {ContractOfMandateInputFields} input
  * @param {number} month
- * @returns {ContractOfMandateEmployeeResult}
+ * @returns {ContractOfMandateEmployeeSingleResult}
  */
-function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):ContractOfMandateEmployeeResult {
+function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):ContractOfMandateEmployeeSingleResult {
   let expenseRate = 0
   let pensionContribution = 0
   let rentContribution = 0
@@ -231,6 +232,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   return {
     netAmount: netAmount,
     grossAmount: input.grossAmount,
+    basisForRentAndPensionContributions: basisForRentAndPensionContributions,
     pensionContribution: pensionContribution,
     rentContribution: rentContribution,
     sickContribution: sickContribution,
@@ -247,10 +249,10 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
  * Returns the yearly results of an employee
  *
  * @param {ContractOfMandateInputFields[]} monthlyInputs
- * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
+ * @returns {ContractOfMandateEmployeeYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
-  const results:ContractOfMandateEmployeeResult[] = []
+function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployeeYearlyResult {
+  const results:ContractOfMandateEmployeeSingleResult[] = []
   let i = 0
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
@@ -260,16 +262,18 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
     const result = getMonthlyResult(input, i)
     results.push(result)
 
-    totalBasisForRentAndPensionContributions += result.grossAmount
+    totalBasisForRentAndPensionContributions += result.basisForRentAndPensionContributions
     totalExpenses += result.expenses
     totalGrossAmount += result.grossAmount
     i++
   })
 
-  results.push({
+  const yearlyResult = {
     netAmount: results.map(result => result.netAmount)
       .reduce((current, sum) => current + sum, 0),
     grossAmount: results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0),
+    basisForRentAndPensionContributions: results.map(result => result.basisForRentAndPensionContributions)
       .reduce((current, sum) => current + sum, 0),
     pensionContribution: results.map(result => result.pensionContribution)
       .reduce((current, sum) => current + sum, 0),
@@ -289,12 +293,11 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
       .reduce((current, sum) => current + sum, 0),
     contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
-  })
+  }
 
   return {
-    rows: results,
-    totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
-    totalGrossAmount: totalGrossAmount,
+    monthlyResults: results,
+    yearlyResult: yearlyResult,
   }
 }
 

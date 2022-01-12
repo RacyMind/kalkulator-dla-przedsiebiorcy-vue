@@ -83,9 +83,9 @@
   </q-page>
 </template>
 
-<script>
-import { ref } from 'vue'
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {ref, watch} from 'vue'
+import {mapGetters, useStore} from 'vuex'
 import SectionHeader from 'components/partials/SectionHeader'
 import Advert from 'components/partials/Advert'
 import ChooseYear from 'components/partials/ChooseYear'
@@ -99,7 +99,48 @@ import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmplo
 import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 export default {
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Umowa zlecenie')
+
+    const year = ref(helpers.getDefaultYear())
+
+    const inputFields = ref(<ContractOfMandateInputFields>{
+      year: helpers.getDefaultYear(),
+      grossAmount: 0,
+      isReliefForYoung: false,
+      accidentContributionRate: 0,
+      employeePpkContributionRate: 0,
+      employerPpkContributionRate: 0,
+      isHealthContribution: true,
+      isPensionContribution: true,
+      isRentContribution: true,
+      isSickContribution: true,
+      isStudent: false,
+      partOfWorkWithAuthorExpenses: 0,
+    })
+
+    const scrollTarget = ref(null) as any
+
+    watch(year, () => {
+      inputFields.value.grossAmount = 0
+    })
+
+    const save = (input: ContractOfMandateInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      year,
+      inputFields,
+      scrollTarget,
+      save,
+    }
+  },
   setup () {
     const year = ref(helpers.getDefaultYear())
     return {
