@@ -1,50 +1,42 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
+import {AvailableYear} from 'src/types/AvailableYear'
 
-let year = helpers.getDefaultYear()
+const year = helpers.getDefaultYear()
 
 let params = {
-  taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-  amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
   limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
-  grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
 }
 
 let totalBasisForRentAndPensionContributions = 0
-let totalExpenses = 0
-let totalGrossAmount = 0
 
 /**
  * Resets total amounts
  */
 function resetTotalAmounts () {
   totalBasisForRentAndPensionContributions = 0
-  totalExpenses = 0
-  totalGrossAmount = 0
 }
 
 /**
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
-  year = newYear
 
+/**
+ * Sets parameters for the year
+ * @param year
+ */
+function setParams (year:AvailableYear) {
   params = {
-    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-    amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
     limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
-    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
   }
 
   resetTotalAmounts()
 
-  employerContributions.setYear(newYear)
-  employeeContributions.setYear(newYear)
+  employerContributions.setYear(year)
 }
 
 /**
@@ -69,52 +61,41 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number) {
 /**
  * Returns the monthly results of an employer
  *
- * @param {number} grossAmount
- * @param {number} accidentContributionRate
- * @param {number} ppkContributionRate
- * @param {boolean} isPensionContribution
- * @param {boolean} isRentContribution
- * @returns {{totalAmount: number, ppkContribution: number, rentContribution: number, grossAmount: number, accidentContribution: number, pensionContribution: number}}
+ * @param {ContractOfMandateInputFields} input
+ * @returns {ContractOfMandateEmployerSingleResult}
  */
-function getMonthlyResultOfEmployer (
-  grossAmount,
-  accidentContributionRate,
-  ppkContributionRate,
-  isPensionContribution,
-  isRentContribution,
-) {
-  if (!grossAmount) {
-    grossAmount = 0
-  }
+function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandateEmployerSingleResult {
 
   let pensionContribution = 0
   let rentContribution = 0
   let accidentContribution = 0
   let ppkContribution = 0
-  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(grossAmount)
+  const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
 
-  if (isPensionContribution) {
+  if (input.isPensionContribution) {
     pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
-  if (isRentContribution) {
+  if (input.isRentContribution) {
     rentContribution = employerContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
-  if (accidentContributionRate) {
-    accidentContribution = employerContributions.calculateAccidentContribution(grossAmount, accidentContributionRate)
+  if (input.accidentContributionRate) {
+    accidentContribution = employerContributions.calculateAccidentContribution(input.grossAmount, input.accidentContributionRate)
   }
-  if (ppkContributionRate) {
-    ppkContribution = employerContributions.calculatePpkContribution(grossAmount, ppkContributionRate)
+  if (input.employerPpkContributionRate) {
+    ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const totalAmount = grossAmount + pensionContribution + rentContribution + accidentContribution + ppkContribution
+  const totalAmount = input.grossAmount + pensionContribution + rentContribution + accidentContribution + ppkContribution
 
   return {
     totalAmount: totalAmount,
-    grossAmount: grossAmount,
+    basisForRentAndPensionContributions: basisForRentAndPensionContributions,
+    grossAmount: input.grossAmount,
     pensionContribution: pensionContribution,
     rentContribution: rentContribution,
     accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
+    contributionTotal: pensionContribution + rentContribution + accidentContribution + ppkContribution,
   }
 }
 
@@ -124,25 +105,23 @@ function getMonthlyResultOfEmployer (
  * @param {[]} monthlyInputs
  * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
  */
-function getYearlyResultOfEmployer (monthlyInputs) {
-  const results = []
-  let i = 0
+function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
+  const results:ContractOfMandateEmployerSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
 
   monthlyInputs.forEach(input => {
-    const result = getMonthlyResultOfEmployer(...Object.values(input))
-    result.month = i
+    const result = getMonthlyResult(input)
     results.push(result)
 
     totalBasisForRentAndPensionContributions += result.grossAmount
-    i++
   })
 
-  results.push({
-    month: constants.LOCALE_DATE.wholeYearIndex,
+  const yearlyResult = {
     totalAmount: results.map(result => result.totalAmount)
       .reduce((current, sum) => current + sum, 0),
     grossAmount: results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0),
+    basisForRentAndPensionContributions: results.map(result => result.basisForRentAndPensionContributions)
       .reduce((current, sum) => current + sum, 0),
     pensionContribution: results.map(result => result.pensionContribution)
       .reduce((current, sum) => current + sum, 0),
@@ -152,19 +131,17 @@ function getYearlyResultOfEmployer (monthlyInputs) {
       .reduce((current, sum) => current + sum, 0),
     ppkContribution: results.map(result => result.ppkContribution)
       .reduce((current, sum) => current + sum, 0),
-  })
+  }
 
   return {
-    rows: results,
-    totalBasisForRentAndPensionContributions: totalBasisForRentAndPensionContributions,
+    monthlyResults: results,
+    yearlyResult: yearlyResult,
   }
 }
 
 export default {
-  getMonthlyResultOfEmployee,
-  getMonthlyResultOfEmployer,
-  getYearlyResultOfEmployer,
-  getYearlyResultOfEmployee,
-  setYear,
+  getMonthlyResult,
+  getYearlyResult,
+  setParams,
   resetTotalAmounts,
 }

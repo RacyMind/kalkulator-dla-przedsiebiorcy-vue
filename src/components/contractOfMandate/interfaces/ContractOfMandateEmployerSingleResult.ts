@@ -1,6 +1,7 @@
-export interface ContractOfMandateEmployerResult {
+export interface ContractOfMandateEmployerSingleResult {
   readonly grossAmount: number,
-  readonly totalAMount: number,
+  readonly totalAmount: number,
+  readonly basisForRentAndPensionContributions: number,
   readonly accidentContribution: number,
   readonly rentContribution: number,
   readonly pensionContribution: number,

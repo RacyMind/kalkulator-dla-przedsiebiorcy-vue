@@ -72,7 +72,7 @@
             </div>
           </div>
           <q-toggle
-            v-model="isYoung"
+            v-model="isReliefForYoung"
             class="q-mt-sm"
             label="Zerowy PIT dla młodych"
           />
@@ -211,17 +211,66 @@
   </q-form>
 </template>
 
-<script>
+<script lang="ts">
 import constants from 'src/logic/constants'
 import contractOfMandate from 'src/logic/contractOfMandate'
+import {computed, PropType, Ref, ref, toRefs} from 'vue'
+import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {AmountType} from 'src/types/AmountType'
 
 export default {
   props: {
-    year: Number,
+    year: {
+      type: Object as PropType<AvailableYear>,
+      required: true,
+    },
   },
-  emits: ['submitted'],
-  setup () {
-    return { constants }
+  setup(props: any, context: any) {
+    const { year } = toRefs(props)
+
+    const amount:Ref<number|null> = ref(null)
+    const amountType = ref(constants.AMOUNT_TYPES.GROSS)
+    const accidentContributionRate = ref(0)
+    const employeePpkRate = ref(0)
+    const isReliefForYoung = ref(false)
+    const isStudent = ref(false)
+    const isHealthContribution = ref(true)
+    const isSickContribution = ref(true)
+    const isRentContribution = ref(true)
+    const isPensionContribution = ref(true)
+    const isPpkContribution = ref(false)
+    const isAuthorExpenses = ref(false)
+    const partOfWorkWithAuthorExpenses = ref(100)
+    const isHourlyAmount = ref(false)
+    const hourlyAmount:Ref<number|null> = ref(null)
+    const hourCount:Ref<number|null> = ref(null)
+
+    const isDisabledButton = computed(() => {
+      if (!amount.value) {
+        return true
+      }
+      return false
+    })
+
+    const save = () => {
+      const input: ContractWorkInputFields = {
+        year: year.value,
+        amount: Number(amount.value),
+        amountType: <AmountType>amountType.value,
+        expenseRate: expenseRate.value,
+      }
+      context.emit('save', input)
+    }
+
+    return {
+      constants,
+      amount,
+      amountType,
+      expenseRate,
+      isDisabledButton,
+      save,
+    }
   },
   data () {
     return {
@@ -230,7 +279,7 @@ export default {
       accidentContributionRate: 0,
       employeePpkRate: 0,
       employerPpkRate: 0,
-      isYoung: false,
+      isReliefForYoung: false,
       isStudent: false,
       isHealthContribution: true,
       isSickContribution: true,

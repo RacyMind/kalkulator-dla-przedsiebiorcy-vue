@@ -36,18 +36,18 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!grossAmount"
+            :disable="!inputFields.grossAmount"
             outline
             @click="openEmployeeModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployeeTable :year="year" />
+      <EmployeeSummary :input="inputFields" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics :year="year" />
+      <EmployeeStatistics :input="inputFields" />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -65,19 +65,19 @@
           />
         </div>
       </SectionHeader>
-      <EmployerTable :year="year" />
-      <SectionHeader>
-        <q-icon name="o_pie_chart" />
-        Wykres dla pracodawcy
-      </SectionHeader>
-      <EmployerStatistics :year="year" />
+      <!--     <EmployerTable :year="year" />
+     <SectionHeader>
+       <q-icon name="o_pie_chart" />
+       Wykres dla pracodawcy
+     </SectionHeader>
+     <EmployerStatistics :year="year" />
 
-      <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee :year="year" />
-      </q-dialog>
-      <q-dialog v-model="openEmployerModal">
-        <WholeYearForEmployer :year="year" />
-      </q-dialog>
+     <q-dialog v-model="openEmployeeModal">
+       <WholeYearForEmployee :year="year" />
+     </q-dialog>
+     <q-dialog v-model="openEmployerModal">
+       <WholeYearForEmployer :year="year" />
+     </q-dialog>-->
     </div>
     <Footer />
   </q-page>
@@ -85,21 +85,20 @@
 
 <script lang="ts">
 import {ref, watch} from 'vue'
-import {mapGetters, useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/partials/Advert'
-import ChooseYear from 'components/partials/ChooseYear'
-import Form from 'components/contractOfMandate/Form'
-import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable'
-import EmployeeTable from 'components/contractOfMandate/EmployeeTable'
-import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics'
-import EmployerTable from 'components/contractOfMandate/EmployerTable'
-import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics'
-import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer'
-import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee'
-import Footer from 'components/Footer'
+import {useStore} from 'vuex'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Advert from 'components/partials/Advert.vue'
+import ChooseYear from 'components/partials/ChooseYear.vue'
+import Form from 'components/contractOfMandate/Form.vue'
+import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable.vue'
+import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
+import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
+import EmployerTable from 'components/contractOfMandate/EmployerTable.vue'
+import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
+import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer.vue'
+import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
-import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 export default {
   setup() {
@@ -107,6 +106,9 @@ export default {
     store.commit('app/setModuleTitle', 'Umowa zlecenie')
 
     const year = ref(helpers.getDefaultYear())
+    const openEmployeeModal = ref(false)
+    const openEmployerModal = ref(false)
+    const scrollTarget = ref(null) as any
 
     const inputFields = ref(<ContractOfMandateInputFields>{
       year: helpers.getDefaultYear(),
@@ -123,8 +125,6 @@ export default {
       partOfWorkWithAuthorExpenses: 0,
     })
 
-    const scrollTarget = ref(null) as any
-
     watch(year, () => {
       inputFields.value.grossAmount = 0
     })
@@ -137,40 +137,11 @@ export default {
     return {
       year,
       inputFields,
+      openEmployeeModal,
+      openEmployerModal,
       scrollTarget,
       save,
     }
-  },
-  setup () {
-    const year = ref(helpers.getDefaultYear())
-    return {
-      year,
-    }
-  },
-  data () {
-    return {
-      openEmployeeModal: false,
-      openEmployerModal: false,
-    }
-  },
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Umowa zlecenie')
-    this.$store.commit('contractOfMandate/resetData')
-  },
-  computed: {
-    ...mapGetters({
-      grossAmount: 'contractOfMandate/grossAmount',
-    }),
-  },
-  watch: {
-    year () {
-      this.$store.commit('contractOfMandate/resetData')
-    },
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
   },
   components: {
     SectionHeader,
@@ -178,7 +149,7 @@ export default {
     ChooseYear,
     Form,
     SummarySalaryTable,
-    EmployeeTable,
+    EmployeeSummary,
     EmployeeStatistics,
     EmployerTable,
     EmployerStatistics,
