@@ -1,5 +1,10 @@
 export default [
   {
+    version: '4.4.2',
+    publish_date: '2022-02-02',
+    content: '<ul><li>Aktualizacja stawek składki zdrowotnej dla ryczałtu.</li></ul>',
+  },
+  {
     version: '4.4.1',
     publish_date: '2022-01-08',
     content: '<ul><li>Poprawa wyliczeń składki zdrowotnej i podatku w Samozatrudnieniu.</li><li>Wycofanie modułu Rozliczenie z małżonkiem.</li></ul>',
