@@ -176,7 +176,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.4.0',
+    VERSION: '4.4.1',
   },
   AMOUNT_TYPES: {
     NET: 'net',

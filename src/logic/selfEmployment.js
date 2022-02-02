@@ -195,9 +195,15 @@ function getMonthlyResult (
     sickContribution = ownerContributions.calculateSickContribution(basisForZus)
   }
 
-  const grossAmountMinusEmployeeContributions = ownerContributions.calculateGrossAmountMinusContributions(grossAmount, pensionContribution, rentContribution, sickContribution, accidentContribution)
+  const grossAmountMinusEmployeeContributions = grossAmount - (pensionContribution + rentContribution + sickContribution + accidentContribution + fpContribution)
 
-  const healthContribution = ownerContributions.calculateHealthContribution(grossAmount - expenses, taxType, yearlyIncome)
+  let amountToCanculateHealthContribution = grossAmountMinusEmployeeContributions
+
+  if([constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.GENERAL].includes(taxType)) {
+    amountToCanculateHealthContribution = amountToCanculateHealthContribution - expenses
+  }
+
+  const healthContribution = ownerContributions.calculateHealthContribution(amountToCanculateHealthContribution, taxType, yearlyIncome)
   const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
 
   const newTotalGrossAmount = totalGrossAmount + grossAmount
@@ -333,6 +339,10 @@ function getYearlyResult (monthlyInputs) {
     contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
   })
+
+  totalBasisForTax = 0
+  totalGrossAmount = 0
+  yearlyIncome = 0
 
   return {
     rows: results,
