@@ -18,7 +18,7 @@
       <Form
         class="q-mt-md q-mb-lg q-px-md"
         :year="year"
-        @submitted="scrollTo"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import {ref, watch} from 'vue'
+import {defineComponent, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Advert from 'components/partials/Advert.vue'
@@ -100,7 +100,7 @@ import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmplo
 import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Umowa zlecenie')
@@ -157,5 +157,5 @@ export default {
     WholeYearForEmployee,
     Footer,
   },
-}
+})
 </script>

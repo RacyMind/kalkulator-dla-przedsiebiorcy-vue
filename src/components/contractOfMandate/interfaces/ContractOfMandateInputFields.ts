@@ -5,7 +5,6 @@ export interface ContractOfMandateInputFields {
   grossAmount: number
   isReliefForYoung: boolean,
   partOfWorkWithAuthorExpenses: number,
-  isStudent: boolean,
   isHealthContribution: boolean,
   isSickContribution: boolean,
   isRentContribution: boolean,

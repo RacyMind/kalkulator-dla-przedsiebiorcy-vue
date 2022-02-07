@@ -158,7 +158,7 @@
                 class="row full-width">
                 <div class="col-6">
                   <q-input
-                    v-model.number="employerPpkRate"
+                    v-model.number="employerPpkContributionRate"
                     type="number"
                     class="full-width"
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
@@ -175,7 +175,7 @@
                 </div>
                 <div class="col-6 q-pl-sm">
                   <q-input
-                    v-model.number="employeePpkRate"
+                    v-model.number="employeePpkContributionRate"
                     type="number"
                     class="full-width"
                     :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
@@ -212,27 +212,26 @@
 </template>
 
 <script lang="ts">
+import {defineComponent, computed, PropType, Ref, ref, watch} from 'vue'
+import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
-import contractOfMandate from 'src/logic/contractOfMandate'
-import {computed, PropType, Ref, ref, toRefs} from 'vue'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import {AmountType} from 'src/types/AmountType'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
-export default {
+export default defineComponent({
   props: {
     year: {
       type: Object as PropType<AvailableYear>,
       required: true,
     },
   },
-  setup(props: any, context: any) {
-    const { year } = toRefs(props)
+  setup(props, context) {
+    const $q = useQuasar()
 
     const amount:Ref<number|null> = ref(null)
     const amountType = ref(constants.AMOUNT_TYPES.GROSS)
-    const accidentContributionRate = ref(0)
-    const employeePpkRate = ref(0)
+    const accidentContributionRate = ref(constants.PARAMS[props.year].ACCIDENT_RATE)
     const isReliefForYoung = ref(false)
     const isStudent = ref(false)
     const isHealthContribution = ref(true)
@@ -240,6 +239,8 @@ export default {
     const isRentContribution = ref(true)
     const isPensionContribution = ref(true)
     const isPpkContribution = ref(false)
+    const employerPpkContributionRate = ref(constants.PARAMS[props.year].PPK.EMPLOYER.DEFAULT_RATE)
+    const employeePpkContributionRate = ref(constants.PARAMS[props.year].PPK.EMPLOYEE.DEFAULT_RATE)
     const isAuthorExpenses = ref(false)
     const partOfWorkWithAuthorExpenses = ref(100)
     const isHourlyAmount = ref(false)
@@ -250,16 +251,73 @@ export default {
       if (!amount.value) {
         return true
       }
+      if(isAuthorExpenses.value && !partOfWorkWithAuthorExpenses.value) {
+        return true
+      }
+      if(isPpkContribution.value && (!employerPpkContributionRate.value || !employeePpkContributionRate.value)) {
+        return true
+      }
       return false
     })
 
-    const save = () => {
-      const input: ContractWorkInputFields = {
-        year: year.value,
-        amount: Number(amount.value),
-        amountType: <AmountType>amountType.value,
-        expenseRate: expenseRate.value,
+    watch(isStudent, () => {
+      if (isStudent.value) {
+        isHealthContribution.value = false
+        isSickContribution.value = false
+        isRentContribution.value = false
+        isPensionContribution.value = false
+        accidentContributionRate.value = 0
+
+        $q.notify({
+          message: 'Dla studenta / ucznia nie odprowadza się składek ZUS.',
+        })
       }
+    })
+    watch(hourlyAmount, () => {
+      if (isHourlyAmount.value) {
+        amount.value = Number(hourlyAmount.value) * Number(hourCount.value)
+      }
+    })
+    watch(hourCount, () => {
+      if (isHourlyAmount.value) {
+        amount.value = Number(hourlyAmount.value) * Number(hourCount.value)
+      }
+    })
+
+    const save = () => {
+      const input: ContractOfMandateInputFields = {
+        year: props.year,
+        grossAmount: Number(amount.value),
+        isReliefForYoung: isReliefForYoung.value,
+        partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
+        isHealthContribution: isHealthContribution.value,
+        isSickContribution: isSickContribution.value,
+        isRentContribution: isRentContribution.value,
+        isPensionContribution: isPensionContribution.value,
+        accidentContributionRate: accidentContributionRate.value,
+        employerPpkContributionRate: employerPpkContributionRate.value,
+        employeePpkContributionRate: employeePpkContributionRate.value,
+      }
+
+      if (isAuthorExpenses.value) {
+        input.partOfWorkWithAuthorExpenses = partOfWorkWithAuthorExpenses.value / 100
+      } else {
+        input.partOfWorkWithAuthorExpenses = 0
+      }
+
+      if(isPpkContribution.value) {
+        input.employerPpkContributionRate = employerPpkContributionRate.value / 100
+        input.employeePpkContributionRate = employeePpkContributionRate.value / 100
+      } else {
+        input.employerPpkContributionRate = 0
+        input.employeePpkContributionRate = 0
+      }
+
+      if(amountType.value === constants.AMOUNT_TYPES.NET) {
+        const min = Number(amount.value)
+        input.grossAmount = employeeContractOfMandate.findGrossAmountUsingNetAmount(min, 1.7 * min, 100, min, input)
+      }
+
       context.emit('save', input)
     }
 
@@ -267,166 +325,24 @@ export default {
       constants,
       amount,
       amountType,
-      expenseRate,
+      accidentContributionRate,
+      isReliefForYoung,
+      isStudent,
+      isHealthContribution,
+      isSickContribution,
+      isRentContribution,
+      isPensionContribution,
+      isPpkContribution,
+      employerPpkContributionRate,
+      employeePpkContributionRate,
+      isAuthorExpenses,
+      partOfWorkWithAuthorExpenses,
+      isHourlyAmount,
+      hourlyAmount,
+      hourCount,
       isDisabledButton,
       save,
     }
   },
-  data () {
-    return {
-      amount: null,
-      amountType: null,
-      accidentContributionRate: 0,
-      employeePpkRate: 0,
-      employerPpkRate: 0,
-      isReliefForYoung: false,
-      isStudent: false,
-      isHealthContribution: true,
-      isSickContribution: true,
-      isRentContribution: true,
-      isPensionContribution: true,
-      isPpkContribution: false,
-      isAuthorExpenses: false,
-      partOfWorkWithAuthorExpenses: 100,
-      isHourlyAmount: false,
-      hourlyAmount: null,
-      hourCount: null,
-    }
-  },
-  created () {
-    this.amountType = constants.AMOUNT_TYPES.GROSS
-    this.accidentContributionRate = constants.PARAMS[this.year].ACCIDENT_RATE
-    this.employerPpkRate = constants.PARAMS[this.year].PPK.EMPLOYER.DEFAULT_RATE
-    this.employeePpkRate = constants.PARAMS[this.year].PPK.EMPLOYEE.DEFAULT_RATE
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount) {
-        return true
-      }
-      if (this.accidentContributionRate.length === 0) {
-        return true
-      }
-      if (this.isAuthorExpenses && this.partOfWorkWithAuthorExpenses.length === 0) {
-        return true
-      }
-      if (this.isPpkContribution && (this.employeePpkRate.length === 0 || this.employerPpkRate.length === 0)) {
-        return true
-      }
-      return false
-    },
-  },
-  watch: {
-    isStudent: function (val) {
-      if (val) {
-        this.isHealthContribution = false
-        this.isSickContribution = false
-        this.isRentContribution = false
-        this.isPensionContribution = false
-        this.accidentContributionRate = 0
-
-        this.$q.notify({
-          message: 'Dla studenta / ucznia nie odprowadza się składek ZUS.',
-        })
-      }
-    },
-    hourlyAmount () {
-      if (this.isHourlyAmount) {
-        this.amount = this.hourlyAmount * this.hourCount
-      }
-    },
-    hourCount () {
-      if (this.isHourlyAmount) {
-        this.amount = this.hourlyAmount * this.hourCount
-      }
-    },
-  },
-  methods: {
-    save () {
-      let partOfWorkWithAuthorExpenses = 0
-      let employeePPkContributionRate = 0
-      let employerPpkContributionRate = 0
-      let grossAmount = 0
-
-      if (this.isAuthorExpenses) {
-        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
-      }
-
-      if (this.isPpkContribution) {
-        employeePPkContributionRate = Number(this.employeePpkRate) / 100
-        employerPpkContributionRate = Number(this.employerPpkRate) / 100
-      }
-
-      const min = Number(this.amount)
-
-      switch (this.amountType) {
-        case constants.AMOUNT_TYPES.NET:
-          grossAmount = this.findGrossAmountUsingNetAmount(min, 1.7 * min, 100)
-          break
-        case constants.AMOUNT_TYPES.GROSS:
-          grossAmount = Number(this.amount)
-          break
-      }
-
-      this.$store.commit('contractOfMandate/resetData')
-
-      this.$store.commit('contractOfMandate/setGrossAmount', grossAmount)
-      this.$store.commit('contractOfMandate/setAccidentContributionRate', Number(this.accidentContributionRate) / 100)
-      this.$store.commit('contractOfMandate/setemployeePPkContributionRate', employeePPkContributionRate)
-      this.$store.commit('contractOfMandate/setemployerPpkContributionRate', employerPpkContributionRate)
-      this.$store.commit('contractOfMandate/setPartOfWorkWithAuthorExpenses', partOfWorkWithAuthorExpenses)
-      this.$store.commit('contractOfMandate/setIsPensionContribution', this.isPensionContribution)
-      this.$store.commit('contractOfMandate/setIsRentContribution', this.isRentContribution)
-      this.$store.commit('contractOfMandate/setIsSickContribution', this.isSickContribution)
-      this.$store.commit('contractOfMandate/setIsHealthContribution', this.isHealthContribution)
-      this.$store.commit('contractOfMandate/setIsYoung', this.isYoung)
-
-      this.$emit('submitted')
-    },
-
-    /**
-     * Looks for a gross amount
-     *
-     * @param {number} min
-     * @param {number} max
-     * @param {number} scale
-     * @returns {number}
-     */
-    findGrossAmountUsingNetAmount (min, max, scale) {
-      let partOfWorkWithAuthorExpenses = 0
-      let employeePPkContributionRate = 0
-
-      if (this.isAuthorExpenses) {
-        partOfWorkWithAuthorExpenses = Number(this.partOfWorkWithAuthorExpenses) / 100
-      }
-
-      if (this.isPpkContribution) {
-        employeePPkContributionRate = Number(this.employeePpkRate) / 100
-      }
-
-      const netAmount = Number(this.amount)
-
-      for (let iterator = max; iterator >= min; iterator -= scale) {
-        const result = contractOfMandate.getMonthlyResultOfEmployee(
-          iterator,
-          employeePPkContributionRate,
-          partOfWorkWithAuthorExpenses,
-          this.isPensionContribution,
-          this.isRentContribution,
-          this.isSickContribution,
-          this.isHealthContribution,
-          this.isYoung,
-        )
-
-        if (Math.abs(result.netAmount - netAmount) <= 0.0005) {
-          return result.grossAmount
-        }
-        if (Math.abs(result.netAmount - netAmount) <= scale) {
-          return this.findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 2)
-        }
-      }
-      return 0
-    },
-  },
-}
+})
 </script>

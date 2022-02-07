@@ -58,7 +58,7 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, PropType, Ref, toRefs, watch} from 'vue'
+import {computed, defineComponent, PropType, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import {pln} from 'src/use/currencyFormat'
@@ -66,29 +66,26 @@ import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 import ListRow from 'components/partials/ListRow.vue'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const $q = useQuasar()
 
-    const {input} = toRefs(props)
-
-    const result: Readonly<Ref<Readonly<ContractOfMandateEmployeeSingleResult>>> = computed(() => {
-      employeeContractOfMandate.setParams(input.value.year)
-      return employeeContractOfMandate.getMonthlyResult(input.value)
+    const result = computed(() => {
+      employeeContractOfMandate.setParams(props.input.year)
+      return employeeContractOfMandate.getMonthlyResult(props.input)
     })
 
     watch(result, () => {
-      if (input.value.amount && result.value.grossAmount <= constants.PARAMS[<AvailableYear>input.value.year].LUMP_SUM_UP_TO_AMOUNT) {
+      if (props.input.grossAmount && result.value.grossAmount <= constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT) {
         $q.notify({
-          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[<AvailableYear>input.value.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
     })
@@ -101,5 +98,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

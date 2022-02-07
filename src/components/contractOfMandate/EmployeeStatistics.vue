@@ -9,21 +9,20 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType, Ref} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {usePieChart} from 'src/use/usePieChart'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const labels:string[] =  [
       'Zaliczka na podatek dochodowy',
       'Składka zdrowotna',
@@ -33,10 +32,8 @@ export default {
       'Składka PPK',
     ]
 
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<ContractOfMandateEmployeeSingleResult>>> = computed(() => {
-        return employeeContractOfMandate.getMonthlyResult(input.value)
+    const result = computed(() => {
+        return employeeContractOfMandate.getMonthlyResult(props.input)
     })
 
     const chartData = computed(() => usePieChart(
@@ -61,5 +58,5 @@ export default {
   components: {
     PieChart,
   },
-}
+})
 </script>

@@ -1,3 +1,5 @@
+import {AmountType} from 'src/types/AmountType'
+
 const defaultParams = {
   LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
   ZUS: {
@@ -179,8 +181,8 @@ export default {
     VERSION: '4.4.0',
   },
   AMOUNT_TYPES: {
-    NET: 'net',
-    GROSS: 'gross',
+    NET: 'net' as AmountType,
+    GROSS: 'gross' as AmountType,
   },
   TAX_RATES: {
     FIRST_RATE: 17,

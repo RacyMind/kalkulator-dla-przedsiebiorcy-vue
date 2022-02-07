@@ -300,10 +300,34 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
     yearlyResult: yearlyResult,
   }
 }
+/**
+ * Looks for a gross amount
+ *
+ * @param {number} min
+ * @param {number} max
+ * @param {number} scale
+ * @param targetAmount
+ * @param input
+ * @returns {number}
+ */
+function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, targetAmount:number, input:ContractOfMandateInputFields):number {
+  for (let iterator = max; iterator >= min; iterator -= scale) {
+    input.grossAmount = iterator
+    const result = getMonthlyResult(input)
+    if (Math.abs(result.netAmount - targetAmount) <= 0.0005) {
+      return result.grossAmount
+    }
+    if (Math.abs(result.netAmount - targetAmount) <= scale) {
+      return findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, scale / 2, targetAmount, input)
+    }
+  }
+  return 0
+}
 
 export default {
   getMonthlyResult,
   getYearlyResult,
   setParams,
   resetTotalAmounts,
+  findGrossAmountUsingNetAmount,
 }
