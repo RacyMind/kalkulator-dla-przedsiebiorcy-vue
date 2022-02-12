@@ -4,6 +4,7 @@ import employerContributions from 'src/logic/employerContributions'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractOfMandateEmployerYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
 
 const year = helpers.getDefaultYear()
 
@@ -67,7 +68,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number) {
 function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandateEmployerSingleResult {
 
   let pensionContribution = 0
-  let rentContribution = 0
+  let disabilityContribution = 0
   let accidentContribution = 0
   let ppkContribution = 0
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
@@ -76,7 +77,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
   if (input.isRentContribution) {
-    rentContribution = employerContributions.calculateRentContribution(basisForRentAndPensionContributions)
+    disabilityContribution = employerContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
   if (input.accidentContributionRate) {
     accidentContribution = employerContributions.calculateAccidentContribution(input.grossAmount, input.accidentContributionRate)
@@ -85,27 +86,27 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const totalAmount = input.grossAmount + pensionContribution + rentContribution + accidentContribution + ppkContribution
+  const totalAmount = input.grossAmount + pensionContribution + disabilityContribution + accidentContribution + ppkContribution
 
   return {
     totalAmount: totalAmount,
     basisForRentAndPensionContributions: basisForRentAndPensionContributions,
     grossAmount: input.grossAmount,
     pensionContribution: pensionContribution,
-    rentContribution: rentContribution,
+    disabilityContribution: disabilityContribution,
     accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
-    contributionTotal: pensionContribution + rentContribution + accidentContribution + ppkContribution,
+    contributionTotal: pensionContribution + disabilityContribution + accidentContribution + ppkContribution,
   }
 }
 
 /**
  * Returns the yearly results of an employer
  *
- * @param {[]} monthlyInputs
- * @returns {{totalBasisForRentAndPensionContributions: number, rows: *[]}}
+ * @param {ContractOfMandateInputFields[]} monthlyInputs
+ * @returns {ContractOfMandateEmployerYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
+function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployerYearlyResult {
   const results:ContractOfMandateEmployerSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
 
@@ -125,11 +126,13 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]) {
       .reduce((current, sum) => current + sum, 0),
     pensionContribution: results.map(result => result.pensionContribution)
       .reduce((current, sum) => current + sum, 0),
-    rentContribution: results.map(result => result.rentContribution)
+    disabilityContribution: results.map(result => result.disabilityContribution)
       .reduce((current, sum) => current + sum, 0),
     accidentContribution: results.map(result => result.accidentContribution)
       .reduce((current, sum) => current + sum, 0),
     ppkContribution: results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0),
   }
 

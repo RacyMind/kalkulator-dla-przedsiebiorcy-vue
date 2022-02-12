@@ -36,12 +36,12 @@
     <ListRow
       class="bg-teal-1"
       name="Składka rentowa"
-      :value="pln(result.rentContribution)"
+      :value="pln(result.disabilityContribution)"
       nested
     />
     <ListRow
       name="Składka emerytalna"
-      :value="pln(result.rentContribution)"
+      :value="pln(result.disabilityContribution)"
       nested
     />
     <ListRow

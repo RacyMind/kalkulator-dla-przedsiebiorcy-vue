@@ -3,7 +3,7 @@ export interface ContractOfMandateEmployerSingleResult {
   readonly totalAmount: number,
   readonly basisForRentAndPensionContributions: number,
   readonly accidentContribution: number,
-  readonly rentContribution: number,
+  readonly disabilityContribution: number,
   readonly pensionContribution: number,
   readonly ppkContribution: number,
   readonly contributionTotal: number,

@@ -25,7 +25,7 @@
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <SummarySalaryTable :year="year" />
+      <SalarySummary :input="inputFields" />
       <SectionHeader>
         <div class="row justify-between">
           <div>
@@ -59,25 +59,25 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!grossAmount"
+            :disable="!inputFields.grossAmount"
             outline
             @click="openEmployerModal = true"
           />
         </div>
       </SectionHeader>
-      <!--     <EmployerTable :year="year" />
-     <SectionHeader>
-       <q-icon name="o_pie_chart" />
-       Wykres dla pracodawcy
-     </SectionHeader>
-     <EmployerStatistics :year="year" />
+      <EmployerSummary :input="inputFields" />
+      <SectionHeader>
+        <q-icon name="o_pie_chart" />
+        Wykres dla pracodawcy
+      </SectionHeader>
+      <EmployerStatistics :input="inputFields" />
 
-     <q-dialog v-model="openEmployeeModal">
-       <WholeYearForEmployee :year="year" />
-     </q-dialog>
-     <q-dialog v-model="openEmployerModal">
-       <WholeYearForEmployer :year="year" />
-     </q-dialog>-->
+      <q-dialog v-model="openEmployeeModal">
+        <YearlyEmployeeSummary :input="inputFields" />
+      </q-dialog>
+      <q-dialog v-model="openEmployerModal">
+        <YearlyEmployerSummary :input="inputFields" />
+      </q-dialog>
     </div>
     <Footer />
   </q-page>
@@ -86,20 +86,20 @@
 <script lang="ts">
 import {defineComponent, ref, watch} from 'vue'
 import {useStore} from 'vuex'
+import helpers from 'src/logic/helpers'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
 import Form from 'components/contractOfMandate/Form.vue'
-import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable.vue'
+import SalarySummary from 'components/contractOfMandate/SalarySummary.vue'
 import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
 import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
-import EmployerTable from 'components/contractOfMandate/EmployerTable.vue'
+import EmployerSummary from 'components/contractOfMandate/EmployerSummary.vue'
 import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
-import WholeYearForEmployer from 'components/contractOfMandate/WholeYearForEmployer.vue'
-import WholeYearForEmployee from 'components/contractOfMandate/WholeYearForEmployee.vue'
+import YearlyEmployeeSummary from 'components/contractOfMandate/YearlyEmployeeSummary.vue'
 import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import YearlyEmployerSummary from 'components/contractOfMandate/YearlyEmployerSummary.vue'
 export default defineComponent({
   setup() {
     const store = useStore()
@@ -144,17 +144,17 @@ export default defineComponent({
     }
   },
   components: {
+    YearlyEmployerSummary,
+    YearlyEmployeeSummary,
     SectionHeader,
     Advert,
     ChooseYear,
     Form,
-    SummarySalaryTable,
+    SalarySummary,
     EmployeeSummary,
     EmployeeStatistics,
-    EmployerTable,
+    EmployerSummary,
     EmployerStatistics,
-    WholeYearForEmployer,
-    WholeYearForEmployee,
     Footer,
   },
 })

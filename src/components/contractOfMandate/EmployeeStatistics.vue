@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, Ref} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {usePieChart} from 'src/use/usePieChart'
@@ -23,7 +23,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const labels:string[] =  [
+    const labels =  [
       'Zaliczka na podatek dochodowy',
       'Składka zdrowotna',
       'Składka chorobowa',
@@ -43,7 +43,7 @@ export default defineComponent({
           result.value.taxAmount,
           result.value.healthContribution,
           result.value.sickContribution,
-          result.value.rentContribution,
+          result.value.disabilityContribution,
           result.value.pensionContribution,
           result.value.ppkContribution,
         ],

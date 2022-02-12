@@ -23,7 +23,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const labels:string[] =  [
+    const labels =  [
       'Wynagrodzenie brutto',
       'Składka wypadkowa',
       'Składka rentowa',
@@ -40,7 +40,7 @@ export default defineComponent({
         [
           result.value.grossAmount,
           result.value.accidentContribution,
-          result.value.rentContribution,
+          result.value.disabilityContribution,
           result.value.pensionContribution,
           result.value.ppkContribution,
         ],

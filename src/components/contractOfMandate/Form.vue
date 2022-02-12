@@ -294,7 +294,7 @@ export default defineComponent({
         isSickContribution: isSickContribution.value,
         isRentContribution: isRentContribution.value,
         isPensionContribution: isPensionContribution.value,
-        accidentContributionRate: accidentContributionRate.value,
+        accidentContributionRate: accidentContributionRate.value / 100,
         employerPpkContributionRate: employerPpkContributionRate.value,
         employeePpkContributionRate: employeePpkContributionRate.value,
       }

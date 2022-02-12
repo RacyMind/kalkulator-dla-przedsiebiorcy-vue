@@ -184,7 +184,7 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number):numbe
 function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):ContractOfMandateEmployeeSingleResult {
   let expenseRate = 0
   let pensionContribution = 0
-  let rentContribution = 0
+  let disabilityContribution = 0
   let sickContribution = 0
   let healthContribution = 0
   let ppkContribution = 0
@@ -200,7 +200,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
     pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
   if (input.isRentContribution) {
-    rentContribution = employeeContributions.calculateRentContribution(basisForRentAndPensionContributions)
+    disabilityContribution = employeeContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
   if (input.isSickContribution) {
     sickContribution = employeeContributions.calculateSickContribution(input.grossAmount)
@@ -209,7 +209,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
     ppkContribution = employeeContributions.calculatePpkContribution(input.grossAmount, input.employeePpkContributionRate)
   }
 
-  const grossAmountMinusEmployeeContributions = employeeContributions.calculateGrossAmountMinusContributions(input.grossAmount, pensionContribution, rentContribution, sickContribution)
+  const grossAmountMinusEmployeeContributions = employeeContributions.calculateGrossAmountMinusContributions(input.grossAmount, pensionContribution, disabilityContribution, sickContribution)
 
   if (input.isHealthContribution) {
     healthContribution = employeeContributions.calculateHealthContribution(grossAmountMinusEmployeeContributions)
@@ -226,7 +226,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
 
   const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
 
-  const totalContributions = employeeContributions.sumContributions(pensionContribution, rentContribution, sickContribution, healthContribution)
+  const totalContributions = employeeContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)
 
   return {
@@ -234,14 +234,14 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
     grossAmount: input.grossAmount,
     basisForRentAndPensionContributions: basisForRentAndPensionContributions,
     pensionContribution: pensionContribution,
-    rentContribution: rentContribution,
+    disabilityContribution: disabilityContribution,
     sickContribution: sickContribution,
     ppkContribution: ppkContribution,
     healthContribution: healthContribution,
     expenses: expenses,
     basisForTax: basisForTax,
     taxAmount: taxAmount,
-    contributionTotal: pensionContribution + rentContribution + sickContribution + ppkContribution + healthContribution,
+    contributionTotal: pensionContribution + disabilityContribution + sickContribution + ppkContribution + healthContribution,
   }
 }
 
@@ -253,19 +253,17 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
  */
 function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployeeYearlyResult {
   const results:ContractOfMandateEmployeeSingleResult[] = []
-  let i = 0
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
   totalGrossAmount = 0
 
-  monthlyInputs.forEach(input => {
-    const result = getMonthlyResult(input, i)
+  monthlyInputs.forEach((input, index) => {
+    const result = getMonthlyResult(input, index)
     results.push(result)
 
     totalBasisForRentAndPensionContributions += result.basisForRentAndPensionContributions
     totalExpenses += result.expenses
     totalGrossAmount += result.grossAmount
-    i++
   })
 
   const yearlyResult = {
@@ -277,7 +275,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
       .reduce((current, sum) => current + sum, 0),
     pensionContribution: results.map(result => result.pensionContribution)
       .reduce((current, sum) => current + sum, 0),
-    rentContribution: results.map(result => result.rentContribution)
+    disabilityContribution: results.map(result => result.disabilityContribution)
       .reduce((current, sum) => current + sum, 0),
     sickContribution: results.map(result => result.sickContribution)
       .reduce((current, sum) => current + sum, 0),
