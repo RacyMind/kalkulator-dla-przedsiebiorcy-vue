@@ -62,7 +62,6 @@ import {computed, defineComponent, PropType, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import {pln} from 'src/use/currencyFormat'
-import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 import ListRow from 'components/partials/ListRow.vue'
@@ -83,9 +82,9 @@ export default defineComponent({
     })
 
     watch(result, () => {
-      if (props.input.grossAmount && result.value.grossAmount <= constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT) {
+      if (props.input.grossAmount && result.value.grossAmount <= constants.PARAMS[props.input.year].LUMP_SUM_UP_TO_AMOUNT) {
         $q.notify({
-          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[props.input.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
     })

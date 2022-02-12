@@ -212,7 +212,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, PropType, Ref, ref, watch} from 'vue'
+import {defineComponent, computed, Ref, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import {AvailableYear} from 'src/types/AvailableYear'
@@ -222,7 +222,7 @@ import employeeContractOfMandate from 'components/contractOfMandate/employeeCont
 export default defineComponent({
   props: {
     year: {
-      type: Object as PropType<AvailableYear>,
+      type: Number,
       required: true,
     },
   },
@@ -231,7 +231,7 @@ export default defineComponent({
 
     const amount:Ref<number|null> = ref(null)
     const amountType = ref(constants.AMOUNT_TYPES.GROSS)
-    const accidentContributionRate = ref(constants.PARAMS[props.year].ACCIDENT_RATE)
+    const accidentContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].ACCIDENT_RATE)
     const isReliefForYoung = ref(false)
     const isStudent = ref(false)
     const isHealthContribution = ref(true)
@@ -239,8 +239,8 @@ export default defineComponent({
     const isRentContribution = ref(true)
     const isPensionContribution = ref(true)
     const isPpkContribution = ref(false)
-    const employerPpkContributionRate = ref(constants.PARAMS[props.year].PPK.EMPLOYER.DEFAULT_RATE)
-    const employeePpkContributionRate = ref(constants.PARAMS[props.year].PPK.EMPLOYEE.DEFAULT_RATE)
+    const employerPpkContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].PPK.EMPLOYER.DEFAULT_RATE)
+    const employeePpkContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].PPK.EMPLOYEE.DEFAULT_RATE)
     const isAuthorExpenses = ref(false)
     const partOfWorkWithAuthorExpenses = ref(100)
     const isHourlyAmount = ref(false)
@@ -286,7 +286,7 @@ export default defineComponent({
 
     const save = () => {
       const input: ContractOfMandateInputFields = {
-        year: props.year,
+        year: <AvailableYear>props.year,
         grossAmount: Number(amount.value),
         isReliefForYoung: isReliefForYoung.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
