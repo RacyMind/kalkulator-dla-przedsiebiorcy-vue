@@ -7,7 +7,7 @@ export interface ContractOfMandateInputFields {
   partOfWorkWithAuthorExpenses: number,
   isHealthContribution: boolean,
   isSickContribution: boolean,
-  isRentContribution: boolean,
+  isDisabilityContribution: boolean,
   isPensionContribution: boolean,
   accidentContributionRate: number,
   employerPpkContributionRate: number,

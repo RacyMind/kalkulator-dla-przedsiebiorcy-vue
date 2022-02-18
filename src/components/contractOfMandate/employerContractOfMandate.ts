@@ -76,7 +76,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
   if (input.isPensionContribution) {
     pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
-  if (input.isRentContribution) {
+  if (input.isDisabilityContribution) {
     disabilityContribution = employerContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
   if (input.accidentContributionRate) {
@@ -86,7 +86,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const totalAmount = input.grossAmount + pensionContribution + disabilityContribution + accidentContribution + ppkContribution
+  const totalAmount = helpers.round(input.grossAmount + pensionContribution + disabilityContribution + accidentContribution + ppkContribution, 2)
 
   return {
     totalAmount: totalAmount,
@@ -96,7 +96,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     disabilityContribution: disabilityContribution,
     accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
-    contributionTotal: pensionContribution + disabilityContribution + accidentContribution + ppkContribution,
+    contributionTotal: helpers.round(pensionContribution + disabilityContribution + accidentContribution + ppkContribution, 2),
   }
 }
 
@@ -118,22 +118,22 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
   })
 
   const yearlyResult = {
-    totalAmount: results.map(result => result.totalAmount)
-      .reduce((current, sum) => current + sum, 0),
-    grossAmount: results.map(result => result.grossAmount)
-      .reduce((current, sum) => current + sum, 0),
-    basisForRentAndPensionContributions: results.map(result => result.basisForRentAndPensionContributions)
-      .reduce((current, sum) => current + sum, 0),
-    pensionContribution: results.map(result => result.pensionContribution)
-      .reduce((current, sum) => current + sum, 0),
-    disabilityContribution: results.map(result => result.disabilityContribution)
-      .reduce((current, sum) => current + sum, 0),
-    accidentContribution: results.map(result => result.accidentContribution)
-      .reduce((current, sum) => current + sum, 0),
-    ppkContribution: results.map(result => result.ppkContribution)
-      .reduce((current, sum) => current + sum, 0),
-    contributionTotal: results.map(result => result.contributionTotal)
-      .reduce((current, sum) => current + sum, 0),
+    totalAmount: helpers.round(results.map(result => result.totalAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    grossAmount: helpers.round(results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    basisForRentAndPensionContributions: helpers.round(results.map(result => result.basisForRentAndPensionContributions)
+      .reduce((current, sum) => current + sum, 0), 2),
+    pensionContribution: helpers.round(results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    disabilityContribution: helpers.round(results.map(result => result.disabilityContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    accidentContribution: helpers.round(results.map(result => result.accidentContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    contributionTotal: helpers.round(results.map(result => result.contributionTotal)
+      .reduce((current, sum) => current + sum, 0), 2),
   }
 
   return {

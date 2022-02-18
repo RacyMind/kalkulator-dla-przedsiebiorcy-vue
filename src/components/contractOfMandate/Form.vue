@@ -292,7 +292,7 @@ export default defineComponent({
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
         isHealthContribution: isHealthContribution.value,
         isSickContribution: isSickContribution.value,
-        isRentContribution: isRentContribution.value,
+        isDisabilityContribution: isRentContribution.value,
         isPensionContribution: isPensionContribution.value,
         accidentContributionRate: accidentContributionRate.value / 100,
         employerPpkContributionRate: employerPpkContributionRate.value,
