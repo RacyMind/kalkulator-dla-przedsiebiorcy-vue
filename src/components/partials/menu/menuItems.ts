@@ -58,12 +58,12 @@ export default {
       className: 'c-contractWork',
       link: '/umowa-o-dzielo',
     } as MenuItem,
-    {
+/*    {
       title: 'Rozliczenie z małżonkiem',
       caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
       className: 'c-work',
       link: '/rozliczenie-z-malzonkiem',
-    } as MenuItem,
+    } as MenuItem,*/
     {
       title: 'Zasiłek chorobowy',
       caption: 'Moduł oblicza wysokość zasiłku chorobowego',

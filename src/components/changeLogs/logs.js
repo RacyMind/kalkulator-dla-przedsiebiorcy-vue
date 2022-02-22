@@ -1,5 +1,15 @@
 export default [
   {
+    version: '4.4.2',
+    publish_date: '2022-02-02',
+    content: '<ul><li>Aktualizacja stawek składki zdrowotnej dla ryczałtu.</li></ul>',
+  },
+  {
+    version: '4.4.1',
+    publish_date: '2022-01-08',
+    content: '<ul><li>Poprawa wyliczeń składki zdrowotnej i podatku w Samozatrudnieniu.</li><li>Wycofanie modułu Rozliczenie z małżonkiem.</li></ul>',
+  },
+  {
     version: '4.4.0',
     publish_date: '2022-01-02',
     content: '<ul><li>Dodano moduł Terminy w US, ZUS i PFRON.</li><li>Dodano moduł Informacje o wynagrodzeniu.</li><li>Refaktoryzacja modułu Działalność niezarejestrowana.</li><li>Refaktoryzacja modułu Limit obrotu dla kasy fiskalnej.</li><li>Refaktoryzacja modułu Limit sprzedaży dla zwolnienia z VAT.</li><li>Refaktoryzacja modułu Lokata.</li><li>Refaktoryzacja modułu Odsetki.</li><li>Refaktoryzacja modułu Zasiłek chorobowy.</li><li>Refaktoryzacja modułu Umowa o dzieło.</li><li>Zaktualizowano składki ZUS w module Składki ZUS za część miesiąca.</li></ul>',
