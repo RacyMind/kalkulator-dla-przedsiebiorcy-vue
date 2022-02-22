@@ -8,53 +8,52 @@
   </div>
 </template>
 
-<script>
-import constants from 'src/logic/constants'
-import { useMonthlyEmployerResult } from 'src/use/useContractOfMandate'
-import PieChart from 'components/PieChart'
+<script lang="ts">
+import {computed, defineComponent, PropType} from 'vue'
+import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
+import PieChart from 'components/PieChart.vue'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {usePieChart} from 'src/use/usePieChart'
 
-export default {
+export default defineComponent({
   props: {
-    year: Number,
+    input: {
+      type: Object as PropType<ContractOfMandateInputFields>,
+      required: true,
+    },
   },
-  setup (props) {
-    const { result } = useMonthlyEmployerResult(props)
+  setup(props) {
+    const labels =  [
+      'Wynagrodzenie brutto',
+      'Składka wypadkowa',
+      'Składka rentowa',
+      'Składka emerytalna',
+      'Składka PPK',
+    ]
+
+    const result = computed(() => {
+      return employerContractOfMandate.getMonthlyResult(props.input)
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.grossAmount,
+          result.value.accidentContribution,
+          result.value.disabilityContribution,
+          result.value.pensionContribution,
+          result.value.ppkContribution,
+        ],
+      ),
+    )
 
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.grossAmount,
-            this.result.accidentContribution,
-            this.result.rentContribution,
-            this.result.pensionContribution,
-            this.result.ppkContribution,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-            constants.COLORS.CHART3,
-            constants.COLORS.CHART4,
-            constants.COLORS.CHART5,
-          ],
-        }],
-        labels: [
-          'Wynagrodzenie brutto',
-          'Składka wypadkowa',
-          'Składka rentowa',
-          'Składka emerytalna',
-          'Składka PPK',
-        ],
-      }
-    },
   },
   components: {
     PieChart,
   },
-}
+})
 </script>

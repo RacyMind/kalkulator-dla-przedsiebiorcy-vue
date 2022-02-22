@@ -8,58 +8,55 @@
   </div>
 </template>
 
-<script>
-import constants from 'src/logic/constants'
-import PieChart from 'components/PieChart'
-import { useMonthlyEmployeeResult } from 'src/use/useContractOfMandate'
+<script lang="ts">
+import {computed, defineComponent, PropType} from 'vue'
+import PieChart from 'components/PieChart.vue'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {usePieChart} from 'src/use/usePieChart'
+import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
-export default {
+export default defineComponent({
   props: {
-    year: Number,
+    input: {
+      type: Object as PropType<ContractOfMandateInputFields>,
+      required: true,
+    },
   },
-  setup (props) {
-    const { result } = useMonthlyEmployeeResult(props)
+  setup(props) {
+    const labels =  [
+      'Zaliczka na podatek dochodowy',
+      'Składka zdrowotna',
+      'Składka chorobowa',
+      'Składka rentowa',
+      'Składka emerytalna',
+      'Składka PPK',
+    ]
+
+    const result = computed(() => {
+        return employeeContractOfMandate.getMonthlyResult(props.input)
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.netAmount,
+          result.value.taxAmount,
+          result.value.healthContribution,
+          result.value.sickContribution,
+          result.value.disabilityContribution,
+          result.value.pensionContribution,
+          result.value.ppkContribution,
+        ],
+      ),
+    )
+
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.netAmount,
-            this.result.taxAmount,
-            this.result.healthContribution,
-            this.result.sickContribution,
-            this.result.rentContribution,
-            this.result.pensionContribution,
-            this.result.ppkContribution,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-            constants.COLORS.CHART3,
-            constants.COLORS.CHART4,
-            constants.COLORS.CHART5,
-            constants.COLORS.CHART6,
-            constants.COLORS.CHART7,
-          ],
-        }],
-        labels: [
-          'Wynagrodzenie netto',
-          'Zaliczka na podatek dochodowy',
-          'Składka zdrowotna',
-          'Składka chorobowa',
-          'Składka rentowa',
-          'Składka emerytalna',
-          'Składka PPK',
-        ],
-      }
-    },
   },
   components: {
     PieChart,
   },
-}
+})
 </script>

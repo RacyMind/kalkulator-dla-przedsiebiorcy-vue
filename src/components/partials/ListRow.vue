@@ -2,7 +2,7 @@
   <div
     v-if="inline"
     class="row justify-between q-px-md q-py-sm">
-    <div>
+    <div :class="[{ 'q-pl-sm': nested }]">
       {{ name }}
     </div>
     <div>
@@ -34,6 +34,10 @@ export default {
     inline: {
       type: Boolean,
       default: true,
+    },
+    nested: {
+      type: Boolean,
+      default: false,
     },
   },
 }
