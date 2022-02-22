@@ -109,7 +109,7 @@ const from2022 = {
   FREE_AMOUNT_OF_TAX: 30000,
   TAX_REDUCING_AMOUNT: 5100 / 12,
   MINIMUM_SALARY: 3010,
-  AVERAGE_SALARY: 5922,
+  AVERAGE_SALARY: 6221.04,
   ZUS: {
     ...from2021.ZUS,
     OWNER: {
@@ -176,7 +176,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.4.0',
+    VERSION: '4.4.2',
   },
   AMOUNT_TYPES: {
     NET: 'net',
