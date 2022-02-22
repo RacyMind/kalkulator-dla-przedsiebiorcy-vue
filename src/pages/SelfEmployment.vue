@@ -53,7 +53,7 @@
 
 <script>
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Form from 'components/selfEmployment/Form'
 import Table from 'components/selfEmployment/Table'
 import Statistics from 'components/selfEmployment/Statistics'
@@ -70,7 +70,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Samozatrudnienie')
+    this.$store.commit('app/setModuleTitle', 'Samozatrudnienie')
     this.$store.commit('selfEmployment/resetData')
 
     this.year = helpers.getDefaultYear()
@@ -83,12 +83,6 @@ export default {
   watch: {
     year () {
       this.$store.commit('selfEmployment/resetData')
-
-      if (this.year === 2022) {
-        this.$q.notify({
-          message: 'Wyliczenia dla 2022 roku są szacunkowe. Nie jest znana podstawa składek ZUS na 2022 r., ani przeciętne wynagrodzenie w 4. kwartale 2021 r.',
-        })
-      }
     },
   },
   methods: {

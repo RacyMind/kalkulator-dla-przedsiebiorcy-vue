@@ -18,12 +18,12 @@
 <script>
 import SectionHeader from 'components/partials/SectionHeader'
 import Table from 'components/exchangeRates/Table'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Kursy walut')
+    this.$store.commit('app/setModuleTitle', 'Kursy walut')
   },
   components: {
     SectionHeader,

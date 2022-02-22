@@ -10,21 +10,13 @@
     </div>
     <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
-        Składka zdrowotna
-      </div>
-      <div>
-        {{ pln(zus.health) }}
-      </div>
-    </div>
-    <div class="row justify-between q-px-md q-py-sm">
-      <div>
         Składka chorobowa
       </div>
       <div>
         {{ pln(zus.sick) }}
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+    <div class="row justify-between q-px-md q-py-sm">
       <div>
         Składka rentowa
       </div>
@@ -32,7 +24,7 @@
         {{ pln(zus.rent) }}
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm">
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
         Składka emerytalna
       </div>
@@ -40,7 +32,7 @@
         {{ pln(zus.pension) }}
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
+    <div class="row justify-between q-px-md q-py-sm">
       <div>
         Składka wypadkowa
       </div>
@@ -48,7 +40,7 @@
         {{ pln(zus.accident) }}
       </div>
     </div>
-    <div class="row justify-between q-px-md q-py-sm">
+    <div class="row justify-between q-px-md q-py-sm bg-teal-1">
       <div>
         Składka na Fundusz Pracy
       </div>

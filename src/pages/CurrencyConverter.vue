@@ -27,13 +27,13 @@
 import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/currencyConverter/Form'
 import Table from 'components/currencyConverter/Table'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 
 export default {
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Przelicznik walut')
+    this.$store.commit('app/setModuleTitle', 'Przelicznik walut')
   },
   methods: {
     scrollTo () {

@@ -8,6 +8,7 @@
           label="Email*"
           autofocus
           color="brand"
+          :rules="[validationRules.required, validationRules.email]"
           required
         />
       </div>
@@ -27,7 +28,7 @@
           :options="subjects"
           label="Temat*"
           color="brand"
-          :rules="[subjectRule]"
+          :rules="[validationRules.subject]"
         />
       </div>
     </div>
@@ -38,6 +39,7 @@
           type="textarea"
           label="Wiadomość*"
           color="brand"
+          :rules="[validationRules.required]"
           required
         />
       </div>
@@ -51,7 +53,7 @@
           size="lg"
           label="Wyślij"
           :loading="isSending"
-          :disable="isDisable"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
@@ -67,67 +69,78 @@
   </q-form>
 </template>
 
-<script>
+<script lang="ts">
+import {computed, ref} from 'vue'
+import {useQuasar} from 'quasar'
 import axios from 'axios'
+import validationRules from 'src/logic/validationRules'
 
 export default {
-  data () {
-    return {
-      email: null,
-      name: null,
-      subject: null,
-      message: null,
-      subjects: ['Zaproponuj nową funkcjonalność', 'Zgłoś błąd', 'Inne'],
-      isSending: false,
-    }
-  },
-  computed: {
-    isDisable () {
-      if (this.isSending) {
+  setup() {
+    const $q = useQuasar()
+
+    const subjects =[
+      'Zaproponuj nową funkcjonalność',
+      'Zgłoś błąd',
+      'Inne',
+    ]
+
+    const email = ref(null)
+    const name = ref(null)
+    const subject = ref(null)
+    const message = ref(null)
+    const isSending = ref(false)
+
+    const isDisabledButton = computed(() => {
+      if (isSending.value) {
         return true
       }
-      return !this.email || !this.subject || !this.message
-    },
-  },
-  methods: {
-    send () {
-      if (this.isSending) {
+      return !email.value || !subject.value || !message.value
+    })
+
+    const send = () => {
+      if (isSending.value) {
         return
       }
 
-      this.isSending = true
+      isSending.value = true
+
       axios.post('https://kalkulatorfinansowy.app/contact.php',
         {
-          email: this.email,
-          name: this.name,
-          subject: this.subject,
-          message: this.message,
-        })
-        .then(() => {
-          this.$q.notify({
+          email: email.value,
+          name: name.value,
+          subject: subject.value,
+          message: message.value,
+        }).then(() => {
+          $q.notify({
             color: 'positive',
-            message: 'Wiadomość została wyłana',
+            message: 'Wiadomość została wysłana',
           })
-          this.email = null
-          this.name = null
-          this.subject = null
-          this.message = null
-        })
-        .catch(error => {
-          this.$q.notify({
+          email.value = null
+          name.value = null
+          subject.value = null
+          message.value = null
+        }).catch(error => {
+          $q.notify({
             color: 'negative',
             message: error.response.data,
           })
+        }).finally(() => {
+          isSending.value = false
         })
-        .finally(() => {
-          this.isSending = false
-        })
-    },
-    subjectRule (val) {
-      if (val === null) {
-        return 'Wybierz temat'
-      }
-    },
+    }
+
+    return {
+      validationRules,
+      subjects,
+      name,
+      email,
+      subject,
+      message,
+      isSending,
+      isDisabledButton,
+      send,
+    }
   },
 }
 </script>

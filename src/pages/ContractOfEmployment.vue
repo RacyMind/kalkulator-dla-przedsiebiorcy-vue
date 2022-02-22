@@ -87,7 +87,7 @@
 import { mapGetters } from 'vuex'
 import helpers from 'src/logic/helpers'
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import ChooseYear from 'components/partials/ChooseYear'
 import Form from 'components/contractOfEmployment/Form'
 import SummarySalaryTable from 'components/contractOfEmployment/SummarySalaryTable'
@@ -107,7 +107,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o pracę')
+    this.$store.commit('app/setModuleTitle', 'Umowa o pracę')
     this.$store.commit('contractOfEmployment/resetData')
 
     this.year = helpers.getDefaultYear()

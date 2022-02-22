@@ -8,40 +8,57 @@
   </div>
 </template>
 
-<script>
-import constants from 'src/logic/constants'
-import PieChart from 'components/PieChart'
-import { useResult } from 'src/use/useContractWork'
+<script lang="ts">
+import {computed, PropType, Ref, toRefs} from 'vue'
+import PieChart from 'components/PieChart.vue'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {usePieChart} from 'src/use/usePieChart'
+import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
+import contractWork from 'components/contractWork/contractWork'
 
 export default {
   props: {
-    year: Number,
+    input: {
+      type: Object as PropType<ContractWorkInputFields>,
+      required: true,
+    },
   },
-  setup (props) {
-    const { result } = useResult(props)
+  setup(props: any) {
+    const labels:string[] =  [
+      'Wynagrodzenie netto',
+      'Zaliczka na podatek dochodowy',
+    ]
+
+    const { input } = toRefs(props)
+
+    const result:Readonly<Ref<Readonly<ContractWorkResult>>> = computed(() => {
+      try{
+        return contractWork.getResult(input.value)
+      }
+      catch {
+        return {
+          basisForTax: 0,
+          expenses:  0,
+          grossAmount: 0,
+          taxAmount: 0,
+          netAmount: 0,
+        }
+      }
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.netAmount,
+          result.value.taxAmount,
+        ],
+      ),
+    )
+
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.netAmount,
-            this.result.taxAmount,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-          ],
-        }],
-        labels: [
-          'Wynagrodzenie netto',
-          'Zaliczka na podatek dochodowy',
-        ],
-      }
-    },
   },
   components: {
     PieChart,

@@ -1,25 +1,27 @@
 import { uid } from 'quasar'
 
 export default {
-
   logEvent (category, action, label, value = null) {
-    window.dataLayer.push({
-      event: 'customEvent',
-      category: category,
-      action: action,
-      label: label,
-      value: value,
-      cid: this.getCid(),
-    })
+    if(!process.env.DEV) {
+      window.dataLayer.push({
+        event: 'customEvent',
+        category: category,
+        action: action,
+        label: label,
+        value: value,
+        cid: this.getCid(),
+      })
+    }
   },
 
   logPage (path) {
-    // Here you can preprocess the path, if needed
-    window.dataLayer.push({
-      event: 'customPageView',
-      path: path,
-      cid: this.getCid(),
-    })
+    if(!process.env.DEV) {
+      window.dataLayer.push({
+        event: 'customPageView',
+        path: path,
+        cid: this.getCid(),
+      })
+    }
   },
 
   getCid () {

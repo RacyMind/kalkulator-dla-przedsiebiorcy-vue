@@ -109,7 +109,7 @@ const from2022 = {
   FREE_AMOUNT_OF_TAX: 30000,
   TAX_REDUCING_AMOUNT: 5100 / 12,
   MINIMUM_SALARY: 3010,
-  AVERAGE_SALARY: 5922,
+  AVERAGE_SALARY: 6221.04,
   ZUS: {
     ...from2021.ZUS,
     OWNER: {
@@ -176,7 +176,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.3.0',
+    VERSION: '4.4.2',
   },
   AMOUNT_TYPES: {
     NET: 'net',
@@ -188,16 +188,6 @@ export default {
     LINEAR_RATE: 19,
     BELKA_RATE: 19,
   },
-  SICK_PAY_RATES: [
-    {
-      label: '80%',
-      value: 80,
-    },
-    {
-      label: '100%',
-      value: 100,
-    },
-  ],
   TAX_RATES_FOR_LAMP_SUM: [
     {
       label: '2%',
@@ -289,8 +279,8 @@ export default {
       HEALTH_RATE: 9,
       FP_RATE: 2.45,
       BASIS_AMOUNT_FOR_HEALTH: 4242.38,
-      BIG_AMOUNT: 3155.40,
-      SMALL_AMOUNT: 840,
+      BIG_AMOUNT: 3553.2,
+      SMALL_AMOUNT: 903,
     },
   },
   PPK: {

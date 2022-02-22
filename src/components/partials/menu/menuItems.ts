@@ -58,12 +58,12 @@ export default {
       className: 'c-contractWork',
       link: '/umowa-o-dzielo',
     } as MenuItem,
-    {
+/*    {
       title: 'Rozliczenie z małżonkiem',
       caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
       className: 'c-work',
       link: '/rozliczenie-z-malzonkiem',
-    } as MenuItem,
+    } as MenuItem,*/
     {
       title: 'Zasiłek chorobowy',
       caption: 'Moduł oblicza wysokość zasiłku chorobowego',
@@ -131,6 +131,18 @@ export default {
       caption: 'Moduł pokazuje wykres z inflacją w Polsce',
       className: 'c-informator',
       link: '/inflacja',
+    } as MenuItem,
+    {
+      title: 'Informacje o wynagrodzeniu',
+      caption: 'Moduł pokazuje informacje o wynagrodzeniu w Polsce',
+      className: 'c-informator',
+      link: '/informacje-o-wynagrodzeniu',
+    } as MenuItem,
+    {
+      title: 'Terminy w US, ZUS i PFRON',
+      caption: 'Moduł pokazuje istotne terminy w US, ZUS i PFRON',
+      className: 'c-informator',
+      link: '/terminy-w-us-zus-pfron',
     } as MenuItem,
   ],
 }

@@ -15,15 +15,17 @@
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Statistics from 'components/inflation/Statistics'
-import Advert from 'components/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {useStore} from 'vuex'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/inflation/Statistics.vue'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/Footer.vue'
 
 export default {
-  created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Inflacja')
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Inflacja')
   },
   components: {
     SectionHeader,

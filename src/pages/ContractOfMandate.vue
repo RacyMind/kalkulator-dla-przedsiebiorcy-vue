@@ -87,7 +87,7 @@
 import { ref } from 'vue'
 import { mapGetters } from 'vuex'
 import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import ChooseYear from 'components/partials/ChooseYear'
 import Form from 'components/contractOfMandate/Form'
 import SummarySalaryTable from 'components/contractOfMandate/SummarySalaryTable'
@@ -113,7 +113,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa zlecenie')
+    this.$store.commit('app/setModuleTitle', 'Umowa zlecenie')
     this.$store.commit('contractOfMandate/resetData')
   },
   computed: {

@@ -11,9 +11,7 @@
           label="Kwota*"
           autofocus
           color="brand"
-          :rules="[
-            val => !!val || '* Wpisz kwotę',
-          ]"
+          :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
         <div class="q-mt-sm block">
@@ -60,6 +58,7 @@ import constants from 'src/logic/constants'
 import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
 import {AmountType} from 'src/types/AmountType'
 import {VatTaxRate} from 'src/types/VatTaxRate'
+import validationRules from 'src/logic/validationRules'
 
 export default {
   setup(props: any, context: any) {
@@ -101,12 +100,13 @@ export default {
 
     return {
       constants,
-      save,
+      validationRules,
       vatTaxRates,
       amount,
       amountType,
       taxRate,
       isDisabledButton,
+      save,
     }
   },
 }

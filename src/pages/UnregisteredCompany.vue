@@ -5,52 +5,73 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_description" />
+        <q-icon name="o_description"/>
         Wypełnij formularz
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @scroll="scrollTo"
+        @save="save"
       />
-      <Advert />
+      <Advert/>
       <SectionHeader ref="scrollTarget">
-        <q-icon name="o_credit_card" />
+        <q-icon name="o_credit_card"/>
         Podsumowanie
       </SectionHeader>
-      <Table />
+      <Summary
+        :input="unregisteredCompanyInputFields"
+      />
       <SectionHeader>
-        <q-icon name="o_pie_chart" />
+        <q-icon name="o_pie_chart"/>
         Wykres
       </SectionHeader>
-      <Statistics />
+      <Statistics
+        :input="unregisteredCompanyInputFields"
+      />
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
-import Form from 'components/unregisteredCompany/Form'
-import Table from 'components/unregisteredCompany/Table'
-import Statistics from 'components/unregisteredCompany/Statistics'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {ref} from 'vue'
+import {useStore} from 'vuex'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Advert from 'components/partials/Advert.vue'
+import Form from 'components/unregisteredCompany/Form.vue'
+import Summary from 'components/unregisteredCompany/Summary.vue'
+import Statistics from 'components/unregisteredCompany/Statistics.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
+import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+
 export default {
-  created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Działalność niezarejestrowana')
-    this.$store.commit('unregisteredCompany/clearAllData')
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Działalność niezarejestrowana')
+
+    const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
+      incomeAmount: 0,
+      expenses: 0,
+    })
+
+    const scrollTarget = ref(null) as any
+
+    const save = (input: UnregisteredCompanyInputFields) => {
+      unregisteredCompanyInputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      unregisteredCompanyInputFields,
+      scrollTarget,
+      save,
+    }
   },
   components: {
     SectionHeader,
     Advert,
     Form,
-    Table,
+    Summary,
     Statistics,
     Footer,
   },

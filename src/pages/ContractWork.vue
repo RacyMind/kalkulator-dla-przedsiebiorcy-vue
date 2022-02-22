@@ -16,61 +16,78 @@
         Wypełnij formularz
       </SectionHeader>
       <Form
+        :year="year"
         class="q-mt-md q-mb-lg q-px-md"
-        @submitted="scrollTo"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <Table :year="year" />
+      <Summary
+        :input="inputFields"
+      />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <Statistics :year="year" />
+      <Statistics
+        :input="inputFields"
+      />
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import { ref } from 'vue'
-import ChooseYear from 'src/components/partials/ChooseYear'
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/Advert'
-import Form from 'components/contractWork/Form'
-import Table from 'components/contractWork/Table'
-import Statistics from 'components/contractWork/Statistics'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {ref, watch} from 'vue'
+import {useStore} from 'vuex'
+import ChooseYear from 'src/components/partials/ChooseYear.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Advert from 'components/partials/Advert.vue'
+import Form from 'components/contractWork/Form.vue'
+import Summary from 'components/contractWork/Summary.vue'
+import Statistics from 'components/contractWork/Statistics.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 export default {
-  setup () {
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Umowa o dzieło')
+
     const year = ref(helpers.getDefaultYear())
+
+    const inputFields = ref(<ContractWorkInputFields>{
+      year: helpers.getDefaultYear(),
+      expenseRate: 0,
+      amount: 0,
+    })
+
+    const scrollTarget = ref(null) as any
+
+    watch(year, () => {
+      inputFields.value.amount = 0
+    })
+
+    const save = (input: ContractWorkInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
     return {
       year,
+      inputFields,
+      scrollTarget,
+      save,
     }
-  },
-  created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Umowa o dzieło')
-    this.$store.commit('contractWork/setAmount', null)
-  },
-  watch: {
-    year () {
-      this.$store.commit('contractWork/setAmount', null)
-    },
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
   },
   components: {
     SectionHeader,
     Advert,
     Form,
-    Table,
+    Summary,
     Statistics,
     Footer,
     ChooseYear,

@@ -119,7 +119,7 @@ import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
 import SelfEmploymentForm from 'src/components/selfEmployment/Form'
 import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
 import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 export default {
     setup () {
       const year = ref(helpers.getDefaultYear())
@@ -137,7 +137,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('app/SET_MODULE_TITLE', 'Rozliczenie z małżonkiem')
+    this.$store.commit('app/setModuleTitle', 'Rozliczenie z małżonkiem')
   },
   computed: {
       myForm () {

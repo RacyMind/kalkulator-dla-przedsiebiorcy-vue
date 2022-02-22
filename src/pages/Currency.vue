@@ -27,14 +27,14 @@
 import SectionHeader from 'components/partials/SectionHeader'
 import Form from 'components/exchangeRates/Form'
 import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
-import Advert from 'components/Advert'
+import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 
 export default {
   created () {
     this.$store.commit('exchangeRates/setCurrency', null)
-    this.$store.commit('app/SET_MODULE_TITLE', this.$route.params.currency.toUpperCase())
+    this.$store.commit('app/setModuleTitle', this.$route.params.currency.toUpperCase())
   },
   methods: {
     scrollTo () {

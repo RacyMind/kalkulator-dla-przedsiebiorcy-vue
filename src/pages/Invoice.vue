@@ -39,7 +39,7 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'src/components/invoice/Form.vue'
 import Summary from 'components/invoice/Summary.vue'
 import Statistics from 'components/invoice/Statistics.vue'
-import Advert from 'components/Advert.vue'
+import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInputFields'
@@ -48,7 +48,7 @@ import constants from 'src/logic/constants'
 export default {
   setup() {
     const store = useStore()
-    store.commit('app/SET_MODULE_TITLE', 'Faktura VAT')
+    store.commit('app/setModuleTitle', 'Faktura VAT')
 
     const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,
