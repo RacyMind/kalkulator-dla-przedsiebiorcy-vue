@@ -189,6 +189,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   let healthContribution = 0
   let ppkContribution = 0
   let amountOfDeductionOfHealthContributionFromTax = 0
+  let employerPPkContribution = 0
 
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
 
@@ -199,7 +200,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   if (input.isPensionContribution) {
     pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   }
-  if (input.isRentContribution) {
+  if (input.isDisabilityContribution) {
     disabilityContribution = employeeContributions.calculateRentContribution(basisForRentAndPensionContributions)
   }
   if (input.isSickContribution) {
@@ -217,12 +218,12 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   }
 
   const expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, input.isReliefForYoung, input.partOfWorkWithAuthorExpenses)
-  let basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions, expenses, input.isReliefForYoung)
-
   // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
   if (month > 0) {
-    basisForTax += employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
+    employerPPkContribution += employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
+
+  const basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions + employerPPkContribution, expenses, input.isReliefForYoung)
 
   const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
 
@@ -267,30 +268,30 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
   })
 
   const yearlyResult = {
-    netAmount: results.map(result => result.netAmount)
-      .reduce((current, sum) => current + sum, 0),
-    grossAmount: results.map(result => result.grossAmount)
-      .reduce((current, sum) => current + sum, 0),
-    basisForRentAndPensionContributions: results.map(result => result.basisForRentAndPensionContributions)
-      .reduce((current, sum) => current + sum, 0),
-    pensionContribution: results.map(result => result.pensionContribution)
-      .reduce((current, sum) => current + sum, 0),
-    disabilityContribution: results.map(result => result.disabilityContribution)
-      .reduce((current, sum) => current + sum, 0),
-    sickContribution: results.map(result => result.sickContribution)
-      .reduce((current, sum) => current + sum, 0),
-    healthContribution: results.map(result => result.healthContribution)
-      .reduce((current, sum) => current + sum, 0),
-    ppkContribution: results.map(result => result.ppkContribution)
-      .reduce((current, sum) => current + sum, 0),
+    netAmount: helpers.round(results.map(result => result.netAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    grossAmount: helpers.round(results.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    basisForRentAndPensionContributions: helpers.round(results.map(result => result.basisForRentAndPensionContributions)
+      .reduce((current, sum) => current + sum, 0), 2),
+    pensionContribution: helpers.round(results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    disabilityContribution: helpers.round(results.map(result => result.disabilityContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    sickContribution: helpers.round(results.map(result => result.sickContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    healthContribution: helpers.round(results.map(result => result.healthContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
     basisForTax: results.map(result => result.basisForTax)
       .reduce((current, sum) => current + sum, 0),
-    expenses: results.map(result => result.expenses)
-      .reduce((current, sum) => current + sum, 0),
+    expenses: helpers.round(results.map(result => result.expenses)
+      .reduce((current, sum) => current + sum, 0), 2),
     taxAmount: results.map(result => result.taxAmount)
       .reduce((current, sum) => current + sum, 0),
-    contributionTotal: results.map(result => result.contributionTotal)
-      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: helpers.round(results.map(result => result.contributionTotal)
+      .reduce((current, sum) => current + sum, 0), 2),
   }
 
   return {

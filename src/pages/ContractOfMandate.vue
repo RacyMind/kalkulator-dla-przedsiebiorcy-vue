@@ -119,9 +119,8 @@ export default defineComponent({
       employerPpkContributionRate: 0,
       isHealthContribution: true,
       isPensionContribution: true,
-      isRentContribution: true,
+      isDisabilityContribution: true,
       isSickContribution: true,
-      isStudent: false,
       partOfWorkWithAuthorExpenses: 0,
     })
 

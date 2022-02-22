@@ -133,7 +133,7 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, gro
  * @returns {number}
  */
 function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution) {
-  return pensionContribution + rentContribution + sickContribution + healthContribution
+  return helpers.round(pensionContribution + rentContribution + sickContribution + healthContribution, 2)
 }
 
 export default {
