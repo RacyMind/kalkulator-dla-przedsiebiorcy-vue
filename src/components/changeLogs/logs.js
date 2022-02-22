@@ -1,5 +1,10 @@
 export default [
   {
+    version: '4.5.0',
+    publish_date: '2022-01-02',
+    content: '<ul><li>Refaktoryzacja modułu Umowy o zlecenie</li><li>Naprawa błędu dodającego podatek za PPK od pracodawcy przy aktywnej uldze dla młodych</li></ul>',
+  },
+  {
     version: '4.4.0',
     publish_date: '2022-01-02',
     content: '<ul><li>Dodano moduł Terminy w US, ZUS i PFRON.</li><li>Dodano moduł Informacje o wynagrodzeniu.</li><li>Refaktoryzacja modułu Działalność niezarejestrowana.</li><li>Refaktoryzacja modułu Limit obrotu dla kasy fiskalnej.</li><li>Refaktoryzacja modułu Limit sprzedaży dla zwolnienia z VAT.</li><li>Refaktoryzacja modułu Lokata.</li><li>Refaktoryzacja modułu Odsetki.</li><li>Refaktoryzacja modułu Zasiłek chorobowy.</li><li>Refaktoryzacja modułu Umowa o dzieło.</li><li>Zaktualizowano składki ZUS w module Składki ZUS za część miesiąca.</li></ul>',
