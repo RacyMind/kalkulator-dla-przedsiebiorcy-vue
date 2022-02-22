@@ -13,3 +13,4 @@ export interface ContractOfMandateInputFields {
   employerPpkContributionRate: number,
   employeePpkContributionRate: number,
 }
+
