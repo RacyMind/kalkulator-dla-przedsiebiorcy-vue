@@ -16,16 +16,16 @@
         Wypełnij formularz
       </SectionHeader>
       <Form
-        :year="year"
         class="q-mt-md q-mb-lg q-px-md"
-        @submitted="scrollTo"
+        :year="year"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <SummarySalaryTable :year="year" />
+      <SalarySummary :input="inputFields" />
       <SectionHeader>
         <div class="row justify-between">
           <div>
@@ -36,18 +36,18 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!grossAmount"
+            :disable="!inputFields.grossAmount"
             outline
             @click="openEmployeeModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployeeTable :year="year" />
+      <EmployeeSummary :input="inputFields" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracownika
       </SectionHeader>
-      <EmployeeStatistics :year="year" />
+      <EmployeeStatistics :input="inputFields" />
       <Advert />
       <SectionHeader>
         <div class="row justify-between">
@@ -59,87 +59,104 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!grossAmount"
+            :disable="!inputFields.grossAmount"
             outline
             @click="openEmployerModal = true"
           />
         </div>
       </SectionHeader>
-      <EmployerTable :year="year" />
+      <EmployerSummary :input="inputFields" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres dla pracodawcy
       </SectionHeader>
-      <EmployerStatistics :year="year" />
+      <EmployerStatistics :input="inputFields" />
 
       <q-dialog v-model="openEmployeeModal">
-        <WholeYearForEmployee :year="year" />
+        <YearlyEmployeeSummary :input="inputFields" />
       </q-dialog>
       <q-dialog v-model="openEmployerModal">
-        <WholeYearForEmployer :year="year" />
+        <YearlyEmployerSummary :input="inputFields" />
       </q-dialog>
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {defineComponent, ref, watch} from 'vue'
+import {useStore} from 'vuex'
 import helpers from 'src/logic/helpers'
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/partials/Advert'
-import ChooseYear from 'components/partials/ChooseYear'
-import Form from 'components/contractOfEmployment/Form'
-import SummarySalaryTable from 'components/contractOfEmployment/SummarySalaryTable'
-import EmployeeTable from 'components/contractOfEmployment/EmployeeTable'
-import EmployeeStatistics from 'components/contractOfEmployment/EmployeeStatistics'
-import EmployerTable from 'components/contractOfEmployment/EmployerTable'
-import EmployerStatistics from 'components/contractOfEmployment/EmployerStatistics'
-import WholeYearForEmployee from 'components/contractOfEmployment/WholeYearForEmployee'
-import WholeYearForEmployer from 'components/contractOfEmployment/WholeYearForEmployer'
-import Footer from 'components/Footer'
-export default {
-  data () {
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Advert from 'components/partials/Advert.vue'
+import ChooseYear from 'components/partials/ChooseYear.vue'
+import Form from 'components/contractOfEmployment/Form.vue'
+import SalarySummary from 'components/contractOfEmployment/SalarySummary.vue'
+import EmployeeSummary from 'components/contractOfEmployment/EmployeeSummary.vue'
+import EmployeeStatistics from 'components/contractOfEmployment/EmployeeStatistics.vue'
+import EmployerSummary from 'components/contractOfEmployment/EmployerSummary.vue'
+import EmployerStatistics from 'components/contractOfEmployment/EmployerStatistics.vue'
+import YearlyEmployeeSummary from 'components/contractOfEmployment/YearlyEmployeeSummary.vue'
+import Footer from 'components/Footer.vue'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import YearlyEmployerSummary from 'components/contractOfEmployment/YearlyEmployerSummary.vue'
+export default defineComponent({
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Umowa o pracę')
+
+    const year = ref(helpers.getDefaultYear())
+    const openEmployeeModal = ref(false)
+    const openEmployerModal = ref(false)
+    const scrollTarget = ref(null) as any
+
+    const inputFields = ref(<ContractOfEmploymentInputFields>{
+      year: helpers.getDefaultYear(),
+      grossAmount: 0,
+      workInLivePlace: true,
+      isFreeAmount: true,
+      isReliefForYoung: false,
+      isReliefForSenior: false,
+      isReliefForBigFamily: false,
+      isReliefForMiddleClass: false,
+      isFpContribution: false,
+      accidentContributionRate: 0,
+      employeePpkContributionRate: 0,
+      employerPpkContributionRate: 0,
+      partOfWorkWithAuthorExpenses: 0,
+    })
+
+    watch(year, () => {
+      inputFields.value.grossAmount = 0
+    })
+
+    const save = (input: ContractOfEmploymentInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
     return {
-      openEmployeeModal: false,
-      openEmployerModal: false,
-      year: null,
+      year,
+      inputFields,
+      openEmployeeModal,
+      openEmployerModal,
+      scrollTarget,
+      save,
     }
   },
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Umowa o pracę')
-    this.$store.commit('contractOfEmployment/resetData')
-
-    this.year = helpers.getDefaultYear()
-  },
-  computed: {
-    ...mapGetters({
-      grossAmount: 'contractOfEmployment/grossAmount',
-    }),
-  },
-  watch: {
-    year () {
-      this.$store.commit('contractOfEmployment/resetData')
-    },
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
-  },
   components: {
-    WholeYearForEmployee,
-    WholeYearForEmployer,
+    YearlyEmployerSummary,
+    YearlyEmployeeSummary,
     SectionHeader,
     Advert,
     ChooseYear,
     Form,
-    SummarySalaryTable,
-    EmployeeTable,
+    SalarySummary,
+    EmployeeSummary,
     EmployeeStatistics,
-    EmployerTable,
+    EmployerSummary,
     EmployerStatistics,
     Footer,
   },
-}
+})
 </script>

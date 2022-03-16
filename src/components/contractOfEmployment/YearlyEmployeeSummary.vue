@@ -12,10 +12,10 @@ import {computed, defineComponent, PropType, watch, ref, Ref} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import {pln} from 'src/use/currencyFormat'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
 
 const columns = [
   {
@@ -30,7 +30,7 @@ const columns = [
     label: 'Wynagrodzenie brutto',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.grossAmount,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.grossAmount,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -38,7 +38,7 @@ const columns = [
     label: 'Skł. chorobowa',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.sickContribution,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.sickContribution,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -46,7 +46,7 @@ const columns = [
     label: 'Skł. rentowa',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.disabilityContribution,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.disabilityContribution,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -54,7 +54,7 @@ const columns = [
     label: 'Skł. emerytalna',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.pensionContribution,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.pensionContribution,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -62,7 +62,7 @@ const columns = [
     label: 'Skł. zdrowotna',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.healthContribution,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.healthContribution,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -70,7 +70,7 @@ const columns = [
     label: 'Skł. PPK',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.ppkContribution,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.ppkContribution,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -78,7 +78,7 @@ const columns = [
     label: 'Zaliczka na podatek',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.taxAmount,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.taxAmount,
     format: (val: number) => `${pln(val)}`,
   },
   {
@@ -86,7 +86,7 @@ const columns = [
     label: 'Wynagrodzenie netto',
     required: true,
     align: 'left',
-    field: (row: ContractOfMandateEmployeeSingleResult) => row.netAmount,
+    field: (row: ContractOfEmploymentEmployeeSingleResult) => row.netAmount,
     format: (val: number) => `${pln(val)}`,
   },
 ]
@@ -94,14 +94,14 @@ const columns = [
 export default defineComponent({
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
     },
   },
   setup(props) {
     const $q = useQuasar()
 
-    const monthlyInputs: Ref<ContractOfMandateInputFields[]> = ref([])
+    const monthlyInputs: Ref<ContractOfEmploymentInputFields[]> = ref([])
 
     for (let i = 0; i < 12; i++) {
       monthlyInputs.value.push(JSON.parse(JSON.stringify(props.input)))
@@ -114,11 +114,16 @@ export default defineComponent({
     }
 
     const result = computed(() => {
-      employeeContractOfMandate.setParams(props.input.year)
-      return employeeContractOfMandate.getYearlyResult(monthlyInputs.value)
+      employeeContractOfEmployment.setParams(props.input.year)
+      return employeeContractOfEmployment.getYearlyResult(monthlyInputs.value)
     })
 
     watch(result, () => {
+        if (result.value.yearlyResult.basisForTax > constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD) {
+          $q.notify({
+            message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${pln(constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD)}). Dla kwoty powyżej progu stawka podatku wynosi ${constants.TAX_RATES.SECOND_RATE}%.`,
+          })
+        }
         if (result.value.yearlyResult.basisForRentAndPensionContributions >= constants.PARAMS[props.input.year].LIMIT_BASIC_AMOUNT_FOR_ZUS) {
           $q.notify({
             message: `Osiągnięto limit 30-krotności składek ZUS (${pln(constants.PARAMS[props.input.year].LIMIT_BASIC_AMOUNT_FOR_ZUS)}). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,

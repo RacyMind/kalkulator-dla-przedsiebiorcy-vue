@@ -8,59 +8,56 @@
   </div>
 </template>
 
-<script>
-import constants from 'src/logic/constants'
-import { useMonthlyEmployerResult } from 'src/use/useContractOfEmployment'
-import PieChart from 'components/PieChart'
+<script lang="ts">
+import {computed, defineComponent, PropType} from 'vue'
+import employerContractOfEmployment from 'components/contractOfEmployment/employerContractOfEmployment'
+import PieChart from 'components/PieChart.vue'
+import {usePieChart} from 'src/use/usePieChart'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 
-export default {
+export default defineComponent({
   props: {
-    year: Number,
+    input: {
+      type: Object as PropType<ContractOfEmploymentInputFields>,
+      required: true,
+    },
   },
-  setup (props) {
-    const { result } = useMonthlyEmployerResult(props)
+  setup(props) {
+    const labels =  [
+      'Wynagrodzenie brutto',
+      'Składka wypadkowa',
+      'Składka rentowa',
+      'Składka emerytalna',
+      'Składka PPK',
+      'Składka na Fundusz Pracy',
+      'Składka na FGŚP',
+    ]
+
+    const result = computed(() => {
+      return employerContractOfEmployment.getMonthlyResult(props.input)
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.grossAmount,
+          result.value.accidentContribution,
+          result.value.disabilityContribution,
+          result.value.pensionContribution,
+          result.value.ppkContribution,
+          result.value.fpContribution,
+          result.value.fgspContribution,
+        ],
+      ),
+    )
 
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.grossAmount,
-            this.result.accidentContribution,
-            this.result.rentContribution,
-            this.result.pensionContribution,
-            this.result.ppkContribution,
-            this.result.fpContribution,
-            this.result.fgspContribution,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-            constants.COLORS.CHART3,
-            constants.COLORS.CHART4,
-            constants.COLORS.CHART5,
-            constants.COLORS.CHART6,
-            constants.COLORS.CHART7,
-          ],
-        }],
-        labels: [
-          'Wynagrodzenie brutto',
-          'Składka wypadkowa',
-          'Składka rentowa',
-          'Składka emerytalna',
-          'Składka PPK',
-          'Składka na Fundusz Pracy',
-          'Składka na FGŚP',
-        ],
-      }
-    },
   },
   components: {
     PieChart,
   },
-}
+})
 </script>

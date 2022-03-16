@@ -1,10 +1,10 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 import employerContributions from 'src/logic/employerContributions'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {ContractOfEmploymentEmployerSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerSingleResult'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfMandateEmployerYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
+import {ContractOfEmploymentEmployerYearlyResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
 
 const year = helpers.getDefaultYear()
 
@@ -60,33 +60,28 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number) {
 }
 
 /**
- * Returns the monthly results of an employer
+ * Returns the monthly results
  *
- * @param {ContractOfMandateInputFields} input
- * @returns {ContractOfMandateEmployerSingleResult}
+ * @param {ContractOfEmploymentInputFields} input
+ * @returns {ContractOfEmploymentEmployerSingleResult}
  */
-function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandateEmployerSingleResult {
+function getMonthlyResult(input: ContractOfEmploymentInputFields): ContractOfEmploymentEmployerSingleResult {
 
-  let pensionContribution = 0
-  let disabilityContribution = 0
-  let accidentContribution = 0
-  let ppkContribution = 0
+  let fpContribution = 0
+  let fgspContribution = 0
+
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
+  const pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
+  const disabilityContribution = employerContributions.calculateDisabilityContribution(basisForRentAndPensionContributions)
+  const accidentContribution = employerContributions.calculateAccidentContribution(input.grossAmount, input.accidentContributionRate)
+    const ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
 
-  if (input.isPensionContribution) {
-    pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
-  }
-  if (input.isDisabilityContribution) {
-    disabilityContribution = employerContributions.calculateDisabilityContribution(basisForRentAndPensionContributions)
-  }
-  if (input.accidentContributionRate) {
-    accidentContribution = employerContributions.calculateAccidentContribution(input.grossAmount, input.accidentContributionRate)
-  }
-  if (input.employerPpkContributionRate) {
-    ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
+  if (input.isFpContribution) {
+    fpContribution = employerContributions.calculateFpContribution(input.grossAmount)
+    fgspContribution = employerContributions.calculateFgspContribution(input.grossAmount)
   }
 
-  const totalContributions = pensionContribution + disabilityContribution + accidentContribution + ppkContribution
+  const totalContributions = pensionContribution + disabilityContribution + accidentContribution + ppkContribution + fpContribution + fgspContribution
   const totalAmount = helpers.round(input.grossAmount + totalContributions, 2)
 
   return {
@@ -97,18 +92,20 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     disabilityContribution: disabilityContribution,
     accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
+    fpContribution: fpContribution,
+    fgspContribution: fgspContribution,
     contributionTotal: helpers.round(totalContributions, 2),
   }
 }
 
 /**
- * Returns the yearly results of an employer
+ * Returns the yearly results
  *
- * @param {ContractOfMandateInputFields[]} monthlyInputs
- * @returns {ContractOfMandateEmployerYearlyResult}
+ * @param {ContractOfEmploymentInputFields[]} monthlyInputs
+ * @returns {ContractOfEmploymentEmployerYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployerYearlyResult {
-  const results:ContractOfMandateEmployerSingleResult[] = []
+function getYearlyResult (monthlyInputs:ContractOfEmploymentInputFields[]):ContractOfEmploymentEmployerYearlyResult {
+  const results:ContractOfEmploymentEmployerSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
 
   monthlyInputs.forEach(input => {
@@ -132,6 +129,10 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
     accidentContribution: helpers.round(results.map(result => result.accidentContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    fpContribution: helpers.round(results.map(result => result.fpContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    fgspContribution: helpers.round(results.map(result => result.fgspContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     contributionTotal: helpers.round(results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0), 2),

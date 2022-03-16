@@ -13,9 +13,9 @@ import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import { pln } from 'src/use/currencyFormat'
 import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
-import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
-import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import employerContractOfEmployment from 'components/contractOfEmployment/employerContractOfEmployment'
+import {ContractOfEmploymentEmployerSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerSingleResult'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 
 const columns =  [
   {
@@ -30,7 +30,7 @@ const columns =  [
     label: 'Wynagrodzenie brutto',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.grossAmount,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.grossAmount,
     format: (val:number) => `${pln(val)}`,
   },
   {
@@ -38,7 +38,7 @@ const columns =  [
     label: 'Skł. wypadkowa',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.accidentContribution,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.accidentContribution,
     format: (val:number) => `${pln(val)}`,
   },
   {
@@ -46,7 +46,7 @@ const columns =  [
     label: 'Skł. rentowa',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.disabilityContribution,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.disabilityContribution,
     format: (val:number) => `${pln(val)}`,
   },
   {
@@ -54,7 +54,23 @@ const columns =  [
     label: 'Skł. emerytalna',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.pensionContribution,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.pensionContribution,
+    format: (val:number) => `${pln(val)}`,
+  },
+  {
+    name: 'fp',
+    label: 'Skł. na FP',
+    required: true,
+    align: 'left',
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.fpContribution,
+    format: (val:number) => `${pln(val)}`,
+  },
+  {
+    name: 'fgsp',
+    label: 'Skł. na FGŚP',
+    required: true,
+    align: 'left',
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.fgspContribution,
     format: (val:number) => `${pln(val)}`,
   },
   {
@@ -62,7 +78,7 @@ const columns =  [
     label: 'Skł. PPK',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.ppkContribution,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.ppkContribution,
     format: (val:number) => `${pln(val)}`,
   },
   {
@@ -70,7 +86,7 @@ const columns =  [
     label: 'Suma kosztów pracodawcy',
     required: true,
     align: 'left',
-    field: (row:ContractOfMandateEmployerSingleResult) => row.totalAmount,
+    field: (row:ContractOfEmploymentEmployerSingleResult) => row.totalAmount,
     format: (val:number) => `${pln(val)}`,
   },
 ]
@@ -78,14 +94,14 @@ const columns =  [
 export default defineComponent({
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
     },
   },
   setup (props) {
     const $q = useQuasar()
 
-    const monthlyInputs:Ref<ContractOfMandateInputFields[]> = ref([])
+    const monthlyInputs:Ref<ContractOfEmploymentInputFields[]> = ref([])
 
     for(let i = 0; i < 12; i++) {
       monthlyInputs.value.push(JSON.parse(JSON.stringify(props.input)))
@@ -98,8 +114,8 @@ export default defineComponent({
     }
 
     const result = computed(() => {
-      employerContractOfMandate.setParams(props.input.year)
-      return employerContractOfMandate.getYearlyResult(monthlyInputs.value)
+      employerContractOfEmployment.setParams(props.input.year)
+      return employerContractOfEmployment.getYearlyResult(monthlyInputs.value)
     })
 
     watch(result, () => {

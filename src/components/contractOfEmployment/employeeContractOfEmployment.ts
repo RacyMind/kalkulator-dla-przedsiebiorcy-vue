@@ -3,19 +3,25 @@ import helpers from 'src/logic/helpers'
 import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
-import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
+import {ContractOfEmploymentEmployeeYearlyResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeYearlyResult'
+import taxes from 'src/logic/taxes'
 
 let params = {
-  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
+  firstTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
+  secondTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.SECOND_RATE / 100,
+  freeAmountOfTax: constants.PARAMS[helpers.getDefaultYear()].FREE_AMOUNT_OF_TAX,
+  taxReducingAmount: constants.PARAMS[helpers.getDefaultYear()].TAX_REDUCING_AMOUNT,
   amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,
-  lumpSumUpToAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
-  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
   grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
+  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  expensesIfYouWorkWhereYouDontLive: constants.PARAMS[helpers.getDefaultYear()].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
+  expensesIfYouWorkWhereYouLive: constants.PARAMS[helpers.getDefaultYear()].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
 }
 
 let totalBasisForRentAndPensionContributions = 0
+let totalBasisForTax = 0
 let totalExpenses = 0
 let totalGrossAmount = 0
 
@@ -24,6 +30,7 @@ let totalGrossAmount = 0
  */
 function resetTotalAmounts () {
   totalBasisForRentAndPensionContributions = 0
+  totalBasisForTax = 0
   totalExpenses = 0
   totalGrossAmount = 0
 }
@@ -34,11 +41,15 @@ function resetTotalAmounts () {
  */
 function setParams (year:AvailableYear) {
   params = {
-    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
+    freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
-    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
     grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+    expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
+    expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
   }
 
   resetTotalAmounts()
@@ -51,24 +62,25 @@ function setParams (year:AvailableYear) {
  * Calculates expenses
  *
  * @param {number} basisForExpenses
- * @param {number} expenseRate
+ * @param {boolean} workInLivePlace
  * @param {boolean} isReliefForYoung
  * @param {number} partOfWorkWithAuthorExpenses
  * @returns {number}
  */
-function calculateExpenses (basisForExpenses:number, expenseRate:number, isReliefForYoung:boolean, partOfWorkWithAuthorExpenses = 0):number {
-  let partOfWorkWithoutAuthorExpenses = 1 - partOfWorkWithAuthorExpenses
+function calculateExpenses (basisForExpenses:number, workInLivePlace:boolean, isReliefForYoung:boolean, partOfWorkWithAuthorExpenses = 0) {
+  let expenses = params.expensesIfYouWorkWhereYouDontLive
 
-  // If the relief for young exists, don't add 50% expenses
+  if (workInLivePlace) {
+    expenses = params.expensesIfYouWorkWhereYouLive
+  }
+
+  // If the aid for young exists, don't add 50% expenses
   if (isReliefForYoung) {
-    partOfWorkWithoutAuthorExpenses = 1
     partOfWorkWithAuthorExpenses = 0
   }
 
-  let expenses = basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate
-
   if (partOfWorkWithAuthorExpenses) {
-    expenses += basisForExpenses * partOfWorkWithAuthorExpenses * constants.CONTRACT_OF_MANDATE.AUTHOR_EXPENSES_RATE
+    expenses += basisForExpenses * partOfWorkWithAuthorExpenses * constants.CONTRACT_OF_EMPLOYMENT.AUTHOR_EXPENSES_RATE
   }
 
   if (expenses > params.amountOfTaxThreshold) {
@@ -106,39 +118,13 @@ function calculateBasisForTax (grossAmount:number, grossAmountMinusEmployeeContr
     grossAmountMinusEmployeeContributions = newTotalGrossAMount - params.grossAmountLimitForAid
   }
 
-  let basisForTax = grossAmount
-
-  if (grossAmountMinusEmployeeContributions > params.lumpSumUpToAmount) {
-    basisForTax = grossAmountMinusEmployeeContributions - expenses
-  }
+  const basisForTax = grossAmountMinusEmployeeContributions - expenses
 
   if (basisForTax < 0) {
     return 0
   }
 
   return helpers.round(basisForTax)
-}
-
-/**
- * Calculates the tax amount
- *
- * @param {number} grossAmount
- * @param {number} basisForTax
- * @param {number} amountOfDeductionOfHealthContributionFromTax
- * @returns {number}
- */
-function calculateTaxAmount (grossAmount:number, basisForTax:number, amountOfDeductionOfHealthContributionFromTax:number):number {
-  let taxAmount = basisForTax * params.taxRate
-
-  if (grossAmount > params.lumpSumUpToAmount) {
-    taxAmount -= amountOfDeductionOfHealthContributionFromTax
-  }
-
-  if (taxAmount < 0) {
-    return 0
-  }
-
-  return helpers.round(taxAmount)
 }
 
 /**
@@ -175,56 +161,61 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number):numbe
 }
 
 /**
- * Returns the monthly results
+ * Returns the monthly results of an employee
  *
- * @param {ContractOfMandateInputFields} input
+ * @param {ContractOfEmploymentInputFields} input
  * @param {number} month
- * @returns {ContractOfMandateEmployeeSingleResult}
+ * @returns {ContractOfEmploymentEmployeeSingleResult}
  */
-function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):ContractOfMandateEmployeeSingleResult {
-  let expenseRate = 0
-  let pensionContribution = 0
-  let disabilityContribution = 0
-  let sickContribution = 0
-  let healthContribution = 0
-  let ppkContribution = 0
-  let amountOfDeductionOfHealthContributionFromTax = 0
-  let employerPPkContribution = 0
+function getMonthlyResult (input:ContractOfEmploymentInputFields, month = 0):ContractOfEmploymentEmployeeSingleResult {
+  let basisForTax = 0
+  let taxAmount = 0
+  let expenses = 0
 
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
-
-  if (input.grossAmount > params.lumpSumUpToAmount) {
-    expenseRate = constants.CONTRACT_OF_MANDATE.EXPENSES_RATE
-  }
-
-  if (input.isPensionContribution) {
-    pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
-  }
-  if (input.isDisabilityContribution) {
-    disabilityContribution = employeeContributions.calculateDisabilityContribution(basisForRentAndPensionContributions)
-  }
-  if (input.isSickContribution) {
-    sickContribution = employeeContributions.calculateSickContribution(input.grossAmount)
-  }
-  if (input.employeePpkContributionRate) {
-    ppkContribution = employeeContributions.calculatePpkContribution(input.grossAmount, input.employeePpkContributionRate)
-  }
-
+  const pensionContribution = employeeContributions.calculatePensionContribution(basisForRentAndPensionContributions)
+  const disabilityContribution = employeeContributions.calculateDisabilityContribution(basisForRentAndPensionContributions)
+  const sickContribution = employeeContributions.calculateSickContribution(input.grossAmount)
+  const ppkContribution = employeeContributions.calculatePpkContribution(input.grossAmount, input.employeePpkContributionRate)
   const grossAmountMinusEmployeeContributions = employeeContributions.calculateGrossAmountMinusContributions(input.grossAmount, pensionContribution, disabilityContribution, sickContribution)
+  const healthContribution = employeeContributions.calculateHealthContribution(grossAmountMinusEmployeeContributions)
+  const amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(input.grossAmount, grossAmountMinusEmployeeContributions)
+  const newTotalGrossAmount = totalGrossAmount + input.grossAmount
 
-  if (input.isHealthContribution) {
-    healthContribution = employeeContributions.calculateHealthContribution(grossAmountMinusEmployeeContributions)
-    amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(input.grossAmount, grossAmountMinusEmployeeContributions)
+  let amountToCalculateTax = 0
+
+  if (input.isReliefForBigFamily || input.isReliefForSenior) {
+    let limitFreeAmountOfTax = params.grossAmountLimitForAid
+
+    if (input.isFreeAmount) {
+      limitFreeAmountOfTax += params.freeAmountOfTax
+    }
+
+    if (newTotalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = newTotalGrossAmount - limitFreeAmountOfTax
+    }
+    if (totalGrossAmount > limitFreeAmountOfTax) {
+      amountToCalculateTax = grossAmountMinusEmployeeContributions
+    }
+    input.isFreeAmount = false
+  } else {
+    amountToCalculateTax = grossAmountMinusEmployeeContributions
   }
 
-  const expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, input.isReliefForYoung, input.partOfWorkWithAuthorExpenses)
+  if (amountToCalculateTax > 0) {
+    expenses = calculateExpenses(amountToCalculateTax, input.workInLivePlace, input.isReliefForYoung, input.partOfWorkWithAuthorExpenses)
+    basisForTax = calculateBasisForTax(input.grossAmount, amountToCalculateTax, expenses, input.isReliefForYoung)
+  }
+
   // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
   if (month > 0) {
-    employerPPkContribution += employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
+    basisForTax += employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions + employerPPkContribution, expenses, input.isReliefForYoung)
-  const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
+  if (amountToCalculateTax > 0) {
+    taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, input.isFreeAmount, totalBasisForTax, input.isReliefForMiddleClass)
+  }
+
   const totalContributions = employeeContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)
 
@@ -245,16 +236,17 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
 }
 
 /**
- * Returns the yearly results
+ * Returns the yearly results of an employee
  *
- * @param {ContractOfMandateInputFields[]} monthlyInputs
- * @returns {ContractOfMandateEmployeeYearlyResult}
+ * @param {ContractOfEmploymentInputFields[]} monthlyInputs
+ * @returns {ContractOfEmploymentEmployeeYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployeeYearlyResult {
-  const results:ContractOfMandateEmployeeSingleResult[] = []
+function getYearlyResult (monthlyInputs:ContractOfEmploymentInputFields[]):ContractOfEmploymentEmployeeYearlyResult {
+  const results:ContractOfEmploymentEmployeeSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
   totalGrossAmount = 0
+  totalBasisForTax = 0
 
   monthlyInputs.forEach((input, index) => {
     const result = getMonthlyResult(input, index)
@@ -263,6 +255,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
     totalBasisForRentAndPensionContributions += result.basisForRentAndPensionContributions
     totalExpenses += result.expenses
     totalGrossAmount += result.grossAmount
+    totalBasisForTax += result.basisForTax
   })
 
   return {
@@ -280,7 +273,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
  * @param input
  * @returns {number}
  */
-function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, targetAmount:number, input:ContractOfMandateInputFields):number {
+function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, targetAmount:number, input:ContractOfEmploymentInputFields):number {
   for (let iterator = max; iterator >= min; iterator -= scale) {
     input.grossAmount = iterator
     const result = getMonthlyResult(input)

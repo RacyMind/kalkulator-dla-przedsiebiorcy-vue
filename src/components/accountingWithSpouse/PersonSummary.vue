@@ -1,3 +1,4 @@
+<!--
 <template>
   <div>
     <template v-if="inputData">
@@ -119,3 +120,4 @@ export default {
   },
 }
 </script>
+-->

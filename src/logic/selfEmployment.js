@@ -183,7 +183,7 @@ function getMonthlyResult (
 
   if (!isFullTimeJob && !isAidForStart) {
     pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
-    rentContribution = ownerContributions.calculateRentContribution(basisForZus)
+    rentContribution = ownerContributions.calculateDisabilityContribution(basisForZus)
     accidentContribution = ownerContributions.calculateAccidentContribution(basisForZus, accidentContributionRate)
   }
 
@@ -285,7 +285,7 @@ function getYearlyResult (monthlyInputs) {
       }
 
       pensionContribution = ownerContributions.calculatePensionContribution(basisForZus)
-      rentContribution = ownerContributions.calculateRentContribution(basisForZus)
+      rentContribution = ownerContributions.calculateDisabilityContribution(basisForZus)
     }
 
     if (input.isSickContribution && !isAidForStart) {

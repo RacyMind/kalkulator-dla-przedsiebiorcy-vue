@@ -53,7 +53,7 @@ function calculatePensionContribution (basisForContributions) {
  * @param {number} basisForContributions
  * @returns {number}
  */
-function calculateRentContribution (basisForContributions) {
+function calculateDisabilityContribution (basisForContributions) {
   return helpers.round(params.rentContributionRate / 100 * basisForContributions, 2)
 }
 
@@ -181,7 +181,7 @@ function sumContributions (pensionContribution, rentContribution, sickContributi
 export default {
   setYear,
   calculatePensionContribution,
-  calculateRentContribution,
+  calculateDisabilityContribution,
   calculateSickContribution,
   calculateHealthContribution,
   calculateAccidentContribution,
