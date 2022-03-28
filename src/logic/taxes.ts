@@ -1,5 +1,6 @@
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 
 let year = helpers.getDefaultYear()
 
@@ -15,7 +16,7 @@ let params = {
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
+function setParams (newYear:AvailableYear) {
   year = newYear
 
   params = {
@@ -40,15 +41,15 @@ function setYear (newYear) {
  * @returns {number}
  */
 function calculateIncomeTaxUsingGeneralRules (
-  grossAmount,
-  basisForTax,
-  amountOfDeductionOfHealthContributionFromTax,
-  isFreeAmount,
-  totalBasisForTax,
+  grossAmount:number,
+  basisForTax:number,
+  amountOfDeductionOfHealthContributionFromTax:number,
+  isFreeAmount:boolean,
+  totalBasisForTax:number,
   isAidForMiddleClass = false,
   isYearly = false,
   isMarriage = false,
-) {
+):number {
   let taxReducingAmount = 0
 
   if (isFreeAmount) {
@@ -96,9 +97,9 @@ function calculateIncomeTaxUsingGeneralRules (
  * @returns {number}
  */
 function calculateIncomeTaxUsingLinearRules (
-  basisForTax,
-  amountOfDeductionOfHealthContributionFromTax,
-) {
+  basisForTax:number,
+  amountOfDeductionOfHealthContributionFromTax:number,
+):number {
   let taxAmount = basisForTax * params.linearTaxRate - amountOfDeductionOfHealthContributionFromTax
 
   if (taxAmount < 0) {
@@ -116,10 +117,10 @@ function calculateIncomeTaxUsingLinearRules (
  * @returns {number}
  */
 function calculateIncomeTaxUsingLumpSumRules (
-  basisForTax,
-  lumpSumTaxRate,
-  amountOfDeductionOfHealthContributionFromTax,
-) {
+  basisForTax:number,
+  lumpSumTaxRate:number,
+  amountOfDeductionOfHealthContributionFromTax:number,
+):number {
   let taxAmount = basisForTax * lumpSumTaxRate - amountOfDeductionOfHealthContributionFromTax
 
   if (taxAmount < 0) {
@@ -135,7 +136,7 @@ function calculateIncomeTaxUsingLumpSumRules (
  * @param {boolean} isYearly
  * @returns {number}
  */
-function calculateAidForMiddleClass (grossAmount, isYearly = false) {
+function calculateAidForMiddleClass (grossAmount:number, isYearly = false):number {
   grossAmount = helpers.round(grossAmount)
   let times = 1
 
@@ -153,7 +154,7 @@ function calculateAidForMiddleClass (grossAmount, isYearly = false) {
 }
 
 export default {
-  setYear,
+  setParams,
   calculateIncomeTaxUsingLumpSumRules,
   calculateIncomeTaxUsingLinearRules,
   calculateIncomeTaxUsingGeneralRules,
