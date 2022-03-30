@@ -158,9 +158,16 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
   let sickContribution = 0
 
   if (input.isSmallZus) {
+    input.isFpContribution = false
     basisForZus = params.smallBasisForZUS
   } else {
     basisForZus = params.bigBasisForZUS
+  }
+
+  if(input.isFullTimeJob) {
+    input.isFpContribution = false
+    input.isSickContribution = false
+    input.accidentContributionRate = 0
   }
 
   if (input.customBasisForZus) {
@@ -183,13 +190,13 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
 
   const grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution + fpContribution)
 
-  let amountToCanculateHealthContribution = grossAmountMinusEmployeeContributions
+  let amountToCalculateHealthContribution = grossAmountMinusEmployeeContributions
 
   if([constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.GENERAL].includes(input.incomeTaxType)) {
-    amountToCanculateHealthContribution = amountToCanculateHealthContribution - input.expenses
+    amountToCalculateHealthContribution = amountToCalculateHealthContribution - input.expenses
   }
 
-  const healthContribution = ownerContributions.calculateHealthContribution(amountToCanculateHealthContribution, input.incomeTaxType, yearlyIncome)
+  const healthContribution = ownerContributions.calculateHealthContribution(amountToCalculateHealthContribution, input.incomeTaxType, yearlyIncome)
   const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
 
   const newTotalGrossAmount = totalGrossAmount + input.amount
@@ -232,7 +239,7 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
     basisForTax: basisForTax,
     taxAmount: taxAmount,
     amountOfDeductionOfHealthContributionFromTax: amountOfDeductionOfHealthContributionFromTax,
-    contributionTotal: pensionContribution + disabilityContribution + sickContribution + accidentContribution + healthContribution,
+    contributionTotal: pensionContribution + disabilityContribution + sickContribution + accidentContribution + healthContribution + fpContribution,
   }
 }
 
