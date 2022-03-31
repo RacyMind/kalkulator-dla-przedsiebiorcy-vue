@@ -21,3 +21,10 @@
 @import "components/vatLimit";
 @import "components/partialZusContributions";
 @import "components/work";
+
+@media screen and (max-width:600px) {
+  .q-dialog__inner--minimized{
+    padding: 0;
+  }
+
+}

@@ -1,5 +1,7 @@
 import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
+import {AvailableYear} from 'src/types/AvailableYear'
+import {IncomeTaxType} from 'src/types/IncomeTaxType'
 
 let year = helpers.getDefaultYear()
 
@@ -20,7 +22,7 @@ let params = {
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
+function setParams (newYear:AvailableYear) {
   year = newYear
 
   params = {
@@ -43,7 +45,7 @@ function setYear (newYear) {
  * @param {number} basisForContributions
  * @returns {number}
  */
-function calculatePensionContribution (basisForContributions) {
+function calculatePensionContribution (basisForContributions:number):number {
   return helpers.round(params.pensionContributionRate / 100 * basisForContributions, 2)
 }
 
@@ -53,7 +55,7 @@ function calculatePensionContribution (basisForContributions) {
  * @param {number} basisForContributions
  * @returns {number}
  */
-function calculateDisabilityContribution (basisForContributions) {
+function calculateDisabilityContribution (basisForContributions:number):number {
   return helpers.round(params.rentContributionRate / 100 * basisForContributions, 2)
 }
 
@@ -63,7 +65,7 @@ function calculateDisabilityContribution (basisForContributions) {
  * @param {number} basisForContributions
  * @returns {number}
  */
-function calculateSickContribution (basisForContributions) {
+function calculateSickContribution (basisForContributions:number):number {
   return helpers.round(params.sickContributionRate / 100 * basisForContributions, 2)
 }
 
@@ -71,11 +73,11 @@ function calculateSickContribution (basisForContributions) {
  * Calculates the health contribution
  *
  * @param {number} amount
- * @param {string} taxType
+ * @param {IncomeTaxType} taxType
  * @param {number} yearlyIncome
  * @returns {number}
  */
-function calculateHealthContribution (amount, taxType, yearlyIncome) {
+function calculateHealthContribution (amount:number, taxType:IncomeTaxType, yearlyIncome:number):number {
   if (year < 2022) {
     return helpers.round(params.healthContributionRate / 100 * params.basisForHealthContribution, 2)
   }
@@ -108,6 +110,8 @@ function calculateHealthContribution (amount, taxType, yearlyIncome) {
       const higherAmount = Math.max(params.minimumSalary, amount)
       return helpers.round(params.healthContributionRate / 100 * higherAmount, 2)
   }
+
+  return 0
 }
 
 /**
@@ -117,7 +121,7 @@ function calculateHealthContribution (amount, taxType, yearlyIncome) {
  * @param {number} accidentRate
  * @returns {number}
  */
-function calculateAccidentContribution (basisForContributions, accidentRate) {
+function calculateAccidentContribution (basisForContributions:number, accidentRate:number):number {
   return helpers.round(accidentRate * basisForContributions, 2)
 }
 
@@ -127,7 +131,7 @@ function calculateAccidentContribution (basisForContributions, accidentRate) {
  * @param {number} basisForContributions
  * @returns {number}
  */
-function calculateFpContribution (basisForContributions) {
+function calculateFpContribution (basisForContributions:number):number {
   return helpers.round(params.fpContributionRate / 100 * basisForContributions, 2)
 }
 
@@ -142,12 +146,12 @@ function calculateFpContribution (basisForContributions) {
  * @returns {number}
  */
 function calculateGrossAmountMinusContributions (
-  grossAmount,
-  pensionContribution,
-  rentContribution,
-  sickContribution,
-  accidentContribution,
-) {
+  grossAmount:number,
+  pensionContribution:number,
+  rentContribution:number,
+  sickContribution:number,
+  accidentContribution:number,
+):number {
   const contributions = pensionContribution + rentContribution + sickContribution + accidentContribution
 
   return grossAmount - contributions
@@ -158,7 +162,7 @@ function calculateGrossAmountMinusContributions (
  *
  * @returns {number}
  */
-function calculateAmountOfDeductionOfHealthContributionFromTax () {
+function calculateAmountOfDeductionOfHealthContributionFromTax ():number {
   const healthRate = params.healthContributionRateForTaxOffice / 100
   return helpers.round(params.basisForHealthContribution * healthRate, 2)
 }
@@ -174,12 +178,12 @@ function calculateAmountOfDeductionOfHealthContributionFromTax () {
  * @param {number} fpContribution
  * @returns {number}
  */
-function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution, accidentContribution, fpContribution) {
+function sumContributions (pensionContribution:number, rentContribution:number, sickContribution:number, healthContribution:number, accidentContribution:number, fpContribution:number):number {
   return pensionContribution + rentContribution + sickContribution + healthContribution + accidentContribution + fpContribution
 }
 
 export default {
-  setYear,
+  setParams,
   calculatePensionContribution,
   calculateDisabilityContribution,
   calculateSickContribution,

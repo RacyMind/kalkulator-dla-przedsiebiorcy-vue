@@ -2,7 +2,7 @@ export default [
   {
     version: '4.5.0',
     publish_date: '2022-01-02',
-    content: '<ul><li>Refaktoryzacja modułu Umowy o pracę</li><li>Refaktoryzacja modułu Umowy zlecenie</li><li>Naprawa błędu dodającego podatek za PPK od pracodawcy przy aktywnej uldze dla młodych</li></ul>',
+    content: '<ul><li>Refaktoryzacja modułu Samozatrudnienie.</li><li>Refaktoryzacja modułu Umowy o pracę.</li><li>Refaktoryzacja modułu Umowy zlecenie.</li><li>Naprawa błędu dodającego podatek za PPK od pracodawcy przy aktywnej uldze dla młodych.</li></ul>',
   },
   {
     version: '4.4.2',

@@ -16,8 +16,8 @@
       </SectionHeader>
       <Form
         :year="year"
+        @save="save"
         class="q-mt-md q-mb-lg q-px-md"
-        @submitted="scrollTo"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
@@ -30,75 +30,95 @@
             color="white"
             size="sm"
             label="pokaż cały rok"
-            :disable="!grossAmount"
+            :disable="!inputFields.amount"
             outline
             @click="openModal = true"
           />
         </div>
       </SectionHeader>
-      <Table :year="year" />
+      <Summary :input="inputFields" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <Statistics :year="year" />
+      <Statistics :input="inputFields" />
 
       <q-dialog v-model="openModal">
-        <WholeYear :year="year" />
+        <YearlySummary :input="inputFields" />
       </q-dialog>
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/partials/Advert'
-import Form from 'components/selfEmployment/Form'
-import Table from 'components/selfEmployment/Table'
-import Statistics from 'components/selfEmployment/Statistics'
-import WholeYear from 'components/selfEmployment/WholeYear'
-import Footer from 'components/Footer'
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {defineComponent, Ref, ref, watch} from 'vue'
+import {useStore} from 'vuex'
+import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
+import constants from 'src/logic/constants'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Advert from 'components/partials/Advert.vue'
+import Form from 'components/selfEmployment/Form.vue'
+import Summary from 'components/selfEmployment/Summary.vue'
+import Statistics from 'components/selfEmployment/Statistics.vue'
+import YearlySummary from 'components/selfEmployment/YearlySummary.vue'
+import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
-import ChooseYear from 'components/partials/ChooseYear'
-export default {
-  data () {
-    return {
-      openModal: false,
-      year: null,
-    }
-  },
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Samozatrudnienie')
-    this.$store.commit('selfEmployment/resetData')
+import ChooseYear from 'components/partials/ChooseYear.vue'
+export default defineComponent({
+  setup() {
+    const store = useStore()
+    store.commit('app/setModuleTitle', 'Samozatrudnienie')
 
-    this.year = helpers.getDefaultYear()
-  },
-  computed: {
-    ...mapGetters({
-      grossAmount: 'selfEmployment/grossAmount',
-    }),
-  },
-  watch: {
-    year () {
-      this.$store.commit('selfEmployment/resetData')
-    },
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
+    const year = ref(helpers.getDefaultYear())
+    const openModal = ref(false)
+    const scrollTarget = ref(null) as any
+
+    const inputFields:Ref<SelfEmploymentInputFields> = ref({
+      year: helpers.getDefaultYear(),
+      amount: 0,
+      expenses: 0,
+      incomeTaxType: constants.TAX_TYPES.GENERAL,
+      taxRateForLumpSum: 0,
+      isFreeAmount: true,
+      isReliefForSenior: false,
+      isReliefForBigFamily: false,
+      isReliefForMiddleClass: false,
+      isReliefForCompanyStart: false,
+      isFpContribution: false,
+      isSickContribution: false,
+      accidentContributionRate: 0,
+      isSmallZus: false,
+      isFullTimeJob: false,
+      customBasisForZus: 0,
+    })
+
+    watch(year, () => {
+      inputFields.value.amount = 0
+    })
+
+    const save = (input: SelfEmploymentInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      year,
+      inputFields,
+      openModal,
+      scrollTarget,
+      save,
+    }
   },
   components: {
     SectionHeader,
     Advert,
     ChooseYear,
     Form,
-    Table,
+    Summary,
     Statistics,
-    WholeYear,
+    YearlySummary,
     Footer,
   },
-}
+})
 </script>

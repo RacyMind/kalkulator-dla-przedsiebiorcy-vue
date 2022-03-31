@@ -89,13 +89,18 @@
                   ]"
                   lazy-rule/>
               </q-popup-edit>
-              <div class="row justify-between">
+              <div
+                class="row justify-between"
+                style="font-size: 13px;"
+              >
                 <div>
-                  {{ col.label }}
-                  <q-icon
-                    v-if="col.name === 'gross'"
-                    class="text-primary"
-                    name="edit" />
+                  <template v-if="col.label">
+                    {{ col.label.replace('Skł.', 'Składka') }}
+                    <q-icon
+                      v-if="col.name === 'gross'"
+                      class="text-primary"
+                      name="edit" />
+                  </template>
                 </div>
                 <div>
                   {{ col.value }}

@@ -1,4 +1,5 @@
 import {AmountType} from 'src/types/AmountType'
+import {IncomeTaxType} from 'src/types/IncomeTaxType'
 
 const defaultParams = {
   LIMIT_BASIC_AMOUNT_FOR_ZUS: 157770,
@@ -24,6 +25,7 @@ const defaultParams = {
       BASIS_AMOUNT_FOR_HEALTH: 4242.38,
       BIG_AMOUNT: 3155.40,
       SMALL_AMOUNT: 840,
+      HEALTH_RATE_FOR_LINEAR_TAX: 0,
     },
   },
   ACCIDENT_RATE: 1.67,
@@ -225,9 +227,9 @@ export default {
     },
   ],
   TAX_TYPES: {
-    GENERAL: 'general',
-    LINEAR: 'linear',
-    LUMP_SUM: 'lumpSum',
+    GENERAL: 'general' as IncomeTaxType,
+    LINEAR: 'linear' as IncomeTaxType,
+    LUMP_SUM: 'lumpSum' as IncomeTaxType,
   },
   FREE_AMOUNT_FOR_TAX: 525.12 / 12,
   POLSKI_LAD_FREE_AMOUNT_FOR_TAX: 5100 / 12,
