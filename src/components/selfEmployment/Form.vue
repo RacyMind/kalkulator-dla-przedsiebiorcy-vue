@@ -154,12 +154,9 @@
 import constants from 'src/logic/constants'
 import {computed, defineComponent, ref, Ref, watch} from 'vue'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
-import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 import validationRules from 'src/logic/validationRules'
 import {IncomeTaxType} from 'src/types/IncomeTaxType'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import {pln} from 'src/use/currencyFormat'
 
 const incomeTaxTypes = [
   {

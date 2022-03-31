@@ -22,6 +22,9 @@
 @import "components/partialZusContributions";
 @import "components/work";
 
-.q-dialog__inner--minimized{
-  padding: 0;
+@media screen and (max-width:600px) {
+  .q-dialog__inner--minimized{
+    padding: 0;
+  }
+
 }
