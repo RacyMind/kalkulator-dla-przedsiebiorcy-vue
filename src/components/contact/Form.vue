@@ -70,12 +70,12 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 
-export default {
+export default defineComponent({
   setup() {
     const $q = useQuasar()
 
@@ -142,5 +142,5 @@ export default {
       send,
     }
   },
-}
+})
 </script>

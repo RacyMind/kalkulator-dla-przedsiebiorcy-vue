@@ -53,15 +53,15 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
 import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
 import {AmountType} from 'src/types/AmountType'
 import {VatTaxRate} from 'src/types/VatTaxRate'
 import validationRules from 'src/logic/validationRules'
 
-export default {
-  setup(props: any, context: any) {
+export default defineComponent({
+  setup(props, context) {
     const vatTaxRates = [
       {
         label: '0%',
@@ -109,5 +109,5 @@ export default {
       save,
     }
   },
-}
+})
 </script>

@@ -38,10 +38,11 @@
   </div>
 </template>
 <script lang="ts">
+import {defineComponent} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 
-export default {
+export default defineComponent({
   setup() {
     return {
       pln,
@@ -50,5 +51,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

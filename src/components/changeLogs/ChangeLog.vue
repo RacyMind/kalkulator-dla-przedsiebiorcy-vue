@@ -13,9 +13,11 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from 'vue'
+
+export default defineComponent({
   props: ['log'],
-}
+})
 </script>
 <style>
   #q-app .c-logCard ul{

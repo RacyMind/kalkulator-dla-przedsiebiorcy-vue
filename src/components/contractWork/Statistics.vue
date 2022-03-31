@@ -9,31 +9,28 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {usePieChart} from 'src/use/usePieChart'
-import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
 import contractWork from 'components/contractWork/contractWork'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<ContractWorkInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const labels:string[] =  [
       'Wynagrodzenie netto',
       'Zaliczka na podatek dochodowy',
     ]
 
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<ContractWorkResult>>> = computed(() => {
+    const result = computed(() => {
       try{
-        return contractWork.getResult(input.value)
+        return contractWork.getResult(props.input)
       }
       catch {
         return {
@@ -63,5 +60,5 @@ export default {
   components: {
     PieChart,
   },
-}
+})
 </script>

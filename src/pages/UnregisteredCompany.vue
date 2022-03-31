@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import {ref} from 'vue'
+import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Advert from 'components/partials/Advert.vue'
@@ -44,7 +44,7 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Działalność niezarejestrowana')
@@ -75,5 +75,5 @@ export default {
     Statistics,
     Footer,
   },
-}
+})
 </script>

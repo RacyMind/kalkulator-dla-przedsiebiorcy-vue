@@ -26,31 +26,28 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, PropType, Ref, toRefs, watch} from 'vue'
+import {computed, defineComponent, PropType, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import contractWork from 'components/contractWork/contractWork'
 import { pln } from 'src/use/currencyFormat'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
 import {AvailableYear} from 'src/types/AvailableYear'
 import ListRow from 'components/partials/ListRow.vue'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<ContractWorkInputFields>,
       required: true,
     },
   },
-  setup (props:any) {
+  setup (props) {
     const $q = useQuasar()
 
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<ContractWorkResult>>> = computed(() => {
+    const result = computed(() => {
       try{
-        return contractWork.getResult(input.value)
+        return contractWork.getResult(props.input)
       }
       catch {
         return {
@@ -64,14 +61,14 @@ export default {
     })
 
     watch(result, () => {
-      if (input.value.amount && result.value.grossAmount <= constants.PARAMS[<AvailableYear>input.value.year].LUMP_SUM_UP_TO_AMOUNT) {
+      if (props.input.amount && result.value.grossAmount <= constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT) {
         $q.notify({
-          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[<AvailableYear>input.value.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
+          message: `Dla wynagrodzenia brutto do ${pln(constants.PARAMS[<AvailableYear>props.input.year].LUMP_SUM_UP_TO_AMOUNT)} płaci się podatek zryczałtowany.`,
         })
       }
-      if (input.value.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && result.value.expenses >= constants.PARAMS[<AvailableYear>input.value.year].AMOUNT_OF_TAX_THRESHOLD) {
+      if (props.input.expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && result.value.expenses >= constants.PARAMS[<AvailableYear>props.input.year].AMOUNT_OF_TAX_THRESHOLD) {
         $q.notify({
-          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.PARAMS[<AvailableYear>input.value.year].AMOUNT_OF_TAX_THRESHOLD)}.`,
+          message: `Przy 50% uzyskania kosztów przychodu obowiązuje limit kosztów w kwocie ${pln(constants.PARAMS[<AvailableYear>props.input.year].AMOUNT_OF_TAX_THRESHOLD)}.`,
         })
       }
     })
@@ -84,5 +81,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

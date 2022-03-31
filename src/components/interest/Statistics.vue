@@ -9,29 +9,26 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import interest from 'components/interest/interest'
 import {usePieChart} from 'src/use/usePieChart'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {InterestResult} from 'components/interest/interfaces/InterestResult'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<InterestInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const labels:string[] =  [
       'Kwota',
       'Odsetki',
     ]
 
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<InterestResult>>> = computed(() => interest.getResult(input.value))
+    const result = computed(() => interest.getResult(props.input))
 
     const chartData = computed(() => usePieChart(
         labels,
@@ -50,5 +47,5 @@ export default {
   components: {
     PieChart,
   },
-}
+})
 </script>

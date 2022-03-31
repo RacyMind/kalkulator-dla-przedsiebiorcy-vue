@@ -55,14 +55,14 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
 import validationRules from 'src/logic/validationRules'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 import {SickPayRate} from 'components/sickPay/types/SickPayRate'
 
-export default {
-  setup(props: any, context: any) {
+export default defineComponent({
+  setup(props, context) {
     const sickTaxRates = [
       {
         label: '80%',
@@ -102,5 +102,5 @@ export default {
       save,
     }
   },
-}
+})
 </script>

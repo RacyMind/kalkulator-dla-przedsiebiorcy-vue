@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import {ref, toRefs, watch} from 'vue'
+import {defineComponent, ref, watch} from 'vue'
 
 const polishLocalisation = {
   days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
@@ -22,20 +22,19 @@ const polishLocalisation = {
   monthsShort: 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
   firstDayOfWeek: 1,
 }
-export default {
+export default defineComponent({
   props: {
     modelValue: {
       type: String,
       required: true,
     },
   },
-  setup(props: any, context: any) {
-    const {modelValue} = toRefs(props)
-    const date = ref(modelValue.value)
+  setup(props, context) {
+    const date = ref(props.modelValue)
     const qDateProxyRef = ref(null) as any
 
-    watch(modelValue, () => {
-      date.value = modelValue.value
+    watch(() => props.modelValue, () => {
+      date.value = props.modelValue
     })
 
     const changeDate = () => {
@@ -50,5 +49,5 @@ export default {
       changeDate,
     }
   },
-}
+})
 </script>

@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
+import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import {ref} from 'vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'components/investment/Form.vue'
 import Summary from 'components/investment/Summary.vue'
@@ -36,7 +36,7 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Lokata')
@@ -67,5 +67,5 @@ export default {
     Advert,
     Footer,
   },
-}
+})
 </script>
