@@ -92,16 +92,16 @@
 </template>
 
 <script lang="ts">
-import {computed, ref, watch} from 'vue'
+import {computed, defineComponent, ref, watch} from 'vue'
+import {parse} from 'date-fns'
 import differenceInDays from 'date-fns/differenceInDays'
 import DatePopup from 'components/partials/DatePopup.vue'
 import validationRules from 'src/logic/validationRules'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import constants from 'src/logic/constants'
-import {parse} from 'date-fns'
 
-export default {
-  setup(props: any, context: any) {
+export default defineComponent({
+  setup(props, context) {
     const amount = ref(null)
     const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
 
@@ -180,5 +180,5 @@ export default {
   components: {
     DatePopup,
   },
-}
+})
 </script>

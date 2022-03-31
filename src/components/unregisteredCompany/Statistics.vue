@@ -9,30 +9,27 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import {usePieChart} from 'src/use/usePieChart'
-import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
 import unregisteredCompany from 'components/unregisteredCompany/unregisteredCompany'
-import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import PieChart from 'components/PieChart.vue'
+import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 
-export default {
+export default defineComponent({
   props: {
     input: {
-      type: Object as PropType<InvoiceInputFields>,
+      type: Object as PropType<UnregisteredCompanyInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const labels:string[] =  [
       'Dochód netto',
       'Zaliczka na podatek dochodowy',
     ]
 
-    const { input } = toRefs(props)
-
-    const result: Readonly<Ref<Readonly<UnregisteredCompanyResult>>> = computed<UnregisteredCompanyResult>(() => {
-      return unregisteredCompany.getResult(input.value)
+    const result = computed(() => {
+      return unregisteredCompany.getResult(props.input)
     })
 
     const chartData = computed(() => usePieChart(
@@ -52,5 +49,5 @@ export default {
   components: {
     PieChart,
   },
-}
+})
 </script>

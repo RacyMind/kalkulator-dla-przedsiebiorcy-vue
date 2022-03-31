@@ -11,22 +11,21 @@
 </template>
 
 <script lang="ts">
-import {ref, toRefs, watch} from 'vue'
+import {defineComponent, ref, watch} from 'vue'
 import constants from 'src/logic/constants'
-export default {
+export default defineComponent({
   props: {
     modelValue: {
       type: Number,
       required: true,
     },
   },
-  setup(props:any, context:any) {
-    const { modelValue } = toRefs(props)
-    const year = ref(modelValue.value)
+  setup(props, context) {
+    const year = ref(props.modelValue)
     const years = constants.AVAILABLE_YEARS
 
-    watch(modelValue, () => {
-      year.value = modelValue.value
+    watch(() => props.modelValue, () => {
+      year.value = props.modelValue
     })
 
     const changeYear = () => {
@@ -39,5 +38,5 @@ export default {
       changeYear,
     }
   },
-}
+})
 </script>

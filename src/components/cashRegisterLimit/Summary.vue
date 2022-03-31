@@ -18,27 +18,24 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import { format } from 'date-fns'
 import { pln } from 'src/use/currencyFormat'
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 import cashRegisterLimit from 'components/cashRegisterLimit/cashRegisterLimit'
-import {CashRegisterLimitResult} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitResult'
 import ListRow from 'components/partials/ListRow.vue'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<CashRegisterLimitInputFields>,
       required: true,
     },
   },
-  setup (props:any) {
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<CashRegisterLimitResult>>> = computed(() => {
+  setup (props) {
+    const result = computed(() => {
       try {
-        return cashRegisterLimit.getResult(input.value)
+        return cashRegisterLimit.getResult(props.input)
       }
       catch {
         return {
@@ -65,5 +62,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

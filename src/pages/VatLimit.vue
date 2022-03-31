@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
+import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import {ref} from 'vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'components/vatLimit/Form.vue'
 import Summary from 'components/vatLimit/Summary.vue'
@@ -36,7 +36,7 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Limit sprzedaży dla zwolnienia z VAT')
@@ -65,5 +65,5 @@ export default {
     Advert,
     Footer,
   },
-}
+})
 </script>

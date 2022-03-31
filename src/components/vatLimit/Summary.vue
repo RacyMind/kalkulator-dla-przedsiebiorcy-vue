@@ -18,27 +18,24 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import { format } from 'date-fns'
 import { pln } from 'src/use/currencyFormat'
 import vatLimit from 'components/vatLimit/vatLimit'
 import ListRow from 'components/partials/ListRow.vue'
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
-import {VatLimitResult} from 'components/vatLimit/interfaces/VatLimitResult'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<VatLimitInputFields>,
       required: true,
     },
   },
-  setup (props:any) {
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<VatLimitResult>>> = computed(() => {
+  setup (props) {
+    const result = computed(() => {
       try {
-        return vatLimit.getResult(input.value)
+        return vatLimit.getResult(props.input)
       }
       catch {
         return {
@@ -65,5 +62,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

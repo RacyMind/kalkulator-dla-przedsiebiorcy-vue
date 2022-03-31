@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import {ref, watch} from 'vue'
+import {defineComponent, Ref, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import ChooseYear from 'src/components/partials/ChooseYear.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
@@ -52,17 +52,20 @@ import Statistics from 'components/contractWork/Statistics.vue'
 import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-export default {
+import constants from 'src/logic/constants'
+import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Umowa o dzieło')
 
     const year = ref(helpers.getDefaultYear())
 
-    const inputFields = ref(<ContractWorkInputFields>{
+    const inputFields:Ref<ContractWorkInputFields> = ref({
       year: helpers.getDefaultYear(),
-      expenseRate: 0,
+      expenseRate: <ExpenseRate>0,
       amount: 0,
+      amountType: constants.AMOUNT_TYPES.GROSS,
     })
 
     const scrollTarget = ref(null) as any
@@ -92,5 +95,5 @@ export default {
     Footer,
     ChooseYear,
   },
-}
+})
 </script>

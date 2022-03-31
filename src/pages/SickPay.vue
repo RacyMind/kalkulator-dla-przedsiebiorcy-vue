@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
+import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import {ref} from 'vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'components/sickPay/Form.vue'
 import Summary from 'components/sickPay/Summary.vue'
@@ -36,7 +36,7 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Zasiłek chorobowy')
@@ -67,5 +67,5 @@ export default {
     Advert,
     Footer,
   },
-}
+})
 </script>
