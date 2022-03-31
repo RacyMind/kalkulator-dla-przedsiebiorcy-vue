@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="result.netAmount"
+      v-if="result.netAmount && input.amount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>

@@ -28,6 +28,44 @@ const defaultInputForGeneral:SelfEmploymentInputFields = {
   customBasisForZus: 0,
 }
 
+const defaultInputForLinear:SelfEmploymentInputFields = {
+  year: helpers.getDefaultYear(),
+  amount: 7000,
+  expenses: 0,
+  incomeTaxType: constants.TAX_TYPES.LINEAR,
+  taxRateForLumpSum: 0,
+  isFreeAmount: true,
+  isReliefForSenior: false,
+  isReliefForBigFamily: false,
+  isReliefForMiddleClass: false,
+  isReliefForCompanyStart: false,
+  isFpContribution: true,
+  isSickContribution: true,
+  accidentContributionRate: 0.0167,
+  isSmallZus: false,
+  isFullTimeJob: false,
+  customBasisForZus: 0,
+}
+
+const defaultInputForLLumpSum:SelfEmploymentInputFields = {
+  year: helpers.getDefaultYear(),
+  amount: 7000,
+  expenses: 0,
+  incomeTaxType: constants.TAX_TYPES.LUMP_SUM,
+  taxRateForLumpSum: 0.15,
+  isFreeAmount: true,
+  isReliefForSenior: false,
+  isReliefForBigFamily: false,
+  isReliefForMiddleClass: false,
+  isReliefForCompanyStart: false,
+  isFpContribution: true,
+  isSickContribution: true,
+  accidentContributionRate: 0.0167,
+  isSmallZus: false,
+  isFullTimeJob: false,
+  customBasisForZus: 0,
+}
+
 const yearlyInput = (monthlyInput:SelfEmploymentInputFields):SelfEmploymentInputFields[] => {
   const inputs:SelfEmploymentInputFields[] = []
   for(let i = 0; i < 12; i++) {
@@ -197,6 +235,25 @@ describe('selfEmployment - income tax rule: GENERAL', () => {
     expect(result.yearlyResult.netAmount).toBe(56504.88)
   })
 
+  it('the yearly calculation, with the 18 000 amount, for the default year', () => {
+    const input:SelfEmploymentInputFields = {
+      ...defaultInputForGeneral,
+      amount: 18000,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(216000)
+    expect(result.yearlyResult.taxAmount).toBe(43067)
+    expect(result.yearlyResult.healthContribution).toBe(18131.76)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(140265.88)
+  })
+
   it('the yearly calculation, with the relief for company start, for the default year', () => {
     const input:SelfEmploymentInputFields = {
       ...defaultInputForGeneral,
@@ -217,25 +274,6 @@ describe('selfEmployment - income tax rule: GENERAL', () => {
     expect(result.yearlyResult.netAmount).toBe(65994)
   })
 
-  it('the yearly calculation, with the 18 000 amount, for the default year', () => {
-    const input:SelfEmploymentInputFields = {
-      ...defaultInputForGeneral,
-      amount: 18000,
-    }
-
-    const result = yearlyResult(yearlyInput(input))
-
-    expect(result.yearlyResult.grossAmount).toBe(216000)
-    expect(result.yearlyResult.taxAmount).toBe(43067)
-    expect(result.yearlyResult.healthContribution).toBe(18131.76)
-    expect(result.yearlyResult.sickContribution).toBe(1044.60)
-    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
-    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
-    expect(result.yearlyResult.fpContribution).toBe(1044.60)
-    expect(result.yearlyResult.accidentContribution).toBe(712.08)
-    expect(result.yearlyResult.netAmount).toBe(140265.88)
-  })
-
   it('the yearly calculation, with the relief for middle class, for the default year', () => {
     const input:SelfEmploymentInputFields = {
       ...defaultInputForGeneral,
@@ -253,5 +291,122 @@ describe('selfEmployment - income tax rule: GENERAL', () => {
     expect(result.yearlyResult.fpContribution).toBe(1044.60)
     expect(result.yearlyResult.accidentContribution).toBe(712.08)
     expect(result.yearlyResult.netAmount).toBe(57548.88)
+  })
+
+  it('the yearly calculation, with the relief for a senior, for the default year', () => {
+    const input:SelfEmploymentInputFields = {
+      ...defaultInputForGeneral,
+      isReliefForSenior: true,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(84000)
+    expect(result.yearlyResult.taxAmount).toBe(0)
+    expect(result.yearlyResult.healthContribution).toBe(6251.76)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(63212.88)
+  })
+
+  it('the yearly calculation, with the relief for a big family, for the default year', () => {
+    const input:SelfEmploymentInputFields = {
+      ...defaultInputForGeneral,
+      isReliefForBigFamily: true,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(84000)
+    expect(result.yearlyResult.taxAmount).toBe(0)
+    expect(result.yearlyResult.healthContribution).toBe(6251.76)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(63212.88)
+  })
+})
+
+describe('selfEmployment - income tax rule: LINEAR', () => {
+
+  it('the yearly calculation for the default year', () => {
+    const input: SelfEmploymentInputFields = {
+      ...defaultInputForLinear,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(84000)
+    expect(result.yearlyResult.taxAmount).toBe(13200)
+    expect(result.yearlyResult.healthContribution).toBe(3403.80)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(52860.84)
+  })
+})
+
+describe('selfEmployment - income tax rule: LUMP SUM', () => {
+  it('the yearly calculation for the default year', () => {
+    const input: SelfEmploymentInputFields = {
+      ...defaultInputForLLumpSum,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(84000)
+    expect(result.yearlyResult.taxAmount).toBe(10416)
+    expect(result.yearlyResult.healthContribution).toBe(6718.68)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(52329.96)
+  })
+
+  it('the yearly calculation, with the 18 000 amount, for the default year', () => {
+    const input: SelfEmploymentInputFields = {
+      ...defaultInputForLLumpSum,
+      amount: 18000,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(216000)
+    expect(result.yearlyResult.taxAmount).toBe(30216)
+    expect(result.yearlyResult.healthContribution).toBe(6718.68)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(164529.96)
+  })
+
+  it('the yearly calculation, with the 29 000 amount, for the default year', () => {
+    const input: SelfEmploymentInputFields = {
+      ...defaultInputForLLumpSum,
+      amount: 29000,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(348000)
+    expect(result.yearlyResult.taxAmount).toBe(50016)
+    expect(result.yearlyResult.healthContribution).toBe(12093.72)
+    expect(result.yearlyResult.sickContribution).toBe(1044.60)
+    expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
+    expect(result.yearlyResult.pensionContribution).toBe(8322.96)
+    expect(result.yearlyResult.fpContribution).toBe(1044.60)
+    expect(result.yearlyResult.accidentContribution).toBe(712.08)
+    expect(result.yearlyResult.netAmount).toBe(271354.92)
   })
 })

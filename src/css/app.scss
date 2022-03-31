@@ -21,3 +21,7 @@
 @import "components/vatLimit";
 @import "components/partialZusContributions";
 @import "components/work";
+
+.q-dialog__inner--minimized{
+  padding: 0;
+}
