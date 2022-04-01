@@ -41,7 +41,7 @@
     />
     <ListRow
       name="Składka emerytalna"
-      :value="pln(result.disabilityContribution)"
+      :value="pln(result.pensionContribution)"
       nested
     />
     <ListRow

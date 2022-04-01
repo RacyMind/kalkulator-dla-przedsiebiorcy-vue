@@ -27,6 +27,17 @@
     />
     <ListRow
       class="bg-teal-1"
+      name="Składka na Fundusz Pracy"
+      :value="pln(result.fpContribution)"
+      nested
+    />
+    <ListRow
+      name="Składka na FGŚP"
+      :value="pln(result.fgspContribution)"
+      nested
+    />
+    <ListRow
+      class="bg-teal-1"
       name="Składka PPK"
       :value="pln(result.ppkContribution)"
       nested

@@ -133,6 +133,11 @@
                 class="q-mt-sm col-6"
                 label="Składka emerytalna"
               />
+              <q-toggle
+                v-model="isFpContribution"
+                class="q-mt-sm"
+                label="Składka na Fundusz Pracy"
+              />
               <q-input
                 v-model.number="accidentContributionRate"
                 :disable="isStudent"
@@ -238,6 +243,7 @@ export default defineComponent({
     const isSickContribution = ref(true)
     const isRentContribution = ref(true)
     const isPensionContribution = ref(true)
+    const isFpContribution = ref(false)
     const isPpkContribution = ref(false)
     const employerPpkContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].PPK.EMPLOYER.DEFAULT_RATE)
     const employeePpkContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].PPK.EMPLOYEE.DEFAULT_RATE)
@@ -295,6 +301,7 @@ export default defineComponent({
         isDisabilityContribution: isRentContribution.value,
         isPensionContribution: isPensionContribution.value,
         accidentContributionRate: accidentContributionRate.value / 100,
+        isFpContribution: isFpContribution.value,
         employerPpkContributionRate: employerPpkContributionRate.value,
         employeePpkContributionRate: employeePpkContributionRate.value,
       }
@@ -332,6 +339,7 @@ export default defineComponent({
       isSickContribution,
       isRentContribution,
       isPensionContribution,
+      isFpContribution,
       isPpkContribution,
       employerPpkContributionRate,
       employeePpkContributionRate,

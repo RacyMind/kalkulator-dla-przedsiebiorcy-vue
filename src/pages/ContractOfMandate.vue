@@ -121,6 +121,7 @@ export default defineComponent({
       isPensionContribution: true,
       isDisabilityContribution: true,
       isSickContribution: true,
+      isFpContribution: false,
       partOfWorkWithAuthorExpenses: 0,
     })
 

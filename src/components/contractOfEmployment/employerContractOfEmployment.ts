@@ -74,7 +74,7 @@ function getMonthlyResult(input: ContractOfEmploymentInputFields): ContractOfEmp
   const pensionContribution = employerContributions.calculatePensionContribution(basisForRentAndPensionContributions)
   const disabilityContribution = employerContributions.calculateDisabilityContribution(basisForRentAndPensionContributions)
   const accidentContribution = employerContributions.calculateAccidentContribution(input.grossAmount, input.accidentContributionRate)
-    const ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
+  const ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
 
   if (input.isFpContribution) {
     fpContribution = employerContributions.calculateFpContribution(input.grossAmount)
