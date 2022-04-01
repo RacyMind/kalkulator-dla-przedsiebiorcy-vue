@@ -19,6 +19,7 @@ const defaultInput:ContractOfMandateInputFields = {
   isPensionContribution: true,
   isDisabilityContribution: true,
   isSickContribution: true,
+  isFpContribution: true,
   partOfWorkWithAuthorExpenses: 0,
 }
 
@@ -50,12 +51,14 @@ describe('employerContractOfMandate', () => {
     const result = monthlyResult(input)
 
     expect(result.grossAmount).toBe(1000)
-    expect(result.contributionTotal).toBe(194.3)
+    expect(result.contributionTotal).toBe(219.8)
     expect(result.accidentContribution).toBe(16.7)
     expect(result.disabilityContribution).toBe(65)
     expect(result.pensionContribution).toBe(97.60)
     expect(result.ppkContribution).toBe(15)
-    expect(result.totalAmount).toBe(1194.30)
+    expect(result.fpContribution).toBe(24.50)
+    expect(result.fgspContribution).toBe(1)
+    expect(result.totalAmount).toBe(1219.80)
   })
 
   it('the monthly calculation, without contributions, for the default year', () => {
@@ -65,6 +68,7 @@ describe('employerContractOfMandate', () => {
       isPensionContribution: false,
       isHealthContribution: false,
       isDisabilityContribution: false,
+      isFpContribution: false,
       accidentContributionRate: 0,
       employerPpkContributionRate: 0,
     }
@@ -77,6 +81,8 @@ describe('employerContractOfMandate', () => {
     expect(result.disabilityContribution).toBe(0)
     expect(result.pensionContribution).toBe(0)
     expect(result.ppkContribution).toBe(0)
+    expect(result.fpContribution).toBe(0)
+    expect(result.fgspContribution).toBe(0)
     expect(result.totalAmount).toBe(1000)
   })
 
@@ -88,12 +94,14 @@ describe('employerContractOfMandate', () => {
     const result = yearlyResult(yearlyInput(input))
 
     expect(result.yearlyResult.grossAmount).toBe(12000)
-    expect(result.yearlyResult.contributionTotal).toBe(2331.6)
+    expect(result.yearlyResult.contributionTotal).toBe(2637.6)
     expect(result.yearlyResult.accidentContribution).toBe(200.4)
     expect(result.yearlyResult.disabilityContribution).toBe(780)
     expect(result.yearlyResult.pensionContribution).toBe(1171.2)
     expect(result.yearlyResult.ppkContribution).toBe(180)
-    expect(result.yearlyResult.totalAmount).toBe(14331.6)
+    expect(result.yearlyResult.fpContribution).toBe(294)
+    expect(result.yearlyResult.fgspContribution).toBe(12)
+    expect(result.yearlyResult.totalAmount).toBe(14637.60)
   })
 
   it('the yearly calculation, with all contributions 15 000 gross amount, for the default year', () => {
@@ -105,12 +113,14 @@ describe('employerContractOfMandate', () => {
     const result = yearlyResult(yearlyInput(input))
 
     expect(result.yearlyResult.grossAmount).toBe(180000)
-    expect(result.yearlyResult.contributionTotal).toBe(34593.52)
+    expect(result.yearlyResult.contributionTotal).toBe(39183.52)
     expect(result.yearlyResult.accidentContribution).toBe(3006)
     expect(result.yearlyResult.disabilityContribution).toBe(11547.90)
     expect(result.yearlyResult.pensionContribution).toBe(17339.62)
     expect(result.yearlyResult.ppkContribution).toBe(2700)
-    expect(result.yearlyResult.totalAmount).toBe(214593.52)
+    expect(result.yearlyResult.fpContribution).toBe(4410)
+    expect(result.yearlyResult.fgspContribution).toBe(180)
+    expect(result.yearlyResult.totalAmount).toBe(219183.52)
   })
 
   it('the yearly calculation, without contributions, for the default year', () => {
@@ -120,6 +130,7 @@ describe('employerContractOfMandate', () => {
       isPensionContribution: false,
       isHealthContribution: false,
       isDisabilityContribution: false,
+      isFpContribution: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -133,6 +144,8 @@ describe('employerContractOfMandate', () => {
     expect(result.yearlyResult.disabilityContribution).toBe(0)
     expect(result.yearlyResult.pensionContribution).toBe(0)
     expect(result.yearlyResult.ppkContribution).toBe(0)
+    expect(result.yearlyResult.fpContribution).toBe(0)
+    expect(result.yearlyResult.fgspContribution).toBe(0)
     expect(result.yearlyResult.totalAmount).toBe(12000)
   })
 })

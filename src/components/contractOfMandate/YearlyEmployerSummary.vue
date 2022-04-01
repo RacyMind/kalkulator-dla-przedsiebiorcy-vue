@@ -58,6 +58,22 @@ const columns =  [
     format: (val:number) => `${pln(val)}`,
   },
   {
+    name: 'fp',
+    label: 'Skł. na FP',
+    required: true,
+    align: 'left',
+    field: (row:ContractOfMandateEmployerSingleResult) => row.fpContribution,
+    format: (val:number) => `${pln(val)}`,
+  },
+  {
+    name: 'fgsp',
+    label: 'Skł. na FGŚP',
+    required: true,
+    align: 'left',
+    field: (row:ContractOfMandateEmployerSingleResult) => row.fgspContribution,
+    format: (val:number) => `${pln(val)}`,
+  },
+  {
     name: 'ppk',
     label: 'Skł. PPK',
     required: true,

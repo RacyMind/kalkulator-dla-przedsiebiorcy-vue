@@ -71,6 +71,8 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
   let disabilityContribution = 0
   let accidentContribution = 0
   let ppkContribution = 0
+  let fpContribution = 0
+  let fgspContribution = 0
   const basisForRentAndPensionContributions = calculateBasisForRentAndPensionContributions(input.grossAmount)
 
   if (input.isPensionContribution) {
@@ -86,7 +88,13 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     ppkContribution = employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const totalContributions = pensionContribution + disabilityContribution + accidentContribution + ppkContribution
+
+  if (input.isFpContribution) {
+    fpContribution = employerContributions.calculateFpContribution(input.grossAmount)
+    fgspContribution = employerContributions.calculateFgspContribution(input.grossAmount)
+  }
+
+  const totalContributions = pensionContribution + disabilityContribution + accidentContribution + ppkContribution + fpContribution + fgspContribution
   const totalAmount = helpers.round(input.grossAmount + totalContributions, 2)
 
   return {
@@ -97,6 +105,8 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
     disabilityContribution: disabilityContribution,
     accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
+    fpContribution: fpContribution,
+    fgspContribution: fgspContribution,
     contributionTotal: helpers.round(totalContributions, 2),
   }
 }
@@ -132,6 +142,10 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
     accidentContribution: helpers.round(results.map(result => result.accidentContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    fpContribution: helpers.round(results.map(result => result.fpContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    fgspContribution: helpers.round(results.map(result => result.fgspContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     contributionTotal: helpers.round(results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0), 2),
