@@ -188,7 +188,11 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
     sickContribution = ownerContributions.calculateSickContribution(basisForZus)
   }
 
-  const grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution + fpContribution)
+  let grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution)
+
+  if(input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
+    grossAmountMinusEmployeeContributions -= fpContribution
+  }
 
   let amountToCalculateHealthContribution = grossAmountMinusEmployeeContributions
 

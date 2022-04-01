@@ -245,7 +245,7 @@ export default defineComponent({
         amount: Number(amount.value),
         expenses: Number(expenses.value),
         incomeTaxType: incomeTaxType.value,
-        taxRateForLumpSum: taxRateForLumpSum.value,
+        taxRateForLumpSum: taxRateForLumpSum.value / 100,
         isFreeAmount: isFreeAmount.value,
         isReliefForBigFamily: isReliefForBigFamily.value,
         isReliefForMiddleClass: isReliefForMiddleClass.value,
