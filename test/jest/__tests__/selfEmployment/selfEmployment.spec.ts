@@ -362,14 +362,14 @@ describe('selfEmployment - income tax rule: LUMP SUM', () => {
     const result = yearlyResult(yearlyInput(input))
 
     expect(result.yearlyResult.grossAmount).toBe(84000)
-    expect(result.yearlyResult.taxAmount).toBe(	10572)
+    expect(result.yearlyResult.taxAmount).toBe(10572)
     expect(result.yearlyResult.healthContribution).toBe(6718.68)
     expect(result.yearlyResult.sickContribution).toBe(1044.60)
     expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
     expect(result.yearlyResult.pensionContribution).toBe(8322.96)
     expect(result.yearlyResult.fpContribution).toBe(1044.60)
     expect(result.yearlyResult.accidentContribution).toBe(712.08)
-    expect(result.yearlyResult.netAmount).toBe(		52173.96)
+    expect(result.yearlyResult.netAmount).toBe(	52173.96)
   })
   it('the yearly calculation, without FP contribution, for the default year', () => {
     const input: SelfEmploymentInputFields = {
@@ -380,14 +380,14 @@ describe('selfEmployment - income tax rule: LUMP SUM', () => {
     const result = yearlyResult(yearlyInput(input))
 
     expect(result.yearlyResult.grossAmount).toBe(84000)
-    expect(result.yearlyResult.taxAmount).toBe(	10572)
+    expect(result.yearlyResult.taxAmount).toBe(10572)
     expect(result.yearlyResult.healthContribution).toBe(6718.68)
     expect(result.yearlyResult.sickContribution).toBe(1044.60)
     expect(result.yearlyResult.disabilityContribution).toBe(3411.12)
     expect(result.yearlyResult.pensionContribution).toBe(8322.96)
     expect(result.yearlyResult.fpContribution).toBe(0)
     expect(result.yearlyResult.accidentContribution).toBe(712.08)
-    expect(result.yearlyResult.netAmount).toBe(			53218.56)
+    expect(result.yearlyResult.netAmount).toBe(	53218.56)
   })
 
   it('the yearly calculation, with the 18 000 amount, for the default year', () => {
