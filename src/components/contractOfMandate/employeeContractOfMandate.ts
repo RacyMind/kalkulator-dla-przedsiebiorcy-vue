@@ -6,6 +6,7 @@ import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
+import taxes from 'src/logic/taxes'
 
 let params = {
   taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
@@ -16,6 +17,7 @@ let params = {
 }
 
 let totalBasisForRentAndPensionContributions = 0
+let totalBasisForTax = 0
 let totalExpenses = 0
 let totalGrossAmount = 0
 
@@ -24,6 +26,7 @@ let totalGrossAmount = 0
  */
 function resetTotalAmounts () {
   totalBasisForRentAndPensionContributions = 0
+  totalBasisForTax = 0
   totalExpenses = 0
   totalGrossAmount = 0
 }
@@ -125,13 +128,19 @@ function calculateBasisForTax (grossAmount:number, grossAmountMinusEmployeeContr
  * @param {number} grossAmount
  * @param {number} basisForTax
  * @param {number} amountOfDeductionOfHealthContributionFromTax
+ * @param isFreeAmount
  * @returns {number}
  */
-function calculateTaxAmount (grossAmount:number, basisForTax:number, amountOfDeductionOfHealthContributionFromTax:number):number {
+function calculateTaxAmount (
+  grossAmount:number,
+  basisForTax:number,
+  amountOfDeductionOfHealthContributionFromTax:number,
+  isFreeAmount:boolean,
+):number {
   let taxAmount = basisForTax * params.taxRate
 
   if (grossAmount > params.lumpSumUpToAmount) {
-    taxAmount -= amountOfDeductionOfHealthContributionFromTax
+    taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, false)
   }
 
   if (taxAmount < 0) {
@@ -224,7 +233,7 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   }
 
   const basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions + employerPPkContribution, expenses, input.isReliefForYoung)
-  const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax)
+  const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, input.isFreeAmount)
   const totalContributions = employeeContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)
 
@@ -255,6 +264,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
   totalGrossAmount = 0
+  totalBasisForTax = 0
 
   monthlyInputs.forEach((input, index) => {
     const result = getMonthlyResult(input, index)
@@ -263,6 +273,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
     totalBasisForRentAndPensionContributions += result.basisForRentAndPensionContributions
     totalExpenses += result.expenses
     totalGrossAmount += result.grossAmount
+    totalBasisForTax += result.basisForTax
   })
 
   return {

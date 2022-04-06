@@ -12,6 +12,7 @@ installQuasarPlugin()
 const defaultInput:ContractOfMandateInputFields = {
   year: helpers.getDefaultYear(),
   grossAmount: 1000,
+  isFreeAmount: false,
   isReliefForYoung: false,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
@@ -20,6 +21,7 @@ const defaultInput:ContractOfMandateInputFields = {
   isPensionContribution: true,
   isDisabilityContribution: true,
   isSickContribution: true,
+  isFpContribution: true,
   partOfWorkWithAuthorExpenses: 0,
 }
 
@@ -151,6 +153,26 @@ describe('employeeContractOfMandate', () => {
     expect(result.ppkContribution).toBe(20)
     expect(result.netAmount).toBe(681.24)
   })
+  it('the monthly calculation, with all contributions and 150 gross amount, for the default year', () => {
+    const input:ContractOfMandateInputFields = {
+      ...defaultInput,
+      grossAmount: 150,
+    }
+
+    const result = monthlyResult(input)
+
+    expect(result.grossAmount).toBe(150)
+    expect(result.expenses).toBe(0)
+    expect(result.basisForTax).toBe(150)
+    expect(result.taxAmount).toBe(26)
+    expect(result.contributionTotal).toBe(35.22)
+    expect(result.healthContribution).toBe(11.65)
+    expect(result.sickContribution).toBe(3.68)
+    expect(result.disabilityContribution).toBe(2.25)
+    expect(result.pensionContribution).toBe(14.64)
+    expect(result.ppkContribution).toBe(3)
+    expect(result.netAmount).toBe(88.78)
+  })
 
   it('the yearly calculation, with all contributions, for the default year', () => {
     const input:ContractOfMandateInputFields = {
@@ -169,7 +191,7 @@ describe('employeeContractOfMandate', () => {
     expect(result.yearlyResult.netAmount).toBe(7745.88)
   })
 
-  it('the yearly calculation, with all contributions 15 000 gross amount, for the default year', () => {
+  it('the yearly calculation, with all contributions and 15 000 gross amount, for the default year', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
       grossAmount: 15000,
@@ -178,13 +200,13 @@ describe('employeeContractOfMandate', () => {
     const result = yearlyResult(yearlyInput(input))
 
     expect(result.yearlyResult.grossAmount).toBe(180000)
-    expect(result.yearlyResult.taxAmount).toBe(21584)
+    expect(result.yearlyResult.taxAmount).toBe(22626)
     expect(result.yearlyResult.healthContribution).toBe(14002.64)
     expect(result.yearlyResult.sickContribution).toBe(4410)
     expect(result.yearlyResult.disabilityContribution).toBe(2664.90)
     expect(result.yearlyResult.pensionContribution).toBe(17339.62)
     expect(result.yearlyResult.ppkContribution).toBe(3600)
-    expect(result.yearlyResult.netAmount).toBe(116398.84)
+    expect(result.yearlyResult.netAmount).toBe(115356.84)
   })
 
   it('the yearly calculation, without contributions, for the default year', () => {
@@ -215,6 +237,24 @@ describe('employeeContractOfMandate', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
       isReliefForYoung: true,
+    }
+
+    const result = yearlyResult(yearlyInput(input))
+
+    expect(result.yearlyResult.grossAmount).toBe(12000)
+    expect(result.yearlyResult.taxAmount).toBe(0)
+    expect(result.yearlyResult.healthContribution).toBe(931.92)
+    expect(result.yearlyResult.sickContribution).toBe(294)
+    expect(result.yearlyResult.disabilityContribution).toBe(180)
+    expect(result.yearlyResult.pensionContribution).toBe(1171.20)
+    expect(result.yearlyResult.ppkContribution).toBe(240)
+    expect(result.yearlyResult.netAmount).toBe(9182.88)
+  })
+
+  it('the yearly calculation, with all contributions and the free amount, for the default year', () => {
+    const input:ContractOfMandateInputFields = {
+      ...defaultInput,
+      isFreeAmount: true,
     }
 
     const result = yearlyResult(yearlyInput(input))
