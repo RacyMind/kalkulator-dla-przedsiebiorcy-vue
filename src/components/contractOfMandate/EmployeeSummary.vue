@@ -89,6 +89,14 @@ export default defineComponent({
       }
     })
 
+    watch(result, () => {
+      if (result.value.basisForTax > constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD) {
+        $q.notify({
+          message: `Podstawa opodatkowania przekroczyła granicę progu podatkowego (${pln(constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD)}). Dla kwoty powyżej progu stawka podatku wynosi ${constants.PARAMS[props.input.year].TAX_RATES.SECOND_RATE}%.`,
+        })
+      }
+    })
+
     return {
       pln,
       result,

@@ -77,6 +77,11 @@
             label="Zerowy PIT dla młodych"
           />
           <q-toggle
+            v-model="isFreeAmount"
+            class="q-mt-sm"
+            label="Kwota wolna od podatku"
+          />
+          <q-toggle
             v-model="isAuthorExpenses"
             class="q-mt-sm col-6"
             label="Autorskie koszty uzyskania przychodu (50%)"
@@ -236,6 +241,7 @@ export default defineComponent({
 
     const amount:Ref<number|null> = ref(null)
     const amountType = ref(constants.AMOUNT_TYPES.GROSS)
+    const isFreeAmount = ref(false)
     const accidentContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].ACCIDENT_RATE)
     const isReliefForYoung = ref(false)
     const isStudent = ref(false)
@@ -294,6 +300,7 @@ export default defineComponent({
       const input: ContractOfMandateInputFields = {
         year: <AvailableYear>props.year,
         grossAmount: Number(amount.value),
+        isFreeAmount: isFreeAmount.value,
         isReliefForYoung: isReliefForYoung.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
         isHealthContribution: isHealthContribution.value,
@@ -332,6 +339,7 @@ export default defineComponent({
       constants,
       amount,
       amountType,
+      isFreeAmount,
       accidentContributionRate,
       isReliefForYoung,
       isStudent,

@@ -11,6 +11,7 @@ installQuasarPlugin()
 const defaultInput:ContractOfMandateInputFields = {
   year: helpers.getDefaultYear(),
   grossAmount: 1000,
+  isFreeAmount: false,
   isReliefForYoung: false,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,

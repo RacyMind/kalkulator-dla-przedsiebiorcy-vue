@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch} from 'vue'
+import {defineComponent, Ref, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import helpers from 'src/logic/helpers'
 import SectionHeader from 'components/partials/SectionHeader.vue'
@@ -110,9 +110,10 @@ export default defineComponent({
     const openEmployerModal = ref(false)
     const scrollTarget = ref(null) as any
 
-    const inputFields = ref(<ContractOfMandateInputFields>{
+    const inputFields:Ref<ContractOfMandateInputFields> = ref({
       year: helpers.getDefaultYear(),
       grossAmount: 0,
+      isFreeAmount: false,
       isReliefForYoung: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
