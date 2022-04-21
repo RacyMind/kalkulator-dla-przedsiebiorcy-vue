@@ -39,6 +39,8 @@
           :options="constants.PARAMS[this.year].TAX_RATES_FOR_LAMP_SUM"
           label="Stawka ryczałtu ewidencjonowanego"
           color="brand"
+          emit-value
+          map-options
         />
         <q-toggle
           v-model="isFreeAmount"

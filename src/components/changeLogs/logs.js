@@ -1,5 +1,10 @@
 export default [
   {
+    version: '4.5.1',
+    publish_date: '2022-04-16',
+    content: '<ul><li>Naprawa błędu w obliczeniach podatku dla ryczałtu w Samozatrudnieniu</li></ul>',
+  },
+  {
     version: '4.5.0',
     publish_date: '2022-04-06',
     content: '<ul><li>Refaktoryzacja modułu Samozatrudnienie.</li><li>Refaktoryzacja modułu Umowy o pracę.</li><li>Refaktoryzacja modułu Umowy zlecenie.</li><li>Dodanie składek na FP i FGŚP w module Umowy zlecenie.</li><li>Dodanie kwoty wolnej od podatku i 2. progu podatkowego w module Umowy zlecenie.</li><li>Naprawa błędu dodającego podatek za PPK od pracodawcy przy aktywnej uldze dla młodych.</li><li>Usunięcie składki na Fundusz Pracy z kosztów przychodu przy ryczałcie w module Samozatrudnienie.</li></ul>',
