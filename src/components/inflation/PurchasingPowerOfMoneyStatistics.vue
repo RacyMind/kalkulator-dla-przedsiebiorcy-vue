@@ -40,7 +40,7 @@
     <p
       class="q-mt-md q-mb-none text-grey text-justify"
       style="font-size:0.8rem;">
-      Wykres pokazuje zmianę cen w porównaniu z analogicznym miesiącem poprzedniego roku.<br><br>
+      Wykres pokazuje zmianę siły nabywczej pieniądza w odniesieniu do kwoty bazowej.<br><br>
       Źródło danych: <a
         class="text-grey"
         href="https://stat.gov.pl/obszary-tematyczne/ceny-handel/wskazniki-cen/wskazniki-cen-towarow-i-uslug-konsumpcyjnych-pot-inflacja-/miesieczne-wskazniki-cen-towarow-i-uslug-konsumpcyjnych-od-1982-roku/"
