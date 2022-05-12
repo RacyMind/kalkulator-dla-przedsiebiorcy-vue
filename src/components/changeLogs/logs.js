@@ -1,5 +1,10 @@
 export default [
   {
+    version: '4.6.0',
+    publish_date: '2022-05-12',
+    content: '<ul><li>Dodanie modułu Siła nabywcza pieniądza.</li></ul>',
+  },
+  {
     version: '4.5.1',
     publish_date: '2022-04-16',
     content: '<ul><li>Naprawa błędu w obliczeniach podatku dla ryczałtu w Samozatrudnieniu</li></ul>',
