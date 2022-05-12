@@ -25,12 +25,8 @@
       Wykres pokazuje zmianę cen w porównaniu z analogicznym miesiącem poprzedniego roku.<br><br>
       Źródło danych: <a
         class="text-grey"
-        href="https://dane.gov.pl/pl/dataset/2055,miesieczne-wskazniki-cen-towarow-i-uslug-konsumpcy/resource/33666"
-        target="_blank">dame.gov.pl</a><br>
-      Licencja: <a
-        class="text-grey"
-        href="https://creativecommons.org/licenses/by/4.0/legalcode.pl"
-        target="_blank">CC BY 4.0</a>
+        href="https://stat.gov.pl/obszary-tematyczne/ceny-handel/wskazniki-cen/wskazniki-cen-towarow-i-uslug-konsumpcyjnych-pot-inflacja-/miesieczne-wskazniki-cen-towarow-i-uslug-konsumpcyjnych-od-1982-roku/"
+        target="_blank">GUS</a>
     </p>
   </div>
 </template>

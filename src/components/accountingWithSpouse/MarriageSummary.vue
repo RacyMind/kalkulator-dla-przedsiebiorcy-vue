@@ -1,3 +1,4 @@
+<!--
 <template>
   <div>
     <template v-if="commonResult">
@@ -165,3 +166,4 @@ export default {
   },
 }
 </script>
+-->

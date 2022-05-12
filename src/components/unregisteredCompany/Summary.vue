@@ -26,35 +26,31 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, PropType, toRefs, Ref, watch} from 'vue'
+import {computed, PropType, watch, defineComponent} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
 import { pln } from 'src/use/currencyFormat'
 import unregisteredCompany from './unregisteredCompany'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 import ListRow from 'components/partials/ListRow.vue'
-import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
 import helpers from 'src/logic/helpers'
-import {AvailableYear} from 'src/types/AvailableYear'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<UnregisteredCompanyInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const $q = useQuasar()
 
-    const { input } = toRefs(props)
-
-    const result: Readonly<Ref<Readonly<UnregisteredCompanyResult>>> = computed(() => {
-      return unregisteredCompany.getResult(input.value)
+    const result = computed(() => {
+      return unregisteredCompany.getResult(props.input)
     })
 
-    const currentYear:AvailableYear = helpers.getDefaultYear()
-    const limitForUnregisteredCompany:number = constants.PARAMS[currentYear].MINIMUM_SALARY / 2
+    const currentYear = helpers.getDefaultYear()
+    const limitForUnregisteredCompany = constants.PARAMS[currentYear].MINIMUM_SALARY / 2
 
     watch(result, () => {
       if (result.value.netIncomeAmount > limitForUnregisteredCompany) {
@@ -72,5 +68,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

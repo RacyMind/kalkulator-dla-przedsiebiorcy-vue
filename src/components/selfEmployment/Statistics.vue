@@ -1,68 +1,65 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="result.netAmount"
+      v-if="result.netAmount && input.amount"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
 </template>
 
-<script>
-import constants from 'src/logic/constants'
-import PieChart from 'components/PieChart'
-import { useMonthlyResult } from 'src/use/useSelfEmployment'
+<script lang="ts">
+import {computed, defineComponent, PropType} from 'vue'
+import PieChart from 'components/PieChart.vue'
+import selfEmployment from 'components/selfEmployment/selfEmployment'
+import {usePieChart} from 'src/use/usePieChart'
+import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
 
-export default {
+export default defineComponent({
   props: {
-    year: Number,
+    input: {
+      type: Object as PropType<SelfEmploymentInputFields>,
+      required: true,
+    },
   },
-  setup (props) {
-    const { result } = useMonthlyResult(props)
+  setup(props) {
+    const labels =  [
+      'Dochód netto',
+      'Zaliczka na podatek dochodowy',
+      'Składka zdrowotna',
+      'Składka chorobowa',
+      'Składka rentowa',
+      'Składka emerytalna',
+      'Składka wypadkowa',
+      'Składka na Fundusz Pracy',
+    ]
+
+    const result = computed(() => {
+      return selfEmployment.getMonthlyResult(props.input)
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.netAmount,
+          result.value.taxAmount,
+          result.value.healthContribution,
+          result.value.sickContribution,
+          result.value.disabilityContribution,
+          result.value.pensionContribution,
+          result.value.accidentContribution,
+          result.value.fpContribution,
+        ],
+      ),
+    )
+
     return {
       result,
+      chartData,
     }
-  },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.result.netAmount,
-            this.result.taxAmount,
-            this.result.healthContribution,
-            this.result.sickContribution,
-            this.result.rentContribution,
-            this.result.pensionContribution,
-            this.result.accidentContribution,
-            this.result.fpContribution,
-          ],
-          backgroundColor: [
-            constants.COLORS.CHART1,
-            constants.COLORS.CHART2,
-            constants.COLORS.CHART3,
-            constants.COLORS.CHART4,
-            constants.COLORS.CHART5,
-            constants.COLORS.CHART6,
-            constants.COLORS.CHART7,
-            constants.COLORS.CHART8,
-          ],
-        }],
-        labels: [
-          'Dochód netto',
-          'Zaliczka na podatek dochodowy',
-          'Składka zdrowotna',
-          'Składka chorobowa',
-          'Składka rentowa',
-          'Składka emerytalna',
-          'Składka wypadkowa',
-          'Składka na Fundusz Pracy',
-        ],
-      }
-    },
   },
   components: {
     PieChart,
   },
-}
+})
 </script>

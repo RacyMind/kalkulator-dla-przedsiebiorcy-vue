@@ -19,11 +19,12 @@
   </div>
 </template>
 <script lang="ts">
+import {defineComponent} from 'vue'
 import ListRow from 'components/partials/ListRow.vue'
 
-export default {
+export default defineComponent({
   components: {
     ListRow,
   },
-}
+})
 </script>

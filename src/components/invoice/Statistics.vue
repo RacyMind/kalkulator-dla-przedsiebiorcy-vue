@@ -9,29 +9,26 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import PieChart from 'components/PieChart.vue'
 import { usePieChart } from 'src/use/usePieChart'
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import invoice from './invoice'
-import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<InvoiceInputFields>,
       required: true,
     },
   },
-  setup(props: any) {
+  setup(props) {
     const labels:string[] =  [
       'Kwota netto',
       'Kwota podatku',
     ]
 
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<InvoiceResult>>> = computed(() => invoice.getResult(input.value))
+    const result = computed(() => invoice.getResult(props.input))
 
     const chartData = computed(() => usePieChart(
         labels,
@@ -50,5 +47,5 @@ export default {
   components: {
     PieChart,
   },
-}
+})
 </script>

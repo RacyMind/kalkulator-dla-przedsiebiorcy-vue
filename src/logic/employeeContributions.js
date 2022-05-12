@@ -45,7 +45,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculateRentContribution (basisForRentAndPension) {
+function calculateDisabilityContribution (basisForRentAndPension) {
   return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -133,13 +133,13 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, gro
  * @returns {number}
  */
 function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution) {
-  return pensionContribution + rentContribution + sickContribution + healthContribution
+  return helpers.round(pensionContribution + rentContribution + sickContribution + healthContribution, 2)
 }
 
 export default {
   setYear,
   calculatePensionContribution,
-  calculateRentContribution,
+  calculateDisabilityContribution,
   calculateSickContribution,
   calculateHealthContribution,
   calculateAccidentContribution,

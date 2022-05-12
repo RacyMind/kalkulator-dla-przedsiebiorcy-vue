@@ -33,8 +33,8 @@
 </template>
 
 <script lang="ts">
+import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import {ref} from 'vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Form from 'components/interest/Form.vue'
 import Summary from 'components/interest/Summary.vue'
@@ -44,7 +44,7 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Odsetki')
@@ -76,5 +76,5 @@ export default {
     Advert,
     Footer,
   },
-}
+})
 </script>

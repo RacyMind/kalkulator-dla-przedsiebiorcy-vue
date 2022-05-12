@@ -41,7 +41,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculateRentContribution (basisForRentAndPension) {
+function calculateDisabilityContribution (basisForRentAndPension) {
   return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -90,7 +90,7 @@ function calculatePpkContribution (grossAmount, ppkRate) {
 export default {
   setYear,
   calculatePensionContribution,
-  calculateRentContribution,
+  calculateDisabilityContribution,
   calculateAccidentContribution,
   calculatePpkContribution,
   calculateFgspContribution,

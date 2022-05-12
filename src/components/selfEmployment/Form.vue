@@ -11,9 +11,7 @@
           autofocus
           color="brand"
           suffix="zł"
-          :rules="[
-            val => !!val || '* Wpisz kwotę',
-          ]"
+          :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
         <q-input
@@ -26,42 +24,46 @@
           suffix="zł"
         />
         <q-select
-          v-model="taxType"
-          :options="taxTypes"
+          v-model="incomeTaxType"
+          :options="incomeTaxTypes"
           :disable="isMarriage"
           label="Forma opodatkowania*"
           color="brand"
           required
+          emit-value
+          map-options
         />
         <q-select
-          v-if="taxType.value === constants.TAX_TYPES.LUMP_SUM"
+          v-if="incomeTaxType === constants.TAX_TYPES.LUMP_SUM"
           v-model="taxRateForLumpSum"
           :options="constants.PARAMS[this.year].TAX_RATES_FOR_LAMP_SUM"
           label="Stawka ryczałtu ewidencjonowanego"
           color="brand"
+          emit-value
+          map-options
         />
         <q-toggle
           v-model="isFreeAmount"
-          :disable="taxType.value !== constants.TAX_TYPES.GENERAL || isMarriage"
+          :disable="incomeTaxType !== constants.TAX_TYPES.GENERAL || isMarriage"
           class="q-mt-sm"
           label="Kwota wolna od podatku"
         />
         <template v-if="year >= 2022">
           <q-toggle
             v-if="!isMarriage"
-            v-model="isAidForSenior"
+            v-model="isReliefForSenior"
             class="q-mt-sm"
             label="Zerowy PIT dla seniora"
           />
           <q-toggle
             v-if="!isMarriage"
-            v-model="isAidForBigFamily"
+            v-model="isReliefForBigFamily"
             class="q-mt-sm"
             label="Zerowy PIT dla rodzin 4+"
           />
           <q-toggle
-            v-model="isAidForMiddleClass"
-            :disable="taxType.value !== constants.TAX_TYPES.GENERAL"
+            v-model="isReliefForMiddleClass"
+            :disable="incomeTaxType !== constants.TAX_TYPES.GENERAL"
             class="q-mt-sm"
             label="Ulga dla klasy średniej"
           />
@@ -75,20 +77,20 @@
             label="Praca na etacie"
           />
           <q-toggle
-            v-model="isAidForStart"
+            v-model="isReliefForCompanyStart"
             :disable="isFullTimeJob"
             class="q-mt-sm"
             label="Ulga na start"
           />
           <q-toggle
             v-model="isSmallZus"
-            :disable="isFullTimeJob || isAidForStart"
+            :disable="isFullTimeJob || isReliefForCompanyStart"
             class="q-mt-sm"
             label="Mały ZUS"
           />
           <q-toggle
             v-model="isFpContribution"
-            :disable="isSmallZus || isFullTimeJob || isAidForStart"
+            :disable="isSmallZus || isFullTimeJob || isReliefForCompanyStart"
             class="q-mt-sm"
             label="Składka na Fundusz Pracy"
           />
@@ -115,9 +117,7 @@
           label="Podstawa dla składek ZUS"
           color="brand"
           suffix="zł"
-          :rules="[
-            val => !!val || '* Wpisz kwotę',
-          ]"
+          :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
         <q-input
@@ -130,9 +130,7 @@
           label="Składka wypadkowa*"
           color="brand"
           suffix="%"
-          :rules="[
-            val => !!val || '* Wpisz wartość',
-          ]"
+          :rules="[validationRules.required]"
           lazy-rules
         />
       </div>
@@ -154,10 +152,30 @@
   </q-form>
 </template>
 
-<script>
+<script lang="ts">
 import constants from 'src/logic/constants'
+import {computed, defineComponent, ref, Ref, watch} from 'vue'
+import {AvailableYear} from 'src/types/AvailableYear'
+import validationRules from 'src/logic/validationRules'
+import {IncomeTaxType} from 'src/types/IncomeTaxType'
+import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
 
-export default {
+const incomeTaxTypes = [
+  {
+    value: constants.TAX_TYPES.GENERAL,
+    label: 'Zasady ogólne',
+  },
+  {
+    label: 'Podatek liniowy',
+    value: constants.TAX_TYPES.LINEAR,
+  },
+  {
+    label: 'Ryczałt ewidencjonowany',
+    value: constants.TAX_TYPES.LUMP_SUM,
+  },
+]
+
+export default defineComponent({
   props: {
     year: Number,
     isMarriage: {
@@ -166,156 +184,113 @@ export default {
       default: false,
     },
   },
-  emits: ['submitted'],
-  setup () {
-    return { constants }
-  },
-  data () {
-    return {
-      amount: null,
-      expenses: 0,
-      taxType: null,
-      taxRateForLumpSum: null,
-      accidentContributionRate: 0,
-      isSmallZus: false,
-      isAidForStart: false,
-      isFullTimeJob: false,
-      isFreeAmount: true,
-      isSickContribution: false,
-      isFpContribution: true,
-      isCustomBasisForZus: false,
-      customBasisForZus: null,
-      isAidForBigFamily: false,
-      isAidForSenior: false,
-      isAidForMiddleClass: true,
-    }
-  },
-  created () {
-    this.accidentContributionRate = constants.PARAMS[this.year].ACCIDENT_RATE
-    this.customBasisForZus = this.constants.PARAMS[this.year].ZUS.OWNER.BIG_AMOUNT
-    this.taxType = {
-      value: this.constants.TAX_TYPES.GENERAL,
-      label: 'Zasady ogólne',
-    }
-    this.taxRateForLumpSum = this.constants.PARAMS[this.year].TAX_RATES_FOR_LAMP_SUM[this.constants.PARAMS[this.year].TAX_RATES_FOR_LAMP_SUM.length - 2]
-  },
-  computed: {
-    isDisabledButton () {
-      if (!this.amount) {
-        return true
-      }
-      if (this.accidentContributionRate.length === 0) {
-        return true
-      }
-      if (this.expenses.length === 0) {
-        return true
-      }
-      if (this.isCustomBasisForZus && this.customBasisForZus.length === 0) {
+  setup(props, context) {
+    const amount:Ref<number|null> = ref(null)
+    const expenses = ref(0)
+    const incomeTaxType = ref(<IncomeTaxType>constants.TAX_TYPES.GENERAL)
+    const taxRateForLumpSum = ref(constants.PARAMS[<AvailableYear>props.year].TAX_RATES_FOR_LAMP_SUM[constants.PARAMS[<AvailableYear>props.year].TAX_RATES_FOR_LAMP_SUM.length - 2].value)
+    const isFreeAmount = ref(true)
+    const isReliefForBigFamily = ref(false)
+    const isReliefForSenior = ref(false)
+    const isReliefForMiddleClass = ref(false)
+    const isReliefForCompanyStart = ref(false)
+    const accidentContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].ACCIDENT_RATE)
+    const isFpContribution = ref(false)
+    const isSickContribution = ref(false)
+    const isSmallZus = ref(false)
+    const isFullTimeJob = ref(false)
+    const isCustomBasisForZus = ref(false)
+    const customBasisForZus = ref(constants.PARAMS[<AvailableYear>props.year].ZUS.OWNER.BIG_AMOUNT)
+
+    const isDisabledButton = computed(() => {
+      if (!amount.value) {
         return true
       }
       return false
-    },
-    taxTypes () {
-      return [
-        {
-          value: this.constants.TAX_TYPES.GENERAL,
-          label: 'Zasady ogólne',
-        },
-        {
-          label: 'Podatek liniowy',
-          value: this.constants.TAX_TYPES.LINEAR,
-        },
-        {
-          label: 'Ryczałt ewidencjonowany',
-          value: this.constants.TAX_TYPES.LUMP_SUM,
-        },
-      ]
-    },
-  },
-  watch: {
-    isFullTimeJob: function (val) {
-      if (val) {
-        this.isAidForStart = false
-        this.isSmallZus = false
-        this.isFpContribution = false
-        this.isSickContribution = false
+    })
+
+    watch(isFullTimeJob, () => {
+      if(isFullTimeJob.value) {
+        isReliefForCompanyStart.value = false
+        isSmallZus.value = false
+        isFpContribution.value = false
+        isSickContribution.value = false
       }
-    },
-    isAidForStart: function (val) {
-      if (val) {
-        this.isFpContribution = false
+    })
+
+    watch(isReliefForCompanyStart, () => {
+      if(isReliefForCompanyStart.value) {
+        isFpContribution.value = false
       }
-    },
-    isSmallZus: function (val) {
-      if (val) {
-        this.isFpContribution = false
-        this.isCustomBasisForZus = false
+    })
+
+    watch(isSmallZus, () => {
+      if(isSmallZus.value) {
+        isFpContribution.value = false
+        isCustomBasisForZus.value = false
       }
-    },
-    taxType: function (val) {
-      if (val.value !== this.constants.TAX_TYPES.GENERAL) {
-        this.isFreeAmount = false
-        this.isAidForMiddleClass = false
+    })
+
+    watch(incomeTaxType, () => {
+      if (incomeTaxType.value !== constants.TAX_TYPES.GENERAL) {
+        isFreeAmount.value = false
+        isReliefForMiddleClass.value = false
       } else {
-        this.isAidForMiddleClass = true
-        this.isFreeAmount = true
+        isReliefForMiddleClass.value = true
+        isFreeAmount.value = true
       }
-    },
+    })
+
+    const save = () => {
+      const input: SelfEmploymentInputFields = {
+        year: <AvailableYear>props.year,
+        amount: Number(amount.value),
+        expenses: Number(expenses.value),
+        incomeTaxType: incomeTaxType.value,
+        taxRateForLumpSum: taxRateForLumpSum.value / 100,
+        isFreeAmount: isFreeAmount.value,
+        isReliefForBigFamily: isReliefForBigFamily.value,
+        isReliefForMiddleClass: isReliefForMiddleClass.value,
+        isReliefForSenior: isReliefForSenior.value,
+        isReliefForCompanyStart: isReliefForCompanyStart.value,
+        isFpContribution: isFpContribution.value,
+        isSickContribution: isSickContribution.value,
+        accidentContributionRate: accidentContributionRate.value / 100,
+        isSmallZus: isSmallZus.value,
+        isFullTimeJob: isFullTimeJob.value,
+        customBasisForZus: Number(customBasisForZus.value),
+      }
+
+      if (!isCustomBasisForZus.value) {
+        input.customBasisForZus = 0
+      }
+
+      context.emit('save', input)
+    }
+
+    return {
+      constants,
+      validationRules,
+      incomeTaxTypes,
+      amount,
+      expenses,
+      incomeTaxType,
+      taxRateForLumpSum,
+      isFreeAmount,
+      isReliefForBigFamily,
+      isReliefForSenior,
+      isReliefForMiddleClass,
+      isReliefForCompanyStart,
+      accidentContributionRate,
+      isFpContribution,
+      isSickContribution,
+      isSmallZus,
+      isFullTimeJob,
+      isCustomBasisForZus,
+      customBasisForZus,
+      isDisabledButton,
+      save,
+    }
   },
-  methods: {
-    save () {
-      let customBasisForZus = this.customBasisForZus
-
-      if (!this.isCustomBasisForZus) {
-        customBasisForZus = 0
-      }
-
-      if (this.isMarriage) {
-        const inputData = {
-          grossAmount: this.amount,
-          accidentContributionRate: Number(this.accidentContributionRate) / 100,
-          taxType: this.taxType.value,
-          taxRateForLumpSum: this.taxRateForLumpSum.value / 100,
-          expenses: this.expenses,
-          isSickContribution: this.isSickContribution,
-          isFreeAmount: this.isFreeAmount,
-          isSmallZus: this.isSmallZus,
-          isFpContribution: this.isFpContribution,
-          isAidForStart: this.isAidForStart,
-          isFullTimeJob: this.isFullTimeJob,
-          customBasisForZus: customBasisForZus,
-          isAidForBigFamily: this.isAidForBigFamily,
-          isAidForSenior: this.isAidForSenior,
-          isAidForMiddleClass: this.isAidForMiddleClass,
-        }
-
-        this.$emit('submitted', inputData)
-        return
-      }
-
-      this.$store.commit('selfEmployment/resetData')
-
-      this.$store.commit('selfEmployment/setGrossAmount', this.amount)
-      this.$store.commit('selfEmployment/setTaxType', this.taxType.value)
-      this.$store.commit('selfEmployment/setTaxRateForLumpSum', this.taxRateForLumpSum.value / 100)
-      this.$store.commit('selfEmployment/setAccidentContributionRate', this.accidentContributionRate / 100)
-      this.$store.commit('selfEmployment/setExpenses', this.expenses)
-      this.$store.commit('selfEmployment/setIsFreeAmount', this.isFreeAmount)
-      this.$store.commit('selfEmployment/setIsSickContribution', this.isSickContribution)
-      this.$store.commit('selfEmployment/setIsFpContribution', this.isFpContribution)
-      this.$store.commit('selfEmployment/setIsSmallZus', this.isSmallZus)
-      this.$store.commit('selfEmployment/setIsAidForStart', this.isAidForStart)
-      this.$store.commit('selfEmployment/setIsFullTimeJob', this.isFullTimeJob)
-      this.$store.commit('selfEmployment/setCustomBasisForZus', customBasisForZus)
-
-      if (this.year >= 2022) {
-        this.$store.commit('selfEmployment/setIsAidForBigFamily', this.isAidForBigFamily)
-        this.$store.commit('selfEmployment/setIsAidForSenior', this.isAidForSenior)
-        this.$store.commit('selfEmployment/setIsAidForMiddleClass', this.isAidForMiddleClass)
-      }
-
-      this.$emit('submitted')
-    },
-  },
-}
+})
 </script>

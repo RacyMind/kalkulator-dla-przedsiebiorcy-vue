@@ -56,12 +56,12 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import validationRules from 'src/logic/validationRules'
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
-export default {
-  setup(props: any, context: any) {
+export default defineComponent({
+  setup(props, context) {
     const amount = ref(null)
     const rate = ref(null)
     const monthCount = ref(12)
@@ -88,5 +88,5 @@ export default {
       save,
     }
   },
-}
+})
 </script>

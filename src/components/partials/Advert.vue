@@ -1,7 +1,7 @@
 <template>
   <div class="text-center bg-teal-1 q-py-md">
     <div>
-      Pomóż sfinansować audyt wykonany księgowego
+      Wesprzyj rozwój aplikacji
     </div>
     <q-btn
       label="Wpłać na zrzutka.pl"

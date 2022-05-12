@@ -61,20 +61,20 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, ref, toRefs} from 'vue'
+import {computed, defineComponent, Ref, ref, toRefs} from 'vue'
 import constants from 'src/logic/constants'
-import {AvailableYear} from 'src/types/AvailableYear'
 import {AmountType} from 'src/types/AmountType'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {AvailableYear} from 'src/types/AvailableYear'
 
-export default {
+export default defineComponent({
   props: {
     year: {
-      type: Object as PropType<AvailableYear>,
+      year: Number,
       required: true,
     },
   },
-  setup(props: any, context: any) {
+  setup(props, context) {
     const { year } = toRefs(props)
 
     const amount = ref(null)
@@ -87,7 +87,7 @@ export default {
 
     const save = () => {
       const input: ContractWorkInputFields = {
-        year: year.value,
+        year: <AvailableYear>year.value,
         amount: Number(amount.value),
         amountType: <AmountType>amountType.value,
         expenseRate: expenseRate.value,
@@ -104,5 +104,5 @@ export default {
       save,
     }
   },
-}
+})
 </script>

@@ -1,0 +1,15 @@
+export interface SelfEmploymentSingleResult {
+  readonly netAmount: number,
+  readonly grossAmount: number,
+  readonly basisForTax: number,
+  readonly expenses: number,
+  readonly taxAmount: number,
+  readonly healthContribution: number,
+  readonly sickContribution: number,
+  readonly disabilityContribution: number,
+  readonly pensionContribution: number,
+  readonly accidentContribution: number,
+  readonly fpContribution: number,
+  readonly contributionTotal: number,
+  readonly amountOfDeductionOfHealthContributionFromTax: number,
+}

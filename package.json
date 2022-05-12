@@ -7,9 +7,18 @@
   "private": true,
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue,.ts ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "test:unit:ui": "majestic",
+    "test:unit": "jest --updateSnapshot",
+    "test:unit:ci": "jest --ci",
+    "test:unit:coverage": "jest --coverage",
+    "test:unit:watch": "jest --watch",
+    "test:unit:watchAll": "jest --watchAll",
+    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
+    "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\""
   },
   "dependencies": {
+    "@quasar/cli": "^1.2.2",
     "@quasar/extras": "^1.10.4",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
@@ -25,15 +34,19 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.0.0",
     "@quasar/app": "^3.1.0",
+    "@quasar/quasar-app-extension-testing": "^2.0.2",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.8",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.3.0",
     "eslint-plugin-quasar": "^1.0.0",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",
+    "majestic": "^1.7.0",
     "workbox-webpack-plugin": "^6.1.5"
   },
   "browserslist": [

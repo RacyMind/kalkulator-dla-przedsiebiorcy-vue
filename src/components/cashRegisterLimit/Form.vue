@@ -35,14 +35,14 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import {format, parse} from 'date-fns'
 import DatePopup from 'components/partials/DatePopup.vue'
 import validationRules from 'src/logic/validationRules'
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
-export default {
-  setup(props:any, context:any) {
+export default defineComponent({
+  setup(props, context) {
     const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
 
     const isDisabledButton = computed(() => {
@@ -70,5 +70,5 @@ export default {
   components: {
     DatePopup,
   },
-}
+})
 </script>

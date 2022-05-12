@@ -22,14 +22,13 @@
 </template>
 
 <script lang="ts">
-import {computed, PropType, Ref, toRefs} from 'vue'
+import {computed, defineComponent, PropType} from 'vue'
 import { pln } from 'src/use/currencyFormat'
 import interest from 'components/interest/interest'
 import ListRow from 'components/partials/ListRow.vue'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {InterestResult} from 'components/interest/interfaces/InterestResult'
 
-export default {
+export default defineComponent({
   props: {
     input: {
       type: Object as PropType<InterestInputFields>,
@@ -37,10 +36,8 @@ export default {
     },
   },
   setup(props: any) {
-    const { input } = toRefs(props)
-
-    const result:Readonly<Ref<Readonly<InterestResult>>> = computed(() => {
-      return interest.getResult(input.value)
+    const result = computed(() => {
+      return interest.getResult(props.input)
     })
 
     return {
@@ -51,5 +48,5 @@ export default {
   components: {
     ListRow,
   },
-}
+})
 </script>

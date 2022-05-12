@@ -35,15 +35,15 @@
 </template>
 
 <script lang="ts">
+import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import {computed, ref} from 'vue'
 import logs from 'components/changeLogs/logs'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import ChangeLog from 'components/changeLogs/ChangeLog.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
 
-export default {
+export default defineComponent({
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Historia zmian')
@@ -68,5 +68,5 @@ export default {
     Advert,
     Footer,
   },
-}
+})
 </script>
