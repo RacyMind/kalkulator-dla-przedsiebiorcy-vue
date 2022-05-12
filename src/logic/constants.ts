@@ -347,3 +347,4 @@ export default {
     2022: from2022,
   },
 }
+
