@@ -107,7 +107,7 @@ export default defineComponent({
     const values = ref([])
 
     const chartData = computed(() => useLineChart(
-        'Inflacja',
+        'Kwota',
         labels.value,
         values.value,
       ),
