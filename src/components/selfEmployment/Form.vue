@@ -61,12 +61,6 @@
             class="q-mt-sm"
             label="Zerowy PIT dla rodzin 4+"
           />
-          <q-toggle
-            v-model="isReliefForMiddleClass"
-            :disable="incomeTaxType !== constants.TAX_TYPES.GENERAL"
-            class="q-mt-sm"
-            label="Ulga dla klasy średniej"
-          />
         </template>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -250,7 +244,6 @@ export default defineComponent({
         taxRateForLumpSum: taxRateForLumpSum.value / 100,
         isFreeAmount: isFreeAmount.value,
         isReliefForBigFamily: isReliefForBigFamily.value,
-        isReliefForMiddleClass: isReliefForMiddleClass.value,
         isReliefForSenior: isReliefForSenior.value,
         isReliefForCompanyStart: isReliefForCompanyStart.value,
         isFpContribution: isFpContribution.value,

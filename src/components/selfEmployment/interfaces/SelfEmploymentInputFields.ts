@@ -10,7 +10,6 @@ export interface SelfEmploymentInputFields {
   isFreeAmount: boolean,
   isReliefForBigFamily: boolean,
   isReliefForSenior: boolean,
-  isReliefForMiddleClass: boolean,
   isReliefForCompanyStart: boolean,
   isSmallZus: boolean,
   isFullTimeJob: boolean,

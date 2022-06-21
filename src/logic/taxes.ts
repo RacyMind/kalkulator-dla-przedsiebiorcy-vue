@@ -35,7 +35,6 @@ function setParams (newYear:AvailableYear) {
  * @param {number} amountOfDeductionOfHealthContributionFromTax
  * @param {boolean} isFreeAmount
  * @param {number} totalBasisForTax
- * @param {boolean} isAidForMiddleClass
  * @param {boolean} isYearly
  * @param {boolean} isMarriage
  * @returns {number}
@@ -46,7 +45,6 @@ function calculateIncomeTaxUsingGeneralRules (
   amountOfDeductionOfHealthContributionFromTax:number,
   isFreeAmount:boolean,
   totalBasisForTax:number,
-  isAidForMiddleClass = false,
   isYearly = false,
   isMarriage = false,
 ):number {
@@ -76,10 +74,6 @@ function calculateIncomeTaxUsingGeneralRules (
     taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount
     // second rate
     taxAmount += (newTotalBasisForTax - params.amountOfTaxThreshold) * params.secondTaxRate
-  }
-
-  if (isAidForMiddleClass) {
-    taxAmount -= calculateAidForMiddleClass(grossAmount, isYearly)
   }
 
   if (taxAmount < 0) {
@@ -135,6 +129,7 @@ function calculateIncomeTaxUsingLumpSumRules (
  * @param {number} grossAmount
  * @param {boolean} isYearly
  * @returns {number}
+ * @deprecated
  */
 function calculateAidForMiddleClass (grossAmount:number, isYearly = false):number {
   grossAmount = helpers.round(grossAmount)
@@ -158,5 +153,4 @@ export default {
   calculateIncomeTaxUsingLumpSumRules,
   calculateIncomeTaxUsingLinearRules,
   calculateIncomeTaxUsingGeneralRules,
-  calculateAidForMiddleClass,
 }

@@ -85,7 +85,6 @@ function calculateBasisForTax (grossAmountMinusEmployeeContributions:number, exp
  * @param {number} amountOfDeductionOfHealthContributionFromTax
  * @param {number} lumpSumTaxRate
  * @param {boolean} isFreeAmount
- * @param {boolean} isAidForMiddleClass
  * @returns {number}
  */
 function calculateTaxAmount (
@@ -96,10 +95,10 @@ function calculateTaxAmount (
   amountOfDeductionOfHealthContributionFromTax:number,
   lumpSumTaxRate:number,
   isFreeAmount:boolean,
-  isAidForMiddleClass:boolean):number {
+  ):number {
   switch (incomeTaxType) {
     case constants.TAX_TYPES.GENERAL:
-      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax, isAidForMiddleClass)
+      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
     case constants.TAX_TYPES.LINEAR:
       return taxes.calculateIncomeTaxUsingLinearRules(basisForTax, amountOfDeductionOfHealthContributionFromTax)
     case constants.TAX_TYPES.LUMP_SUM:
@@ -225,7 +224,7 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
   }
 
   const basisForTax = calculateBasisForTax(amountToCalculateTax, input.expenses, input.incomeTaxType)
-  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount, input.isReliefForMiddleClass)
+  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(input.amount, taxAmount, totalContributions, input.expenses)
