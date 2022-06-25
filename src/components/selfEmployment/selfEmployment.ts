@@ -17,6 +17,7 @@ let params = {
 
 let totalBasisForTax = 0
 let totalGrossAmount = 0
+let totalAmountOfDeductionOfHealthContributionFromTax = 0
 let yearlyIncome = 0
 
 /**
@@ -25,6 +26,7 @@ let yearlyIncome = 0
 function resetTotalAmounts () {
   totalBasisForTax = 0
   totalGrossAmount = 0
+  totalAmountOfDeductionOfHealthContributionFromTax = 0
 }
 
 /**
@@ -200,7 +202,8 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
   }
 
   const healthContribution = ownerContributions.calculateHealthContribution(amountToCalculateHealthContribution, input.incomeTaxType, yearlyIncome)
-  const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax()
+  const amountOfDeductionOfHealthContributionFromTax = ownerContributions.calculateAmountOfDeductionOfHealthContributionFromTax(healthContribution, input.incomeTaxType, totalAmountOfDeductionOfHealthContributionFromTax)
+  totalAmountOfDeductionOfHealthContributionFromTax += amountOfDeductionOfHealthContributionFromTax
 
   const newTotalGrossAmount = totalGrossAmount + input.amount
   let amountToCalculateTax = grossAmountMinusEmployeeContributions

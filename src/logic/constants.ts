@@ -98,6 +98,7 @@ const defaultParams = {
     },
     OWNER: {
       HEALTH_RATE: 7.75,
+      LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION: 8700,
     },
   },
   EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
@@ -186,7 +187,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.6.0',
+    VERSION: '4.7.0',
   },
   AMOUNT_TYPES: {
     NET: 'net' as AmountType,
