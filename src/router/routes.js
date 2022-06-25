@@ -25,6 +25,7 @@ const routes = [
       { path: 'skladki-zus-za-czesc-miesiaca', component: () => import('pages/PartialZusContributions') },
       { path: 'rozliczenie-z-malzonkiem', component: () => import('pages/AccountingWithSpouse') },
       { path: 'inflacja', component: () => import('pages/Inflation') },
+      { path: 'sila-nabywcza-pieniadza', component: () => import('pages/PurchasingPowerOfMoney') },
       { path: 'informacje-o-wynagrodzeniu', component: () => import('pages/SalaryStats') },
       { path: 'terminy-w-us-zus-pfron', component: () => import('pages/Terms') },
     ],

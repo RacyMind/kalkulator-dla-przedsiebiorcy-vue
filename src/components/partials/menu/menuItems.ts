@@ -133,6 +133,12 @@ export default {
       link: '/inflacja',
     } as MenuItem,
     {
+      title: 'Siła nabywcza pieniądza',
+      caption: 'Moduł pokazuje wykres z siła nabywczą pieniądza w Polsce',
+      className: 'c-informator',
+      link: '/sila-nabywcza-pieniadza',
+    } as MenuItem,
+    {
       title: 'Informacje o wynagrodzeniu',
       caption: 'Moduł pokazuje informacje o wynagrodzeniu w Polsce',
       className: 'c-informator',
