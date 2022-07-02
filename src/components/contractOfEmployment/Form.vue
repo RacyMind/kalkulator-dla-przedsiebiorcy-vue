@@ -51,11 +51,6 @@
               class="q-mt-sm"
               label="Zerowy PIT dla rodzin 4+"
             />
-            <q-toggle
-              v-model="isReliefForMiddleClass"
-              class="q-mt-sm"
-              label="Ulga dla klasy średniej"
-            />
           </template>
           <q-toggle
             v-model="isFreeAmount"
@@ -195,7 +190,6 @@ export default defineComponent({
     const isReliefForYoung = ref(false)
     const isReliefForBigFamily = ref(false)
     const isReliefForSenior = ref(false)
-    const isReliefForMiddleClass = ref(false)
     const isFpContribution = ref(false)
     const isPpkContribution = ref(false)
     const employerPpkContributionRate = ref(constants.PARAMS[<AvailableYear>props.year].PPK.EMPLOYER.DEFAULT_RATE)
@@ -224,7 +218,6 @@ export default defineComponent({
         isFreeAmount: isFreeAmount.value,
         isReliefForYoung: isReliefForYoung.value,
         isReliefForBigFamily: isReliefForBigFamily.value,
-        isReliefForMiddleClass: isReliefForMiddleClass.value,
         isReliefForSenior: isReliefForSenior.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
         isFpContribution: isFpContribution.value,
@@ -266,7 +259,6 @@ export default defineComponent({
       isReliefForYoung,
       isReliefForBigFamily,
       isReliefForSenior,
-      isReliefForMiddleClass,
       isFpContribution,
       isPpkContribution,
       employerPpkContributionRate,

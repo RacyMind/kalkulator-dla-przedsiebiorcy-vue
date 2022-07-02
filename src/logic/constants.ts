@@ -98,6 +98,7 @@ const defaultParams = {
     },
     OWNER: {
       HEALTH_RATE: 7.75,
+      LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION: 8700,
     },
   },
   EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
@@ -111,7 +112,7 @@ const from2022 = {
   LIMIT_BASIC_AMOUNT_FOR_ZUS: 177660,
   AMOUNT_OF_TAX_THRESHOLD: 120000,
   FREE_AMOUNT_OF_TAX: 30000,
-  TAX_REDUCING_AMOUNT: 5100 / 12,
+  TAX_REDUCING_AMOUNT: 3600 / 12,
   MINIMUM_SALARY: 3010,
   AVERAGE_SALARY: 6221.04,
   ZUS: {
@@ -133,6 +134,12 @@ const from2022 = {
       ...from2021.US.OWNER,
       HEALTH_RATE: 0,
     },
+  },
+  TAX_RATES: {
+    FIRST_RATE: 12,
+    SECOND_RATE: 32,
+    LINEAR_RATE: 19,
+    BELKA_RATE: 19,
   },
   TAX_RATES_FOR_LAMP_SUM: [
     {
@@ -180,7 +187,7 @@ const from2022 = {
 export default {
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.6.0',
+    VERSION: '4.7.0',
   },
   AMOUNT_TYPES: {
     NET: 'net' as AmountType,

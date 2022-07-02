@@ -19,6 +19,7 @@ export default defineComponent({
   props: ['log'],
 })
 </script>
+
 <style>
   #q-app .c-logCard ul{
     margin-bottom: 0;

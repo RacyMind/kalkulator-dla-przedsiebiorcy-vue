@@ -118,7 +118,6 @@ export default defineComponent({
       isReliefForYoung: false,
       isReliefForSenior: false,
       isReliefForBigFamily: false,
-      isReliefForMiddleClass: false,
       isFpContribution: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
