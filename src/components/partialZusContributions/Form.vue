@@ -3,7 +3,7 @@
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="daysOfRunningBusiness"
+          v-model.number="daysOfRunningBusiness"
           type="number"
           min="1"
           max="31"
@@ -15,7 +15,7 @@
           lazy-rules
         />
         <q-select
-          v-model="daysInMonth"
+          v-model.number="daysInMonth"
           :options="availableDays"
           label="Ilość dni w miesiącu*"
           color="brand"

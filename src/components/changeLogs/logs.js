@@ -2,7 +2,7 @@ export default [
   {
     version: '4.8.0',
     publish_date: '2022-06-25',
-    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca</li></ul>',
+    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca.</li></ul>',
   },
   {
     version: '4.7.0',
