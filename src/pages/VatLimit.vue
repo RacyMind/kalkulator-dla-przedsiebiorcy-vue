@@ -37,6 +37,13 @@ import helpers from 'src/logic/helpers'
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Limit sprzedaży dla zwolnienia z VAT')
@@ -54,16 +61,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Advert,
-    Footer,
   },
 })
 </script>

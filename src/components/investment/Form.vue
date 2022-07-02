@@ -73,19 +73,19 @@ export default defineComponent({
     const save = () => {
       const input: InvestmentInputFields = {
         amount: Number(amount.value),
-        rate: Number(rate.value) / 100,
         monthCount: Number(monthCount.value),
+        rate: Number(rate.value) / 100,
       }
       context.emit('save', input)
     }
 
     return{
-      validationRules,
       amount,
-      rate,
-      monthCount,
       isDisabledButton,
+      monthCount,
+      rate,
       save,
+      validationRules,
     }
   },
 })

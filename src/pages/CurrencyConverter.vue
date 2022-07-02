@@ -32,6 +32,13 @@ import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 
 export default {
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Table,
+  },
   created () {
     this.$store.commit('app/setModuleTitle', 'Przelicznik walut')
   },
@@ -39,13 +46,6 @@ export default {
     scrollTo () {
       helpers.scrollToElement(this.$refs.scrollTarget.$el)
     },
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Table,
-    Advert,
-    Footer,
   },
 }
 </script>

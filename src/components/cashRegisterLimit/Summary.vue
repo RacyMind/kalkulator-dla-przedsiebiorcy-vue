@@ -26,10 +26,13 @@ import cashRegisterLimit from 'components/cashRegisterLimit/cashRegisterLimit'
 import ListRow from 'components/partials/ListRow.vue'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<CashRegisterLimitInputFields>,
       required: true,
+      type: Object as PropType<CashRegisterLimitInputFields>,
     },
   },
   setup (props) {
@@ -39,9 +42,9 @@ export default defineComponent({
       }
       catch {
         return {
-          startDate: null,
-          daysToEndYear: 0,
           amount: 0,
+          daysToEndYear: 0,
+          startDate: null,
         }
       }
     })
@@ -54,13 +57,10 @@ export default defineComponent({
     }
 
     return {
-      result,
-      pln,
       formatDate,
+      pln,
+      result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

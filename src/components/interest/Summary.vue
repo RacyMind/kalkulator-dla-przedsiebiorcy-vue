@@ -29,10 +29,13 @@ import ListRow from 'components/partials/ListRow.vue'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<InterestInputFields>,
       required: true,
+      type: Object as PropType<InterestInputFields>,
     },
   },
   setup(props: any) {
@@ -44,9 +47,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

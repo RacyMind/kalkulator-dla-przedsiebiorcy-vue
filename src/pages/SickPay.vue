@@ -37,14 +37,21 @@ import helpers from 'src/logic/helpers'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Zasiłek chorobowy')
 
     const inputFields = ref(<SickPayInputFields>{
       basicAmount: 0,
-      rate: 1,
       dayCount: 0,
+      rate: 1,
     })
 
     const scrollTarget = ref(null) as any
@@ -56,16 +63,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Advert,
-    Footer,
   },
 })
 </script>

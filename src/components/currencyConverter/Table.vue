@@ -30,17 +30,17 @@
 import { mapGetters } from 'vuex'
 import { formatToCurrency } from 'src/use/currencyFormat'
 export default {
-  setup () {
-    return { formatToCurrency }
-  },
   computed: {
     ...mapGetters({
       amount: 'currencyConverter/amount',
-      valueForOne: 'currencyConverter/valueForOne',
-      valueForWholeAmount: 'currencyConverter/valueForWholeAmount',
       fromCurrency: 'currencyConverter/fromCurrency',
       toCurrency: 'currencyConverter/toCurrency',
+      valueForOne: 'currencyConverter/valueForOne',
+      valueForWholeAmount: 'currencyConverter/valueForWholeAmount',
     }),
+  },
+  setup () {
+    return { formatToCurrency }
   },
 }
 </script>

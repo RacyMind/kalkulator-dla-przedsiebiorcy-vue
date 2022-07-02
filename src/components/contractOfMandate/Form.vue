@@ -232,8 +232,8 @@ import employeeContractOfMandate from 'components/contractOfMandate/employeeCont
 export default defineComponent({
   props: {
     year: {
-      type: Number,
       required: true,
+      type: Number,
     },
   },
   setup(props, context) {
@@ -298,19 +298,19 @@ export default defineComponent({
 
     const save = () => {
       const input: ContractOfMandateInputFields = {
-        year: <AvailableYear>props.year,
-        grossAmount: Number(amount.value),
-        isFreeAmount: isFreeAmount.value,
-        isReliefForYoung: isReliefForYoung.value,
-        partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
-        isHealthContribution: isHealthContribution.value,
-        isSickContribution: isSickContribution.value,
-        isDisabilityContribution: isRentContribution.value,
-        isPensionContribution: isPensionContribution.value,
         accidentContributionRate: accidentContributionRate.value / 100,
-        isFpContribution: isFpContribution.value,
-        employerPpkContributionRate: employerPpkContributionRate.value,
         employeePpkContributionRate: employeePpkContributionRate.value,
+        employerPpkContributionRate: employerPpkContributionRate.value,
+        grossAmount: Number(amount.value),
+        isDisabilityContribution: isRentContribution.value,
+        isFpContribution: isFpContribution.value,
+        isFreeAmount: isFreeAmount.value,
+        isHealthContribution: isHealthContribution.value,
+        isPensionContribution: isPensionContribution.value,
+        isReliefForYoung: isReliefForYoung.value,
+        isSickContribution: isSickContribution.value,
+        partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
+        year: <AvailableYear>props.year,
       }
 
       if (isAuthorExpenses.value) {
@@ -336,27 +336,27 @@ export default defineComponent({
     }
 
     return {
-      constants,
+      accidentContributionRate,
       amount,
       amountType,
-      isFreeAmount,
-      accidentContributionRate,
-      isReliefForYoung,
-      isStudent,
-      isHealthContribution,
-      isSickContribution,
-      isRentContribution,
-      isPensionContribution,
-      isFpContribution,
-      isPpkContribution,
-      employerPpkContributionRate,
+      constants,
       employeePpkContributionRate,
-      isAuthorExpenses,
-      partOfWorkWithAuthorExpenses,
-      isHourlyAmount,
-      hourlyAmount,
+      employerPpkContributionRate,
       hourCount,
+      hourlyAmount,
+      isAuthorExpenses,
       isDisabledButton,
+      isFpContribution,
+      isFreeAmount,
+      isHealthContribution,
+      isHourlyAmount,
+      isPensionContribution,
+      isPpkContribution,
+      isReliefForYoung,
+      isRentContribution,
+      isSickContribution,
+      isStudent,
+      partOfWorkWithAuthorExpenses,
       save,
     }
   },

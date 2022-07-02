@@ -46,22 +46,25 @@ const chartOptions = {
     display: false,
   },
   scales: {
-    yAxes: [{
+    xAxes: [{
+      time: {
+        unit: 'quarter',
+      },
+      type: 'time',
+    }],
+      yAxes: [{
       scaleLabel: {
         display: true,
         labelString: 'Inflacja w %',
-      },
-    }],
-      xAxes: [{
-      type: 'time',
-      time: {
-        unit: 'quarter',
       },
     }],
   },
 }
 
 export default defineComponent({
+  components: {
+    LineChart,
+  },
   setup () {
     const currentYear = new Date().getFullYear()
     const availableYears = [
@@ -114,17 +117,14 @@ export default defineComponent({
     })
 
     return {
-      chartOptions,
-      year,
       availableYears,
       chartData,
+      chartOptions,
       labels,
-      values,
       loading,
+      values,
+      year,
     }
-  },
-  components: {
-    LineChart,
   },
 })
 </script>

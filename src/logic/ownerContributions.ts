@@ -6,17 +6,17 @@ import {IncomeTaxType} from 'src/types/IncomeTaxType'
 let year = helpers.getDefaultYear()
 
 let params = {
-  pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
-  rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
-  sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
+  averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
+  basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
+  fpContributionRate: constants.PARAMS[year].ZUS.OWNER.FP_RATE,
   healthContributionRate: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE,
   healthContributionRateForLinearTax: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE_FOR_LINEAR_TAX || 0,
   healthContributionRateForTaxOffice: constants.PARAMS[year].US.OWNER.HEALTH_RATE,
-  fpContributionRate: constants.PARAMS[year].ZUS.OWNER.FP_RATE,
-  basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
-  minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
-  averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
   limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
+  minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
+  pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
+  rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
+  sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
 }
 
 /**
@@ -27,17 +27,17 @@ function setParams (newYear:AvailableYear) {
   year = newYear
 
   params = {
-    pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
-    sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
+    averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
+    basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
+    fpContributionRate: constants.PARAMS[year].ZUS.OWNER.FP_RATE,
     healthContributionRate: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE,
     healthContributionRateForLinearTax: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE_FOR_LINEAR_TAX || 0,
     healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
-    fpContributionRate: constants.PARAMS[year].ZUS.OWNER.FP_RATE,
-    basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
-    minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
-    averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
     limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
+    minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
+    pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
+    sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
   }
 }
 
@@ -205,14 +205,14 @@ function sumContributions (pensionContribution:number, rentContribution:number, 
 }
 
 export default {
-  setParams,
-  calculatePensionContribution,
-  calculateDisabilityContribution,
-  calculateSickContribution,
-  calculateHealthContribution,
   calculateAccidentContribution,
-  calculateFpContribution,
   calculateAmountOfDeductionOfHealthContributionFromTax,
-  sumContributions,
+  calculateDisabilityContribution,
+  calculateFpContribution,
   calculateGrossAmountMinusContributions,
+  calculateHealthContribution,
+  calculatePensionContribution,
+  calculateSickContribution,
+  setParams,
+  sumContributions,
 }

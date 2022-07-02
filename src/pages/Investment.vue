@@ -37,14 +37,21 @@ import helpers from 'src/logic/helpers'
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Lokata')
 
     const inputFields = ref(<InvestmentInputFields>{
       amount: 0,
-      rate: 0,
       monthCount: 0,
+      rate: 0,
     })
 
     const scrollTarget = ref(null) as any
@@ -56,16 +63,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Advert,
-    Footer,
   },
 })
 </script>

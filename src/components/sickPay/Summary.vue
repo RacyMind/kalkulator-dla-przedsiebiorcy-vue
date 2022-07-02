@@ -25,10 +25,13 @@ import sickPay from 'components/sickPay/sickPay'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<SickPayInputFields>,
       required: true,
+      type: Object as PropType<SickPayInputFields>,
     },
   },
   setup(props) {
@@ -40,9 +43,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

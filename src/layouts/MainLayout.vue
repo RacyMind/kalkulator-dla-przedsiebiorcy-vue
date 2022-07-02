@@ -68,20 +68,20 @@ import Menu from 'components/partials/menu/Menu'
 import { mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {
-      openModal: false,
-      leftDrawerOpen: false,
-    }
+  components: {
+    Menu,
+    SupportProject,
   },
   computed: {
     ...mapGetters({
       moduleTitle: 'app/moduleTitle',
     }),
   },
-  components: {
-    SupportProject,
-    Menu,
+  data () {
+    return {
+      leftDrawerOpen: false,
+      openModal: false,
+    }
   },
 }
 </script>

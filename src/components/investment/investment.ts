@@ -17,8 +17,8 @@ function getResult (input:InvestmentInputFields):InvestmentResult {
   return {
     capital: input.amount,
     grossAmount: grossAmount,
-    taxAmount: taxAmount,
     netAmount: netAMount,
+    taxAmount: taxAmount,
   }
 }
 

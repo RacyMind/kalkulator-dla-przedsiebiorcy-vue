@@ -55,21 +55,12 @@ import CurrencyConverter from 'src/logic/CurrencyConverter'
 import { mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {
-      amount: null,
-      fromCurrency: null,
-      toCurrency: null,
-      currencies: [],
-      allRates: [],
-      pln: {
-        code: 'PLN',
-        currency: 'złoty',
-        mid: 1,
-      },
-    }
+  computed: {
+    ...mapGetters({
+      isLoading: 'exchangeRates/isLoading',
+      rates: 'exchangeRates/rates',
+    }),
   },
-  emits: ['scroll'],
   async created () {
     this.$store.commit('currencyConverter/CLEAR_DATA')
 
@@ -83,12 +74,21 @@ export default {
       })
     }
   },
-  computed: {
-    ...mapGetters({
-      rates: 'exchangeRates/rates',
-      isLoading: 'exchangeRates/isLoading',
-    }),
+  data () {
+    return {
+      allRates: [],
+      amount: null,
+      currencies: [],
+      fromCurrency: null,
+      pln: {
+        code: 'PLN',
+        currency: 'złoty',
+        mid: 1,
+      },
+      toCurrency: null,
+    }
   },
+  emits: ['scroll'],
   methods: {
     calculate () {
       const currencyConverter = new CurrencyConverter()

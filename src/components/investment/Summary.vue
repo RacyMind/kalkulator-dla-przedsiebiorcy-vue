@@ -34,10 +34,13 @@ import investment from 'components/investment/investment'
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<InvoiceInputFields>,
       required: true,
+      type: Object as PropType<InvoiceInputFields>,
     },
   },
   setup(props: any) {
@@ -49,9 +52,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

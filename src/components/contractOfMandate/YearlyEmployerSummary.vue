@@ -19,83 +19,86 @@ import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfa
 
 const columns =  [
   {
-    name: 'month',
-    required: true,
     align: 'left',
     field: () => '',
     format: (val:string) => `${val}`,
+    name: 'month',
+    required: true,
   },
   {
-    name: 'gross',
-    label: 'Wynagrodzenie brutto',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.grossAmount,
     format: (val:number) => `${pln(val)}`,
+    label: 'Wynagrodzenie brutto',
+    name: 'gross',
+    required: true,
   },
   {
-    name: 'accident',
-    label: 'Skł. wypadkowa',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.accidentContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. wypadkowa',
+    name: 'accident',
+    required: true,
   },
   {
-    name: 'disability',
-    label: 'Skł. rentowa',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.disabilityContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. rentowa',
+    name: 'disability',
+    required: true,
   },
   {
-    name: 'pension',
-    label: 'Skł. emerytalna',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.pensionContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. emerytalna',
+    name: 'pension',
+    required: true,
   },
   {
-    name: 'fp',
-    label: 'Skł. na FP',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.fpContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. na FP',
+    name: 'fp',
+    required: true,
   },
   {
-    name: 'fgsp',
-    label: 'Skł. na FGŚP',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.fgspContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. na FGŚP',
+    name: 'fgsp',
+    required: true,
   },
   {
-    name: 'ppk',
-    label: 'Skł. PPK',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.ppkContribution,
     format: (val:number) => `${pln(val)}`,
+    label: 'Skł. PPK',
+    name: 'ppk',
+    required: true,
   },
   {
-    name: 'totalAmount',
-    label: 'Suma kosztów pracodawcy',
-    required: true,
     align: 'left',
     field: (row:ContractOfMandateEmployerSingleResult) => row.totalAmount,
     format: (val:number) => `${pln(val)}`,
+    label: 'Suma kosztów pracodawcy',
+    name: 'totalAmount',
+    required: true,
   },
 ]
 
 export default defineComponent({
+  components: {
+    YearlySummaryTable,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
+      type: Object as PropType<ContractOfMandateInputFields>,
     },
   },
   setup (props) {
@@ -135,15 +138,12 @@ export default defineComponent({
     })
 
     return {
-      pln,
-      constants,
       columns,
+      constants,
+      pln,
       totalResult,
       updateGrossAmounts,
     }
-  },
-  components: {
-    YearlySummaryTable,
   },
 })
 </script>

@@ -73,10 +73,13 @@ import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/Se
 
 export default defineComponent({
 
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<SelfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<SelfEmploymentInputFields>,
     },
   },
   setup(props) {
@@ -99,9 +102,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

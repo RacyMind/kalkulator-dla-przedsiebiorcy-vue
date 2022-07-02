@@ -101,6 +101,20 @@ import Footer from 'components/Footer.vue'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 import YearlyEmployerSummary from 'components/contractOfEmployment/YearlyEmployerSummary.vue'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    EmployeeStatistics,
+    EmployeeSummary,
+    EmployerStatistics,
+    EmployerSummary,
+    Footer,
+    Form,
+    SalarySummary,
+    SectionHeader,
+    YearlyEmployeeSummary,
+    YearlyEmployerSummary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Umowa o pracę')
@@ -111,18 +125,18 @@ export default defineComponent({
     const scrollTarget = ref(null) as any
 
     const inputFields = ref(<ContractOfEmploymentInputFields>{
-      year: helpers.getDefaultYear(),
-      grossAmount: 0,
-      workInLivePlace: true,
-      isFreeAmount: true,
-      isReliefForYoung: false,
-      isReliefForSenior: false,
-      isReliefForBigFamily: false,
-      isFpContribution: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 0,
+      isFpContribution: false,
+      isFreeAmount: true,
+      isReliefForBigFamily: false,
+      isReliefForSenior: false,
+      isReliefForYoung: false,
       partOfWorkWithAuthorExpenses: 0,
+      workInLivePlace: true,
+      year: helpers.getDefaultYear(),
     })
 
     watch(year, () => {
@@ -135,27 +149,13 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
       openEmployeeModal,
       openEmployerModal,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    YearlyEmployerSummary,
-    YearlyEmployeeSummary,
-    SectionHeader,
-    Advert,
-    ChooseYear,
-    Form,
-    SalarySummary,
-    EmployeeSummary,
-    EmployeeStatistics,
-    EmployerSummary,
-    EmployerStatistics,
-    Footer,
   },
 })
 </script>

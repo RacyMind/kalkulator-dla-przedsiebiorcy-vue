@@ -64,22 +64,25 @@ const chartOptions = {
     display: false,
   },
   scales: {
-    yAxes: [{
+    xAxes: [{
+      time: {
+        unit: 'quarter',
+      },
+      type: 'time',
+    }],
+      yAxes: [{
       scaleLabel: {
         display: true,
         labelString: 'Siła nabywcza pieniądza w zł',
-      },
-    }],
-      xAxes: [{
-      type: 'time',
-      time: {
-        unit: 'quarter',
       },
     }],
   },
 }
 
 export default defineComponent({
+  components: {
+    LineChart,
+  },
   setup () {
     const currentYear = new Date().getFullYear()
     const availableYears = [
@@ -145,19 +148,16 @@ export default defineComponent({
     })
 
     return {
-      validationRules,
-      chartOptions,
       amount,
-      year,
       availableYears,
       chartData,
+      chartOptions,
       labels,
-      values,
       loading,
+      validationRules,
+      values,
+      year,
     }
-  },
-  components: {
-    LineChart,
   },
 })
 </script>

@@ -1,14 +1,14 @@
 export default {
-  setRates (state, rates) {
-    state.rates = rates
-  },
-  setLoading (state, isLoading) {
-    state.isLoading = isLoading
+  setCurrency (state, currency) {
+    state.currency = currency
   },
   setDate (state, date) {
     state.date = date
   },
-  setCurrency (state, currency) {
-    state.currency = currency
+  setLoading (state, isLoading) {
+    state.isLoading = isLoading
+  },
+  setRates (state, rates) {
+    state.rates = rates
   },
 }

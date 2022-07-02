@@ -92,14 +92,14 @@ export default defineComponent({
     }
 
     return {
-      constants,
-      validationRules,
-      sickTaxRates,
       basicAmount,
+      constants,
       dayCount,
-      rate,
       isDisabledButton,
+      rate,
       save,
+      sickTaxRates,
+      validationRules,
     }
   },
 })

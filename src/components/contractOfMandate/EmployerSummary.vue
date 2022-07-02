@@ -57,10 +57,13 @@ import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfa
 import ListRow from 'components/partials/ListRow.vue'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
+      type: Object as PropType<ContractOfMandateInputFields>,
     },
   },
   setup (props) {
@@ -73,9 +76,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

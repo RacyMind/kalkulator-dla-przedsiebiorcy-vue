@@ -4,9 +4,9 @@ import * as mutations from './mutations'
 import * as actions from './actions'
 
 export default {
-  namespaced: true,
+  actions,
   getters,
   mutations,
-  actions,
+  namespaced: true,
   state,
 }

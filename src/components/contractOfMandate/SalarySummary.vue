@@ -16,10 +16,36 @@ import employerContractOfMandate from 'components/contractOfMandate/employerCont
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
 export default defineComponent({
+  components: {
+    SalarySummaryTable,
+  },
+  computed: {
+    totalAmount () {
+      return this.employerResult.totalAmount
+    },
+    totalEmployeeZusContributions () {
+      return [
+        this.employeeResult.pensionContribution,
+        this.employeeResult.disabilityContribution,
+        this.employeeResult.sickContribution,
+        this.employeeResult.healthContribution,
+      ].reduce((current, sum) => current + sum)
+    },
+    totalEmployerZusContributions () {
+      return [
+        this.employerResult.pensionContribution,
+        this.employerResult.disabilityContribution,
+        this.employerResult.accidentContribution,
+      ].reduce((current, sum) => current + sum)
+    },
+    totalPPkContributions () {
+      return this.employeeResult.ppkContribution + this.employerResult.ppkContribution
+    },
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
+      type: Object as PropType<ContractOfMandateInputFields>,
     },
   },
   setup (props) {
@@ -37,32 +63,6 @@ export default defineComponent({
       employeeResult,
       employerResult,
     }
-  },
-  computed: {
-    totalEmployerZusContributions () {
-      return [
-        this.employerResult.pensionContribution,
-        this.employerResult.disabilityContribution,
-        this.employerResult.accidentContribution,
-      ].reduce((current, sum) => current + sum)
-    },
-    totalEmployeeZusContributions () {
-      return [
-        this.employeeResult.pensionContribution,
-        this.employeeResult.disabilityContribution,
-        this.employeeResult.sickContribution,
-        this.employeeResult.healthContribution,
-      ].reduce((current, sum) => current + sum)
-    },
-    totalPPkContributions () {
-      return this.employeeResult.ppkContribution + this.employerResult.ppkContribution
-    },
-    totalAmount () {
-      return this.employerResult.totalAmount
-    },
-  },
-  components: {
-    SalarySummaryTable,
   },
 })
 </script>

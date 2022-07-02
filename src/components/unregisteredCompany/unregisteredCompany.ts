@@ -17,11 +17,11 @@ function getResult (input:UnregisteredCompanyInputFields):UnregisteredCompanyRes
   const netAmount = input.incomeAmount - taxAmount
 
   return {
-    netIncomeAmount: netAmount,
-    grossIncomeAmount: input.incomeAmount,
     basicTaxAmount: basisForTax,
-    taxAmount: taxAmount,
     expenses: input.expenses,
+    grossIncomeAmount: input.incomeAmount,
+    netIncomeAmount: netAmount,
+    taxAmount: taxAmount,
   }
 }
 

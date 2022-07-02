@@ -101,6 +101,20 @@ import Footer from 'components/Footer.vue'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import YearlyEmployerSummary from 'components/contractOfMandate/YearlyEmployerSummary.vue'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    EmployeeStatistics,
+    EmployeeSummary,
+    EmployerStatistics,
+    EmployerSummary,
+    Footer,
+    Form,
+    SalarySummary,
+    SectionHeader,
+    YearlyEmployeeSummary,
+    YearlyEmployerSummary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Umowa zlecenie')
@@ -111,19 +125,19 @@ export default defineComponent({
     const scrollTarget = ref(null) as any
 
     const inputFields:Ref<ContractOfMandateInputFields> = ref({
-      year: helpers.getDefaultYear(),
-      grossAmount: 0,
-      isFreeAmount: false,
-      isReliefForYoung: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 0,
+      isDisabilityContribution: true,
+      isFpContribution: false,
+      isFreeAmount: false,
       isHealthContribution: true,
       isPensionContribution: true,
-      isDisabilityContribution: true,
+      isReliefForYoung: false,
       isSickContribution: true,
-      isFpContribution: false,
       partOfWorkWithAuthorExpenses: 0,
+      year: helpers.getDefaultYear(),
     })
 
     watch(year, () => {
@@ -136,27 +150,13 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
       openEmployeeModal,
       openEmployerModal,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    YearlyEmployerSummary,
-    YearlyEmployeeSummary,
-    SectionHeader,
-    Advert,
-    ChooseYear,
-    Form,
-    SalarySummary,
-    EmployeeSummary,
-    EmployeeStatistics,
-    EmployerSummary,
-    EmployerStatistics,
-    Footer,
   },
 })
 </script>

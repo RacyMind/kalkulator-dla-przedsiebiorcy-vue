@@ -45,13 +45,21 @@ import helpers from 'src/logic/helpers'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Działalność niezarejestrowana')
 
     const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
-      incomeAmount: 0,
       expenses: 0,
+      incomeAmount: 0,
     })
 
     const scrollTarget = ref(null) as any
@@ -62,18 +70,10 @@ export default defineComponent({
     }
 
     return {
-      unregisteredCompanyInputFields,
-      scrollTarget,
       save,
+      scrollTarget,
+      unregisteredCompanyInputFields,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    Form,
-    Summary,
-    Statistics,
-    Footer,
   },
 })
 </script>

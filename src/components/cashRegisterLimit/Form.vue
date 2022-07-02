@@ -42,6 +42,9 @@ import validationRules from 'src/logic/validationRules'
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default defineComponent({
+  components: {
+    DatePopup,
+  },
   setup(props, context) {
     const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
 
@@ -61,14 +64,11 @@ export default defineComponent({
     }
 
     return {
-      validationRules,
-      startDate,
       isDisabledButton,
       save,
+      startDate,
+      validationRules,
     }
-  },
-  components: {
-    DatePopup,
   },
 })
 </script>

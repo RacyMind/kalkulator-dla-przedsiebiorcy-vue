@@ -22,14 +22,14 @@ import Form from 'components/contact/Form.vue'
 import Footer from 'components/Footer.vue'
 
 export default defineComponent({
+  components: {
+    Footer,
+    Form,
+    SectionHeader,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Formularz kontaktowy')
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Footer,
   },
 })
 </script>

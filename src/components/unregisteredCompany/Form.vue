@@ -58,18 +58,18 @@ export default defineComponent({
 
     const save = () => {
       const input: UnregisteredCompanyInputFields = {
-        incomeAmount: Number(amount.value),
         expenses: Number(expenses.value),
+        incomeAmount: Number(amount.value),
       }
       context.emit('save', input)
     }
 
     return{
-      validationRules,
       amount,
       expenses,
       isDisabledButton,
       save,
+      validationRules,
     }
   },
 })

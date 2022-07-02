@@ -9,19 +9,19 @@ import {ContractOfEmploymentEmployerSingleResult} from '../../../../src/componen
 installQuasarPlugin()
 
 const defaultInput:ContractOfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
-  grossAmount: 4000,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
-  workInLivePlace: true,
+  grossAmount: 4000,
+  isFpContribution: true,
   isFreeAmount: true,
-  isReliefForYoung: false,
-  isReliefForSenior: false,
   isReliefForBigFamily: false,
   isReliefForMiddleClass: true,
-  isFpContribution: true,
+  isReliefForSenior: false,
+  isReliefForYoung: false,
   partOfWorkWithAuthorExpenses: 0,
+  workInLivePlace: true,
+  year: helpers.getDefaultYear(),
 }
 
 const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmploymentInputFields[] => {

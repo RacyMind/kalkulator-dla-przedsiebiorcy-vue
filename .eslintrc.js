@@ -22,7 +22,11 @@ module.exports = {
   ],
 
   // required to lint *.vue files
-  plugins: ['vue', '@typescript-eslint'],
+  plugins: [
+    "sort-keys-fix",
+    'vue',
+    '@typescript-eslint',
+  ],
 
   globals: {
     ga: true, // Google Analytics
@@ -77,46 +81,6 @@ module.exports = {
     'prefer-promise-reject-errors': 0,
     'vue/no-v-html': 'off',
     'func-names': 0,
-    'vue/order-in-components': [
-      'error',
-      {
-        order: [
-          'el',
-          'name',
-          'parent',
-          'functional',
-          [
-            'comments',
-            'delimiters',
-          ],
-          'extends',
-          'mixins',
-          'inheritAttrs',
-          'model',
-          [
-            'props',
-            'propsData',
-          ],
-          'asyncData',
-          'data',
-          'head',
-          'LIFECYCLE_HOOKS',
-          'computed',
-          'watch',
-          'methods',
-          [
-            'components',
-            'directives',
-            'filters',
-          ],
-          [
-            'render',
-            'template',
-          ],
-          'renderError',
-        ],
-      },
-    ],
     'prefer-promise-reject-errors': 'off',
 
     // allow console.log during development only
@@ -129,5 +93,6 @@ module.exports = {
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': "off",
+    "sort-keys-fix/sort-keys-fix": ["warn", "asc", {"natural": true}],
   }
 };

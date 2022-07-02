@@ -75,73 +75,48 @@ import { format, isPast, isWeekend } from 'date-fns'
 import constants from 'src/logic/constants'
 
 export default {
-  setup () {
-    const onlyPast = (date) => {
-      return date < format(new Date(), 'y/MM/dd')
-    }
-    const onlyWorkDays = (date) => {
-      return !isWeekend(new Date(date))
-    }
-    return {
-      constants,
-      isPast,
-      validDays (date) {
-        return onlyPast(date) && onlyWorkDays(date)
-      },
-    }
-  },
-  data () {
-    return {
-      showArchivedRates: false,
-      rateDate: null,
-      columns: [
-        {
-          name: 'currency',
-          label: 'Nazwa waluty',
-          required: true,
-          align: 'left',
-          style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
-          field: row => row.currency,
-          format: val => `${val}`,
-        },
-        {
-          name: 'code',
-          label: 'Kod waluty',
-          required: true,
-          align: 'left',
-          field: row => row.code,
-          format: val => `${val}`,
-        },
-        {
-          name: 'mid',
-          label: 'Kurs średni',
-          required: true,
-          align: 'left',
-          field: row => row.mid,
-          format: val => `${val}`,
-        },
-      ],
-    }
+  computed: {
+    ...mapGetters({
+      date: 'exchangeRates/date',
+      isLoading: 'exchangeRates/isLoading',
+      rates: 'exchangeRates/rates',
+    }),
   },
   created () {
     this.updateRates()
   },
-  computed: {
-    ...mapGetters({
-      rates: 'exchangeRates/rates',
-      date: 'exchangeRates/date',
-      isLoading: 'exchangeRates/isLoading',
-    }),
-  },
-  watch: {
-    showArchivedRates: function (val) {
-      if (!val) {
-        this.rateDate = null
-      }
-    },
-    rateDate: function () {
-      this.updateRates()
-    },
+  data () {
+    return {
+      columns: [
+        {
+          align: 'left',
+          field: row => row.currency,
+          format: val => `${val}`,
+          label: 'Nazwa waluty',
+          name: 'currency',
+          required: true,
+          style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
+        },
+        {
+          align: 'left',
+          field: row => row.code,
+          format: val => `${val}`,
+          label: 'Kod waluty',
+          name: 'code',
+          required: true,
+        },
+        {
+          align: 'left',
+          field: row => row.mid,
+          format: val => `${val}`,
+          label: 'Kurs średni',
+          name: 'mid',
+          required: true,
+        },
+      ],
+      rateDate: null,
+      showArchivedRates: false,
+    }
   },
   methods: {
     openCurrency (event, row) {
@@ -179,6 +154,31 @@ export default {
       }).finally(() => {
         this.$store.commit('exchangeRates/setLoading', false)
       })
+    },
+  },
+  setup () {
+    const onlyPast = (date) => {
+      return date < format(new Date(), 'y/MM/dd')
+    }
+    const onlyWorkDays = (date) => {
+      return !isWeekend(new Date(date))
+    }
+    return {
+      constants,
+      isPast,
+      validDays (date) {
+        return onlyPast(date) && onlyWorkDays(date)
+      },
+    }
+  },
+  watch: {
+    rateDate: function () {
+      this.updateRates()
+    },
+    showArchivedRates: function (val) {
+      if (!val) {
+        this.rateDate = null
+      }
     },
   },
 }

@@ -30,24 +30,24 @@ import {computed, toRefs} from 'vue'
 
 export default {
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-
     caption: {
-      type: String,
       default: '',
-    },
-
-    link: {
       type: String,
-      default: '',
     },
 
     className: {
-      type: String,
       default: '',
+      type: String,
+    },
+
+    link: {
+      default: '',
+      type: String,
+    },
+
+    title: {
+      required: true,
+      type: String,
     },
   },
   setup(props: any) {

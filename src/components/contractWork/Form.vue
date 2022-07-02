@@ -70,8 +70,8 @@ import {AvailableYear} from 'src/types/AvailableYear'
 export default defineComponent({
   props: {
     year: {
-      year: Number,
       required: true,
+      year: Number,
     },
   },
   setup(props, context) {
@@ -87,18 +87,18 @@ export default defineComponent({
 
     const save = () => {
       const input: ContractWorkInputFields = {
-        year: <AvailableYear>year.value,
         amount: Number(amount.value),
         amountType: <AmountType>amountType.value,
         expenseRate: expenseRate.value,
+        year: <AvailableYear>year.value,
       }
       context.emit('save', input)
     }
 
     return {
-      constants,
       amount,
       amountType,
+      constants,
       expenseRate,
       isDisabledButton,
       save,

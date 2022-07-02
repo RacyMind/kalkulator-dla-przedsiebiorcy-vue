@@ -16,10 +16,13 @@ import {usePieChart} from 'src/use/usePieChart'
 import contractWork from 'components/contractWork/contractWork'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractWorkInputFields>,
       required: true,
+      type: Object as PropType<ContractWorkInputFields>,
     },
   },
   setup(props) {
@@ -37,8 +40,8 @@ export default defineComponent({
           basisForTax: 0,
           expenses:  0,
           grossAmount: 0,
-          taxAmount: 0,
           netAmount: 0,
+          taxAmount: 0,
         }
       }
     })
@@ -53,12 +56,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

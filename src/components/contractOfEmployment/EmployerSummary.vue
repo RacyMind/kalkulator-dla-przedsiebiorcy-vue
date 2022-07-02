@@ -57,10 +57,13 @@ import ListRow from 'components/partials/ListRow.vue'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
     },
   },
   setup (props) {
@@ -73,9 +76,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

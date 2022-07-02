@@ -16,10 +16,13 @@ import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFiel
 import invoice from './invoice'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<InvoiceInputFields>,
       required: true,
+      type: Object as PropType<InvoiceInputFields>,
     },
   },
   setup(props) {
@@ -40,12 +43,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

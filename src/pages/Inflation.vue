@@ -24,15 +24,15 @@ import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    InflationStatistics,
+    SectionHeader,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Inflacja')
-  },
-  components: {
-    SectionHeader,
-    InflationStatistics,
-    Advert,
-    Footer,
   },
 })
 </script>

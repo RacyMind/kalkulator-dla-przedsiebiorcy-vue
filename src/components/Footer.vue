@@ -31,14 +31,14 @@
 <script>
 import SupportProject from 'components/SupportProject'
 export default {
-  data () {
-    return {
-      year: new Date().getFullYear(),
-      openModal: false,
-    }
-  },
   components: {
     SupportProject,
+  },
+  data () {
+    return {
+      openModal: false,
+      year: new Date().getFullYear(),
+    }
   },
 }
 </script>

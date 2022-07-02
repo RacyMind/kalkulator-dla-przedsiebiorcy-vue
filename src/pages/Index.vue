@@ -26,12 +26,12 @@
 import Menu from 'components/partials/menu/Menu'
 import Footer from 'components/Footer'
 export default {
+  components: {
+    Footer,
+    Menu,
+  },
   created () {
     this.$store.commit('app/setModuleTitle', '')
-  },
-  components: {
-    Menu,
-    Footer,
   },
 }
 </script>

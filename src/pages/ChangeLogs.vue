@@ -44,6 +44,12 @@ import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
 
 export default defineComponent({
+  components: {
+    Advert,
+    ChangeLog,
+    Footer,
+    SectionHeader,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Historia zmian')
@@ -58,15 +64,9 @@ export default defineComponent({
     })
 
     return {
-      showAll,
       logItems,
+      showAll,
     }
-  },
-  components: {
-    SectionHeader,
-    ChangeLog,
-    Advert,
-    Footer,
   },
 })
 </script>

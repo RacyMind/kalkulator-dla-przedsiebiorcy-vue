@@ -16,10 +16,13 @@ import PieChart from 'components/PieChart.vue'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<UnregisteredCompanyInputFields>,
       required: true,
+      type: Object as PropType<UnregisteredCompanyInputFields>,
     },
   },
   setup(props) {
@@ -42,12 +45,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

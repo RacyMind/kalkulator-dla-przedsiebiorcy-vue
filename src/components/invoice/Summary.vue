@@ -25,10 +25,13 @@ import invoice from './invoice'
 import ListRow from 'components/partials/ListRow.vue'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<InvoiceInputFields>,
       required: true,
+      type: Object as PropType<InvoiceInputFields>,
     },
   },
   setup(props: any) {
@@ -40,9 +43,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

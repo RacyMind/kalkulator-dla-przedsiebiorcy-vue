@@ -10,19 +10,19 @@ import {ContractOfMandateEmployeeSingleResult} from '../../../../src/components/
 installQuasarPlugin()
 
 const defaultInput:ContractOfMandateInputFields = {
-  year: helpers.getDefaultYear(),
-  grossAmount: 1000,
-  isFreeAmount: false,
-  isReliefForYoung: false,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
+  grossAmount: 1000,
+  isDisabilityContribution: true,
+  isFpContribution: true,
+  isFreeAmount: false,
   isHealthContribution: true,
   isPensionContribution: true,
-  isDisabilityContribution: true,
+  isReliefForYoung: false,
   isSickContribution: true,
-  isFpContribution: true,
   partOfWorkWithAuthorExpenses: 0,
+  year: helpers.getDefaultYear(),
 }
 
 const yearlyInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandateInputFields[] => {
@@ -110,12 +110,12 @@ describe('employeeContractOfMandate', () => {
   it('the monthly calculation, without contributions, for the default year', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
-      isSickContribution: false,
-      isPensionContribution: false,
-      isHealthContribution: false,
-      isDisabilityContribution: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
+      isDisabilityContribution: false,
+      isHealthContribution: false,
+      isPensionContribution: false,
+      isSickContribution: false,
     }
 
     const result = monthlyResult(input)
@@ -212,13 +212,13 @@ describe('employeeContractOfMandate', () => {
   it('the yearly calculation, without contributions, for the default year', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
-      isSickContribution: false,
-      isPensionContribution: false,
-      isHealthContribution: false,
-      isDisabilityContribution: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      isDisabilityContribution: false,
+      isHealthContribution: false,
+      isPensionContribution: false,
+      isSickContribution: false,
     }
 
     const result = yearlyResult(yearlyInput(input))

@@ -36,10 +36,13 @@ import ListRow from 'components/partials/ListRow.vue'
 import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<UnregisteredCompanyInputFields>,
       required: true,
+      type: Object as PropType<UnregisteredCompanyInputFields>,
     },
   },
   setup(props) {
@@ -64,9 +67,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

@@ -64,13 +64,13 @@
 <script>
 import ga from '../logic/analytics'
 export default {
+  created () {
+    ga.logEvent('Modal', 'Open', 'Wsparcie')
+  },
   data () {
     return {
       url: 'https://kalkulatorfinansowy.app',
     }
-  },
-  created () {
-    ga.logEvent('Modal', 'Open', 'Wsparcie')
   },
 }
 </script>

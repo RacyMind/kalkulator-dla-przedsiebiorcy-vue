@@ -99,14 +99,14 @@ export default defineComponent({
     }
 
     return {
-      constants,
-      validationRules,
-      vatTaxRates,
       amount,
       amountType,
-      taxRate,
+      constants,
       isDisabledButton,
       save,
+      taxRate,
+      validationRules,
+      vatTaxRates,
     }
   },
 })

@@ -9,15 +9,15 @@ import {ContractOfEmploymentEmployeeYearlyResult} from 'components/contractOfEmp
 import taxes from 'src/logic/taxes'
 
 let params = {
-  firstTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
-  secondTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.SECOND_RATE / 100,
-  freeAmountOfTax: constants.PARAMS[helpers.getDefaultYear()].FREE_AMOUNT_OF_TAX,
-  taxReducingAmount: constants.PARAMS[helpers.getDefaultYear()].TAX_REDUCING_AMOUNT,
   amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,
-  grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
-  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
   expensesIfYouWorkWhereYouDontLive: constants.PARAMS[helpers.getDefaultYear()].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
   expensesIfYouWorkWhereYouLive: constants.PARAMS[helpers.getDefaultYear()].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
+  firstTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
+  freeAmountOfTax: constants.PARAMS[helpers.getDefaultYear()].FREE_AMOUNT_OF_TAX,
+  grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
+  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  secondTaxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.SECOND_RATE / 100,
+  taxReducingAmount: constants.PARAMS[helpers.getDefaultYear()].TAX_REDUCING_AMOUNT,
 }
 
 let totalBasisForRentAndPensionContributions = 0
@@ -41,15 +41,15 @@ function resetTotalAmounts () {
  */
 function setParams (year:AvailableYear) {
   params = {
-    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
-    freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
-    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
-    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
     expensesIfYouWorkWhereYouDontLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE,
     expensesIfYouWorkWhereYouLive: constants.PARAMS[year].EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE,
+    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
+    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
   }
 
   resetTotalAmounts()
@@ -220,18 +220,18 @@ function getMonthlyResult (input:ContractOfEmploymentInputFields, month = 0):Con
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)
 
   return {
-    netAmount: netAmount,
-    grossAmount: input.grossAmount,
     basisForRentAndPensionContributions: basisForRentAndPensionContributions,
-    pensionContribution: pensionContribution,
-    disabilityContribution: disabilityContribution,
-    sickContribution: sickContribution,
-    ppkContribution: ppkContribution,
-    healthContribution: healthContribution,
-    expenses: expenses,
     basisForTax: basisForTax,
-    taxAmount: taxAmount,
     contributionTotal: pensionContribution + disabilityContribution + sickContribution + ppkContribution + healthContribution,
+    disabilityContribution: disabilityContribution,
+    expenses: expenses,
+    grossAmount: input.grossAmount,
+    healthContribution: healthContribution,
+    netAmount: netAmount,
+    pensionContribution: pensionContribution,
+    ppkContribution: ppkContribution,
+    sickContribution: sickContribution,
+    taxAmount: taxAmount,
   }
 }
 
@@ -288,9 +288,9 @@ function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, ta
 }
 
 export default {
+  findGrossAmountUsingNetAmount,
   getMonthlyResult,
   getYearlyResult,
-  setParams,
   resetTotalAmounts,
-  findGrossAmountUsingNetAmount,
+  setParams,
 }

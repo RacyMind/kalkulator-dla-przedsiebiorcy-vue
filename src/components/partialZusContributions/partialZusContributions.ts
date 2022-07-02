@@ -7,8 +7,8 @@ import {PartialZusContributionInputFields} from 'components/partialZusContributi
 import {PartialZusContributionResult} from 'components/partialZusContributions/interfaces/PartialZusContributionResult'
 
 let params = {
-  smallBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT,
   bigBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.BIG_AMOUNT,
+  smallBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT,
 }
 
 /**
@@ -17,8 +17,8 @@ let params = {
  */
 function setParams (year:AvailableYear) {
   params = {
-    smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
     bigBasisForZUS: constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT,
+    smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
   }
 
   taxes.setParams(year)
@@ -61,13 +61,13 @@ function getResult (input:PartialZusContributionInputFields):PartialZusContribut
     sickContribution = ownerContributions.calculateSickContribution(basisForZus)
   }
   return {
-    basisForZusContributions: basisForZus,
-    pensionContribution: pensionContribution,
-    disabilityContribution: disabilityContribution,
-    sickContribution: sickContribution,
     accidentContribution: accidentContribution,
-    fpContribution: fpContribution,
+    basisForZusContributions: basisForZus,
     contributionTotal: pensionContribution + disabilityContribution + sickContribution + accidentContribution + fpContribution,
+    disabilityContribution: disabilityContribution,
+    fpContribution: fpContribution,
+    pensionContribution: pensionContribution,
+    sickContribution: sickContribution,
   }
 }
 

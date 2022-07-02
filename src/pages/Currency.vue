@@ -32,6 +32,13 @@ import Footer from 'components/Footer'
 import helpers from 'src/logic/helpers'
 
 export default {
+  components: {
+    Advert,
+    CurrencyStatistics,
+    Footer,
+    Form,
+    SectionHeader,
+  },
   created () {
     this.$store.commit('exchangeRates/setCurrency', null)
     this.$store.commit('app/setModuleTitle', this.$route.params.currency.toUpperCase())
@@ -40,13 +47,6 @@ export default {
     scrollTo () {
       helpers.scrollToElement(this.$refs.scrollTarget.$el)
     },
-  },
-  components: {
-    SectionHeader,
-    Form,
-    CurrencyStatistics,
-    Advert,
-    Footer,
   },
 }
 </script>

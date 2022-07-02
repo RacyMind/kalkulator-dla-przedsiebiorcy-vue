@@ -28,21 +28,21 @@ export function inputData () {
   const isAidForMiddleClass = computed(() => store.getters['selfEmployment/isAidForMiddleClass'])
 
   return {
-    grossAmount,
-    taxType,
-    taxRateForLumpSum,
     accidentContributionRate,
+    customBasisForZus,
     expenses,
-    isFreeAmount,
+    grossAmount,
+    isAidForBigFamily,
+    isAidForMiddleClass,
+    isAidForSenior,
+    isAidForStart,
     isFpContribution,
+    isFreeAmount,
+    isFullTimeJob,
     isSickContribution,
     isSmallZus,
-    isAidForStart,
-    isFullTimeJob,
-    customBasisForZus,
-    isAidForBigFamily,
-    isAidForSenior,
-    isAidForMiddleClass,
+    taxRateForLumpSum,
+    taxType,
   }
 }
 
@@ -118,21 +118,21 @@ export function useYearlyResult (props) {
   const updateMonthlyInputs = () => {
     for (let i = 0; i < 12; i++) {
       monthlyInputs[i] = {
-        grossAmount: grossAmount.value,
-        expenses: expenses.value,
-        taxType: taxType.value,
-        taxRateForLumpSum: taxRateForLumpSum.value,
-        isFreeAmount: isFreeAmount.value,
         accidentContributionRate: accidentContributionRate.value,
+        customBasisForZus: customBasisForZus.value,
+        expenses: expenses.value,
+        grossAmount: grossAmount.value,
+        isAidForBigFamily: isAidForBigFamily.value,
+        isAidForMiddleClass: isAidForMiddleClass.value,
+        isAidForSenior: isAidForSenior.value,
+        isAidForStart: isAidForStart.value,
         isFpContribution: isFpContribution.value,
+        isFreeAmount: isFreeAmount.value,
+        isFullTimeJob: isFullTimeJob.value,
         isSickContribution: isSickContribution.value,
         isSmallZus: isSmallZus.value,
-        isAidForStart: isAidForStart.value,
-        isFullTimeJob: isFullTimeJob.value,
-        customBasisForZus: customBasisForZus.value,
-        isAidForBigFamily: isAidForBigFamily.value,
-        isAidForSenior: isAidForSenior.value,
-        isAidForMiddleClass: isAidForMiddleClass.value,
+        taxRateForLumpSum: taxRateForLumpSum.value,
+        taxType: taxType.value,
       }
     }
   }
@@ -145,7 +145,7 @@ export function useYearlyResult (props) {
   })
 
   return {
-    results,
     monthlyInputs,
+    results,
   }
 }

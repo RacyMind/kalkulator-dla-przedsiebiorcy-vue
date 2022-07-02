@@ -46,6 +46,14 @@ import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInp
 import constants from 'src/logic/constants'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Faktura VAT')
@@ -65,17 +73,9 @@ export default defineComponent({
 
     return{
       invoiceInputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Statistics,
-    Advert,
-    Footer,
   },
 })
 </script>

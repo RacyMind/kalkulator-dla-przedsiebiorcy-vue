@@ -19,91 +19,94 @@ import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/Se
 
 const columns = [
   {
-    name: 'month',
-    required: true,
     align: 'left',
     field: () => '',
     format: (val: string) => `${val}`,
+    name: 'month',
+    required: true,
   },
   {
-    name: 'gross',
-    label: 'Przychód netto',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.grossAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Przychód netto',
+    name: 'gross',
+    required: true,
   },
   {
-    name: 'sick',
-    label: 'Skł. chorobowa',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.sickContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. chorobowa',
+    name: 'sick',
+    required: true,
   },
   {
-    name: 'disability',
-    label: 'Skł. rentowa',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.disabilityContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. rentowa',
+    name: 'disability',
+    required: true,
   },
   {
-    name: 'pension',
-    label: 'Skł. emerytalna',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.pensionContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. emerytalna',
+    name: 'pension',
+    required: true,
   },
   {
-    name: 'health',
-    label: 'Skł. zdrowotna',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.healthContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. zdrowotna',
+    name: 'health',
+    required: true,
   },
   {
-    name: 'accident',
-    label: 'Skł. wypadkowa',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.accidentContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. wypadkowa',
+    name: 'accident',
+    required: true,
   },
   {
-    name: 'fp',
-    label: 'Skł. na Fundusz Pracy',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.fpContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. na Fundusz Pracy',
+    name: 'fp',
+    required: true,
   },
   {
-    name: 'taxAmount',
-    label: 'Zaliczka na podatek',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.taxAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Zaliczka na podatek',
+    name: 'taxAmount',
+    required: true,
   },
   {
-    name: 'net',
-    label: 'Dochód netto',
-    required: true,
     align: 'left',
     field: (row: SelfEmploymentSingleResult) => row.netAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Dochód netto',
+    name: 'net',
+    required: true,
   },
 ]
 
 export default defineComponent({
+  components: {
+    YearlySummaryTable,
+  },
   props: {
     input: {
-      type: Object as PropType<SelfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<SelfEmploymentInputFields>,
     },
   },
   setup(props) {
@@ -139,15 +142,12 @@ export default defineComponent({
     })
 
     return {
-      pln,
-      constants,
       columns,
+      constants,
+      pln,
       totalResult,
       updateGrossAmounts,
     }
-  },
-  components: {
-    YearlySummaryTable,
   },
 })
 </script>

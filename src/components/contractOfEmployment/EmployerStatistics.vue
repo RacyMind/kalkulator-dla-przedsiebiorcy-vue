@@ -16,10 +16,13 @@ import {usePieChart} from 'src/use/usePieChart'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
     },
   },
   setup(props) {
@@ -52,12 +55,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

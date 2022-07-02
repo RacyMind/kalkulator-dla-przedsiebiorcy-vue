@@ -174,12 +174,12 @@ import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
   props: {
-    year: Number,
     isMarriage: {
-      type: Boolean,
-      required: false,
       default: false,
+      required: false,
+      type: Boolean,
     },
+    year: Number,
   },
   setup(props, context) {
     const amount:Ref<number|null> = ref(null)
@@ -212,18 +212,18 @@ export default defineComponent({
 
     const save = () => {
       const input: ContractOfEmploymentInputFields = {
-        year: <AvailableYear>props.year,
+        accidentContributionRate: accidentContributionRate.value / 100,
+        employeePpkContributionRate: employeePpkContributionRate.value,
+        employerPpkContributionRate: employerPpkContributionRate.value,
         grossAmount: Number(amount.value),
-        workInLivePlace: workInLivePlace.value,
+        isFpContribution: isFpContribution.value,
         isFreeAmount: isFreeAmount.value,
-        isReliefForYoung: isReliefForYoung.value,
         isReliefForBigFamily: isReliefForBigFamily.value,
         isReliefForSenior: isReliefForSenior.value,
+        isReliefForYoung: isReliefForYoung.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
-        isFpContribution: isFpContribution.value,
-        accidentContributionRate: accidentContributionRate.value / 100,
-        employerPpkContributionRate: employerPpkContributionRate.value,
-        employeePpkContributionRate: employeePpkContributionRate.value,
+        workInLivePlace: workInLivePlace.value,
+        year: <AvailableYear>props.year,
       }
 
       if (isAuthorExpenses.value) {
@@ -249,24 +249,24 @@ export default defineComponent({
     }
 
     return {
-      constants,
-      validationRules,
+      accidentContributionRate,
       amount,
       amountType,
-      accidentContributionRate,
-      workInLivePlace,
+      constants,
+      employeePpkContributionRate,
+      employerPpkContributionRate,
+      isAuthorExpenses,
+      isDisabledButton,
+      isFpContribution,
       isFreeAmount,
-      isReliefForYoung,
+      isPpkContribution,
       isReliefForBigFamily,
       isReliefForSenior,
-      isFpContribution,
-      isPpkContribution,
-      employerPpkContributionRate,
-      employeePpkContributionRate,
-      isAuthorExpenses,
+      isReliefForYoung,
       partOfWorkWithAuthorExpenses,
-      isDisabledButton,
       save,
+      validationRules,
+      workInLivePlace,
     }
   },
 })

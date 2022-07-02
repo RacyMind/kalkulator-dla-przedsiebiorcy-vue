@@ -24,15 +24,15 @@ import Footer from 'components/Footer.vue'
 import Summary from 'components/salaryStats/Summary.vue'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Informacje o wynagrodzeniu')
-  },
-  components: {
-    Summary,
-    SectionHeader,
-    Advert,
-    Footer,
   },
 })
 </script>

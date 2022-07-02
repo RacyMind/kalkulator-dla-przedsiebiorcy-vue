@@ -45,14 +45,22 @@ import helpers from 'src/logic/helpers'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Odsetki')
 
     const inputFields = ref(<InterestInputFields>{
       amount: 0,
-      rate: 0,
       dayCount: 0,
+      rate: 0,
     })
 
     const scrollTarget = ref(null) as any
@@ -64,17 +72,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Statistics,
-    Advert,
-    Footer,
   },
 })
 </script>

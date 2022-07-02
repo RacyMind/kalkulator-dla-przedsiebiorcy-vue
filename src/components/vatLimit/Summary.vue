@@ -26,10 +26,13 @@ import ListRow from 'components/partials/ListRow.vue'
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<VatLimitInputFields>,
       required: true,
+      type: Object as PropType<VatLimitInputFields>,
     },
   },
   setup (props) {
@@ -39,9 +42,9 @@ export default defineComponent({
       }
       catch {
         return {
-          startDate: null,
-          daysToEndYear: 0,
           amount: 0,
+          daysToEndYear: 0,
+          startDate: null,
         }
       }
     })
@@ -54,13 +57,10 @@ export default defineComponent({
     }
 
     return {
-      result,
-      pln,
       formatDate,
+      pln,
+      result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

@@ -9,9 +9,9 @@ export default {
       })
       return data.map((data:InflationApiResponse) => {
         return {
-          year: data.rok,
           month: data.miesiac,
           value: parseFloat(data.wartosc),
+          year: data.rok,
         }
       })
     })

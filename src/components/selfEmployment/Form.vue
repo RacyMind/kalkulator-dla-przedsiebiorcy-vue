@@ -156,8 +156,8 @@ import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/Se
 
 const incomeTaxTypes = [
   {
-    value: constants.TAX_TYPES.GENERAL,
     label: 'Zasady ogólne',
+    value: constants.TAX_TYPES.GENERAL,
   },
   {
     label: 'Podatek liniowy',
@@ -171,12 +171,12 @@ const incomeTaxTypes = [
 
 export default defineComponent({
   props: {
-    year: Number,
     isMarriage: {
-      type: Boolean,
-      required: false,
       default: false,
+      required: false,
+      type: Boolean,
     },
+    year: Number,
   },
   setup(props, context) {
     const amount:Ref<number|null> = ref(null)
@@ -237,21 +237,21 @@ export default defineComponent({
 
     const save = () => {
       const input: SelfEmploymentInputFields = {
-        year: <AvailableYear>props.year,
+        accidentContributionRate: accidentContributionRate.value / 100,
         amount: Number(amount.value),
+        customBasisForZus: Number(customBasisForZus.value),
         expenses: Number(expenses.value),
         incomeTaxType: incomeTaxType.value,
-        taxRateForLumpSum: taxRateForLumpSum.value / 100,
-        isFreeAmount: isFreeAmount.value,
-        isReliefForBigFamily: isReliefForBigFamily.value,
-        isReliefForSenior: isReliefForSenior.value,
-        isReliefForCompanyStart: isReliefForCompanyStart.value,
         isFpContribution: isFpContribution.value,
-        isSickContribution: isSickContribution.value,
-        accidentContributionRate: accidentContributionRate.value / 100,
-        isSmallZus: isSmallZus.value,
+        isFreeAmount: isFreeAmount.value,
         isFullTimeJob: isFullTimeJob.value,
-        customBasisForZus: Number(customBasisForZus.value),
+        isReliefForBigFamily: isReliefForBigFamily.value,
+        isReliefForCompanyStart: isReliefForCompanyStart.value,
+        isReliefForSenior: isReliefForSenior.value,
+        isSickContribution: isSickContribution.value,
+        isSmallZus: isSmallZus.value,
+        taxRateForLumpSum: taxRateForLumpSum.value / 100,
+        year: <AvailableYear>props.year,
       }
 
       if (!isCustomBasisForZus.value) {
@@ -262,27 +262,27 @@ export default defineComponent({
     }
 
     return {
-      constants,
-      validationRules,
-      incomeTaxTypes,
+      accidentContributionRate,
       amount,
+      constants,
+      customBasisForZus,
       expenses,
       incomeTaxType,
-      taxRateForLumpSum,
-      isFreeAmount,
-      isReliefForBigFamily,
-      isReliefForSenior,
-      isReliefForMiddleClass,
-      isReliefForCompanyStart,
-      accidentContributionRate,
+      incomeTaxTypes,
+      isCustomBasisForZus,
+      isDisabledButton,
       isFpContribution,
+      isFreeAmount,
+      isFullTimeJob,
+      isReliefForBigFamily,
+      isReliefForCompanyStart,
+      isReliefForMiddleClass,
+      isReliefForSenior,
       isSickContribution,
       isSmallZus,
-      isFullTimeJob,
-      isCustomBasisForZus,
-      customBasisForZus,
-      isDisabledButton,
       save,
+      taxRateForLumpSum,
+      validationRules,
     }
   },
 })

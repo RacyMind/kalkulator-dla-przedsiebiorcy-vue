@@ -16,10 +16,13 @@ import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfa
 import {usePieChart} from 'src/use/usePieChart'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
+      type: Object as PropType<ContractOfMandateInputFields>,
     },
   },
   setup(props) {
@@ -48,12 +51,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

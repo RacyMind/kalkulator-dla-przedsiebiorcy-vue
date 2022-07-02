@@ -55,6 +55,15 @@ import {ContractWorkInputFields} from 'components/contractWork/interfaces/Contra
 import constants from 'src/logic/constants'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Umowa o dzieło')
@@ -62,10 +71,10 @@ export default defineComponent({
     const year = ref(helpers.getDefaultYear())
 
     const inputFields:Ref<ContractWorkInputFields> = ref({
-      year: helpers.getDefaultYear(),
-      expenseRate: <ExpenseRate>0,
       amount: 0,
       amountType: constants.AMOUNT_TYPES.GROSS,
+      expenseRate: <ExpenseRate>0,
+      year: helpers.getDefaultYear(),
     })
 
     const scrollTarget = ref(null) as any
@@ -80,20 +89,11 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    Form,
-    Summary,
-    Statistics,
-    Footer,
-    ChooseYear,
   },
 })
 </script>

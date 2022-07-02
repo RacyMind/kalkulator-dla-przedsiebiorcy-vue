@@ -12,9 +12,9 @@ function getResult (input:InterestInputFields):InterestResult {
   const interestAmount = helpers.round(input.amount * input.rate * input.dayCount / 365, 2)
 
   return {
-    interestAmount: interestAmount,
-    dayCount: input.dayCount,
     amount: input.amount,
+    dayCount: input.dayCount,
+    interestAmount: interestAmount,
   }
 }
 

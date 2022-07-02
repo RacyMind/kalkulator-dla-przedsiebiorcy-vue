@@ -37,6 +37,13 @@ import helpers from 'src/logic/helpers'
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Limit obrotu dla kasy fiskalnej')
@@ -54,16 +61,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    Summary,
-    SectionHeader,
-    Form,
-    Advert,
-    Footer,
   },
 })
 </script>

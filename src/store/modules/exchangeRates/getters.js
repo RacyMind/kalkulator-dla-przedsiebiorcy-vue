@@ -1,6 +1,6 @@
 export default {
-  rates: (state) => state.rates,
-  isLoading: (state) => state.isLoading,
-  date: (state) => state.date,
   currency: (state) => state.currency,
+  date: (state) => state.date,
+  isLoading: (state) => state.isLoading,
+  rates: (state) => state.rates,
 }

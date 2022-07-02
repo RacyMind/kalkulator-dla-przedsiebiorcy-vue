@@ -41,17 +41,17 @@ import ZUSSummary from 'components/terms/ZUSSummary.vue'
 import PFRONSummary from 'components/terms/PFRONSummary.vue'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    PFRONSummary,
+    SectionHeader,
+    USSummary,
+    ZUSSummary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Terminy w US, ZUS i PFRON')
-  },
-  components: {
-    PFRONSummary,
-    ZUSSummary,
-    USSummary,
-    SectionHeader,
-    Advert,
-    Footer,
   },
 })
 </script>

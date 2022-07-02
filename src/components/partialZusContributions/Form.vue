@@ -133,13 +133,13 @@ export default defineComponent({
 
     const save = () => {
       const input: PartialZusContributionInputFields = {
+        accidentContributionRate: accidentContributionRate.value / 100,
+        customBasisForZus: Number(customBasisForZus.value),
         daysInMonth: Number(daysInMonth.value),
         daysOfRunningBusiness: Number(daysOfRunningBusiness.value),
         isFpContribution: isFpContribution.value,
         isSickContribution: isSickContribution.value,
         isSmallZus: isSmallZus.value,
-        accidentContributionRate: accidentContributionRate.value / 100,
-        customBasisForZus: Number(customBasisForZus.value),
       }
 
       if (!isCustomBasisForZus.value) {
@@ -150,19 +150,19 @@ export default defineComponent({
     }
 
     return {
+      accidentContributionRate,
       availableDays,
       constants,
-      validationRules,
+      customBasisForZus,
       daysInMonth,
       daysOfRunningBusiness,
-      accidentContributionRate,
+      isCustomBasisForZus,
+      isDisabledButton,
       isFpContribution,
       isSickContribution,
       isSmallZus,
-      isCustomBasisForZus,
-      customBasisForZus,
-      isDisabledButton,
       save,
+      validationRules,
     }
   },
 })

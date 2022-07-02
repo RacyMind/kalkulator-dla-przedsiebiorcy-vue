@@ -61,9 +61,9 @@ function getResult (input:InvoiceInputFields):InvoiceResult {
   }
 
   return {
+    grossAmount: grossAmount,
     netAmount: netAmount,
     taxAmount: taxAmount,
-    grossAmount: grossAmount,
   }
 }
 

@@ -16,10 +16,13 @@ import {usePieChart} from 'src/use/usePieChart'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<PartialZusContributionInputFields>,
       required: true,
+      type: Object as PropType<PartialZusContributionInputFields>,
     },
   },
   setup(props) {
@@ -48,12 +51,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

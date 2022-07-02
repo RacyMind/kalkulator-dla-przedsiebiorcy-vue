@@ -16,10 +16,13 @@ import {usePieChart} from 'src/use/usePieChart'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<InterestInputFields>,
       required: true,
+      type: Object as PropType<InterestInputFields>,
     },
   },
   setup(props) {
@@ -40,12 +43,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

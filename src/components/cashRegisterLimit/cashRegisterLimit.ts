@@ -16,9 +16,9 @@ function getResult(input:CashRegisterLimitInputFields):CashRegisterLimitResult {
   const amount = helpers.round(constants.CASH_REGISTER_LIMIT * daysToEndYear / daysOfYear, 2)
 
   return {
-    startDate: input.startDate,
-    daysToEndYear: daysToEndYear,
     amount: amount,
+    daysToEndYear: daysToEndYear,
+    startDate: input.startDate,
   }
 }
 

@@ -40,6 +40,14 @@ import Footer from 'components/Footer.vue'
 import helpers from 'src/logic/helpers'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Składki ZUS za część miesiąca')
@@ -49,13 +57,13 @@ export default defineComponent({
     const scrollTarget = ref(null) as any
 
     const inputFields:Ref<PartialZusContributionInputFields> = ref({
+      accidentContributionRate: 0,
+      customBasisForZus: 0,
       daysInMonth: 31,
       daysOfRunningBusiness: 0,
       isFpContribution: false,
       isSickContribution: false,
-      accidentContributionRate: 0,
       isSmallZus: false,
-      customBasisForZus: 0,
     })
 
     const save = (input: PartialZusContributionInputFields) => {
@@ -64,20 +72,12 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
       openModal,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    Form,
-    Summary,
-    Statistics,
-    Footer,
   },
 })
 </script>

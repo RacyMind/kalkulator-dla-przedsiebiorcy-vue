@@ -9,19 +9,19 @@ import {ContractOfEmploymentEmployeeSingleResult} from '../../../../src/componen
 installQuasarPlugin()
 
 const defaultInput:ContractOfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
-  grossAmount: 4000,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
-  workInLivePlace: true,
+  grossAmount: 4000,
+  isFpContribution: true,
   isFreeAmount: true,
-  isReliefForYoung: false,
-  isReliefForSenior: false,
   isReliefForBigFamily: false,
   isReliefForMiddleClass: true,
-  isFpContribution: true,
+  isReliefForSenior: false,
+  isReliefForYoung: false,
   partOfWorkWithAuthorExpenses: 0,
+  workInLivePlace: true,
+  year: helpers.getDefaultYear(),
 }
 
 const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmploymentInputFields[] => {
@@ -89,9 +89,9 @@ describe('employeeContractOfEmployment', () => {
   it('the monthly calculation, without PPK contributions, 7 000 gross amount and the relief for the middle class, for the default year', () => {
     const input:ContractOfEmploymentInputFields = {
       ...defaultInput,
-      grossAmount: 7000,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 7000,
     }
 
     const result = monthlyResult(input)
@@ -112,10 +112,10 @@ describe('employeeContractOfEmployment', () => {
   it('the monthly calculation, without PPK contributions, 7 000 gross amount and without the relief for the middle class, for the default year', () => {
     const input:ContractOfEmploymentInputFields = {
       ...defaultInput,
-      grossAmount: 7000,
-      isReliefForMiddleClass: false,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 7000,
+      isReliefForMiddleClass: false,
     }
 
     const result = monthlyResult(input)
@@ -213,9 +213,9 @@ describe('employeeContractOfEmployment', () => {
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for young, for the default year', () => {
     const input:ContractOfEmploymentInputFields = {
       ...defaultInput,
-      grossAmount: 15000,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 15000,
       isReliefForYoung: true,
     }
 
@@ -234,9 +234,9 @@ describe('employeeContractOfEmployment', () => {
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for the big family, for the default year', () => {
     const input:ContractOfEmploymentInputFields = {
       ...defaultInput,
-      grossAmount: 15000,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 15000,
       isReliefForBigFamily: true,
     }
 
@@ -255,9 +255,9 @@ describe('employeeContractOfEmployment', () => {
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for senior, for the default year', () => {
     const input:ContractOfEmploymentInputFields = {
       ...defaultInput,
-      grossAmount: 15000,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 15000,
       isReliefForSenior: true,
     }
 
