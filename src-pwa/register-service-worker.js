@@ -26,6 +26,9 @@ register(process.env.SERVICE_WORKER_FILE, {
 
   updatefound (/* registration */) {
     // console.log('New content is downloading.')
+  },
+
+  updated (/* registration */) {
     Notify.create({
       message: 'Nowa wersja kalkulatora jest dostępna. Odśwież, by  wczytać',
       icon: 'cloud_download',
@@ -40,9 +43,6 @@ register(process.env.SERVICE_WORKER_FILE, {
         location.reload(true)
       },
     })
-  },
-
-  updated (/* registration */) {
     // console.log('Service worker has been updated.')
   },
 
