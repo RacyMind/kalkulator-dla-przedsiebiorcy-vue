@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts">
+import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/sickPay/Form.vue'
-import Summary from 'components/sickPay/Summary.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/sickPay/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/sickPay/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 
 export default defineComponent({
   components: {

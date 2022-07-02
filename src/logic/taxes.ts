@@ -1,6 +1,6 @@
+import {AvailableYear} from 'src/types/AvailableYear'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import {AvailableYear} from 'src/types/AvailableYear'
 
 let year = helpers.getDefaultYear()
 

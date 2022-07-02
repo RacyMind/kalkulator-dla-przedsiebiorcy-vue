@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts">
+import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/vatLimit/Form.vue'
-import Summary from 'components/vatLimit/Summary.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/vatLimit/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/vatLimit/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 
 export default defineComponent({
   components: {

@@ -18,10 +18,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import InflationStatistics from 'components/inflation/InflationStatistics.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import InflationStatistics from 'components/inflation/InflationStatistics.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 
 export default defineComponent({
   components: {

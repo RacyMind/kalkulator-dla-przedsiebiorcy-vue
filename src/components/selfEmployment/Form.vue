@@ -147,12 +147,12 @@
 </template>
 
 <script lang="ts">
-import constants from 'src/logic/constants'
-import {computed, defineComponent, ref, Ref, watch} from 'vue'
 import {AvailableYear} from 'src/types/AvailableYear'
-import validationRules from 'src/logic/validationRules'
 import {IncomeTaxType} from 'src/types/IncomeTaxType'
+import {Ref, computed, defineComponent, ref, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
+import constants from 'src/logic/constants'
+import validationRules from 'src/logic/validationRules'
 
 const incomeTaxTypes = [
   {

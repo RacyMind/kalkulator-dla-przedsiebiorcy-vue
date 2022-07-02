@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Menu from 'components/partials/menu/Menu'
 import Footer from 'components/Footer'
+import Menu from 'components/partials/menu/Menu'
 export default {
   components: {
     Footer,

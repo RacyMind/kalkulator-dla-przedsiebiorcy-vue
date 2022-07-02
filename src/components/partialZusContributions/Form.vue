@@ -87,12 +87,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, Ref, ref, watch} from 'vue'
-import constants from 'src/logic/constants'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
-import validationRules from 'src/logic/validationRules'
-import helpers from 'src/logic/helpers'
+import {Ref, computed, defineComponent, ref, watch} from 'vue'
 import {getDaysInMonth} from 'date-fns'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
 
 const availableDays = [28, 29, 30, 31]
 

@@ -1,10 +1,10 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import { describe, expect, it } from '@jest/globals'
-import employerContractOfMandate from '../../../../src/components/contractOfMandate/employerContractOfMandate'
-import {ContractOfMandateInputFields} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import helpers from '../../../../src/logic/helpers'
-import {ContractOfMandateEmployerYearlyResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
 import {ContractOfMandateEmployerSingleResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
+import {ContractOfMandateEmployerYearlyResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
+import {ContractOfMandateInputFields} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import { describe, expect, it } from '@jest/globals'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
+import employerContractOfMandate from '../../../../src/components/contractOfMandate/employerContractOfMandate'
+import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 

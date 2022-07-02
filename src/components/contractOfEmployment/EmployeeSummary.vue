@@ -59,13 +59,13 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import {pln} from 'src/use/currencyFormat'
-import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
-import ListRow from 'components/partials/ListRow.vue'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {PropType, computed, defineComponent, watch} from 'vue'
+import {pln} from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
+import ListRow from 'components/partials/ListRow.vue'
+import constants from 'src/logic/constants'
+import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 
 export default defineComponent({
   components: {

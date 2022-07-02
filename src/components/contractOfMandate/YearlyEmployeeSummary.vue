@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, watch, ref, Ref} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import {pln} from 'src/use/currencyFormat'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
-import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {PropType, Ref, computed, defineComponent, ref, watch} from 'vue'
+import {pln} from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
+import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
+import constants from 'src/logic/constants'
+import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
 const columns = [
   {

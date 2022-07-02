@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import PieChart from 'components/PieChart.vue'
-import { usePieChart } from 'src/use/usePieChart'
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import { usePieChart } from 'src/use/usePieChart'
+import PieChart from 'components/PieChart.vue'
 import invoice from './invoice'
 
 export default defineComponent({

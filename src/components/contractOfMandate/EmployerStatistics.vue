@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
-import PieChart from 'components/PieChart.vue'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {PropType, computed, defineComponent} from 'vue'
 import {usePieChart} from 'src/use/usePieChart'
+import PieChart from 'components/PieChart.vue'
+import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
 
 export default defineComponent({
   components: {

@@ -92,13 +92,13 @@
 </template>
 
 <script lang="ts">
+import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {computed, defineComponent, ref, watch} from 'vue'
 import {parse} from 'date-fns'
-import differenceInDays from 'date-fns/differenceInDays'
 import DatePopup from 'components/partials/DatePopup.vue'
-import validationRules from 'src/logic/validationRules'
-import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import constants from 'src/logic/constants'
+import differenceInDays from 'date-fns/differenceInDays'
+import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
   components: {

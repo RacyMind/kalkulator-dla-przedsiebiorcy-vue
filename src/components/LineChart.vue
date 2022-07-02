@@ -1,7 +1,7 @@
 <script>
+import 'moment/locale/pl'
 import { Line } from 'vue3-chart-v2'
 import Moment from 'moment'
-import 'moment/locale/pl'
 
 export default {
   created () {

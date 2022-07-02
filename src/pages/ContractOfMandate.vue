@@ -84,22 +84,22 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {Ref, defineComponent, ref, watch} from 'vue'
 import {useStore} from 'vuex'
-import helpers from 'src/logic/helpers'
-import SectionHeader from 'components/partials/SectionHeader.vue'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
+import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
+import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
+import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
+import EmployerSummary from 'components/contractOfMandate/EmployerSummary.vue'
+import Footer from 'components/Footer.vue'
 import Form from 'components/contractOfMandate/Form.vue'
 import SalarySummary from 'components/contractOfMandate/SalarySummary.vue'
-import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
-import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
-import EmployerSummary from 'components/contractOfMandate/EmployerSummary.vue'
-import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import YearlyEmployeeSummary from 'components/contractOfMandate/YearlyEmployeeSummary.vue'
-import Footer from 'components/Footer.vue'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import YearlyEmployerSummary from 'components/contractOfMandate/YearlyEmployerSummary.vue'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
   components: {
     Advert,

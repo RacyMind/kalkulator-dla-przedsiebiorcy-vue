@@ -222,11 +222,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, Ref, ref, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {Ref, computed, defineComponent, ref, watch} from 'vue'
+import {useQuasar} from 'quasar'
+import constants from 'src/logic/constants'
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
 export default defineComponent({

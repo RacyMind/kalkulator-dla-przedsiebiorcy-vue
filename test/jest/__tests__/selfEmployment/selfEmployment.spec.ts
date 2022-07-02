@@ -1,11 +1,11 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import { describe, expect, it } from '@jest/globals'
-import selfEmployment from '../../../../src/components/selfEmployment/selfEmployment'
-import helpers from '../../../../src/logic/helpers'
 import {SelfEmploymentInputFields} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import {SelfEmploymentYearlyResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
 import {SelfEmploymentSingleResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentSingleResult'
+import {SelfEmploymentYearlyResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
+import { describe, expect, it } from '@jest/globals'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import constants from '../../../../src/logic/constants'
+import helpers from '../../../../src/logic/helpers'
+import selfEmployment from '../../../../src/components/selfEmployment/selfEmployment'
 
 installQuasarPlugin()
 

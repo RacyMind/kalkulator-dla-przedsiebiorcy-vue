@@ -26,14 +26,14 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, PropType, watch, defineComponent} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import { pln } from 'src/use/currencyFormat'
-import unregisteredCompany from './unregisteredCompany'
+import {PropType, computed, defineComponent, watch} from 'vue'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import { pln } from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
 import ListRow from 'components/partials/ListRow.vue'
+import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
+import unregisteredCompany from './unregisteredCompany'
 
 export default defineComponent({
   components: {

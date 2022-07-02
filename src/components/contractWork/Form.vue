@@ -61,11 +61,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, Ref, ref, toRefs} from 'vue'
-import constants from 'src/logic/constants'
 import {AmountType} from 'src/types/AmountType'
-import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {Ref, computed, defineComponent, ref, toRefs} from 'vue'
+import constants from 'src/logic/constants'
 
 export default defineComponent({
   props: {

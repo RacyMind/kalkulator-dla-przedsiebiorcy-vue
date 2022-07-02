@@ -1,6 +1,6 @@
-import helpers from 'src/logic/helpers'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {InterestResult} from 'components/interest/interfaces/InterestResult'
+import helpers from 'src/logic/helpers'
 
 /**
  * Returns the result

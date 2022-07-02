@@ -1,11 +1,11 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import employeeContributions from 'src/logic/employeeContributions'
-import employerContributions from 'src/logic/employerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import constants from 'src/logic/constants'
+import employeeContributions from 'src/logic/employeeContributions'
+import employerContributions from 'src/logic/employerContributions'
+import helpers from 'src/logic/helpers'
 import taxes from 'src/logic/taxes'
 
 let params = {

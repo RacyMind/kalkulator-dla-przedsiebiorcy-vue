@@ -50,14 +50,14 @@
 </template>
 
 <script lang="ts">
+import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
 import {computed, defineComponent, ref, watch} from 'vue'
+import {useLineChart} from 'src/use/useLineChart'
+import LineChart from '../LineChart.vue'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import validationRules from 'src/logic/validationRules'
-import LineChart from '../LineChart.vue'
 import inflation from './inflation'
-import {useLineChart} from 'src/use/useLineChart'
-import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
+import validationRules from 'src/logic/validationRules'
 
 const chartOptions = {
   legend: {

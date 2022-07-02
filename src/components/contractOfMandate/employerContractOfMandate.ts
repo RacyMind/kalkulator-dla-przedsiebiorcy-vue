@@ -1,10 +1,10 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import employerContributions from 'src/logic/employerContributions'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {ContractOfMandateEmployerYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import constants from 'src/logic/constants'
+import employerContributions from 'src/logic/employerContributions'
+import helpers from 'src/logic/helpers'
 
 const year = helpers.getDefaultYear()
 

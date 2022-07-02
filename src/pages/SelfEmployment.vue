@@ -52,19 +52,19 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
-import {useStore} from 'vuex'
+import {Ref, defineComponent, ref, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import constants from 'src/logic/constants'
-import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
-import Form from 'components/selfEmployment/Form.vue'
-import Summary from 'components/selfEmployment/Summary.vue'
-import Statistics from 'components/selfEmployment/Statistics.vue'
-import YearlySummary from 'components/selfEmployment/YearlySummary.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import ChooseYear from 'components/partials/ChooseYear.vue'
+import Footer from 'components/Footer.vue'
+import Form from 'components/selfEmployment/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/selfEmployment/Statistics.vue'
+import Summary from 'components/selfEmployment/Summary.vue'
+import YearlySummary from 'components/selfEmployment/YearlySummary.vue'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
   components: {
     Advert,

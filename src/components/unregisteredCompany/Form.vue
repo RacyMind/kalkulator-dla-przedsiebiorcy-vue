@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref} from 'vue'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import {computed, defineComponent, ref} from 'vue'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({

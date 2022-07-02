@@ -33,16 +33,16 @@
 </template>
 
 <script lang="ts">
+import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/interest/Form.vue'
-import Summary from 'components/interest/Summary.vue'
-import Statistics from 'components/interest/Statistics.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/interest/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/interest/Statistics.vue'
+import Summary from 'components/interest/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
 export default defineComponent({
   components: {

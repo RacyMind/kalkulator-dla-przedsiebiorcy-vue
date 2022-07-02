@@ -55,11 +55,11 @@
 </template>
 
 <script lang="ts">
+import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
+import {SickPayRate} from 'components/sickPay/types/SickPayRate'
 import {computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
 import validationRules from 'src/logic/validationRules'
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
-import {SickPayRate} from 'components/sickPay/types/SickPayRate'
 
 export default defineComponent({
   setup(props, context) {

@@ -1,5 +1,5 @@
+import { computed, toRef, watch } from 'vue'
 import { useStore } from 'vuex'
-import { computed, watch, toRef } from 'vue'
 import contractWork from 'src/logic/contractWork'
 
 function setWatchers (props) {

@@ -1,10 +1,10 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import { describe, expect, it } from '@jest/globals'
-import employerContractOfEmployment from '../../../../src/components/contractOfEmployment/employerContractOfEmployment'
-import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
-import helpers from '../../../../src/logic/helpers'
-import {ContractOfEmploymentEmployerYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
 import {ContractOfEmploymentEmployerSingleResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerSingleResult'
+import {ContractOfEmploymentEmployerYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
+import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import { describe, expect, it } from '@jest/globals'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
+import employerContractOfEmployment from '../../../../src/components/contractOfEmployment/employerContractOfEmployment'
+import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 

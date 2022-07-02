@@ -1,10 +1,10 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import taxes from 'src/logic/taxes'
-import ownerContributions from 'src/logic/ownerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 import {PartialZusContributionResult} from 'components/partialZusContributions/interfaces/PartialZusContributionResult'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
+import ownerContributions from 'src/logic/ownerContributions'
+import taxes from 'src/logic/taxes'
 
 let params = {
   bigBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.BIG_AMOUNT,

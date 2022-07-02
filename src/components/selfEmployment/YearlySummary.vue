@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, watch, ref, Ref} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import {pln} from 'src/use/currencyFormat'
-import selfEmployment from 'components/selfEmployment/selfEmployment'
-import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
-import {SelfEmploymentSingleResult} from 'components/selfEmployment/interfaces/SelfEmploymentSingleResult'
+import {PropType, Ref, computed, defineComponent, ref, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
+import {SelfEmploymentSingleResult} from 'components/selfEmployment/interfaces/SelfEmploymentSingleResult'
+import {pln} from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
+import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
+import constants from 'src/logic/constants'
+import selfEmployment from 'components/selfEmployment/selfEmployment'
 
 const columns = [
   {

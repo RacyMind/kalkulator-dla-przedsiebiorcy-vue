@@ -29,16 +29,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Advert from 'components/partials/Advert.vue'
-import Form from 'components/partialZusContributions/Form.vue'
-import Summary from 'components/partialZusContributions/Summary.vue'
-import Statistics from 'components/partialZusContributions/Statistics.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import {Ref, defineComponent, ref} from 'vue'
+import {useStore} from 'vuex'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/Footer.vue'
+import Form from 'components/partialZusContributions/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/partialZusContributions/Statistics.vue'
+import Summary from 'components/partialZusContributions/Summary.vue'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
   components: {
     Advert,

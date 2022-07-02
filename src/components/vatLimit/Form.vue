@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts">
+import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import {computed, defineComponent, ref} from 'vue'
 import {format, parse} from 'date-fns'
 import DatePopup from 'components/partials/DatePopup.vue'
 import validationRules from 'src/logic/validationRules'
-import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 
 export default defineComponent({
   components: {

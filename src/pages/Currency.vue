@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/exchangeRates/Form'
-import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Advert from 'components/partials/Advert'
+import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Footer from 'components/Footer'
+import Form from 'components/exchangeRates/Form'
+import SectionHeader from 'components/partials/SectionHeader'
 import helpers from 'src/logic/helpers'
 
 export default {

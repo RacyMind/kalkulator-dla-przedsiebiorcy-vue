@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
+import {PropType, computed, defineComponent} from 'vue'
 import { format } from 'date-fns'
 import { pln } from 'src/use/currencyFormat'
-import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
-import cashRegisterLimit from 'components/cashRegisterLimit/cashRegisterLimit'
 import ListRow from 'components/partials/ListRow.vue'
+import cashRegisterLimit from 'components/cashRegisterLimit/cashRegisterLimit'
 
 export default defineComponent({
   components: {

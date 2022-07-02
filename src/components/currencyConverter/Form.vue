@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import CurrencyConverter from 'src/logic/CurrencyConverter'
 import { mapGetters } from 'vuex'
+import CurrencyConverter from 'src/logic/CurrencyConverter'
 
 export default {
   computed: {

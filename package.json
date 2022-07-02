@@ -45,6 +45,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.3.0",
     "eslint-plugin-quasar": "^1.0.0",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",
     "majestic": "^1.7.0",

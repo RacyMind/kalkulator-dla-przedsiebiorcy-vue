@@ -1,7 +1,7 @@
-import helpers from 'src/logic/helpers'
-import constants from 'src/logic/constants'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {IncomeTaxType} from 'src/types/IncomeTaxType'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 let year = helpers.getDefaultYear()
 

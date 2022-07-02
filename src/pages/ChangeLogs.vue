@@ -37,11 +37,11 @@
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import logs from 'components/changeLogs/logs'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import ChangeLog from 'components/changeLogs/ChangeLog.vue'
 import Advert from 'components/partials/Advert.vue'
+import ChangeLog from 'components/changeLogs/ChangeLog.vue'
 import Footer from 'components/Footer.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import logs from 'components/changeLogs/logs'
 
 export default defineComponent({
   components: {

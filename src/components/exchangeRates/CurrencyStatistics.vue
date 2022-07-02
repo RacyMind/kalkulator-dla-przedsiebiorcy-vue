@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { colors } from 'quasar'
-import constants from 'src/logic/constants'
 import { deepEqual } from 'src/use/deepEqual'
+import { mapGetters } from 'vuex'
 import LineChart from '../LineChart'
+import constants from 'src/logic/constants'
 export default {
   components: {
     LineChart,

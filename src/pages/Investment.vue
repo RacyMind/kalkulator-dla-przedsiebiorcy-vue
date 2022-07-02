@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts">
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/investment/Form.vue'
-import Summary from 'components/investment/Summary.vue'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/investment/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/investment/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default defineComponent({
   components: {

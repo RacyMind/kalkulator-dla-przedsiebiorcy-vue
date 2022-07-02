@@ -50,11 +50,11 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import { pln } from 'src/use/currencyFormat'
-import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import { pln } from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
+import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
 
 export default defineComponent({
   components: {

@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts">
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {computed, defineComponent, ref} from 'vue'
 import validationRules from 'src/logic/validationRules'
-import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default defineComponent({
   setup(props, context) {

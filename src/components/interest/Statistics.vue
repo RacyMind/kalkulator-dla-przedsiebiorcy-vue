@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import {usePieChart} from 'src/use/usePieChart'
 import PieChart from 'components/PieChart.vue'
 import interest from 'components/interest/interest'
-import {usePieChart} from 'src/use/usePieChart'
-import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 
 export default defineComponent({
   components: {

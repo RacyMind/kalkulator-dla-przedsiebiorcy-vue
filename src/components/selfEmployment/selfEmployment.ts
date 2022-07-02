@@ -1,12 +1,12 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import taxes from 'src/logic/taxes'
-import ownerContributions from 'src/logic/ownerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {IncomeTaxType} from 'src/types/IncomeTaxType'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
 import {SelfEmploymentSingleResult} from 'components/selfEmployment/interfaces/SelfEmploymentSingleResult'
 import {SelfEmploymentYearlyResult} from 'components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
+import ownerContributions from 'src/logic/ownerContributions'
+import taxes from 'src/logic/taxes'
 
 let params = {
   bigBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.BIG_AMOUNT,

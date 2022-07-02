@@ -165,11 +165,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, Ref} from 'vue'
-import constants from 'src/logic/constants'
-import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {Ref, computed, defineComponent, ref} from 'vue'
+import constants from 'src/logic/constants'
+import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({

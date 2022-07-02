@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { formatToCurrency } from 'src/use/currencyFormat'
+import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({

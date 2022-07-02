@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {PropType, computed, defineComponent} from 'vue'
+import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import { format } from 'date-fns'
 import { pln } from 'src/use/currencyFormat'
-import vatLimit from 'components/vatLimit/vatLimit'
 import ListRow from 'components/partials/ListRow.vue'
-import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
+import vatLimit from 'components/vatLimit/vatLimit'
 
 export default defineComponent({
   components: {

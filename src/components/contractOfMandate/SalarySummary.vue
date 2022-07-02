@@ -9,11 +9,11 @@
 </template>
 <script lang="ts">
 
-import {computed, defineComponent, PropType} from 'vue'
-import SalarySummaryTable from 'src/components/partials//SalarySummaryTable.vue'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
+import {PropType, computed, defineComponent} from 'vue'
+import SalarySummaryTable from 'src/components/partials//SalarySummaryTable.vue'
 import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
 
 export default defineComponent({
   components: {

@@ -1,9 +1,9 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
-import {AvailableYear} from 'src/types/AvailableYear'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 let params = {
   amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,

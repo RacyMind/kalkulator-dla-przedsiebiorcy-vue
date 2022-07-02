@@ -1,5 +1,5 @@
-import axios from 'axios'
 import {InflationApiResponse} from 'components/inflation/interfaces/InflationApiResponse'
+import axios from 'axios'
 
 export default {
   fetchInflationRates(fromYear:number, mode = '') {

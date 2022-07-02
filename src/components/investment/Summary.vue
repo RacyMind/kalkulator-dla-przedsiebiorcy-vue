@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
+import {PropType, computed, defineComponent} from 'vue'
 import { pln } from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import investment from 'components/investment/investment'
-import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 
 export default defineComponent({
   components: {

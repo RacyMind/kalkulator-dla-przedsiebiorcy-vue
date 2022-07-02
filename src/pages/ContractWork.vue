@@ -41,19 +41,19 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
-import {useStore} from 'vuex'
-import ChooseYear from 'src/components/partials/ChooseYear.vue'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Advert from 'components/partials/Advert.vue'
-import Form from 'components/contractWork/Form.vue'
-import Summary from 'components/contractWork/Summary.vue'
-import Statistics from 'components/contractWork/Statistics.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import constants from 'src/logic/constants'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+import {Ref, defineComponent, ref, watch} from 'vue'
+import {useStore} from 'vuex'
+import Advert from 'components/partials/Advert.vue'
+import ChooseYear from 'src/components/partials/ChooseYear.vue'
+import Footer from 'components/Footer.vue'
+import Form from 'components/contractWork/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/contractWork/Statistics.vue'
+import Summary from 'components/contractWork/Summary.vue'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
   components: {
     Advert,

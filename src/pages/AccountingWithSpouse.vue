@@ -109,17 +109,17 @@
 
 <script>
 import { ref } from 'vue'
-import helpers from 'src/logic/helpers'
-import constants from 'src/logic/constants'
-import ChooseYear from 'src/components/partials/ChooseYear'
-import FormsOfAccounting from 'src/components/partials/FormsOfAccounting'
-import SectionHeader from 'components/partials/SectionHeader'
-import Footer from 'components/Footer'
-import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
-import SelfEmploymentForm from 'src/components/selfEmployment/Form'
-import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
-import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
 import Advert from 'components/partials/Advert'
+import ChooseYear from 'src/components/partials/ChooseYear'
+import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
+import Footer from 'components/Footer'
+import FormsOfAccounting from 'src/components/partials/FormsOfAccounting'
+import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
+import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
+import SectionHeader from 'components/partials/SectionHeader'
+import SelfEmploymentForm from 'src/components/selfEmployment/Form'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 export default {
   components: {
       Advert,

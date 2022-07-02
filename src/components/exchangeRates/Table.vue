@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { format, isPast, isWeekend } from 'date-fns'
+import { mapGetters } from 'vuex'
 import constants from 'src/logic/constants'
 
 export default {

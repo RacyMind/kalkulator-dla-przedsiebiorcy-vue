@@ -23,6 +23,8 @@ module.exports = {
 
   // required to lint *.vue files
   plugins: [
+
+    "sort-imports-es6-autofix",
     "sort-keys-fix",
     'vue',
     '@typescript-eslint',
@@ -90,6 +92,17 @@ module.exports = {
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': "off",
-    "sort-keys-fix/sort-keys-fix": ["warn", "asc", {"natural": true}],
+    "sort-imports-es6-autofix/sort-imports-es6": [2, {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
+    "sort-keys-fix/sort-keys-fix": [
+      "warn",
+      "asc",
+      {
+        "natural": true
+      }
+      ],
   }
 };

@@ -1,8 +1,8 @@
-import { scroll } from 'quasar'
-import constants from 'src/logic/constants'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
+import { scroll } from 'quasar'
+import constants from 'src/logic/constants'
 
 /**
  * Scrolls to the element

@@ -33,16 +33,16 @@
 </template>
 
 <script lang="ts">
+import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
 import Advert from 'components/partials/Advert.vue'
-import Form from 'components/unregisteredCompany/Form.vue'
-import Summary from 'components/unregisteredCompany/Summary.vue'
-import Statistics from 'components/unregisteredCompany/Statistics.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/unregisteredCompany/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/unregisteredCompany/Statistics.vue'
+import Summary from 'components/unregisteredCompany/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 
 export default defineComponent({
   components: {
