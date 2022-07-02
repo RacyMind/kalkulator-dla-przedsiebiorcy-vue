@@ -1,5 +1,5 @@
+import { computed, reactive, toRef, watch } from 'vue'
 import { useStore } from 'vuex'
-import { computed, reactive, watch, toRef } from 'vue'
 import contractOfEmployment from 'src/logic/contractOfEmployment'
 
 function setWatchers (props) {
@@ -25,18 +25,18 @@ export function inputData () {
   const isAidForMiddleClass = computed(() => store.getters['contractOfEmployment/isAidForMiddleClass'])
 
   return {
-    grossAmount,
+    accidentContributionRate,
     employeePPkContributionRate,
+    employerPpkContributionRate,
+    grossAmount,
+    isAidForBigFamily,
+    isAidForMiddleClass,
+    isAidForSenior,
+    isFpContribution,
+    isFreeAmount,
+    isYoung,
     partOfWorkWithAuthorExpenses,
     workInLivePlace,
-    isFreeAmount,
-    isFpContribution,
-    isYoung,
-    employerPpkContributionRate,
-    accidentContributionRate,
-    isAidForBigFamily,
-    isAidForSenior,
-    isAidForMiddleClass,
   }
 }
 
@@ -99,17 +99,17 @@ export function useYearlyEmployeeResult (props) {
   const updateMonthlyInputs = () => {
     for (let i = 0; i < 12; i++) {
       monthlyInputs[i] = {
-        grossAmount: grossAmount.value,
         employeePPkContributionRate: employeePPkContributionRate.value,
+        employerPpkContributionRate: employerPpkContributionRate.value,
+        grossAmount: grossAmount.value,
+        isAidForBigFamily: isAidForBigFamily.value,
+        isAidForMiddleClass: isAidForMiddleClass.value,
+        isAidForSenior: isAidForSenior.value,
+        isFpContribution: isFpContribution.value,
+        isFreeAmount: isFreeAmount.value,
+        isYoung: isYoung.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
         workInLivePlace: workInLivePlace.value,
-        isFreeAmount: isFreeAmount.value,
-        isFpContribution: isFpContribution.value,
-        isYoung: isYoung.value,
-        isAidForBigFamily: isAidForBigFamily.value,
-        isAidForSenior: isAidForSenior.value,
-        isAidForMiddleClass: isAidForMiddleClass.value,
-        employerPpkContributionRate: employerPpkContributionRate.value,
       }
     }
   }
@@ -121,8 +121,8 @@ export function useYearlyEmployeeResult (props) {
   })
 
   return {
-    results,
     monthlyInputs,
+    results,
   }
 }
 
@@ -165,9 +165,9 @@ export function useYearlyEmployerResult (props) {
   const updateMonthlyInputs = () => {
     for (let i = 0; i < 12; i++) {
       monthlyInputs[i] = {
-        grossAmount: grossAmount.value,
         accidentContributionRate: accidentContributionRate.value,
         employerPpkContributionRate: employerPpkContributionRate.value,
+        grossAmount: grossAmount.value,
         isFpContribution: isFpContribution.value,
       }
     }
@@ -180,7 +180,7 @@ export function useYearlyEmployerResult (props) {
   })
 
   return {
-    results,
     monthlyInputs,
+    results,
   }
 }

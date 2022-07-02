@@ -1,7 +1,7 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {InvestmentResult} from 'components/investment/interfaces/InvestmentResult'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 /**
  * Returns the result
@@ -17,8 +17,8 @@ function getResult (input:InvestmentInputFields):InvestmentResult {
   return {
     capital: input.amount,
     grossAmount: grossAmount,
-    taxAmount: taxAmount,
     netAmount: netAMount,
+    taxAmount: taxAmount,
   }
 }
 

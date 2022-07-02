@@ -1,13 +1,13 @@
-import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 let year = helpers.getDefaultYear()
 
 let params = {
-  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
-  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
   fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
   fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
+  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
+  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
 }
 
 /**
@@ -18,10 +18,10 @@ function setYear (newYear) {
   year = newYear
 
   params = {
-    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
     fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
     fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
+    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
   }
 }
 
@@ -88,11 +88,11 @@ function calculatePpkContribution (grossAmount, ppkRate) {
 }
 
 export default {
-  setYear,
-  calculatePensionContribution,
-  calculateDisabilityContribution,
   calculateAccidentContribution,
-  calculatePpkContribution,
+  calculateDisabilityContribution,
   calculateFgspContribution,
   calculateFpContribution,
+  calculatePensionContribution,
+  calculatePpkContribution,
+  setYear,
 }

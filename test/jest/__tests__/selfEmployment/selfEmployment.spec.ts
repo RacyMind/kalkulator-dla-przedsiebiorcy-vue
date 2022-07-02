@@ -1,69 +1,69 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import { describe, expect, it } from '@jest/globals'
-import selfEmployment from '../../../../src/components/selfEmployment/selfEmployment'
-import helpers from '../../../../src/logic/helpers'
 import {SelfEmploymentInputFields} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import {SelfEmploymentYearlyResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
 import {SelfEmploymentSingleResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentSingleResult'
+import {SelfEmploymentYearlyResult} from '../../../../src/components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
+import { describe, expect, it } from '@jest/globals'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import constants from '../../../../src/logic/constants'
+import helpers from '../../../../src/logic/helpers'
+import selfEmployment from '../../../../src/components/selfEmployment/selfEmployment'
 
 installQuasarPlugin()
 
 const defaultInputForGeneral:SelfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
+  accidentContributionRate: 0.0167,
   amount: 7000,
+  customBasisForZus: 0,
   expenses: 0,
   incomeTaxType: constants.TAX_TYPES.GENERAL,
-  taxRateForLumpSum: 0,
-  isFreeAmount: true,
-  isReliefForSenior: false,
-  isReliefForBigFamily: false,
-  isReliefForMiddleClass: false,
-  isReliefForCompanyStart: false,
   isFpContribution: true,
-  isSickContribution: true,
-  accidentContributionRate: 0.0167,
-  isSmallZus: false,
+  isFreeAmount: true,
   isFullTimeJob: false,
-  customBasisForZus: 0,
+  isReliefForBigFamily: false,
+  isReliefForCompanyStart: false,
+  isReliefForMiddleClass: false,
+  isReliefForSenior: false,
+  isSickContribution: true,
+  isSmallZus: false,
+  taxRateForLumpSum: 0,
+  year: helpers.getDefaultYear(),
 }
 
 const defaultInputForLinear:SelfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
+  accidentContributionRate: 0.0167,
   amount: 7000,
+  customBasisForZus: 0,
   expenses: 0,
   incomeTaxType: constants.TAX_TYPES.LINEAR,
-  taxRateForLumpSum: 0,
-  isFreeAmount: true,
-  isReliefForSenior: false,
-  isReliefForBigFamily: false,
-  isReliefForMiddleClass: false,
-  isReliefForCompanyStart: false,
   isFpContribution: true,
-  isSickContribution: true,
-  accidentContributionRate: 0.0167,
-  isSmallZus: false,
+  isFreeAmount: true,
   isFullTimeJob: false,
-  customBasisForZus: 0,
+  isReliefForBigFamily: false,
+  isReliefForCompanyStart: false,
+  isReliefForMiddleClass: false,
+  isReliefForSenior: false,
+  isSickContribution: true,
+  isSmallZus: false,
+  taxRateForLumpSum: 0,
+  year: helpers.getDefaultYear(),
 }
 
 const defaultInputForLLumpSum:SelfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
+  accidentContributionRate: 0.0167,
   amount: 7000,
+  customBasisForZus: 0,
   expenses: 0,
   incomeTaxType: constants.TAX_TYPES.LUMP_SUM,
-  taxRateForLumpSum: 0.15,
-  isFreeAmount: false,
-  isReliefForSenior: false,
-  isReliefForBigFamily: false,
-  isReliefForMiddleClass: false,
-  isReliefForCompanyStart: false,
   isFpContribution: true,
-  isSickContribution: true,
-  accidentContributionRate: 0.0167,
-  isSmallZus: false,
+  isFreeAmount: false,
   isFullTimeJob: false,
-  customBasisForZus: 0,
+  isReliefForBigFamily: false,
+  isReliefForCompanyStart: false,
+  isReliefForMiddleClass: false,
+  isReliefForSenior: false,
+  isSickContribution: true,
+  isSmallZus: false,
+  taxRateForLumpSum: 0.15,
+  year: helpers.getDefaultYear(),
 }
 
 const yearlyInput = (monthlyInput:SelfEmploymentInputFields):SelfEmploymentInputFields[] => {
@@ -257,8 +257,8 @@ describe('selfEmployment - income tax rule: GENERAL', () => {
   it('the yearly calculation, with the relief for company start, for the default year', () => {
     const input:SelfEmploymentInputFields = {
       ...defaultInputForGeneral,
-      isReliefForCompanyStart: true,
       isFpContribution: false,
+      isReliefForCompanyStart: true,
     }
 
     const result = yearlyResult(yearlyInput(input))

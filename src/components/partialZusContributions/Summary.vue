@@ -39,18 +39,21 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import { pln } from 'src/use/currencyFormat'
-import partialZusContributions from 'components/partialZusContributions/partialZusContributions'
-import helpers from 'src/logic/helpers'
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import { pln } from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
+import helpers from 'src/logic/helpers'
+import partialZusContributions from 'components/partialZusContributions/partialZusContributions'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<PartialZusContributionInputFields>,
       required: true,
+      type: Object as PropType<PartialZusContributionInputFields>,
     },
   },
   setup(props) {
@@ -63,9 +66,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

@@ -27,6 +27,7 @@
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "date-fns": "^2.17.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
     "quasar": "^2.0.4",
     "vue3-chart-v2": "^0.8.2",
     "vuex": "^4.0.2"
@@ -44,6 +45,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.3.0",
     "eslint-plugin-quasar": "^1.0.0",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",
     "majestic": "^1.7.0",

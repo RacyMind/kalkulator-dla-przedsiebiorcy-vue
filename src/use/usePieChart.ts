@@ -12,8 +12,8 @@ export function usePieChart(labels: string[], values: number[]) {
 
   return {
     datasets: [{
-      data: values,
       backgroundColor: colors.slice(0, values.length),
+      data: values,
     }],
     labels: labels,
   }

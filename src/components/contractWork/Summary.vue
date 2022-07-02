@@ -26,20 +26,23 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType, watch} from 'vue'
+import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
+import {PropType, computed, defineComponent, watch} from 'vue'
+import { pln } from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
+import ListRow from 'components/partials/ListRow.vue'
 import constants from 'src/logic/constants'
 import contractWork from 'components/contractWork/contractWork'
-import { pln } from 'src/use/currencyFormat'
-import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import {AvailableYear} from 'src/types/AvailableYear'
-import ListRow from 'components/partials/ListRow.vue'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractWorkInputFields>,
       required: true,
+      type: Object as PropType<ContractWorkInputFields>,
     },
   },
   setup (props) {
@@ -54,8 +57,8 @@ export default defineComponent({
           basisForTax: 0,
           expenses:  0,
           grossAmount: 0,
-          taxAmount: 0,
           netAmount: 0,
+          taxAmount: 0,
         }
       }
     })
@@ -77,9 +80,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

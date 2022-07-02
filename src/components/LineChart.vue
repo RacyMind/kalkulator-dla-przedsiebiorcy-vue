@@ -1,25 +1,25 @@
 <script>
+import 'moment/locale/pl'
 import { Line } from 'vue3-chart-v2'
 import Moment from 'moment'
-import 'moment/locale/pl'
 
 export default {
-  extends: Line,
-  props: {
-    chartData: {
-      type: Object,
-      required: true,
-    },
-    chartOptions: {
-      type: Object,
-      required: false,
-    },
-  },
   created () {
     Moment.locale('pl')
   },
+  extends: Line,
   mounted () {
     this.renderChart(this.chartData, this.chartOptions)
+  },
+  props: {
+    chartData: {
+      required: true,
+      type: Object,
+    },
+    chartOptions: {
+      required: false,
+      type: Object,
+    },
   },
   watch: {
     chartData () {

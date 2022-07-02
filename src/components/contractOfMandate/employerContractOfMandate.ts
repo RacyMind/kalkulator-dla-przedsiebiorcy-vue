@@ -1,10 +1,10 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import employerContributions from 'src/logic/employerContributions'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {AvailableYear} from 'src/types/AvailableYear'
+import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {ContractOfMandateEmployerYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import constants from 'src/logic/constants'
+import employerContributions from 'src/logic/employerContributions'
+import helpers from 'src/logic/helpers'
 
 const year = helpers.getDefaultYear()
 
@@ -98,16 +98,16 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
   const totalAmount = helpers.round(input.grossAmount + totalContributions, 2)
 
   return {
-    totalAmount: totalAmount,
+    accidentContribution: accidentContribution,
     basisForRentAndPensionContributions: basisForRentAndPensionContributions,
+    contributionTotal: helpers.round(totalContributions, 2),
+    disabilityContribution: disabilityContribution,
+    fgspContribution: fgspContribution,
+    fpContribution: fpContribution,
     grossAmount: input.grossAmount,
     pensionContribution: pensionContribution,
-    disabilityContribution: disabilityContribution,
-    accidentContribution: accidentContribution,
     ppkContribution: ppkContribution,
-    fpContribution: fpContribution,
-    fgspContribution: fgspContribution,
-    contributionTotal: helpers.round(totalContributions, 2),
+    totalAmount: totalAmount,
   }
 }
 
@@ -129,25 +129,25 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
   })
 
   const yearlyResult = {
-    totalAmount: helpers.round(results.map(result => result.totalAmount)
-      .reduce((current, sum) => current + sum, 0), 2),
-    grossAmount: helpers.round(results.map(result => result.grossAmount)
+    accidentContribution: helpers.round(results.map(result => result.accidentContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     basisForRentAndPensionContributions: helpers.round(results.map(result => result.basisForRentAndPensionContributions)
       .reduce((current, sum) => current + sum, 0), 2),
-    pensionContribution: helpers.round(results.map(result => result.pensionContribution)
+    contributionTotal: helpers.round(results.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0), 2),
     disabilityContribution: helpers.round(results.map(result => result.disabilityContribution)
       .reduce((current, sum) => current + sum, 0), 2),
-    accidentContribution: helpers.round(results.map(result => result.accidentContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+    fgspContribution: helpers.round(results.map(result => result.fgspContribution)
       .reduce((current, sum) => current + sum, 0), 2),
     fpContribution: helpers.round(results.map(result => result.fpContribution)
       .reduce((current, sum) => current + sum, 0), 2),
-    fgspContribution: helpers.round(results.map(result => result.fgspContribution)
+    grossAmount: helpers.round(results.map(result => result.grossAmount)
       .reduce((current, sum) => current + sum, 0), 2),
-    contributionTotal: helpers.round(results.map(result => result.contributionTotal)
+    pensionContribution: helpers.round(results.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    ppkContribution: helpers.round(results.map(result => result.ppkContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    totalAmount: helpers.round(results.map(result => result.totalAmount)
       .reduce((current, sum) => current + sum, 0), 2),
   }
 
@@ -160,6 +160,6 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
 export default {
   getMonthlyResult,
   getYearlyResult,
-  setParams,
   resetTotalAmounts,
+  setParams,
 }

@@ -126,14 +126,14 @@ function getResult (myData, spouseData) {
   const netAmount = calculateNetAmount(grossAmount, taxAmount, myData.contributionTotal + spouseData.contributionTotal)
 
   return {
-    grossAmount,
     basisForTax,
-    taxAmount,
+    grossAmount,
     netAmount,
+    taxAmount,
   }
 }
 
 export default {
-  setYear,
   getResult,
+  setYear,
 }

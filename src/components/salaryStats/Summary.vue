@@ -43,13 +43,13 @@ import {pln} from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   setup() {
     return {
       pln,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

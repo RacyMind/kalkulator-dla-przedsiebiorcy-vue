@@ -108,9 +108,9 @@ export default defineComponent({
       axios.post('https://kalkulatorfinansowy.app/contact.php',
         {
           email: email.value,
+          message: message.value,
           name: name.value,
           subject: subject.value,
-          message: message.value,
         }).then(() => {
           $q.notify({
             color: 'positive',
@@ -131,15 +131,15 @@ export default defineComponent({
     }
 
     return {
-      validationRules,
-      subjects,
-      name,
       email,
-      subject,
-      message,
-      isSending,
       isDisabledButton,
+      isSending,
+      message,
+      name,
       send,
+      subject,
+      subjects,
+      validationRules,
     }
   },
 })

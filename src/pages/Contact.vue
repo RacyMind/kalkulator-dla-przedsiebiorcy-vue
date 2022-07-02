@@ -17,19 +17,19 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/contact/Form.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/contact/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 
 export default defineComponent({
+  components: {
+    Footer,
+    Form,
+    SectionHeader,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Formularz kontaktowy')
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Footer,
   },
 })
 </script>

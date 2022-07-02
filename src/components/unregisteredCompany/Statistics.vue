@@ -9,17 +9,20 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import {usePieChart} from 'src/use/usePieChart'
-import unregisteredCompany from 'components/unregisteredCompany/unregisteredCompany'
-import PieChart from 'components/PieChart.vue'
+import {PropType, computed, defineComponent} from 'vue'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import {usePieChart} from 'src/use/usePieChart'
+import PieChart from 'components/PieChart.vue'
+import unregisteredCompany from 'components/unregisteredCompany/unregisteredCompany'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<UnregisteredCompanyInputFields>,
       required: true,
+      type: Object as PropType<UnregisteredCompanyInputFields>,
     },
   },
   setup(props) {
@@ -42,12 +45,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

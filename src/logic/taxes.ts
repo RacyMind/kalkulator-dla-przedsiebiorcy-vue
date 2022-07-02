@@ -1,15 +1,15 @@
+import {AvailableYear} from 'src/types/AvailableYear'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import {AvailableYear} from 'src/types/AvailableYear'
 
 let year = helpers.getDefaultYear()
 
 let params = {
-  firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-  secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
-  linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-  taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
   amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+  firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+  linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
+  secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
+  taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
 }
 
 /**
@@ -20,11 +20,11 @@ function setParams (newYear:AvailableYear) {
   year = newYear
 
   params = {
-    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
-    linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
+    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
+    linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
+    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
+    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
   }
 }
 /**
@@ -149,8 +149,8 @@ function calculateAidForMiddleClass (grossAmount:number, isYearly = false):numbe
 }
 
 export default {
-  setParams,
-  calculateIncomeTaxUsingLumpSumRules,
-  calculateIncomeTaxUsingLinearRules,
   calculateIncomeTaxUsingGeneralRules,
+  calculateIncomeTaxUsingLinearRules,
+  calculateIncomeTaxUsingLumpSumRules,
+  setParams,
 }

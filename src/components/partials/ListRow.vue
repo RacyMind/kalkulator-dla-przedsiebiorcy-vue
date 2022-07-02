@@ -24,20 +24,20 @@
 <script>
 export default {
   props: {
+    inline: {
+      default: true,
+      type: Boolean,
+    },
     name: {
-      type: String,
       required: true,
+      type: String,
+    },
+    nested: {
+      default: false,
+      type: Boolean,
     },
     value: {
       required: true,
-    },
-    inline: {
-      type: Boolean,
-      default: true,
-    },
-    nested: {
-      type: Boolean,
-      default: false,
     },
   },
 }

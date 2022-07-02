@@ -18,17 +18,20 @@
 </template>
 
 <script lang="ts">
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import {PropType, computed, defineComponent} from 'vue'
 import { pln } from 'src/use/currencyFormat'
-import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
-import invoice from './invoice'
 import ListRow from 'components/partials/ListRow.vue'
+import invoice from './invoice'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<InvoiceInputFields>,
       required: true,
+      type: Object as PropType<InvoiceInputFields>,
     },
   },
   setup(props: any) {
@@ -40,9 +43,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

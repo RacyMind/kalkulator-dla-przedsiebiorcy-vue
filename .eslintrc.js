@@ -22,7 +22,13 @@ module.exports = {
   ],
 
   // required to lint *.vue files
-  plugins: ['vue', '@typescript-eslint'],
+  plugins: [
+
+    "sort-imports-es6-autofix",
+    "sort-keys-fix",
+    'vue',
+    '@typescript-eslint',
+  ],
 
   globals: {
     ga: true, // Google Analytics
@@ -38,8 +44,6 @@ module.exports = {
     'template-curly-spacing': 'off',
     // TODO: Remove when https://github.com/babel/babel-eslint/issues/530 is fixed
     indent: 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'warn',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-unreachable': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'vue/no-unused-components': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
@@ -74,49 +78,8 @@ module.exports = {
       'error',
       'PascalCase',
     ],
-    'prefer-promise-reject-errors': 0,
     'vue/no-v-html': 'off',
     'func-names': 0,
-    'vue/order-in-components': [
-      'error',
-      {
-        order: [
-          'el',
-          'name',
-          'parent',
-          'functional',
-          [
-            'comments',
-            'delimiters',
-          ],
-          'extends',
-          'mixins',
-          'inheritAttrs',
-          'model',
-          [
-            'props',
-            'propsData',
-          ],
-          'asyncData',
-          'data',
-          'head',
-          'LIFECYCLE_HOOKS',
-          'computed',
-          'watch',
-          'methods',
-          [
-            'components',
-            'directives',
-            'filters',
-          ],
-          [
-            'render',
-            'template',
-          ],
-          'renderError',
-        ],
-      },
-    ],
     'prefer-promise-reject-errors': 'off',
 
     // allow console.log during development only
@@ -129,5 +92,17 @@ module.exports = {
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': "off",
+    "sort-imports-es6-autofix/sort-imports-es6": [2, {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
+    "sort-keys-fix/sort-keys-fix": [
+      "warn",
+      "asc",
+      {
+        "natural": true
+      }
+      ],
   }
 };

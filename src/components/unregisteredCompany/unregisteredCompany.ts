@@ -1,7 +1,7 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
 import { UnregisteredCompanyInputFields } from './interfaces/UnregisteredCompanyInputFields'
 import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 const taxRate = constants.TAX_RATES.FIRST_RATE / 100
 
@@ -17,11 +17,11 @@ function getResult (input:UnregisteredCompanyInputFields):UnregisteredCompanyRes
   const netAmount = input.incomeAmount - taxAmount
 
   return {
-    netIncomeAmount: netAmount,
-    grossIncomeAmount: input.incomeAmount,
     basicTaxAmount: basisForTax,
-    taxAmount: taxAmount,
     expenses: input.expenses,
+    grossIncomeAmount: input.incomeAmount,
+    netIncomeAmount: netAmount,
+    taxAmount: taxAmount,
   }
 }
 

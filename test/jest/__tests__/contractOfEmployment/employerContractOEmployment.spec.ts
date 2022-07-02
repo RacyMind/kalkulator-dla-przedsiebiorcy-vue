@@ -1,27 +1,27 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import { describe, expect, it } from '@jest/globals'
-import employerContractOfEmployment from '../../../../src/components/contractOfEmployment/employerContractOfEmployment'
-import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
-import helpers from '../../../../src/logic/helpers'
-import {ContractOfEmploymentEmployerYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
 import {ContractOfEmploymentEmployerSingleResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerSingleResult'
+import {ContractOfEmploymentEmployerYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
+import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import { describe, expect, it } from '@jest/globals'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
+import employerContractOfEmployment from '../../../../src/components/contractOfEmployment/employerContractOfEmployment'
+import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 
 const defaultInput:ContractOfEmploymentInputFields = {
-  year: helpers.getDefaultYear(),
-  grossAmount: 4000,
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
-  workInLivePlace: true,
+  grossAmount: 4000,
+  isFpContribution: true,
   isFreeAmount: true,
-  isReliefForYoung: false,
-  isReliefForSenior: false,
   isReliefForBigFamily: false,
   isReliefForMiddleClass: true,
-  isFpContribution: true,
+  isReliefForSenior: false,
+  isReliefForYoung: false,
   partOfWorkWithAuthorExpenses: 0,
+  workInLivePlace: true,
+  year: helpers.getDefaultYear(),
 }
 
 const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmploymentInputFields[] => {

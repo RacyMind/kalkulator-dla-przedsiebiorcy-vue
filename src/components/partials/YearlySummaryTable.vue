@@ -136,18 +136,18 @@ const monthLabels = [
 
 export default defineComponent({
   props: {
-    rows: {
-      type: Array,
-      required: true,
-    },
     columns: {
-      type: Array,
       required: true,
+      type: Array,
+    },
+    rows: {
+      required: true,
+      type: Array,
     },
     title: {
-      type: String,
-      required: false,
       default: '',
+      required: false,
+      type: String,
     },
   },
   setup (props, context) {
@@ -172,8 +172,8 @@ export default defineComponent({
 
     return {
       constants,
-      monthLabels,
       editableRows,
+      monthLabels,
     }
   },
 

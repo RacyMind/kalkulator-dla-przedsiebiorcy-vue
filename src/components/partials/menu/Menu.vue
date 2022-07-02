@@ -98,16 +98,19 @@
 </template>
 
 <script lang="ts">
-import {computed, ref} from 'vue'
 import {MenuItem} from 'components/partials/menu/interfaces/MenuItem'
+import {computed, ref} from 'vue'
 import Item from './Item.vue'
 import menuItems from 'components/partials/menu/menuItems'
 export default {
+  components: {
+    Item,
+  },
   props: {
     hideSearchInput: {
-      type: Boolean,
-      required: false,
       default: true,
+      required: false,
+      type: Boolean,
     },
   },
   setup () {
@@ -139,9 +142,6 @@ export default {
       typedText,
       visibleMenuItems,
     }
-  },
-  components: {
-    Item,
   },
 }
 </script>

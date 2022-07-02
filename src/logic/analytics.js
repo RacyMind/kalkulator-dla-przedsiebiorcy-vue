@@ -1,29 +1,6 @@
 import { uid } from 'quasar'
 
 export default {
-  logEvent (category, action, label, value = null) {
-    if(!process.env.DEV) {
-      window.dataLayer.push({
-        event: 'customEvent',
-        category: category,
-        action: action,
-        label: label,
-        value: value,
-        cid: this.getCid(),
-      })
-    }
-  },
-
-  logPage (path) {
-    if(!process.env.DEV) {
-      window.dataLayer.push({
-        event: 'customPageView',
-        path: path,
-        cid: this.getCid(),
-      })
-    }
-  },
-
   getCid () {
     // We need an unique identifier for this session
     // We store it in a localStorage, but you may use cookies, too
@@ -31,6 +8,29 @@ export default {
       localStorage.cid = uid()
     }
     return localStorage.cid
+  },
+
+  logEvent (category, action, label, value = null) {
+    if(!process.env.DEV) {
+      window.dataLayer.push({
+        action: action,
+        category: category,
+        cid: this.getCid(),
+        event: 'customEvent',
+        label: label,
+        value: value,
+      })
+    }
+  },
+
+  logPage (path) {
+    if(!process.env.DEV) {
+      window.dataLayer.push({
+        cid: this.getCid(),
+        event: 'customPageView',
+        path: path,
+      })
+    }
   },
 
 }

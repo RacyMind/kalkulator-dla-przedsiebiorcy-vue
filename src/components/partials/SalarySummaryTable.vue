@@ -47,11 +47,11 @@
 import { pln } from 'src/use/currencyFormat'
 
 export default {
+  props: ['netAmount', 'totalZusContributions', 'totalPpkContributions', 'taxAmount', 'totalAmount'],
   setup () {
     return {
       pln,
     }
   },
-  props: ['netAmount', 'totalZusContributions', 'totalPpkContributions', 'taxAmount', 'totalAmount'],
 }
 </script>

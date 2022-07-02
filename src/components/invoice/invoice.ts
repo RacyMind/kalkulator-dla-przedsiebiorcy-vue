@@ -1,7 +1,7 @@
+import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
+import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
-import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 
 /**
  * Calculates the net amount
@@ -61,9 +61,9 @@ function getResult (input:InvoiceInputFields):InvoiceResult {
   }
 
   return {
+    grossAmount: grossAmount,
     netAmount: netAmount,
     taxAmount: taxAmount,
-    grossAmount: grossAmount,
   }
 }
 

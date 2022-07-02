@@ -26,17 +26,24 @@
 </template>
 
 <script lang="ts">
-import {useStore} from 'vuex'
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 import {defineComponent, ref} from 'vue'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/cashRegisterLimit/Form.vue'
-import Summary from 'components/cashRegisterLimit/Summary.vue'
+import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/Footer.vue'
+import Form from 'components/cashRegisterLimit/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/cashRegisterLimit/Summary.vue'
 import helpers from 'src/logic/helpers'
-import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
     const store = useStore()
     store.commit('app/setModuleTitle', 'Limit obrotu dla kasy fiskalnej')
@@ -54,16 +61,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    Summary,
-    SectionHeader,
-    Form,
-    Advert,
-    Footer,
   },
 })
 </script>

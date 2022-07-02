@@ -34,34 +34,37 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, watch} from 'vue'
-import constants from 'src/logic/constants'
-import LineChart from '../LineChart.vue'
-import inflation from './inflation'
-import {useLineChart} from 'src/use/useLineChart'
 import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
+import {computed, defineComponent, ref, watch} from 'vue'
+import {useLineChart} from 'src/use/useLineChart'
+import LineChart from '../LineChart.vue'
+import constants from 'src/logic/constants'
+import inflation from './inflation'
 
 const chartOptions = {
   legend: {
     display: false,
   },
   scales: {
-    yAxes: [{
+    xAxes: [{
+      time: {
+        unit: 'quarter',
+      },
+      type: 'time',
+    }],
+      yAxes: [{
       scaleLabel: {
         display: true,
         labelString: 'Inflacja w %',
-      },
-    }],
-      xAxes: [{
-      type: 'time',
-      time: {
-        unit: 'quarter',
       },
     }],
   },
 }
 
 export default defineComponent({
+  components: {
+    LineChart,
+  },
   setup () {
     const currentYear = new Date().getFullYear()
     const availableYears = [
@@ -114,17 +117,14 @@ export default defineComponent({
     })
 
     return {
-      chartOptions,
-      year,
       availableYears,
       chartData,
+      chartOptions,
       labels,
-      values,
       loading,
+      values,
+      year,
     }
-  },
-  components: {
-    LineChart,
   },
 })
 </script>

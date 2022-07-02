@@ -9,17 +9,20 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import {usePieChart} from 'src/use/usePieChart'
 import PieChart from 'components/PieChart.vue'
 import partialZusContributions from 'components/partialZusContributions/partialZusContributions'
-import {usePieChart} from 'src/use/usePieChart'
-import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 
 export default defineComponent({
+  components: {
+    PieChart,
+  },
   props: {
     input: {
-      type: Object as PropType<PartialZusContributionInputFields>,
       required: true,
+      type: Object as PropType<PartialZusContributionInputFields>,
     },
   },
   setup(props) {
@@ -48,12 +51,9 @@ export default defineComponent({
     )
 
     return {
-      result,
       chartData,
+      result,
     }
-  },
-  components: {
-    PieChart,
   },
 })
 </script>

@@ -1,5 +1,5 @@
-import axios from 'axios'
 import {InflationApiResponse} from 'components/inflation/interfaces/InflationApiResponse'
+import axios from 'axios'
 
 export default {
   fetchInflationRates(fromYear:number, mode = '') {
@@ -9,9 +9,9 @@ export default {
       })
       return data.map((data:InflationApiResponse) => {
         return {
-          year: data.rok,
           month: data.miesiac,
           value: parseFloat(data.wartosc),
+          year: data.rok,
         }
       })
     })

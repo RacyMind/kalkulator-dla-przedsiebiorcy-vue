@@ -16,20 +16,20 @@
 </template>
 
 <script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Table from 'components/exchangeRates/Table'
 import Advert from 'components/partials/Advert'
 import Footer from 'components/Footer'
+import SectionHeader from 'components/partials/SectionHeader'
+import Table from 'components/exchangeRates/Table'
 
 export default {
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Kursy walut')
-  },
   components: {
-    SectionHeader,
-    Table,
     Advert,
     Footer,
+    SectionHeader,
+    Table,
+  },
+  created () {
+    this.$store.commit('app/setModuleTitle', 'Kursy walut')
   },
 }
 </script>

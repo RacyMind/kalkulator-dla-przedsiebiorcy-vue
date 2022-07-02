@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref} from 'vue'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import {computed, defineComponent, ref} from 'vue'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
@@ -58,18 +58,18 @@ export default defineComponent({
 
     const save = () => {
       const input: UnregisteredCompanyInputFields = {
-        incomeAmount: Number(amount.value),
         expenses: Number(expenses.value),
+        incomeAmount: Number(amount.value),
       }
       context.emit('save', input)
     }
 
     return{
-      validationRules,
       amount,
       expenses,
       isDisabledButton,
       save,
+      validationRules,
     }
   },
 })

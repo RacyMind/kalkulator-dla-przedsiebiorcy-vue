@@ -63,20 +63,23 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import { pln } from 'src/use/currencyFormat'
-import ListRow from 'src/components/partials/ListRow.vue'
-import selfEmployment from 'components/selfEmployment/selfEmployment'
+import {PropType, computed, defineComponent, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
+import { pln } from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
+import ListRow from 'src/components/partials/ListRow.vue'
+import constants from 'src/logic/constants'
+import selfEmployment from 'components/selfEmployment/selfEmployment'
 
 export default defineComponent({
 
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<SelfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<SelfEmploymentInputFields>,
     },
   },
   setup(props) {
@@ -99,9 +102,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

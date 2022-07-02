@@ -24,14 +24,21 @@
 </template>
 
 <script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/exchangeRates/Form'
-import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Advert from 'components/partials/Advert'
+import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
 import Footer from 'components/Footer'
+import Form from 'components/exchangeRates/Form'
+import SectionHeader from 'components/partials/SectionHeader'
 import helpers from 'src/logic/helpers'
 
 export default {
+  components: {
+    Advert,
+    CurrencyStatistics,
+    Footer,
+    Form,
+    SectionHeader,
+  },
   created () {
     this.$store.commit('exchangeRates/setCurrency', null)
     this.$store.commit('app/setModuleTitle', this.$route.params.currency.toUpperCase())
@@ -40,13 +47,6 @@ export default {
     scrollTo () {
       helpers.scrollToElement(this.$refs.scrollTarget.$el)
     },
-  },
-  components: {
-    SectionHeader,
-    Form,
-    CurrencyStatistics,
-    Advert,
-    Footer,
   },
 }
 </script>

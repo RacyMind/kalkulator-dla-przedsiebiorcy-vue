@@ -86,26 +86,6 @@ import { ref } from 'vue'
 import constants from 'src/logic/constants'
 
 export default {
-  setup () {
-    return {
-      constants,
-      isFuture,
-      startDate: ref(null),
-      endDate: ref(null),
-      onlyPast (date) {
-        return date <= format(new Date(), 'y/MM/dd')
-      },
-    }
-  },
-  created () {
-    const now = new Date()
-    const monthAgo = subMonths(now, 1)
-
-    this.startDate = format(monthAgo, 'Y/MM/dd')
-    this.endDate = format(now, 'Y/MM/dd')
-
-    this.save()
-  },
   computed: {
     isDisabledButton () {
       if (!this.startDate || !this.endDate) {
@@ -120,6 +100,15 @@ export default {
       return false
     },
   },
+  created () {
+    const now = new Date()
+    const monthAgo = subMonths(now, 1)
+
+    this.startDate = format(monthAgo, 'Y/MM/dd')
+    this.endDate = format(now, 'Y/MM/dd')
+
+    this.save()
+  },
   methods: {
     save () {
       const startDate = format(new Date(this.startDate), 'Y-MM-dd')
@@ -129,8 +118,8 @@ export default {
 
       this.$store.dispatch('exchangeRates/loadExchangeRateCurrency', {
         code: this.$route.params.currency,
-        startDate,
         endDate,
+        startDate,
       }).then(response => {
         this.$store.commit('exchangeRates/setCurrency', response.data)
         this.$q.notify({
@@ -149,6 +138,17 @@ export default {
         this.$store.commit('exchangeRates/setLoading', false)
       })
     },
+  },
+  setup () {
+    return {
+      constants,
+      endDate: ref(null),
+      isFuture,
+      onlyPast (date) {
+        return date <= format(new Date(), 'y/MM/dd')
+      },
+      startDate: ref(null),
+    }
   },
 }
 </script>

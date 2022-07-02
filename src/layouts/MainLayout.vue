@@ -63,25 +63,25 @@
 </template>
 
 <script>
-import SupportProject from 'components/SupportProject'
-import Menu from 'components/partials/menu/Menu'
 import { mapGetters } from 'vuex'
+import Menu from 'components/partials/menu/Menu'
+import SupportProject from 'components/SupportProject'
 
 export default {
-  data () {
-    return {
-      openModal: false,
-      leftDrawerOpen: false,
-    }
+  components: {
+    Menu,
+    SupportProject,
   },
   computed: {
     ...mapGetters({
       moduleTitle: 'app/moduleTitle',
     }),
   },
-  components: {
-    SupportProject,
-    Menu,
+  data () {
+    return {
+      leftDrawerOpen: false,
+      openModal: false,
+    }
   },
 }
 </script>
