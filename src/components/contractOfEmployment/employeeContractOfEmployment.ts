@@ -213,7 +213,7 @@ function getMonthlyResult (input:ContractOfEmploymentInputFields, month = 0):Con
   }
 
   if (amountToCalculateTax > 0) {
-    taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, input.isFreeAmount, totalBasisForTax, input.isReliefForMiddleClass)
+    taxAmount = taxes.calculateIncomeTaxUsingGeneralRules(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, input.isFreeAmount, totalBasisForTax)
   }
 
   const totalContributions = employeeContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution)

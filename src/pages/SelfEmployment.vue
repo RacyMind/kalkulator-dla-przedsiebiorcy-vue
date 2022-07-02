@@ -83,7 +83,6 @@ export default defineComponent({
       isFreeAmount: true,
       isReliefForSenior: false,
       isReliefForBigFamily: false,
-      isReliefForMiddleClass: false,
       isReliefForCompanyStart: false,
       isFpContribution: false,
       isSickContribution: false,

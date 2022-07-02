@@ -1,5 +1,10 @@
 export default [
   {
+    version: '4.7.0',
+    publish_date: '2022-06-25',
+    content: '<ul><li>Dostosowanie kalkulatora do zmian w Polskim Ładzie:<ul><li>pierwsza stawka podatku PIT wynosi 12%,</li><li>odliczenie połowy składki zdrowotnej dla ryczałtu,</li><li>odliczenie cześći składki zdrowotnej dla podatku liniowego - do limitu 8700 zł,<li>likwidacja ulgi dla klasy średniej.</li></ul></li></ul>',
+  },
+  {
     version: '4.6.0',
     publish_date: '2022-05-12',
     content: '<ul><li>Dodanie modułu Siła nabywcza pieniądza.</li></ul>',

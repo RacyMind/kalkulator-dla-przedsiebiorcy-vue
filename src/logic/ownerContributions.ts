@@ -16,6 +16,7 @@ let params = {
   basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
   minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
   averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
+  limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
 }
 
 /**
@@ -36,6 +37,7 @@ function setParams (newYear:AvailableYear) {
     basisForHealthContribution: constants.PARAMS[year].ZUS.OWNER.BASIS_AMOUNT_FOR_HEALTH,
     minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
     averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
+    limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
   }
 }
 
@@ -162,7 +164,27 @@ function calculateGrossAmountMinusContributions (
  *
  * @returns {number}
  */
-function calculateAmountOfDeductionOfHealthContributionFromTax ():number {
+function calculateAmountOfDeductionOfHealthContributionFromTax (healthContribution:number, taxType:IncomeTaxType, totalAmountOfDeductionOfHealthContributionFromTax:number):number {
+  if(year >= 2022) {
+    switch (taxType) {
+      case constants.TAX_TYPES.LINEAR:
+        if(totalAmountOfDeductionOfHealthContributionFromTax >= params.limitOfDeductionHealthContribution) {
+          return 0
+        }
+
+        let amountOfDeductionOfHealthContributionFromTax = healthContribution
+        const newTotalAmountOfDeductionOfHealthContributionFromTax = totalAmountOfDeductionOfHealthContributionFromTax + healthContribution
+
+        if(newTotalAmountOfDeductionOfHealthContributionFromTax > params.limitOfDeductionHealthContribution) {
+          amountOfDeductionOfHealthContributionFromTax = healthContribution + params.limitOfDeductionHealthContribution - newTotalAmountOfDeductionOfHealthContributionFromTax
+        }
+
+        return helpers.round(amountOfDeductionOfHealthContributionFromTax, 2)
+      case constants.TAX_TYPES.LUMP_SUM:
+        return helpers.round(healthContribution * 0.5, 2)
+    }
+
+  }
   const healthRate = params.healthContributionRateForTaxOffice / 100
   return helpers.round(params.basisForHealthContribution * healthRate, 2)
 }

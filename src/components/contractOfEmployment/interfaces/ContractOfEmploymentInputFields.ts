@@ -8,7 +8,6 @@ export interface ContractOfEmploymentInputFields {
   isReliefForYoung: boolean,
   isReliefForBigFamily: boolean,
   isReliefForSenior: boolean,
-  isReliefForMiddleClass: boolean,
   partOfWorkWithAuthorExpenses: number,
   isFpContribution: boolean,
   accidentContributionRate: number,
