@@ -1,9 +1,9 @@
 <template>
-  <q-form @submit.prevent="calculate">
+  <q-form @submit.prevent="save">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
-          v-model="daysOfRunningBusiness"
+          v-model.number="daysOfRunningBusiness"
           type="number"
           min="1"
           max="31"
@@ -11,11 +11,12 @@
           label="Ilość dni prowadzenia działalności*"
           autofocus
           color="brand"
-          required
+          :rules="[validationRules.required]"
+          lazy-rules
         />
         <q-select
-          v-model="daysInMonth"
-          :options="days"
+          v-model.number="daysInMonth"
+          :options="availableDays"
           label="Ilość dni w miesiącu*"
           color="brand"
           required
@@ -29,13 +30,13 @@
             label="Mały ZUS"
           />
           <q-toggle
-            v-model="isFp"
+            v-model="isFpContribution"
             :disable="isSmallZus"
             class="q-mt-sm"
             label="Składka na Fundusz Pracy"
           />
           <q-toggle
-            v-model="isSick"
+            v-model="isSickContribution"
             class="q-mt-sm"
             label="Składka chorobowa"
           />
@@ -58,14 +59,15 @@
           required
         />
         <q-input
-          v-model="accidentRate"
+          v-model.number="accidentContributionRate"
           type="number"
           class="full-width"
           min="0"
           step="0.01"
           label="Składka wypadkowa (%)*"
           color="brand"
-          required
+          :rules="[validationRules.required]"
+          lazy-rules
         />
       </div>
     </div>
@@ -84,100 +86,84 @@
   </q-form>
 </template>
 
-<script>
-import SelfEmploymentOLD from 'src/logic/SelfEmploymentOLD'
-import getDaysInMonth from 'date-fns/getDaysInMonth'
+<script lang="ts">
+import {computed, defineComponent, Ref, ref, watch} from 'vue'
+import constants from 'src/logic/constants'
+import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import validationRules from 'src/logic/validationRules'
+import helpers from 'src/logic/helpers'
+import {getDaysInMonth} from 'date-fns'
 
-export default {
-  data () {
-    return {
-      selfEmployment: null,
-      accidentRate: 0,
-      isSmallZus: false,
-      isSick: false,
-      isFp: true,
-      isCustomBasisForZus: false,
-      customBasisForZus: null,
-      daysOfRunningBusiness: null,
-      daysInMonth: null,
-      days: [28, 29, 30, 31],
-    }
-  },
-  emits: ['scroll'],
-  created () {
-    this.accidentRate = this.$constants.ACCIDENT_RATE
-    this.customBasisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
-    this.daysInMonth = getDaysInMonth(new Date())
+const availableDays = [28, 29, 30, 31]
 
-    this.$store.commit('partialZusContributions/CLEAR_DATA')
+export default defineComponent({
+  props: {
+    year: Number,
   },
-  computed: {
-    isDisabledButton () {
-      if (!this.daysOfRunningBusiness || !this.daysInMonth) {
+  setup(props, context) {
+    const year = helpers.getDefaultYear()
+
+    const accidentContributionRate = ref(constants.PARAMS[year].ACCIDENT_RATE)
+    const customBasisForZus = ref(constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT)
+    const daysInMonth = ref(getDaysInMonth(new Date()))
+    const daysOfRunningBusiness: Ref<number | null> = ref(null)
+    const isCustomBasisForZus = ref(false)
+    const isFpContribution = ref(false)
+    const isSickContribution = ref(false)
+    const isSmallZus = ref(false)
+
+    const isDisabledButton = computed(() => {
+      if (!daysOfRunningBusiness.value || !daysInMonth.value) {
         return true
       }
-      if (this.accidentRate.length === 0) {
-        return true
-      }
-      if (this.isCustomBasisForZus && this.customBasisForZus.length === 0) {
-        return true
-      }
-      if (this.daysOfRunningBusiness > this.daysInMonth) {
+      if (daysOfRunningBusiness.value &&
+        daysInMonth.value &&
+        daysOfRunningBusiness.value > daysInMonth.value) {
         return true
       }
       return false
-    },
+    })
+
+    watch(isSmallZus, () => {
+      if (isSmallZus.value) {
+        isFpContribution.value = false
+        isCustomBasisForZus.value = false
+      }
+    })
+
+    const save = () => {
+      const input: PartialZusContributionInputFields = {
+        daysInMonth: Number(daysInMonth.value),
+        daysOfRunningBusiness: Number(daysOfRunningBusiness.value),
+        isFpContribution: isFpContribution.value,
+        isSickContribution: isSickContribution.value,
+        isSmallZus: isSmallZus.value,
+        accidentContributionRate: accidentContributionRate.value / 100,
+        customBasisForZus: Number(customBasisForZus.value),
+      }
+
+      if (!isCustomBasisForZus.value) {
+        input.customBasisForZus = 0
+      }
+
+      context.emit('save', input)
+    }
+
+    return {
+      availableDays,
+      constants,
+      validationRules,
+      daysInMonth,
+      daysOfRunningBusiness,
+      accidentContributionRate,
+      isFpContribution,
+      isSickContribution,
+      isSmallZus,
+      isCustomBasisForZus,
+      customBasisForZus,
+      isDisabledButton,
+      save,
+    }
   },
-  watch: {
-    isSmallZus: function (val) {
-      if (val) {
-        this.isFp = false
-        this.isCustomBasisForZus = false
-      }
-    },
-  },
-  methods: {
-    calculate () {
-      this.selfEmployment = new SelfEmploymentOLD()
-      this.selfEmployment.zusAccidentRate = Number(this.accidentRate) / 100
-
-      if (this.isSmallZus) {
-        this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.SMALL_AMOUNT
-      } else {
-        this.selfEmployment.basisForZus = this.$constants.ZUS.OWNER.BIG_AMOUNT
-      }
-
-      if (this.isCustomBasisForZus) {
-        this.selfEmployment.basisForZus = Number(this.customBasisForZus)
-      }
-
-      this.selfEmployment.basisForZus /= this.daysInMonth
-      this.selfEmployment.basisForZus *= this.daysOfRunningBusiness
-      this.selfEmployment.basisForZus = parseFloat(this.selfEmployment.basisForZus.toFixed(2))
-
-      this.calculateAmount()
-
-      this.$store.commit('partialZusContributions/SET_BASIS_FOR_ZUS', this.selfEmployment.basisForZus)
-      this.$store.commit('partialZusContributions/SET_ZUS', this.selfEmployment.zus)
-
-      this.$emit('scroll')
-    },
-    calculateAmount () {
-        this.selfEmployment.calculateZUSAccident()
-        this.selfEmployment.calculateZUSPension()
-        this.selfEmployment.calculateZUSRent()
-
-      if (this.isSick) {
-        this.selfEmployment.calculateZUSSick()
-      }
-
-      if (this.isFp) {
-        this.selfEmployment.calculateZUSFP()
-      }
-
-      this.selfEmployment.calculateZUSHealth()
-      this.selfEmployment.calculateUSHealth()
-    },
-  },
-}
+})
 </script>
