@@ -65,7 +65,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Menu from 'components/partials/menu/Menu'
-import SupportProject from 'components/SupportProject'
+import SupportProject from 'components/partials/SupportProject'
 
 export default {
   components: {

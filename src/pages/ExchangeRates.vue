@@ -17,7 +17,7 @@
 
 <script>
 import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+import Footer from 'components/partials/Footer'
 import SectionHeader from 'components/partials/SectionHeader'
 import Table from 'components/exchangeRates/Table'
 

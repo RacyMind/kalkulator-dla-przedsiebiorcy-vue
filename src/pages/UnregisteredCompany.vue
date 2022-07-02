@@ -37,7 +37,7 @@ import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/int
 import {defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'components/unregisteredCompany/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/unregisteredCompany/Statistics.vue'

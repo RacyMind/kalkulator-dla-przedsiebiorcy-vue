@@ -12,7 +12,7 @@
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 import {PropType, computed, defineComponent} from 'vue'
 import {usePieChart} from 'src/use/usePieChart'
-import PieChart from 'components/PieChart.vue'
+import PieChart from 'components/partials/PieChart.vue'
 import partialZusContributions from 'components/partialZusContributions/partialZusContributions'
 
 export default defineComponent({

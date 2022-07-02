@@ -25,7 +25,7 @@
 
 <script>
 import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+import Footer from 'components/partials/Footer'
 import Form from 'components/currencyConverter/Form'
 import SectionHeader from 'components/partials/SectionHeader'
 import Table from 'components/currencyConverter/Table'

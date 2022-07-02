@@ -17,7 +17,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useStore} from 'vuex'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'components/contact/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 

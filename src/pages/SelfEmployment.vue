@@ -57,7 +57,7 @@ import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/Se
 import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'components/selfEmployment/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/selfEmployment/Statistics.vue'

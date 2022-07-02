@@ -28,17 +28,21 @@
   </div>
 </template>
 
-<script>
-import SupportProject from 'components/SupportProject'
-export default {
+<script lang="ts">
+import {defineComponent, ref} from 'vue'
+import SupportProject from 'components/partials/SupportProject.vue'
+export default defineComponent({
   components: {
     SupportProject,
   },
-  data () {
+  setup() {
+    const openModal = ref(false)
+    const year = ref(new Date().getFullYear())
+
     return {
-      openModal: false,
-      year: new Date().getFullYear(),
+      openModal,
+      year,
     }
   },
-}
+})
 </script>

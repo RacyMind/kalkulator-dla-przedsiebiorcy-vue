@@ -26,7 +26,7 @@
 <script>
 import Advert from 'components/partials/Advert'
 import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
-import Footer from 'components/Footer'
+import Footer from 'components/partials/Footer'
 import Form from 'components/exchangeRates/Form'
 import SectionHeader from 'components/partials/SectionHeader'
 import helpers from 'src/logic/helpers'
