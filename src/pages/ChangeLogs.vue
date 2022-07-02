@@ -39,7 +39,7 @@ import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
 import ChangeLog from 'components/changeLogs/ChangeLog.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import logs from 'components/changeLogs/logs'
 

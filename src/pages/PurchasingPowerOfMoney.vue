@@ -19,7 +19,7 @@
 import {defineComponent} from 'vue'
 import {useStore} from 'vuex'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import PurchasingPowerOfMoneyStatistics from 'components/inflation/PurchasingPowerOfMoneyStatistics.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 

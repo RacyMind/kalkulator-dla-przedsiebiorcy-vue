@@ -14,7 +14,7 @@
 import { colors } from 'quasar'
 import { deepEqual } from 'src/use/deepEqual'
 import { mapGetters } from 'vuex'
-import LineChart from '../LineChart'
+import LineChart from 'components/partials/LineChart'
 import constants from 'src/logic/constants'
 export default {
   components: {

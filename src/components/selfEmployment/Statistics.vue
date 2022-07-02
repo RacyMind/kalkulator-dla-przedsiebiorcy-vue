@@ -12,7 +12,7 @@
 import {PropType, computed, defineComponent} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
 import {usePieChart} from 'src/use/usePieChart'
-import PieChart from 'components/PieChart.vue'
+import PieChart from 'components/partials/PieChart.vue'
 import selfEmployment from 'components/selfEmployment/selfEmployment'
 
 export default defineComponent({

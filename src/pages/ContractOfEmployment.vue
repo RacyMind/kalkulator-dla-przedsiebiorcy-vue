@@ -93,7 +93,7 @@ import EmployeeStatistics from 'components/contractOfEmployment/EmployeeStatisti
 import EmployeeSummary from 'components/contractOfEmployment/EmployeeSummary.vue'
 import EmployerStatistics from 'components/contractOfEmployment/EmployerStatistics.vue'
 import EmployerSummary from 'components/contractOfEmployment/EmployerSummary.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'components/contractOfEmployment/Form.vue'
 import SalarySummary from 'components/contractOfEmployment/SalarySummary.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'

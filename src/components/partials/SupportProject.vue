@@ -61,20 +61,18 @@
   </q-card>
 </template>
 
-<script>
-import ga from '../logic/analytics'
-export default {
-  created () {
+<script lang="ts">
+import {defineComponent} from 'vue'
+import ga from '../../logic/analytics'
+
+export default defineComponent({
+  setup() {
+    const url = 'https://kalkulatorfinansowy.app'
     ga.logEvent('Modal', 'Open', 'Wsparcie')
-  },
-  data () {
+
     return {
-      url: 'https://kalkulatorfinansowy.app',
+      url,
     }
   },
-}
+})
 </script>
-
-<style scoped>
-
-</style>

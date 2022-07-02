@@ -37,7 +37,7 @@ import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInp
 import {defineComponent, ref} from 'vue'
 import { useStore } from 'vuex'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'src/components/invoice/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/invoice/Statistics.vue'
