@@ -28,7 +28,7 @@
 <script lang="ts">
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/investment/Form.vue'
@@ -45,8 +45,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Lokata')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Lokata'
 
     const inputFields = ref(<InvestmentInputFields>{
       amount: 0,

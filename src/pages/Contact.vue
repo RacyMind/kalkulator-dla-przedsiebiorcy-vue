@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/contact/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
@@ -28,8 +28,8 @@ export default defineComponent({
     SectionHeader,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Formularz kontaktowy')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Formularz kontaktowy'
   },
 })
 </script>

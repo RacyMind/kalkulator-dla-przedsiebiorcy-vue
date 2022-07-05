@@ -31,7 +31,7 @@
 <script lang="ts">
 import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
 import {Ref, defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/partialZusContributions/Form.vue'
@@ -49,8 +49,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Składki ZUS za część miesiąca')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Składki ZUS za część miesiąca'
 
     const year = ref(helpers.getDefaultYear())
     const openModal = ref(false)

@@ -13,17 +13,14 @@
 <script>
 import { colors } from 'quasar'
 import { deepEqual } from 'src/use/deepEqual'
-import { mapGetters } from 'vuex'
-import LineChart from 'components/partials/LineChart'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import LineChart from 'components/partials/LineChart.vue'
 import constants from 'src/logic/constants'
 export default {
   components: {
     LineChart,
   },
   computed: {
-    ...mapGetters({
-      currency: 'exchangeRates/currency',
-    }),
     chartData () {
       return {
         datasets: [{
@@ -34,6 +31,10 @@ export default {
         }],
         labels: this.dates,
       }
+    },
+    currency() {
+      const currencyRateStore = useCurrencyRateStore()
+      return currencyRateStore.currencyRate
     },
     dates () {
       return this.currency.rates.map(rate => rate.effectiveDate)

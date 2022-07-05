@@ -28,7 +28,7 @@
 <script lang="ts">
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/cashRegisterLimit/Form.vue'
@@ -45,8 +45,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Limit obrotu dla kasy fiskalnej')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Limit obrotu dla kasy fiskalnej'
 
     const inputFields = ref(<CashRegisterLimitInputFields>{
       startDate: null,

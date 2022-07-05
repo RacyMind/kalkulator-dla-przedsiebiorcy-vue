@@ -44,7 +44,7 @@
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
 import {Ref, defineComponent, ref, watch} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'src/components/partials/ChooseYear.vue'
 import Footer from 'components/partials/Footer.vue'
@@ -65,8 +65,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Umowa o dzieło')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Umowa o dzieło'
 
     const year = ref(helpers.getDefaultYear())
 

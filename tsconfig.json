@@ -1,17 +1,6 @@
 {
-  "extends": "@quasar/app/tsconfig-preset",
+  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
-    "baseUrl": ".",
-    "jsx": "preserve"
-  },
-  "include": [
-    // repeated from base config's "include" setting
-    "src",
-    "tests",
-    "babel.config.js",
-    "eslintrc.js",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "baseUrl": "."
+  }
 }

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import InflationStatistics from 'components/inflation/InflationStatistics.vue'
@@ -31,8 +31,8 @@ export default defineComponent({
     SectionHeader,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Inflacja')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Inflacja'
   },
 })
 </script>

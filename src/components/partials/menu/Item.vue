@@ -3,8 +3,8 @@
     clickable
     exact
     :tag="isExternalLink ? 'a' : 'div'"
-    :href="isExternalLink ? link: ''"
-    :to="!isExternalLink ? link : ''"
+    :href="isExternalLink ? link: undefined"
+    :to="!isExternalLink ? link : undefined"
     :class="className"
     class="q-pa-none"
     style="border-bottom: 1px solid white"

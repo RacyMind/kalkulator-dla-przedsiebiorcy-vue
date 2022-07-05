@@ -28,7 +28,7 @@
 <script lang="ts">
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/vatLimit/Form.vue'
@@ -45,8 +45,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Limit sprzedaży dla zwolnienia z VAT')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Limit sprzedaży dla zwolnienia z VAT'
 
     const inputFields = ref(<VatLimitInputFields>{
       startDate: null,

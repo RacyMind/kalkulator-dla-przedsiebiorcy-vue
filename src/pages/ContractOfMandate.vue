@@ -86,7 +86,7 @@
 <script lang="ts">
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {Ref, defineComponent, ref, watch} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
 import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
@@ -116,8 +116,8 @@ export default defineComponent({
     YearlyEmployerSummary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Umowa zlecenie')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Umowa zlecenie'
 
     const year = ref(helpers.getDefaultYear())
     const openEmployeeModal = ref(false)

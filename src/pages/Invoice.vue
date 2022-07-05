@@ -35,7 +35,7 @@
 <script lang="ts">
 import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInputFields'
 import {defineComponent, ref} from 'vue'
-import { useStore } from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'src/components/invoice/Form.vue'
@@ -55,8 +55,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Faktura VAT')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Faktura VAT'
 
     const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,

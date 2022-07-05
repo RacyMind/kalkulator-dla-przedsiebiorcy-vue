@@ -1,10 +1,17 @@
-<script>
-import { Pie } from 'vue3-chart-v2'
+<template>
+  <Chart
+    type="pie"
+    :chart-options="chartOptions"
+    :chart-data="chartData"
+  />
+</template>
+<script lang="ts">
 
-export default {
-  extends: Pie,
-  mounted () {
-    this.renderChart(this.chartData, this.chartOptions)
+import {defineComponent} from 'vue'
+import Chart from 'components/partials/Chart.vue'
+export default defineComponent({
+  components: {
+    Chart,
   },
   props: {
     chartData: {
@@ -16,10 +23,5 @@ export default {
       type: Object,
     },
   },
-  watch: {
-    chartData () {
-      this.renderChart(this.chartData, this.chartOptions)
-    },
-  },
-}
+})
 </script>

@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import ChangeLog from 'components/changeLogs/ChangeLog.vue'
 import Footer from 'components/partials/Footer.vue'
@@ -51,8 +51,8 @@ export default defineComponent({
     SectionHeader,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Historia zmian')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Historia zmian'
 
     const showAll = ref(false)
 

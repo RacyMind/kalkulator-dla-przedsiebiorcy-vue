@@ -28,7 +28,7 @@
 <script lang="ts">
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/sickPay/Form.vue'
@@ -45,8 +45,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Zasiłek chorobowy')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Zasiłek chorobowy'
 
     const inputFields = ref(<SickPayInputFields>{
       basicAmount: 0,
