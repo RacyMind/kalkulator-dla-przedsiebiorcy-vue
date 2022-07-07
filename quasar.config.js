@@ -40,12 +40,16 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      extendViteConf(viteConf, { isServer, isClient }) {
+        viteConf.base = ''
+      },
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'hash',
+
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -121,8 +125,6 @@ module.exports = configure(function (/* ctx */) {
 
 
     eslint: {
-
-
       errors: true,
       // fix: true,
 // include = [],
@@ -153,9 +155,8 @@ module.exports = configure(function (/* ctx */) {
     framework: {
       config: {},
       cssAddon: true,
-
-      // iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
+      iconSet: 'material-icons', // Quasar icon set
+      lang: 'pl', // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
@@ -173,17 +174,20 @@ module.exports = configure(function (/* ctx */) {
 
 // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      // or 'injectManifest'
-      injectPwaMetaTags: true,
-      manifestFilename: 'manifest.json',
+      workboxMode: 'generateSW', // or 'injectManifest'
+      injectPwaMetaTags: false,
       swFilename: 'sw.js',
+      manifestFilename: 'manifest.json',
       useCredentialsForManifestTag: false,
-      workboxMode: 'generateSW',
-      // extendGenerateSWOptions (cfg) {}
-      // extendInjectManifestOptions (cfg) {},
-      // extendManifestJson (json) {}
-      // extendPWACustomSWConf (esbuildConf) {}
+      extendGenerateSWOptions (cfg) {
+        cfg.skipWaiting = false
+        cfg.clientsClaim = false
+      },
+      extendInjectManifestOptions (cfg) {},
+      extendManifestJson (json) {},
+      extendPWACustomSWConf (esbuildConf) {},
     },
+
 
 
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#sourcefiles

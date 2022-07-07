@@ -129,13 +129,6 @@ module.exports = {
       "ignoreMemberSort": false,
       "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
     }],
-    "sort-keys-fix/sort-keys-fix": [
-      "warn",
-      "asc",
-      {
-        "natural": true
-      }
-    ],
     "vue/multi-word-component-names": "off",
   }
 }

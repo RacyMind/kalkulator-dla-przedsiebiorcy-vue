@@ -29,7 +29,7 @@ export default {
     }
   },
 
-  logPage (path) {
+  logPage (path:string) {
     if(!process.env.DEV) {
       window.dataLayer.push({
         cid: this.getCid(),
