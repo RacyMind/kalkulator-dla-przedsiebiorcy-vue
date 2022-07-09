@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import PFRONSummary from 'components/terms/PFRONSummary.vue'
@@ -50,8 +50,8 @@ export default defineComponent({
     ZUSSummary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Terminy w US, ZUS i PFRON')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Terminy w US, ZUS i PFRON'
   },
 })
 </script>

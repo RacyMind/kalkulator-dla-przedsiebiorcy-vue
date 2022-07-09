@@ -12,7 +12,7 @@
       </q-btn>
       <div style="font-size: 0.75rem;">
         &copy; 2011-{{year}} Kalkulator finansowy<br>
-        Wersja {{ $constants.APP.VERSION }}<br>
+        Wersja {{ constants.APP.VERSION }}<br>
         Stworzone przez <a
           href="https://www.linkedin.com/in/%C5%82ukasz-socha-30083841/"
           class="text-teal-7"
@@ -31,6 +31,7 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue'
 import SupportProject from 'components/partials/SupportProject.vue'
+import constants from 'src/logic/constants'
 export default defineComponent({
   components: {
     SupportProject,
@@ -40,6 +41,7 @@ export default defineComponent({
     const year = ref(new Date().getFullYear())
 
     return {
+      constants,
       openModal,
       year,
     }

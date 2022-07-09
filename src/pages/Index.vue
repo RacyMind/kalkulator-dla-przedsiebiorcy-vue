@@ -22,16 +22,15 @@
   </q-page>
 </template>
 
-<script>
-import Footer from 'components/partials/Footer'
-import Menu from 'components/partials/menu/Menu'
-export default {
+<script lang="ts">
+import {defineComponent} from 'vue'
+import Footer from 'components/partials/Footer.vue'
+import Menu from 'components/partials/menu/Menu.vue'
+export default defineComponent({
   components: {
     Footer,
     Menu,
   },
-  created () {
-    this.$store.commit('app/setModuleTitle', '')
-  },
-}
+
+})
 </script>

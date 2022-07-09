@@ -123,31 +123,6 @@ function calculateIncomeTaxUsingLumpSumRules (
   return helpers.round(taxAmount)
 }
 
-/**
- * Calculates the aid for a middle class of society
- *
- * @param {number} grossAmount
- * @param {boolean} isYearly
- * @returns {number}
- * @deprecated
- */
-function calculateAidForMiddleClass (grossAmount:number, isYearly = false):number {
-  grossAmount = helpers.round(grossAmount)
-  let times = 1
-
-  if (isYearly) {
-    times = 12
-  }
-
-  if (grossAmount >= 5701 * times && grossAmount < 8549 * times) {
-    return helpers.round(grossAmount * 0.0668 - 380.50 * times, 2)
-  }
-  if (grossAmount >= 8549 * times && grossAmount < 11141 * times) {
-    return helpers.round(grossAmount * -0.0735 + 819.08 * times, 2)
-  }
-  return 0
-}
-
 export default {
   calculateIncomeTaxUsingGeneralRules,
   calculateIncomeTaxUsingLinearRules,

@@ -40,7 +40,7 @@
           outline
           type="a"
           target="_blank"
-          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${$constants.APP.NAME}`"
+          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.APP.NAME}`"
         />
         <q-btn
           label="Twitter"
@@ -51,7 +51,7 @@
           outline
           type="a"
           target="_blank"
-          :href="`http://twitter.com/share?url=${url}&text=${$constants.APP.NAME}&hashtags=wynagrodzenie,finanse,kalkulator`"
+          :href="`http://twitter.com/share?url=${url}&text=${constants.APP.NAME}&hashtags=wynagrodzenie,finanse,kalkulator`"
         />
       </div>
       <p  class="q-mb-none text-justify">
@@ -63,6 +63,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
+import constants from 'src/logic/constants'
 import ga from '../../logic/analytics'
 
 export default defineComponent({
@@ -71,6 +72,7 @@ export default defineComponent({
     ga.logEvent('Modal', 'Open', 'Wsparcie')
 
     return {
+      constants,
       url,
     }
   },

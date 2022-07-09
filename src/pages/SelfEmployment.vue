@@ -54,7 +54,7 @@
 <script lang="ts">
 import {Ref, defineComponent, ref, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
 import Footer from 'components/partials/Footer.vue'
@@ -77,8 +77,8 @@ export default defineComponent({
     YearlySummary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Samozatrudnienie')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Samozatrudnienie'
 
     const year = ref(helpers.getDefaultYear())
     const openModal = ref(false)

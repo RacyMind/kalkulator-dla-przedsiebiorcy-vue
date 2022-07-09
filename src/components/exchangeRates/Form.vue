@@ -83,6 +83,8 @@
 <script>
 import { format, isFuture, subMonths } from 'date-fns'
 import { ref } from 'vue'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import api from './api'
 import constants from 'src/logic/constants'
 
 export default {
@@ -111,17 +113,19 @@ export default {
   },
   methods: {
     save () {
+      const currencyRateStore = useCurrencyRateStore()
+
       const startDate = format(new Date(this.startDate), 'Y-MM-dd')
       const endDate = format(new Date(this.endDate), 'Y-MM-dd')
 
-      this.$store.commit('exchangeRates/setLoading', true)
+      currencyRateStore.isLoading = true
 
-      this.$store.dispatch('exchangeRates/loadExchangeRateCurrency', {
-        code: this.$route.params.currency,
-        endDate,
+      api.loadExchangeRateCurrency(
+        this.$route.params.currency,
         startDate,
-      }).then(response => {
-        this.$store.commit('exchangeRates/setCurrency', response.data)
+        endDate,
+      ).then(response => {
+        currencyRateStore.currencyRate =response.data
         this.$q.notify({
           message: 'Źródło danych: Narodowy Bank Polski',
         })
@@ -133,9 +137,9 @@ export default {
         this.$q.notify({
           message: message,
         })
-        this.$store.commit('exchangeRates/setCurrency', null)
+        currencyRateStore.currencyRate = null
       }).finally(() => {
-        this.$store.commit('exchangeRates/setLoading', false)
+        currencyRateStore.isLoading = false
       })
     },
   },

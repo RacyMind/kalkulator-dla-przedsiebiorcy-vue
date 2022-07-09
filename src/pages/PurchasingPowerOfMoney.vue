@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import PurchasingPowerOfMoneyStatistics from 'components/inflation/PurchasingPowerOfMoneyStatistics.vue'
@@ -31,8 +31,8 @@ export default defineComponent({
     SectionHeader,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Siła nabywcza pieniądza')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Siła nabywcza pieniądza'
   },
 })
 </script>

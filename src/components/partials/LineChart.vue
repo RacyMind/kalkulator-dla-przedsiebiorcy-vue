@@ -1,15 +1,17 @@
-<script>
-import 'moment/locale/pl'
-import { Line } from 'vue3-chart-v2'
-import Moment from 'moment'
+<template>
+  <Chart
+    type="line"
+    :chart-options="chartOptions"
+    :chart-data="chartData"
+  />
+</template>
+<script lang="ts">
 
-export default {
-  created () {
-    Moment.locale('pl')
-  },
-  extends: Line,
-  mounted () {
-    this.renderChart(this.chartData, this.chartOptions)
+import {defineComponent} from 'vue'
+import Chart from 'components/partials/Chart.vue'
+export default defineComponent({
+  components: {
+    Chart,
   },
   props: {
     chartData: {
@@ -21,10 +23,5 @@ export default {
       type: Object,
     },
   },
-  watch: {
-    chartData () {
-      this.renderChart(this.chartData, this.chartOptions)
-    },
-  },
-}
+})
 </script>

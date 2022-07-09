@@ -3,7 +3,7 @@
     <div class="row justify-between">
       <div class="col-12 col-md-4 q-pr-md-sm">
         <q-input
-          v-model="amount"
+          v-model.number="amount"
           type="number"
           min="0"
           step="0.01"
@@ -43,91 +43,86 @@
           color="brand"
           size="lg"
           label="Oblicz"
-          :disable="isDisabled()"
+          :disable="isDisabledButton"
         />
       </div>
     </div>
   </q-form>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import CurrencyConverter from 'src/logic/CurrencyConverter'
+<script lang="ts">
+import {computed, defineComponent, ref} from 'vue'
+import {useCurrencyConverterStore} from 'stores/currency-converter-store'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import currencyConverter from './currencyConverter'
 
-export default {
-  computed: {
-    ...mapGetters({
-      isLoading: 'exchangeRates/isLoading',
-      rates: 'exchangeRates/rates',
-    }),
-  },
-  async created () {
-    this.$store.commit('currencyConverter/CLEAR_DATA')
+const pln = {
+  code: 'PLN',
+  currency: 'złoty',
+  label: 'PLN złoty',
+  mid: 1,
+}
+export default defineComponent({
+  setup (props, context) {
+    const currencyRateStore = useCurrencyRateStore()
+    const currencyConverterStore = useCurrencyConverterStore()
 
-    if (this.rates.length === 0) {
-      this.$store.dispatch('exchangeRates/loadLatestExchangeRates').then(response => {
-        this.$store.commit('exchangeRates/setDate', response.data[0].effectiveDate)
-        this.$store.commit('exchangeRates/setRates', response.data[0].rates)
-        this.$q.notify({
-          message: 'Źródło danych: Narodowy Bank Polski',
-        })
-      })
-    }
-  },
-  data () {
-    return {
-      allRates: [],
-      amount: null,
-      currencies: [],
-      fromCurrency: null,
-      pln: {
-        code: 'PLN',
-        currency: 'złoty',
-        mid: 1,
-      },
-      toCurrency: null,
-    }
-  },
-  emits: ['scroll'],
-  methods: {
-    calculate () {
-      const currencyConverter = new CurrencyConverter()
-      const fromRatio = Number(this.fromCurrency.mid)
-      const toRatio = Number(this.toCurrency.mid)
+    currencyRateStore.loadLatestExchangeRates()
 
-      this.$store.commit('currencyConverter/SET_AMOUNT', this.amount)
-      this.$store.commit('currencyConverter/SET_VALUE_FOR_ONE', currencyConverter.convert(1, fromRatio, toRatio))
-      this.$store.commit('currencyConverter/SET_VALUE_FOR_WHOLE_AMOUNT', currencyConverter.convert(this.amount, fromRatio, toRatio))
-      this.$store.commit('currencyConverter/SET_FROM_CURRENCY', this.fromCurrency.code)
-      this.$store.commit('currencyConverter/SET_TO_CURRENCY', this.toCurrency.code)
+    const amount = ref(null)
+    const currencies = ref([pln])
+    const fromCurrency = ref(pln)
+    const toCurrency = ref(pln)
 
-      this.$emit('scroll')
-    },
-    filterCurrency (val, update) {
-      let allRates = [this.pln]
-      allRates = allRates.concat(JSON.parse(JSON.stringify(this.rates)))
+    const isDisabledButton = computed(() => {
+      if(currencyRateStore.isLoading) {
+        return false
+      }
+      return !amount.value || !fromCurrency.value || !toCurrency.value
+    })
+
+    const filterCurrency =  (val: string, update: any) => {
+      let allRates = [pln]
+      allRates = allRates.concat(JSON.parse(JSON.stringify(currencyRateStore.currencyRates)))
       allRates.forEach(rate => {
         rate.label = `${rate.code} ${rate.currency}`
       })
 
       if (val === '') {
         update(() => {
-          this.currencies = allRates
+          currencies.value = allRates
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.currencies = allRates.filter(currency => currency.label.toLowerCase().indexOf(needle) > -1)
+        currencies.value = allRates.filter(currency => currency.label.toLowerCase().indexOf(needle) > -1)
       })
-    },
-    isDisabled () {
-      if (this.isLoading) {
-        return true
-      }
-       return !this.amount || !this.fromCurrency || !this.toCurrency
-    },
+    }
+
+    const calculate =  () => {
+      const fromRatio = Number(fromCurrency.value.mid)
+      const toRatio = Number(toCurrency.value.mid)
+
+      currencyConverterStore.amount = amount.value
+      currencyConverterStore.valueForOne = currencyConverter.convert(1, fromRatio, toRatio)
+      currencyConverterStore.valueForWholeAmount = currencyConverter.convert(amount.value, fromRatio, toRatio)
+      currencyConverterStore.fromCurrency = fromCurrency.value.code
+      currencyConverterStore.toCurrency = toCurrency.value.code
+
+      context.emit('scroll')
+    }
+
+    return {
+      amount,
+      calculate,
+      currencies,
+      filterCurrency,
+      fromCurrency,
+      isDisabledButton,
+      toCurrency,
+    }
   },
-}
+})
 </script>

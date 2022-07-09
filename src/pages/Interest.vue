@@ -35,7 +35,7 @@
 <script lang="ts">
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/interest/Form.vue'
@@ -54,8 +54,8 @@ export default defineComponent({
     Summary,
   },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Odsetki')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Odsetki'
 
     const inputFields = ref(<InterestInputFields>{
       amount: 0,
