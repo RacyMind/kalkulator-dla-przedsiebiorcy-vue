@@ -62,7 +62,7 @@ function calculateIncomeTaxUsingGeneralRules (
     taxReducingAmount *= 12
   }
 
-  let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount
+  let taxAmount = basisForTax * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax
 
   const newTotalBasisForTax = basisForTax + totalBasisForTax
 
@@ -71,10 +71,12 @@ function calculateIncomeTaxUsingGeneralRules (
     taxAmount = basisForTax * params.secondTaxRate - amountOfDeductionOfHealthContributionFromTax
   } else if (newTotalBasisForTax > params.amountOfTaxThreshold) {
     // first rate
-    taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax - taxReducingAmount
+    taxAmount = (params.amountOfTaxThreshold - totalBasisForTax) * params.firstTaxRate - amountOfDeductionOfHealthContributionFromTax
     // second rate
     taxAmount += (newTotalBasisForTax - params.amountOfTaxThreshold) * params.secondTaxRate
   }
+
+  taxAmount -= taxReducingAmount
 
   if (taxAmount < 0) {
     taxAmount = 0

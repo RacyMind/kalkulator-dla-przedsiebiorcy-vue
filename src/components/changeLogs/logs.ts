@@ -1,8 +1,8 @@
 export default [
   {
-    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
+    content: '<ul><li>Poprawiono błąd w odliczaniu składki zdrowotnej.</li><li>Poprawiono błąd w odliczaniu kwotu wolnej od podatku po przekroczeniu 2. progu.</li><li>Refaktoryzacja Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
     publish_date: '2022-06-25',
-    version: '4.8.0',
+    version: '4.9.0',
   },
   {
     content: '<ul><li>Dostosowanie kalkulatora do zmian w Polskim Ładzie:<ul><li>pierwsza stawka podatku PIT wynosi 12%,</li><li>odliczenie połowy składki zdrowotnej dla ryczałtu,</li><li>odliczenie cześći składki zdrowotnej dla podatku liniowego - do limitu 8700 zł,<li>likwidacja ulgi dla klasy średniej.</li></ul></li></ul>',
