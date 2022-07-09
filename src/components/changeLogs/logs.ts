@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca.</li></ul>',
+    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
     publish_date: '2022-06-25',
     version: '4.8.0',
   },
