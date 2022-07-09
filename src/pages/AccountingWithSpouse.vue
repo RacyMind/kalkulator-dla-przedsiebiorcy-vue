@@ -109,38 +109,37 @@
 
 <script>
 import { ref } from 'vue'
-import helpers from 'src/logic/helpers'
+import Advert from 'components/partials/Advert.vue'
+import ChooseYear from 'src/components/partials/ChooseYear.vue'
+import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form.vue'
+import Footer from 'components/partials/Footer.vue'
+import FormsOfAccounting from 'src/components/partials/FormsOfAccounting.vue'
+import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary.vue'
+import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import SelfEmploymentForm from 'src/components/selfEmployment/Form.vue'
 import constants from 'src/logic/constants'
-import ChooseYear from 'src/components/partials/ChooseYear'
-import FormsOfAccounting from 'src/components/partials/FormsOfAccounting'
-import SectionHeader from 'components/partials/SectionHeader'
-import Footer from 'components/Footer'
-import ContractOfEmploymentForm from 'src/components/contractOfEmployment/Form'
-import SelfEmploymentForm from 'src/components/selfEmployment/Form'
-import PersonSummary from 'src/components/accountingWithSpouse/PersonSummary'
-import MarriageSummary from 'src/components/accountingWithSpouse/MarriageSummary'
-import Advert from 'components/partials/Advert'
+import helpers from 'src/logic/helpers'
 export default {
-    setup () {
-      const year = ref(helpers.getDefaultYear())
-      return {
-        constants,
-        year,
-      }
+  components: {
+      Advert,
+      ChooseYear,
+      ContractOfEmploymentForm,
+      Footer,
+      FormsOfAccounting,
+      MarriageSummary,
+      PersonSummary,
+      SectionHeader,
+      SelfEmploymentForm,
     },
-  data () {
-    return {
-      myFormOfAccounting: null,
-      myData: null,
-      spouseFormOfAccounting: null,
-      spouseData: null,
-    }
-  },
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Rozliczenie z małżonkiem')
-  },
-  computed: {
-      myForm () {
+    computed: {
+      isDisabledButton () {
+      if (!this.myFormOfAccounting || !this.spouseFormOfAccounting) {
+        return true
+      }
+      return false
+    },
+    myForm () {
         if (!this.myFormOfAccounting) {
           return null
         }
@@ -164,20 +163,19 @@ export default {
       }
       return null
     },
-    isDisabledButton () {
-      if (!this.myFormOfAccounting || !this.spouseFormOfAccounting) {
-        return true
-      }
-      return false
-    },
   },
-  watch: {
-    year () {
-      this.myData = null
-      this.spouseData = null
-    },
+  created () {
+    this.$store.commit('app/setModuleTitle', 'Rozliczenie z małżonkiem')
   },
-  methods: {
+  data () {
+    return {
+      myData: null,
+      myFormOfAccounting: null,
+      spouseData: null,
+      spouseFormOfAccounting: null,
+    }
+  },
+    methods: {
     calculate () {
       this.myForm.save()
       this.spouseForm.save()
@@ -190,16 +188,18 @@ export default {
       this.spouseData = data
     },
   },
-    components: {
-      Advert,
-      SectionHeader,
-      Footer,
-      ChooseYear,
-      FormsOfAccounting,
-      ContractOfEmploymentForm,
-      SelfEmploymentForm,
-      PersonSummary,
-      MarriageSummary,
+  setup () {
+      const year = ref(helpers.getDefaultYear())
+      return {
+        constants,
+        year,
+      }
     },
+  watch: {
+    year () {
+      this.myData = null
+      this.spouseData = null
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header
-      v-if="moduleTitle"
+      v-if="appStore.moduleTitle"
       class="bg-red-8"
       elevated>
       <q-toolbar>
@@ -15,11 +15,11 @@
         />
         <q-toolbar-title>
           <div class="row justify-between">
-            <div v-if="moduleTitle">
-              {{ moduleTitle }}
+            <div v-if="appStore.moduleTitle">
+              {{ appStore.moduleTitle }}
             </div>
             <div class="xs-hide">
-              {{ $constants.APP.NAME }}
+              {{ constants.APP.NAME }}
             </div>
           </div>
         </q-toolbar-title>
@@ -54,7 +54,7 @@
     <q-page-container
       class="flex flex-center bg-teal-1"
       :class="{
-        'q-pt-lg': !moduleTitle
+        'q-pt-lg': !appStore.moduleTitle
       }"
     >
       <router-view/>
@@ -62,26 +62,30 @@
   </q-layout>
 </template>
 
-<script>
-import SupportProject from 'components/SupportProject'
-import Menu from 'components/partials/menu/Menu'
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Menu from 'components/partials/menu/Menu.vue'
+import SupportProject from 'components/partials/SupportProject.vue'
+import constants from 'src/logic/constants'
 
-export default {
-  data () {
+
+export default defineComponent({
+  components: {
+    Menu,
+    SupportProject,
+  },
+  setup() {
+    const appStore = useAppStore()
+    const leftDrawerOpen = ref(false)
+    const openModal = ref(false)
+
     return {
-      openModal: false,
-      leftDrawerOpen: false,
+      appStore,
+      constants,
+      leftDrawerOpen,
+      openModal,
     }
   },
-  computed: {
-    ...mapGetters({
-      moduleTitle: 'app/moduleTitle',
-    }),
-  },
-  components: {
-    SupportProject,
-    Menu,
-  },
-}
+})
 </script>

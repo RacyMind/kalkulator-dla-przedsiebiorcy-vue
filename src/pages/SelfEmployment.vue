@@ -52,44 +52,54 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
-import {useStore} from 'vuex'
+import {Ref, defineComponent, ref, watch} from 'vue'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
-import constants from 'src/logic/constants'
-import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
-import Form from 'components/selfEmployment/Form.vue'
-import Summary from 'components/selfEmployment/Summary.vue'
-import Statistics from 'components/selfEmployment/Statistics.vue'
-import YearlySummary from 'components/selfEmployment/YearlySummary.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import ChooseYear from 'components/partials/ChooseYear.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/selfEmployment/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/selfEmployment/Statistics.vue'
+import Summary from 'components/selfEmployment/Summary.vue'
+import YearlySummary from 'components/selfEmployment/YearlySummary.vue'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+    YearlySummary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Samozatrudnienie')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Samozatrudnienie'
 
     const year = ref(helpers.getDefaultYear())
     const openModal = ref(false)
     const scrollTarget = ref(null) as any
 
     const inputFields:Ref<SelfEmploymentInputFields> = ref({
-      year: helpers.getDefaultYear(),
+      accidentContributionRate: 0,
       amount: 0,
+      customBasisForZus: 0,
       expenses: 0,
       incomeTaxType: constants.TAX_TYPES.GENERAL,
-      taxRateForLumpSum: 0,
+      isFpContribution: false,
       isFreeAmount: true,
-      isReliefForSenior: false,
+      isFullTimeJob: false,
       isReliefForBigFamily: false,
       isReliefForCompanyStart: false,
-      isFpContribution: false,
+      isReliefForSenior: false,
       isSickContribution: false,
-      accidentContributionRate: 0,
       isSmallZus: false,
-      isFullTimeJob: false,
-      customBasisForZus: 0,
+      taxRateForLumpSum: 0,
+      year: helpers.getDefaultYear(),
     })
 
     watch(year, () => {
@@ -102,22 +112,12 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
       openModal,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    ChooseYear,
-    Form,
-    Summary,
-    Statistics,
-    YearlySummary,
-    Footer,
   },
 })
 </script>

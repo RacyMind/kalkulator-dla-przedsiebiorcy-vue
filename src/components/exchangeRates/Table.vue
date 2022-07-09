@@ -20,7 +20,7 @@
             label="Data*"
             :rules="[
               'date',
-              date => isPast(new Date(date)) || 'Wybierz datę z przeszłości'
+              date => isPast(new Date(currencyRateStore.date)) || 'Wybierz datę z przeszłości'
             ]">
             <template v-slot:append>
               <q-icon
@@ -46,16 +46,16 @@
     </q-form>
     <p
       class="text-center q-my-md text-primary">
-      <span v-if="date">
-        Kurs średni z dnia {{ date }}
+      <span v-if="currencyRateStore.date">
+        Kurs średni z dnia {{ currencyRateStore.date }}
       </span>
     </p>
     <q-table
-      :rows="rates"
+      :rows="currencyRateStore.currencyRates"
       :columns="columns"
       row-key="name"
       @row-click="openCurrency"
-      :loading="isLoading"
+      :loading="currencyRateStore.isLoading"
       hide-pagination
       :pagination="{rowsPerPage: 999}">
       <template v-slot:no-data>
@@ -70,78 +70,47 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { format, isPast, isWeekend } from 'date-fns'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import api from './api'
 import constants from 'src/logic/constants'
 
 export default {
-  setup () {
-    const onlyPast = (date) => {
-      return date < format(new Date(), 'y/MM/dd')
-    }
-    const onlyWorkDays = (date) => {
-      return !isWeekend(new Date(date))
-    }
-    return {
-      constants,
-      isPast,
-      validDays (date) {
-        return onlyPast(date) && onlyWorkDays(date)
-      },
-    }
-  },
-  data () {
-    return {
-      showArchivedRates: false,
-      rateDate: null,
-      columns: [
-        {
-          name: 'currency',
-          label: 'Nazwa waluty',
-          required: true,
-          align: 'left',
-          style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
-          field: row => row.currency,
-          format: val => `${val}`,
-        },
-        {
-          name: 'code',
-          label: 'Kod waluty',
-          required: true,
-          align: 'left',
-          field: row => row.code,
-          format: val => `${val}`,
-        },
-        {
-          name: 'mid',
-          label: 'Kurs średni',
-          required: true,
-          align: 'left',
-          field: row => row.mid,
-          format: val => `${val}`,
-        },
-      ],
-    }
-  },
   created () {
     this.updateRates()
   },
-  computed: {
-    ...mapGetters({
-      rates: 'exchangeRates/rates',
-      date: 'exchangeRates/date',
-      isLoading: 'exchangeRates/isLoading',
-    }),
-  },
-  watch: {
-    showArchivedRates: function (val) {
-      if (!val) {
-        this.rateDate = null
-      }
-    },
-    rateDate: function () {
-      this.updateRates()
-    },
+  data () {
+    return {
+      columns: [
+        {
+          align: 'left',
+          field: row => row.currency,
+          format: val => `${val}`,
+          label: 'Nazwa waluty',
+          name: 'currency',
+          required: true,
+          style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
+        },
+        {
+          align: 'left',
+          field: row => row.code,
+          format: val => `${val}`,
+          label: 'Kod waluty',
+          name: 'code',
+          required: true,
+        },
+        {
+          align: 'left',
+          field: row => row.mid,
+          format: val => `${val}`,
+          label: 'Kurs średni',
+          name: 'mid',
+          required: true,
+        },
+      ],
+      rateDate: null,
+      showArchivedRates: false,
+    }
   },
   methods: {
     openCurrency (event, row) {
@@ -150,24 +119,26 @@ export default {
       })
     },
     updateRates () {
+      const currencyRateStore = useCurrencyRateStore()
       let apiCall
 
-      this.$store.commit('exchangeRates/setLoading', true)
+      currencyRateStore.isLoading = true
 
       if (this.rateDate) {
         const rateDate = format(new Date(this.rateDate), 'Y-MM-dd')
-        apiCall = this.$store.dispatch('exchangeRates/loadExchangeRatesFromDate', { date: rateDate })
+        apiCall = api.loadExchangeRatesFromDate(rateDate)
       } else {
-        apiCall = this.$store.dispatch('exchangeRates/loadLatestExchangeRates')
+        apiCall = api.loadLatestExchangeRates()
       }
       apiCall.then(response => {
-        this.$store.commit('exchangeRates/setDate', response.data[0].effectiveDate)
-        this.$store.commit('exchangeRates/setRates', response.data[0].rates)
+        currencyRateStore.date = response.data[0].effectiveDate
+        currencyRateStore.currencyRates = response.data[0].rates
+
         this.$q.notify({
           message: 'Źródło danych: Narodowy Bank Polski',
         })
       }).catch((error) => {
-        this.$store.commit('exchangeRates/setDate', format(new Date(this.rateDate), 'Y-MM-dd'))
+        currencyRateStore.date = format(new Date(this.rateDate), 'Y-MM-dd')
         let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
         if (error.response) {
           message = error.response.data
@@ -175,10 +146,37 @@ export default {
         this.$q.notify({
           message: message,
         })
-        this.$store.commit('exchangeRates/setRates', [])
+        currencyRateStore.currencyRates = []
       }).finally(() => {
-        this.$store.commit('exchangeRates/setLoading', false)
+        currencyRateStore.isLoading = false
       })
+    },
+  },
+  setup () {
+    const currencyRateStore = useCurrencyRateStore()
+    const onlyPast = (date) => {
+      return date < format(new Date(), 'y/MM/dd')
+    }
+    const onlyWorkDays = (date) => {
+      return !isWeekend(new Date(date))
+    }
+    return {
+      constants,
+      currencyRateStore,
+      isPast,
+      validDays (date) {
+        return onlyPast(date) && onlyWorkDays(date)
+      },
+    }
+  },
+  watch: {
+    rateDate: function () {
+      this.updateRates()
+    },
+    showArchivedRates: function (val) {
+      if (!val) {
+        this.rateDate = null
+      }
     },
   },
 }

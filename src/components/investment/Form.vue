@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts">
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {computed, defineComponent, ref} from 'vue'
 import validationRules from 'src/logic/validationRules'
-import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 
 export default defineComponent({
   setup(props, context) {
@@ -73,19 +73,19 @@ export default defineComponent({
     const save = () => {
       const input: InvestmentInputFields = {
         amount: Number(amount.value),
-        rate: Number(rate.value) / 100,
         monthCount: Number(monthCount.value),
+        rate: Number(rate.value) / 100,
       }
       context.emit('save', input)
     }
 
     return{
-      validationRules,
       amount,
-      rate,
-      monthCount,
       isDisabledButton,
+      monthCount,
+      rate,
       save,
+      validationRules,
     }
   },
 })

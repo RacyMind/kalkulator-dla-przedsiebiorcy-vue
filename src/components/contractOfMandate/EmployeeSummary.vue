@@ -58,19 +58,22 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType, watch} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import {pln} from 'src/use/currencyFormat'
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import {PropType, computed, defineComponent, watch} from 'vue'
+import {pln} from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
 import ListRow from 'components/partials/ListRow.vue'
+import constants from 'src/logic/constants'
+import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfMandateInputFields>,
       required: true,
+      type: Object as PropType<ContractOfMandateInputFields>,
     },
   },
   setup(props) {
@@ -101,9 +104,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

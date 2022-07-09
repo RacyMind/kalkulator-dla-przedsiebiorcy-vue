@@ -1,8 +1,8 @@
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
+import {CashRegisterLimitResult} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitResult'
 import {getDayOfYear, lastDayOfYear} from 'date-fns'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
-import {CashRegisterLimitResult} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitResult'
 
 function getResult(input:CashRegisterLimitInputFields):CashRegisterLimitResult {
   if(!input.startDate) {
@@ -16,9 +16,9 @@ function getResult(input:CashRegisterLimitInputFields):CashRegisterLimitResult {
   const amount = helpers.round(constants.CASH_REGISTER_LIMIT * daysToEndYear / daysOfYear, 2)
 
   return {
-    startDate: input.startDate,
-    daysToEndYear: daysToEndYear,
     amount: amount,
+    daysToEndYear: daysToEndYear,
+    startDate: input.startDate,
   }
 }
 

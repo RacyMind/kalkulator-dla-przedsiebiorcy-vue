@@ -23,30 +23,36 @@
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/exchangeRates/Form'
-import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics'
-import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {defineComponent} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import Advert from 'components/partials/Advert.vue'
+import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/exchangeRates/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import helpers from 'src/logic/helpers'
 
-export default {
+export default defineComponent({
+  components: {
+    Advert,
+    CurrencyStatistics,
+    Footer,
+    Form,
+    SectionHeader,
+  },
   created () {
-    this.$store.commit('exchangeRates/setCurrency', null)
-    this.$store.commit('app/setModuleTitle', this.$route.params.currency.toUpperCase())
+    const appStore = useAppStore()
+    const currencyRateStore = useCurrencyRateStore()
+
+    appStore.moduleTitle = this.$route.params.currency.toUpperCase()
+    currencyRateStore.currencyRate = null
   },
   methods: {
     scrollTo () {
       helpers.scrollToElement(this.$refs.scrollTarget.$el)
     },
   },
-  components: {
-    SectionHeader,
-    Form,
-    CurrencyStatistics,
-    Advert,
-    Footer,
-  },
-}
+})
 </script>

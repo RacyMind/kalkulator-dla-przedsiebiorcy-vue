@@ -1,14 +1,14 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
-import {AvailableYear} from 'src/types/AvailableYear'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 let params = {
-  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
   amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,
   lumpSumUpToAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
+  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
 }
 
 /**
@@ -17,9 +17,9 @@ let params = {
  */
 function setParams (year:AvailableYear) {
   params = {
-    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
     lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
   }
 }
 
@@ -103,11 +103,11 @@ function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):Con
   grossAmount = netAmount + taxAmount
 
   return {
+    basisForTax: basisForTax,
+    expenses: expenses,
+    grossAmount: grossAmount,
     netAmount: netAmount,
     taxAmount: taxAmount,
-    grossAmount: grossAmount,
-    expenses: expenses,
-    basisForTax: basisForTax,
   }
 }
 
@@ -129,11 +129,11 @@ function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate)
   const netAmount = calculateNetAmount(grossAmount, taxAmount)
 
   return {
-    netAmount: netAmount,
-    expenses: expenses,
     basisForTax: basisForTax,
-    taxAmount: taxAmount,
+    expenses: expenses,
     grossAmount: grossAmount,
+    netAmount: netAmount,
+    taxAmount: taxAmount,
   }
 }
 

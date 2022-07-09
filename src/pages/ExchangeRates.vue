@@ -15,21 +15,24 @@
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Table from 'components/exchangeRates/Table'
-import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {defineComponent} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Table from 'components/exchangeRates/Table.vue'
 
-export default {
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Kursy walut')
-  },
+export default defineComponent({
   components: {
-    SectionHeader,
-    Table,
     Advert,
     Footer,
+    SectionHeader,
+    Table,
   },
-}
+  setup () {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Kursy walut'
+  },
+})
 </script>

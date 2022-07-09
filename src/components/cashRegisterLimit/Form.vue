@@ -35,13 +35,16 @@
 </template>
 
 <script lang="ts">
+import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 import {computed, defineComponent, ref} from 'vue'
 import {format, parse} from 'date-fns'
 import DatePopup from 'components/partials/DatePopup.vue'
 import validationRules from 'src/logic/validationRules'
-import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
 
 export default defineComponent({
+  components: {
+    DatePopup,
+  },
   setup(props, context) {
     const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
 
@@ -61,14 +64,11 @@ export default defineComponent({
     }
 
     return {
-      validationRules,
-      startDate,
       isDisabledButton,
       save,
+      startDate,
+      validationRules,
     }
-  },
-  components: {
-    DatePopup,
   },
 })
 </script>

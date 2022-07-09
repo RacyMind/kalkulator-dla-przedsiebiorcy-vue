@@ -33,26 +33,34 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/interest/Form.vue'
-import Summary from 'components/interest/Summary.vue'
-import Statistics from 'components/interest/Statistics.vue'
-import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/interest/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/interest/Statistics.vue'
+import Summary from 'components/interest/Summary.vue'
+import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Odsetki')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Odsetki'
 
     const inputFields = ref(<InterestInputFields>{
       amount: 0,
-      rate: 0,
       dayCount: 0,
+      rate: 0,
     })
 
     const scrollTarget = ref(null) as any
@@ -64,17 +72,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Statistics,
-    Advert,
-    Footer,
   },
 })
 </script>

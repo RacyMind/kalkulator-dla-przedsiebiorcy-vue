@@ -26,20 +26,27 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/vatLimit/Form.vue'
-import Summary from 'components/vatLimit/Summary.vue'
-import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/vatLimit/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/vatLimit/Summary.vue'
+import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Limit sprzedaży dla zwolnienia z VAT')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Limit sprzedaży dla zwolnienia z VAT'
 
     const inputFields = ref(<VatLimitInputFields>{
       startDate: null,
@@ -54,16 +61,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Advert,
-    Footer,
   },
 })
 </script>

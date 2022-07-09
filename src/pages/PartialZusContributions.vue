@@ -10,48 +10,74 @@
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
-        @scroll="scrollTo"
+        @save="save"
       />
       <Advert />
       <SectionHeader ref="scrollTarget">
         <q-icon name="o_credit_card" />
         Podsumowanie
       </SectionHeader>
-      <Table />
+      <Summary :input="inputFields" />
       <SectionHeader>
         <q-icon name="o_pie_chart" />
         Wykres
       </SectionHeader>
-      <Statistics />
+      <Statistics :input="inputFields" />
     </div>
     <Footer />
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Advert from 'components/partials/Advert'
-import Form from 'components/partialZusContributions/Form'
-import Table from 'components/partialZusContributions/Table'
-import Statistics from 'components/partialZusContributions/Statistics'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import {Ref, defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/partialZusContributions/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/partialZusContributions/Statistics.vue'
+import Summary from 'components/partialZusContributions/Summary.vue'
 import helpers from 'src/logic/helpers'
-export default {
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Składki ZUS za część miesiąca')
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
-  },
+export default defineComponent({
   components: {
-    SectionHeader,
     Advert,
-    Form,
-    Table,
-    Statistics,
     Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
   },
-}
+  setup() {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Składki ZUS za część miesiąca'
+
+    const year = ref(helpers.getDefaultYear())
+    const openModal = ref(false)
+    const scrollTarget = ref(null) as any
+
+    const inputFields:Ref<PartialZusContributionInputFields> = ref({
+      accidentContributionRate: 0,
+      customBasisForZus: 0,
+      daysInMonth: 31,
+      daysOfRunningBusiness: 0,
+      isFpContribution: false,
+      isSickContribution: false,
+      isSmallZus: false,
+    })
+
+    const save = (input: PartialZusContributionInputFields) => {
+      inputFields.value = input
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      inputFields,
+      openModal,
+      save,
+      scrollTarget,
+      year,
+    }
+  },
+})
 </script>

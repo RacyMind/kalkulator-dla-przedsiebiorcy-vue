@@ -22,17 +22,20 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import { pln } from 'src/use/currencyFormat'
-import interest from 'components/interest/interest'
-import ListRow from 'components/partials/ListRow.vue'
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import { pln } from 'src/use/currencyFormat'
+import ListRow from 'components/partials/ListRow.vue'
+import interest from 'components/interest/interest'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<InterestInputFields>,
       required: true,
+      type: Object as PropType<InterestInputFields>,
     },
   },
   setup(props: any) {
@@ -44,9 +47,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

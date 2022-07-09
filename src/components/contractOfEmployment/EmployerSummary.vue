@@ -50,17 +50,20 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
-import { pln } from 'src/use/currencyFormat'
-import employerContractOfEmployment from 'components/contractOfEmployment/employerContractOfEmployment'
-import ListRow from 'components/partials/ListRow.vue'
 import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import { pln } from 'src/use/currencyFormat'
+import ListRow from 'components/partials/ListRow.vue'
+import employerContractOfEmployment from 'components/contractOfEmployment/employerContractOfEmployment'
 
 export default defineComponent({
+  components: {
+    ListRow,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
     },
   },
   setup (props) {
@@ -73,9 +76,6 @@ export default defineComponent({
       pln,
       result,
     }
-  },
-  components: {
-    ListRow,
   },
 })
 </script>

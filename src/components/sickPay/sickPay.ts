@@ -1,8 +1,8 @@
-import helpers from 'src/logic/helpers'
-import constants from 'src/logic/constants'
+import {AvailableYear} from 'src/types/AvailableYear'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 import {SickPayResult} from 'components/sickPay/interfaces/SickPayResult'
-import {AvailableYear} from 'src/types/AvailableYear'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 const currentYear:AvailableYear = helpers.getDefaultYear()
 

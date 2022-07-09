@@ -11,34 +11,31 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { colors } from 'quasar'
-import constants from 'src/logic/constants'
 import { deepEqual } from 'src/use/deepEqual'
-import LineChart from '../LineChart'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import LineChart from 'components/partials/LineChart.vue'
+import constants from 'src/logic/constants'
 export default {
-  data () {
-    return {
-      componentKey: 0,
-      chartOptions: {
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'day',
-            },
-          }],
-        },
-      },
-    }
+  components: {
+    LineChart,
   },
   computed: {
-    ...mapGetters({
-      currency: 'exchangeRates/currency',
-    }),
+    chartData () {
+      return {
+        datasets: [{
+          borderColor: colors.lighten(constants.COLORS.EXCHANGE_RATES, -20),
+          data: this.rates,
+          fill: false,
+          label: this.currency.currency,
+        }],
+        labels: this.dates,
+      }
+    },
+    currency() {
+      const currencyRateStore = useCurrencyRateStore()
+      return currencyRateStore.currencyRate
+    },
     dates () {
       return this.currency.rates.map(rate => rate.effectiveDate)
     },
@@ -50,16 +47,28 @@ export default {
         }
       })
     },
-    chartData () {
-      return {
-        labels: this.dates,
-        datasets: [{
-          label: this.currency.currency,
-          data: this.rates,
-          fill: false,
-          borderColor: colors.lighten(constants.COLORS.EXCHANGE_RATES, -20),
-        }],
-      }
+  },
+  data () {
+    return {
+      chartOptions: {
+        legend: {
+          display: false,
+        },
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'day',
+            },
+            type: 'time',
+          }],
+        },
+      },
+      componentKey: 0,
+    }
+  },
+  methods: {
+    forceRerender () {
+      this.componentKey += 1
     },
   },
   watch: {
@@ -71,14 +80,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
-    },
-  },
-  components: {
-    LineChart,
   },
 }
 </script>

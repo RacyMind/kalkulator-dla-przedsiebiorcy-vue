@@ -8,94 +8,97 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, watch, ref, Ref} from 'vue'
-import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
-import {pln} from 'src/use/currencyFormat'
-import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
-import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
-import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
 import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
+import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {PropType, Ref, computed, defineComponent, ref, watch} from 'vue'
+import {pln} from 'src/use/currencyFormat'
+import {useQuasar} from 'quasar'
+import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
+import constants from 'src/logic/constants'
+import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
 
 const columns = [
   {
-    name: 'month',
-    required: true,
     align: 'left',
     field: () => '',
     format: (val: string) => `${val}`,
+    name: 'month',
+    required: true,
   },
   {
-    name: 'gross',
-    label: 'Wynagrodzenie brutto',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.grossAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Wynagrodzenie brutto',
+    name: 'gross',
+    required: true,
   },
   {
-    name: 'sick',
-    label: 'Skł. chorobowa',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.sickContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. chorobowa',
+    name: 'sick',
+    required: true,
   },
   {
-    name: 'disability',
-    label: 'Skł. rentowa',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.disabilityContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. rentowa',
+    name: 'disability',
+    required: true,
   },
   {
-    name: 'pension',
-    label: 'Skł. emerytalna',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.pensionContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. emerytalna',
+    name: 'pension',
+    required: true,
   },
   {
-    name: 'health',
-    label: 'Skł. zdrowotna',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.healthContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. zdrowotna',
+    name: 'health',
+    required: true,
   },
   {
-    name: 'ppk',
-    label: 'Skł. PPK',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.ppkContribution,
     format: (val: number) => `${pln(val)}`,
+    label: 'Skł. PPK',
+    name: 'ppk',
+    required: true,
   },
   {
-    name: 'taxAmount',
-    label: 'Zaliczka na podatek',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.taxAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Zaliczka na podatek',
+    name: 'taxAmount',
+    required: true,
   },
   {
-    name: 'net',
-    label: 'Wynagrodzenie netto',
-    required: true,
     align: 'left',
     field: (row: ContractOfEmploymentEmployeeSingleResult) => row.netAmount,
     format: (val: number) => `${pln(val)}`,
+    label: 'Wynagrodzenie netto',
+    name: 'net',
+    required: true,
   },
 ]
 
 export default defineComponent({
+  components: {
+    YearlySummaryTable,
+  },
   props: {
     input: {
-      type: Object as PropType<ContractOfEmploymentInputFields>,
       required: true,
+      type: Object as PropType<ContractOfEmploymentInputFields>,
     },
   },
   setup(props) {
@@ -150,15 +153,12 @@ export default defineComponent({
     })
 
     return {
-      pln,
-      constants,
       columns,
+      constants,
+      pln,
       totalResult,
       updateGrossAmounts,
     }
-  },
-  components: {
-    YearlySummaryTable,
   },
 })
 </script>

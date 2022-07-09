@@ -84,26 +84,40 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
-import {useStore} from 'vuex'
-import helpers from 'src/logic/helpers'
-import SectionHeader from 'components/partials/SectionHeader.vue'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {Ref, defineComponent, ref, watch} from 'vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import ChooseYear from 'components/partials/ChooseYear.vue'
+import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
+import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
+import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
+import EmployerSummary from 'components/contractOfMandate/EmployerSummary.vue'
+import Footer from 'components/partials/Footer.vue'
 import Form from 'components/contractOfMandate/Form.vue'
 import SalarySummary from 'components/contractOfMandate/SalarySummary.vue'
-import EmployeeSummary from 'components/contractOfMandate/EmployeeSummary.vue'
-import EmployeeStatistics from 'components/contractOfMandate/EmployeeStatistics.vue'
-import EmployerSummary from 'components/contractOfMandate/EmployerSummary.vue'
-import EmployerStatistics from 'components/contractOfMandate/EmployerStatistics.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import YearlyEmployeeSummary from 'components/contractOfMandate/YearlyEmployeeSummary.vue'
-import Footer from 'components/Footer.vue'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import YearlyEmployerSummary from 'components/contractOfMandate/YearlyEmployerSummary.vue'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    EmployeeStatistics,
+    EmployeeSummary,
+    EmployerStatistics,
+    EmployerSummary,
+    Footer,
+    Form,
+    SalarySummary,
+    SectionHeader,
+    YearlyEmployeeSummary,
+    YearlyEmployerSummary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Umowa zlecenie')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Umowa zlecenie'
 
     const year = ref(helpers.getDefaultYear())
     const openEmployeeModal = ref(false)
@@ -111,19 +125,19 @@ export default defineComponent({
     const scrollTarget = ref(null) as any
 
     const inputFields:Ref<ContractOfMandateInputFields> = ref({
-      year: helpers.getDefaultYear(),
-      grossAmount: 0,
-      isFreeAmount: false,
-      isReliefForYoung: false,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
+      grossAmount: 0,
+      isDisabilityContribution: true,
+      isFpContribution: false,
+      isFreeAmount: false,
       isHealthContribution: true,
       isPensionContribution: true,
-      isDisabilityContribution: true,
+      isReliefForYoung: false,
       isSickContribution: true,
-      isFpContribution: false,
       partOfWorkWithAuthorExpenses: 0,
+      year: helpers.getDefaultYear(),
     })
 
     watch(year, () => {
@@ -136,27 +150,13 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
       openEmployeeModal,
       openEmployerModal,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    YearlyEmployerSummary,
-    YearlyEmployeeSummary,
-    SectionHeader,
-    Advert,
-    ChooseYear,
-    Form,
-    SalarySummary,
-    EmployeeSummary,
-    EmployeeStatistics,
-    EmployerSummary,
-    EmployerStatistics,
-    Footer,
   },
 })
 </script>

@@ -16,8 +16,8 @@ import constants from 'src/logic/constants'
 export default defineComponent({
   props: {
     modelValue: {
-      type: Number,
       required: true,
+      type: Number,
     },
   },
   setup(props, context) {
@@ -33,9 +33,9 @@ export default defineComponent({
     }
 
     return {
-      years,
-      year,
       changeYear,
+      year,
+      years,
     }
   },
 })

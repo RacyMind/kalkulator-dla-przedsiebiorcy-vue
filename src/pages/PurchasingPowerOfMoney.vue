@@ -17,22 +17,22 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import PurchasingPowerOfMoneyStatistics from 'components/inflation/PurchasingPowerOfMoneyStatistics.vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
+import PurchasingPowerOfMoneyStatistics from 'components/inflation/PurchasingPowerOfMoneyStatistics.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 
 export default defineComponent({
-  setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Siła nabywcza pieniądza')
-  },
   components: {
-    SectionHeader,
-    PurchasingPowerOfMoneyStatistics,
     Advert,
     Footer,
+    PurchasingPowerOfMoneyStatistics,
+    SectionHeader,
+  },
+  setup() {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Siła nabywcza pieniądza'
   },
 })
 </script>

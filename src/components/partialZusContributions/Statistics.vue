@@ -1,80 +1,59 @@
 <template>
   <div class="q-pa-md">
     <PieChart
-      v-if="zus.health"
-      :key="componentKey"
+      v-if="result.contributionTotal && input.daysOfRunningBusiness"
       class="pieChart"
       :chart-data="chartData"/>
     <span v-else>Brak danych</span>
   </div>
 </template>
 
-<script>
-import PieChart from 'components/PieChart'
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import {PartialZusContributionInputFields} from 'components/partialZusContributions/interfaces/PartialZusContributionInputFields'
+import {PropType, computed, defineComponent} from 'vue'
+import {usePieChart} from 'src/use/usePieChart'
+import PieChart from 'components/partials/PieChart.vue'
+import partialZusContributions from 'components/partialZusContributions/partialZusContributions'
 
-export default {
-  data () {
-    return {
-      componentKey: 0,
-    }
-  },
-  computed: {
-    ...mapGetters({
-      zus: 'partialZusContributions/zus',
-    }),
-    chartData () {
-      return {
-        datasets: [{
-          data: [
-            this.zus.health.toFixed(2),
-            this.zus.sick.toFixed(2),
-            this.zus.rent.toFixed(2),
-            this.zus.pension.toFixed(2),
-            this.zus.fp.toFixed(2),
-          ],
-          backgroundColor: [
-            this.$constants.COLORS.CHART1,
-            this.$constants.COLORS.CHART2,
-            this.$constants.COLORS.CHART3,
-            this.$constants.COLORS.CHART4,
-            this.$constants.COLORS.CHART5,
-          ],
-        }],
-        labels: [
-          'Składka zdrowotna',
-          'Składka chorobowa',
-          'Składka rentowa',
-          'Składka emerytalna',
-          'Składka na Fundusz Pracy',
-        ],
-      }
-    },
-  },
-  watch: {
-    net (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    tax (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-    zus (prevState, newState) {
-      if (prevState !== newState) {
-        this.forceRerender()
-      }
-    },
-  },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
-    },
-  },
+export default defineComponent({
   components: {
     PieChart,
   },
-}
+  props: {
+    input: {
+      required: true,
+      type: Object as PropType<PartialZusContributionInputFields>,
+    },
+  },
+  setup(props) {
+    const labels =  [
+      'Składka chorobowa',
+      'Składka rentowa',
+      'Składka emerytalna',
+      'Składka wypadkowa',
+      'Składka na Fundusz Pracy',
+    ]
+
+    const result = computed(() => {
+      return partialZusContributions.getResult(props.input)
+    })
+
+    const chartData = computed(() => usePieChart(
+        labels,
+        [
+          result.value.sickContribution,
+          result.value.disabilityContribution,
+          result.value.pensionContribution,
+          result.value.accidentContribution,
+          result.value.fpContribution,
+        ],
+      ),
+    )
+
+    return {
+      chartData,
+      result,
+    }
+  },
+})
 </script>

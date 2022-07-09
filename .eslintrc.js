@@ -1,34 +1,72 @@
-const { resolve } = require('path')
-
 module.exports = {
+  // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
+  // This option interrupts the configuration hierarchy at this file
+  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
   root: true,
 
+  // https://eslint.vuejs.org/user-guide/#how-to-use-a-custom-parser
+  // Must use parserOptions instead of "parser" to allow vue-eslint-parser to keep working
+  // `parser: 'vue-eslint-parser'` is already included with any 'plugin:vue/**' config and should be omitted
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-    sourceType: 'module', // Allows for the use of imports
+    parser: require.resolve('@typescript-eslint/parser'),
+    extraFileExtensions: [ '.vue' ]
   },
 
   env: {
     browser: true,
-    node: true
+    es2021: true,
+    node: true,
+    'vue/setup-compiler-macros': true
   },
 
-  // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-  // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
+  // Rules order is important, please avoid shuffling them
   extends: [
-    'plugin:@typescript-eslint/eslint-recommended',
+    // Base ESLint recommended rules
+    // 'eslint:recommended',
+
+    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
+    // ESLint typescript rules
     'plugin:@typescript-eslint/recommended',
-    'plugin:vue/essential'
+
+    // Uncomment any of the lines below to choose desired strictness,
+    // but leave only one uncommented!
+    // See https://eslint.vuejs.org/rules/#available-rules
+    'plugin:vue/vue3-essential', // Priority A: Essential (Error Prevention)
+    // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
+    // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
+
+    // https://github.com/prettier/eslint-config-prettier#installation
+    // usage with Prettier, provided by 'eslint-config-prettier'.
+    'prettier'
   ],
 
-  // required to lint *.vue files
-  plugins: ['vue', '@typescript-eslint'],
+  plugins: [
+    "sort-imports-es6-autofix",
+    "sort-keys-fix",
+    // required to apply rules which need type information
+    '@typescript-eslint',
+
+    // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
+    // required to lint *.vue files
+    'vue'
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
+    // Prettier has not been included as plugin to avoid performance impact
+    // add it as an extension for your IDE
+
+  ],
 
   globals: {
-    ga: true, // Google Analytics
-    cordova: true,
-    __statics: true,
-    process: true
+    ga: 'readonly', // Google Analytics
+    cordova: 'readonly',
+    __statics: 'readonly',
+    __QUASAR_SSR__: 'readonly',
+    __QUASAR_SSR_SERVER__: 'readonly',
+    __QUASAR_SSR_CLIENT__: 'readonly',
+    __QUASAR_SSR_PWA__: 'readonly',
+    process: 'readonly',
+    Capacitor: 'readonly',
+    chrome: 'readonly'
   },
 
   // add your custom rules here
@@ -38,8 +76,6 @@ module.exports = {
     'template-curly-spacing': 'off',
     // TODO: Remove when https://github.com/babel/babel-eslint/issues/530 is fixed
     indent: 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'warn',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-unreachable': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'vue/no-unused-components': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
@@ -74,49 +110,8 @@ module.exports = {
       'error',
       'PascalCase',
     ],
-    'prefer-promise-reject-errors': 0,
     'vue/no-v-html': 'off',
     'func-names': 0,
-    'vue/order-in-components': [
-      'error',
-      {
-        order: [
-          'el',
-          'name',
-          'parent',
-          'functional',
-          [
-            'comments',
-            'delimiters',
-          ],
-          'extends',
-          'mixins',
-          'inheritAttrs',
-          'model',
-          [
-            'props',
-            'propsData',
-          ],
-          'asyncData',
-          'data',
-          'head',
-          'LIFECYCLE_HOOKS',
-          'computed',
-          'watch',
-          'methods',
-          [
-            'components',
-            'directives',
-            'filters',
-          ],
-          [
-            'render',
-            'template',
-          ],
-          'renderError',
-        ],
-      },
-    ],
     'prefer-promise-reject-errors': 'off',
 
     // allow console.log during development only
@@ -129,5 +124,11 @@ module.exports = {
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': "off",
+    "sort-imports-es6-autofix/sort-imports-es6": [2, {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
+    "vue/multi-word-component-names": "off",
   }
-};
+}

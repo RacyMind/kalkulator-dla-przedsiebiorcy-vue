@@ -32,26 +32,26 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
+import PFRONSummary from 'components/terms/PFRONSummary.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import USSummary from 'components/terms/USSummary.vue'
 import ZUSSummary from 'components/terms/ZUSSummary.vue'
-import PFRONSummary from 'components/terms/PFRONSummary.vue'
 
 export default defineComponent({
-  setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Terminy w US, ZUS i PFRON')
-  },
   components: {
-    PFRONSummary,
-    ZUSSummary,
-    USSummary,
-    SectionHeader,
     Advert,
     Footer,
+    PFRONSummary,
+    SectionHeader,
+    USSummary,
+    ZUSSummary,
+  },
+  setup() {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Terminy w US, ZUS i PFRON'
   },
 })
 </script>

@@ -36,17 +36,23 @@
 
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
-import logs from 'components/changeLogs/logs'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import ChangeLog from 'components/changeLogs/ChangeLog.vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import ChangeLog from 'components/changeLogs/ChangeLog.vue'
+import Footer from 'components/partials/Footer.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import logs from 'components/changeLogs/logs'
 
 export default defineComponent({
+  components: {
+    Advert,
+    ChangeLog,
+    Footer,
+    SectionHeader,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Historia zmian')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Historia zmian'
 
     const showAll = ref(false)
 
@@ -58,15 +64,9 @@ export default defineComponent({
     })
 
     return {
-      showAll,
       logItems,
+      showAll,
     }
-  },
-  components: {
-    SectionHeader,
-    ChangeLog,
-    Advert,
-    Footer,
   },
 })
 </script>

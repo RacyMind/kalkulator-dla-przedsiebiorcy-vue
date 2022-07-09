@@ -33,22 +33,30 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import { useStore } from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'src/components/invoice/Form.vue'
-import Summary from 'components/invoice/Summary.vue'
-import Statistics from 'components/invoice/Statistics.vue'
-import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import { InvoiceInputFields } from 'src/components/invoice/interfaces/InvoiceInputFields'
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'src/components/invoice/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/invoice/Statistics.vue'
+import Summary from 'components/invoice/Summary.vue'
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Faktura VAT')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Faktura VAT'
 
     const invoiceInputFields = ref(<InvoiceInputFields>{
       amount: 0,
@@ -65,17 +73,9 @@ export default defineComponent({
 
     return{
       invoiceInputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Statistics,
-    Advert,
-    Footer,
   },
 })
 </script>

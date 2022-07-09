@@ -83,29 +83,11 @@
 <script>
 import { format, isFuture, subMonths } from 'date-fns'
 import { ref } from 'vue'
+import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import api from './api'
 import constants from 'src/logic/constants'
 
 export default {
-  setup () {
-    return {
-      constants,
-      isFuture,
-      startDate: ref(null),
-      endDate: ref(null),
-      onlyPast (date) {
-        return date <= format(new Date(), 'y/MM/dd')
-      },
-    }
-  },
-  created () {
-    const now = new Date()
-    const monthAgo = subMonths(now, 1)
-
-    this.startDate = format(monthAgo, 'Y/MM/dd')
-    this.endDate = format(now, 'Y/MM/dd')
-
-    this.save()
-  },
   computed: {
     isDisabledButton () {
       if (!this.startDate || !this.endDate) {
@@ -120,19 +102,30 @@ export default {
       return false
     },
   },
+  created () {
+    const now = new Date()
+    const monthAgo = subMonths(now, 1)
+
+    this.startDate = format(monthAgo, 'Y/MM/dd')
+    this.endDate = format(now, 'Y/MM/dd')
+
+    this.save()
+  },
   methods: {
     save () {
+      const currencyRateStore = useCurrencyRateStore()
+
       const startDate = format(new Date(this.startDate), 'Y-MM-dd')
       const endDate = format(new Date(this.endDate), 'Y-MM-dd')
 
-      this.$store.commit('exchangeRates/setLoading', true)
+      currencyRateStore.isLoading = true
 
-      this.$store.dispatch('exchangeRates/loadExchangeRateCurrency', {
-        code: this.$route.params.currency,
+      api.loadExchangeRateCurrency(
+        this.$route.params.currency,
         startDate,
         endDate,
-      }).then(response => {
-        this.$store.commit('exchangeRates/setCurrency', response.data)
+      ).then(response => {
+        currencyRateStore.currencyRate =response.data
         this.$q.notify({
           message: 'Źródło danych: Narodowy Bank Polski',
         })
@@ -144,11 +137,22 @@ export default {
         this.$q.notify({
           message: message,
         })
-        this.$store.commit('exchangeRates/setCurrency', null)
+        currencyRateStore.currencyRate = null
       }).finally(() => {
-        this.$store.commit('exchangeRates/setLoading', false)
+        currencyRateStore.isLoading = false
       })
     },
+  },
+  setup () {
+    return {
+      constants,
+      endDate: ref(null),
+      isFuture,
+      onlyPast (date) {
+        return date <= format(new Date(), 'y/MM/dd')
+      },
+      startDate: ref(null),
+    }
   },
 }
 </script>

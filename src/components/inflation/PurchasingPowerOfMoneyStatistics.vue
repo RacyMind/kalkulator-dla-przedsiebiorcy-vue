@@ -50,36 +50,39 @@
 </template>
 
 <script lang="ts">
+import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
 import {computed, defineComponent, ref, watch} from 'vue'
+import {useLineChart} from 'src/use/useLineChart'
+import LineChart from 'components/partials/LineChart.vue'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import validationRules from 'src/logic/validationRules'
-import LineChart from '../LineChart.vue'
 import inflation from './inflation'
-import {useLineChart} from 'src/use/useLineChart'
-import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
+import validationRules from 'src/logic/validationRules'
 
 const chartOptions = {
   legend: {
     display: false,
   },
   scales: {
-    yAxes: [{
+    xAxes: [{
+      time: {
+        unit: 'quarter',
+      },
+      type: 'time',
+    }],
+      yAxes: [{
       scaleLabel: {
         display: true,
         labelString: 'Siła nabywcza pieniądza w zł',
-      },
-    }],
-      xAxes: [{
-      type: 'time',
-      time: {
-        unit: 'quarter',
       },
     }],
   },
 }
 
 export default defineComponent({
+  components: {
+    LineChart,
+  },
   setup () {
     const currentYear = new Date().getFullYear()
     const availableYears = [
@@ -145,19 +148,16 @@ export default defineComponent({
     })
 
     return {
-      validationRules,
-      chartOptions,
       amount,
-      year,
       availableYears,
       chartData,
+      chartOptions,
       labels,
-      values,
       loading,
+      validationRules,
+      values,
+      year,
     }
-  },
-  components: {
-    LineChart,
   },
 })
 </script>

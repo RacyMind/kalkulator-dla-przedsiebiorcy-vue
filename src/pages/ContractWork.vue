@@ -41,31 +41,40 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, Ref, ref, watch} from 'vue'
-import {useStore} from 'vuex'
-import ChooseYear from 'src/components/partials/ChooseYear.vue'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Advert from 'components/partials/Advert.vue'
-import Form from 'components/contractWork/Form.vue'
-import Summary from 'components/contractWork/Summary.vue'
-import Statistics from 'components/contractWork/Statistics.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import constants from 'src/logic/constants'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+import {Ref, defineComponent, ref, watch} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import ChooseYear from 'src/components/partials/ChooseYear.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/contractWork/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/contractWork/Statistics.vue'
+import Summary from 'components/contractWork/Summary.vue'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 export default defineComponent({
+  components: {
+    Advert,
+    ChooseYear,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Umowa o dzieło')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Umowa o dzieło'
 
     const year = ref(helpers.getDefaultYear())
 
     const inputFields:Ref<ContractWorkInputFields> = ref({
-      year: helpers.getDefaultYear(),
-      expenseRate: <ExpenseRate>0,
       amount: 0,
       amountType: constants.AMOUNT_TYPES.GROSS,
+      expenseRate: <ExpenseRate>0,
+      year: helpers.getDefaultYear(),
     })
 
     const scrollTarget = ref(null) as any
@@ -80,20 +89,11 @@ export default defineComponent({
     }
 
     return {
-      year,
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
+      year,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    Form,
-    Summary,
-    Statistics,
-    Footer,
-    ChooseYear,
   },
 })
 </script>

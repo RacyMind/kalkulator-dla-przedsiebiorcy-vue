@@ -53,11 +53,11 @@
 </template>
 
 <script lang="ts">
+import {AmountType} from 'src/types/AmountType'
+import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
+import {VatTaxRate} from 'src/types/VatTaxRate'
 import {computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
-import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
-import {AmountType} from 'src/types/AmountType'
-import {VatTaxRate} from 'src/types/VatTaxRate'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
@@ -99,14 +99,14 @@ export default defineComponent({
     }
 
     return {
-      constants,
-      validationRules,
-      vatTaxRates,
       amount,
       amountType,
-      taxRate,
+      constants,
       isDisabledButton,
       save,
+      taxRate,
+      validationRules,
+      vatTaxRates,
     }
   },
 })

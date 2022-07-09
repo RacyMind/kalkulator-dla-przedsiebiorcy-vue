@@ -1,4 +1,4 @@
-const esModules = ['quasar', 'quasar/lang', 'lodash-es'].join('|')
+const esModules = ['quasar', 'quasar/lang', 'lodash-es'].join('|');
 
 /* eslint-env node */
 module.exports = {
@@ -15,6 +15,8 @@ module.exports = {
       isolatedModules: true,
     },
   },
+  // Jest assumes we are testing in node environment, specify jsdom environment instead
+  testEnvironment: 'jsdom',
   // noStackTrace: true,
   // bail: true,
   // cache: false,
@@ -78,4 +80,4 @@ module.exports = {
   },
   transformIgnorePatterns: [`node_modules/(?!(${esModules}))`],
   snapshotSerializers: ['<rootDir>/node_modules/jest-serializer-vue'],
-}
+};

@@ -17,22 +17,22 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
+import Footer from 'components/partials/Footer.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/salaryStats/Summary.vue'
 
 export default defineComponent({
-  setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Informacje o wynagrodzeniu')
-  },
   components: {
-    Summary,
-    SectionHeader,
     Advert,
     Footer,
+    SectionHeader,
+    Summary,
+  },
+  setup() {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Informacje o wynagrodzeniu'
   },
 })
 </script>

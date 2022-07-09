@@ -14,10 +14,8 @@
 <script>
 import constants from 'src/logic/constants'
 export default {
-  props: ['modelValue'],
   data () {
     return {
-      type: null,
       availableTypes: [
         {
           label: 'Umowa o pracę',
@@ -28,19 +26,21 @@ export default {
           value: constants.AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE.SELF_EMPLOYMENT,
         },
       ],
+      type: null,
     }
   },
+  methods: {
+    changed () {
+      this.$emit('update:modelValue', this.type)
+    },
+  },
+  props: ['modelValue'],
   watch: {
     modelValue: {
       handler: function () {
         this.type = this.modelValue
       },
       immediate: true,
-    },
-  },
-  methods: {
-    changed () {
-      this.$emit('update:modelValue', this.type)
     },
   },
 }

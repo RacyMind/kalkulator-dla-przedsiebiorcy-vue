@@ -1,15 +1,15 @@
-import helpers from 'src/logic/helpers'
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 let year = helpers.getDefaultYear()
 
 let params = {
-  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
-  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
-  sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
   healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
   healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
   lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
+  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
+  sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
 }
 
 /**
@@ -20,12 +20,12 @@ function setYear (newYear) {
   year = newYear
 
   params = {
-    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
-    sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
     healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
     healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
     lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
+    sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
   }
 }
 
@@ -137,14 +137,14 @@ function sumContributions (pensionContribution, rentContribution, sickContributi
 }
 
 export default {
-  setYear,
-  calculatePensionContribution,
-  calculateDisabilityContribution,
-  calculateSickContribution,
-  calculateHealthContribution,
   calculateAccidentContribution,
-  calculatePpkContribution,
   calculateAmountOfDeductionOfHealthContributionFromTax,
-  sumContributions,
+  calculateDisabilityContribution,
   calculateGrossAmountMinusContributions,
+  calculateHealthContribution,
+  calculatePensionContribution,
+  calculatePpkContribution,
+  calculateSickContribution,
+  setYear,
+  sumContributions,
 }

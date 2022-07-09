@@ -33,25 +33,33 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Advert from 'components/partials/Advert.vue'
-import Form from 'components/unregisteredCompany/Form.vue'
-import Summary from 'components/unregisteredCompany/Summary.vue'
-import Statistics from 'components/unregisteredCompany/Statistics.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/unregisteredCompany/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Statistics from 'components/unregisteredCompany/Statistics.vue'
+import Summary from 'components/unregisteredCompany/Summary.vue'
+import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Statistics,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Działalność niezarejestrowana')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Działalność niezarejestrowana'
 
     const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
-      incomeAmount: 0,
       expenses: 0,
+      incomeAmount: 0,
     })
 
     const scrollTarget = ref(null) as any
@@ -62,18 +70,10 @@ export default defineComponent({
     }
 
     return {
-      unregisteredCompanyInputFields,
-      scrollTarget,
       save,
+      scrollTarget,
+      unregisteredCompanyInputFields,
     }
-  },
-  components: {
-    SectionHeader,
-    Advert,
-    Form,
-    Summary,
-    Statistics,
-    Footer,
   },
 })
 </script>

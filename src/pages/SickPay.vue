@@ -26,25 +26,32 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
-import {useStore} from 'vuex'
-import SectionHeader from 'components/partials/SectionHeader.vue'
-import Form from 'components/sickPay/Form.vue'
-import Summary from 'components/sickPay/Summary.vue'
-import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/Footer.vue'
-import helpers from 'src/logic/helpers'
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/sickPay/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Summary from 'components/sickPay/Summary.vue'
+import helpers from 'src/logic/helpers'
 
 export default defineComponent({
+  components: {
+    Advert,
+    Footer,
+    Form,
+    SectionHeader,
+    Summary,
+  },
   setup() {
-    const store = useStore()
-    store.commit('app/setModuleTitle', 'Zasiłek chorobowy')
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Zasiłek chorobowy'
 
     const inputFields = ref(<SickPayInputFields>{
       basicAmount: 0,
-      rate: 1,
       dayCount: 0,
+      rate: 1,
     })
 
     const scrollTarget = ref(null) as any
@@ -56,16 +63,9 @@ export default defineComponent({
 
     return {
       inputFields,
-      scrollTarget,
       save,
+      scrollTarget,
     }
-  },
-  components: {
-    SectionHeader,
-    Form,
-    Summary,
-    Advert,
-    Footer,
   },
 })
 </script>

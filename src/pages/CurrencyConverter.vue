@@ -23,29 +23,38 @@
   </q-page>
 </template>
 
-<script>
-import SectionHeader from 'components/partials/SectionHeader'
-import Form from 'components/currencyConverter/Form'
-import Table from 'components/currencyConverter/Table'
-import Advert from 'components/partials/Advert'
-import Footer from 'components/Footer'
+<script lang="ts">
+import {defineComponent, ref} from 'vue'
+import {useAppStore} from 'stores/app-store'
+import Advert from 'components/partials/Advert.vue'
+import Footer from 'components/partials/Footer.vue'
+import Form from 'components/currencyConverter/Form.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
+import Table from 'components/currencyConverter/Table.vue'
 import helpers from 'src/logic/helpers'
 
-export default {
-  created () {
-    this.$store.commit('app/setModuleTitle', 'Przelicznik walut')
-  },
-  methods: {
-    scrollTo () {
-      helpers.scrollToElement(this.$refs.scrollTarget.$el)
-    },
-  },
+export default defineComponent({
   components: {
-    SectionHeader,
-    Form,
-    Table,
     Advert,
     Footer,
+    Form,
+    SectionHeader,
+    Table,
   },
-}
+  setup () {
+    const appStore = useAppStore()
+    appStore.moduleTitle = 'Przelicznik walut'
+
+    const scrollTarget = ref(null) as any
+
+    const scrollTo = () => {
+      helpers.scrollToElement(scrollTarget?.value?.$el)
+    }
+
+    return {
+      scrollTarget,
+      scrollTo,
+    }
+  },
+})
 </script>

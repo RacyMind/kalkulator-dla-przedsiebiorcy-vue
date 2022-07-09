@@ -1,19 +1,19 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import employeeContributions from 'src/logic/employeeContributions'
-import employerContributions from 'src/logic/employerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
+import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import constants from 'src/logic/constants'
+import employeeContributions from 'src/logic/employeeContributions'
+import employerContributions from 'src/logic/employerContributions'
+import helpers from 'src/logic/helpers'
 import taxes from 'src/logic/taxes'
 
 let params = {
-  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
   amountOfTaxThreshold: constants.PARAMS[helpers.getDefaultYear()].AMOUNT_OF_TAX_THRESHOLD,
-  lumpSumUpToAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
-  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
   grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
+  limitBasicAmountForZus: constants.PARAMS[helpers.getDefaultYear()].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+  lumpSumUpToAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
+  taxRate: constants.PARAMS[helpers.getDefaultYear()].TAX_RATES.FIRST_RATE / 100,
 }
 
 let totalBasisForRentAndPensionContributions = 0
@@ -37,11 +37,11 @@ function resetTotalAmounts () {
  */
 function setParams (year:AvailableYear) {
   params = {
-    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
     amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
-    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
     grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+    limitBasicAmountForZus: constants.PARAMS[year].LIMIT_BASIC_AMOUNT_FOR_ZUS,
+    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
+    taxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
   }
 
   resetTotalAmounts()
@@ -238,18 +238,18 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)
 
   return {
-    netAmount: netAmount,
-    grossAmount: input.grossAmount,
     basisForRentAndPensionContributions: basisForRentAndPensionContributions,
-    pensionContribution: pensionContribution,
-    disabilityContribution: disabilityContribution,
-    sickContribution: sickContribution,
-    ppkContribution: ppkContribution,
-    healthContribution: healthContribution,
-    expenses: expenses,
     basisForTax: basisForTax,
-    taxAmount: taxAmount,
     contributionTotal: pensionContribution + disabilityContribution + sickContribution + ppkContribution + healthContribution,
+    disabilityContribution: disabilityContribution,
+    expenses: expenses,
+    grossAmount: input.grossAmount,
+    healthContribution: healthContribution,
+    netAmount: netAmount,
+    pensionContribution: pensionContribution,
+    ppkContribution: ppkContribution,
+    sickContribution: sickContribution,
+    taxAmount: taxAmount,
   }
 }
 
@@ -306,9 +306,9 @@ function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, ta
 }
 
 export default {
+  findGrossAmountUsingNetAmount,
   getMonthlyResult,
   getYearlyResult,
-  setParams,
   resetTotalAmounts,
-  findGrossAmountUsingNetAmount,
+  setParams,
 }

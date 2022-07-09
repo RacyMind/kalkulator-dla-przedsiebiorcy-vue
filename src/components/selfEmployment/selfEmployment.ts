@@ -1,18 +1,18 @@
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
-import taxes from 'src/logic/taxes'
-import ownerContributions from 'src/logic/ownerContributions'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {IncomeTaxType} from 'src/types/IncomeTaxType'
 import {SelfEmploymentInputFields} from 'components/selfEmployment/interfaces/SelfEmploymentInputFields'
 import {SelfEmploymentSingleResult} from 'components/selfEmployment/interfaces/SelfEmploymentSingleResult'
 import {SelfEmploymentYearlyResult} from 'components/selfEmployment/interfaces/SelfEmploymentYearlyResult'
+import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
+import ownerContributions from 'src/logic/ownerContributions'
+import taxes from 'src/logic/taxes'
 
 let params = {
-  smallBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT,
   bigBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.BIG_AMOUNT,
-  grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
   freeAmountOfTax: constants.PARAMS[helpers.getDefaultYear()].FREE_AMOUNT_OF_TAX,
+  grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
+  smallBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT,
 }
 
 let totalBasisForTax = 0
@@ -35,10 +35,10 @@ function resetTotalAmounts () {
  */
 function setParams (year:AvailableYear) {
   params = {
-    smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
     bigBasisForZUS: constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT,
-    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
     freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
+    grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
+    smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
   }
 
   resetTotalAmounts()
@@ -97,7 +97,13 @@ function calculateTaxAmount (
   amountOfDeductionOfHealthContributionFromTax:number,
   lumpSumTaxRate:number,
   isFreeAmount:boolean,
+  year:AvailableYear,
   ):number {
+  // Since 2022 the health contribution reduces  the income instead of the tax amount
+  if(year >= 2022 && [constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.LUMP_SUM].includes(incomeTaxType)) {
+    basisForTax -= amountOfDeductionOfHealthContributionFromTax
+    amountOfDeductionOfHealthContributionFromTax = 0
+  }
   switch (incomeTaxType) {
     case constants.TAX_TYPES.GENERAL:
       return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
@@ -135,18 +141,18 @@ function calculateNetAmount (
 function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingleResult {
   if (!input.incomeTaxType) {
     return {
-      netAmount: 0,
-      grossAmount: 0,
-      pensionContribution: 0,
-      disabilityContribution: 0,
-      sickContribution: 0,
       accidentContribution: 0,
-      fpContribution: 0,
-      healthContribution: 0,
-      contributionTotal: 0,
       amountOfDeductionOfHealthContributionFromTax: 0,
-      expenses: 0,
       basisForTax: 0,
+      contributionTotal: 0,
+      disabilityContribution: 0,
+      expenses: 0,
+      fpContribution: 0,
+      grossAmount: 0,
+      healthContribution: 0,
+      netAmount: 0,
+      pensionContribution: 0,
+      sickContribution: 0,
       taxAmount: 0,
     }
   }
@@ -189,13 +195,14 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
     sickContribution = ownerContributions.calculateSickContribution(basisForZus)
   }
 
-  let grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution)
+  const grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution)
 
-  if(input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
-    grossAmountMinusEmployeeContributions -= fpContribution
-  }
 
   let amountToCalculateHealthContribution = grossAmountMinusEmployeeContributions
+
+  if(input.year < 2022 && input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
+    amountToCalculateHealthContribution -= fpContribution
+  }
 
   if([constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.GENERAL].includes(input.incomeTaxType)) {
     amountToCalculateHealthContribution = amountToCalculateHealthContribution - input.expenses
@@ -207,6 +214,10 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
 
   const newTotalGrossAmount = totalGrossAmount + input.amount
   let amountToCalculateTax = grossAmountMinusEmployeeContributions
+
+  if(input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
+    amountToCalculateTax -= fpContribution
+  }
 
   if (input.isReliefForBigFamily || input.isReliefForSenior) {
     let limitFreeAmountOfTax = params.grossAmountLimitForAid
@@ -227,25 +238,25 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
   }
 
   const basisForTax = calculateBasisForTax(amountToCalculateTax, input.expenses, input.incomeTaxType)
-  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount)
+  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount, input.year)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(input.amount, taxAmount, totalContributions, input.expenses)
 
   return {
-    netAmount: netAmount,
-    grossAmount: input.amount,
-    pensionContribution: pensionContribution,
-    disabilityContribution: disabilityContribution,
-    sickContribution: sickContribution,
     accidentContribution: accidentContribution,
-    fpContribution: fpContribution,
-    healthContribution: healthContribution,
-    expenses: input.expenses,
-    basisForTax: basisForTax,
-    taxAmount: taxAmount,
     amountOfDeductionOfHealthContributionFromTax: amountOfDeductionOfHealthContributionFromTax,
+    basisForTax: basisForTax,
     contributionTotal: pensionContribution + disabilityContribution + sickContribution + accidentContribution + healthContribution + fpContribution,
+    disabilityContribution: disabilityContribution,
+    expenses: input.expenses,
+    fpContribution: fpContribution,
+    grossAmount: input.amount,
+    healthContribution: healthContribution,
+    netAmount: netAmount,
+    pensionContribution: pensionContribution,
+    sickContribution: sickContribution,
+    taxAmount: taxAmount,
   }
 }
 
@@ -320,38 +331,38 @@ function getYearlyResult (monthlyInputs:SelfEmploymentInputFields[]):SelfEmploym
 
 function sumMonthlyResults(monthlyResults:SelfEmploymentSingleResult[]):SelfEmploymentSingleResult {
   return {
-    netAmount: helpers.round(monthlyResults.map(result => result.netAmount)
-      .reduce((current, sum) => current + sum, 0), 2),
-    grossAmount: helpers.round(monthlyResults.map(result => result.grossAmount)
-      .reduce((current, sum) => current + sum, 0), 2),
-    pensionContribution: helpers.round(monthlyResults.map(result => result.pensionContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    disabilityContribution: helpers.round(monthlyResults.map(result => result.disabilityContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    sickContribution: helpers.round(monthlyResults.map(result => result.sickContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    healthContribution: helpers.round(monthlyResults.map(result => result.healthContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    fpContribution: helpers.round(monthlyResults.map(result => result.fpContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
     accidentContribution: helpers.round(monthlyResults.map(result => result.accidentContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    basisForTax: monthlyResults.map(result => result.basisForTax)
-      .reduce((current, sum) => current + sum, 0),
-    expenses: helpers.round(monthlyResults.map(result => result.expenses)
-      .reduce((current, sum) => current + sum, 0), 2),
-    taxAmount: monthlyResults.map(result => result.taxAmount)
-      .reduce((current, sum) => current + sum, 0),
-    contributionTotal: helpers.round(monthlyResults.map(result => result.contributionTotal)
       .reduce((current, sum) => current + sum, 0), 2),
     amountOfDeductionOfHealthContributionFromTax: helpers.round(monthlyResults.map(result => result.amountOfDeductionOfHealthContributionFromTax)
       .reduce((current, sum) => current + sum, 0), 2),
+    basisForTax: monthlyResults.map(result => result.basisForTax)
+      .reduce((current, sum) => current + sum, 0),
+    contributionTotal: helpers.round(monthlyResults.map(result => result.contributionTotal)
+      .reduce((current, sum) => current + sum, 0), 2),
+    disabilityContribution: helpers.round(monthlyResults.map(result => result.disabilityContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    expenses: helpers.round(monthlyResults.map(result => result.expenses)
+      .reduce((current, sum) => current + sum, 0), 2),
+    fpContribution: helpers.round(monthlyResults.map(result => result.fpContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    grossAmount: helpers.round(monthlyResults.map(result => result.grossAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    healthContribution: helpers.round(monthlyResults.map(result => result.healthContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    netAmount: helpers.round(monthlyResults.map(result => result.netAmount)
+      .reduce((current, sum) => current + sum, 0), 2),
+    pensionContribution: helpers.round(monthlyResults.map(result => result.pensionContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    sickContribution: helpers.round(monthlyResults.map(result => result.sickContribution)
+      .reduce((current, sum) => current + sum, 0), 2),
+    taxAmount: monthlyResults.map(result => result.taxAmount)
+      .reduce((current, sum) => current + sum, 0),
   }
 }
 
 export default {
   getMonthlyResult,
   getYearlyResult,
-  setParams,
   resetTotalAmounts,
+  setParams,
 }
