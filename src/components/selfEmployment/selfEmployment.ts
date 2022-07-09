@@ -97,7 +97,13 @@ function calculateTaxAmount (
   amountOfDeductionOfHealthContributionFromTax:number,
   lumpSumTaxRate:number,
   isFreeAmount:boolean,
+  year:AvailableYear,
   ):number {
+  // Since 2022 the health contribution reduces  the income instead of the tax amount
+  if(year >= 2022 && [constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.LUMP_SUM].includes(incomeTaxType)) {
+    basisForTax -= amountOfDeductionOfHealthContributionFromTax
+    amountOfDeductionOfHealthContributionFromTax = 0
+  }
   switch (incomeTaxType) {
     case constants.TAX_TYPES.GENERAL:
       return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
@@ -189,13 +195,14 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
     sickContribution = ownerContributions.calculateSickContribution(basisForZus)
   }
 
-  let grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution)
+  const grossAmountMinusEmployeeContributions = input.amount - (pensionContribution + disabilityContribution + sickContribution + accidentContribution)
 
-  if(input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
-    grossAmountMinusEmployeeContributions -= fpContribution
-  }
 
   let amountToCalculateHealthContribution = grossAmountMinusEmployeeContributions
+
+  if(input.year < 2022 && input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
+    amountToCalculateHealthContribution -= fpContribution
+  }
 
   if([constants.TAX_TYPES.LINEAR, constants.TAX_TYPES.GENERAL].includes(input.incomeTaxType)) {
     amountToCalculateHealthContribution = amountToCalculateHealthContribution - input.expenses
@@ -207,6 +214,10 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
 
   const newTotalGrossAmount = totalGrossAmount + input.amount
   let amountToCalculateTax = grossAmountMinusEmployeeContributions
+
+  if(input.incomeTaxType != constants.TAX_TYPES.LUMP_SUM) {
+    amountToCalculateTax -= fpContribution
+  }
 
   if (input.isReliefForBigFamily || input.isReliefForSenior) {
     let limitFreeAmountOfTax = params.grossAmountLimitForAid
@@ -227,7 +238,7 @@ function getMonthlyResult (input:SelfEmploymentInputFields):SelfEmploymentSingle
   }
 
   const basisForTax = calculateBasisForTax(amountToCalculateTax, input.expenses, input.incomeTaxType)
-  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount)
+  const taxAmount = calculateTaxAmount(input.amount, input.expenses, basisForTax, input.incomeTaxType, amountOfDeductionOfHealthContributionFromTax, input.taxRateForLumpSum, input.isFreeAmount, input.year)
 
   const totalContributions = ownerContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution, accidentContribution, fpContribution)
   const netAmount = calculateNetAmount(input.amount, taxAmount, totalContributions, input.expenses)

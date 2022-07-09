@@ -16,8 +16,3 @@
     />
   </div>
 </template>
-<style scoped>
-.advert{
-  height:100px;
-}
-</style>

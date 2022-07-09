@@ -1,7 +1,7 @@
 export default [
   {
-    content: '<ul><li>Refaktoryzacja Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
-    publish_date: '2022-06-25',
+    content: '<ul><li>Poprawiono błąd w odliczaniu składki zdrowotnej.</li><li>Poprawiono błąd w odliczaniu kwotu wolnej od podatku po przekroczeniu 2. progu.</li><li>Refaktoryzacja Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
+    publish_date: '2022-07-09',
     version: '4.8.0',
   },
   {

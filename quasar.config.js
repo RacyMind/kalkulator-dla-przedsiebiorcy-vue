@@ -40,14 +40,11 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
-      extendViteConf(viteConf, { isServer, isClient }) {
-        viteConf.base = ''
-      },
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
-
+      publicPath: 'app',
       vueRouterMode: 'hash',
 
       // vueRouterBase,
@@ -176,13 +173,10 @@ module.exports = configure(function (/* ctx */) {
     pwa: {
       workboxMode: 'generateSW', // or 'injectManifest'
       injectPwaMetaTags: false,
-      swFilename: 'sw.js',
-      manifestFilename: 'manifest.json',
+      swFilename: './sw.js',
+      manifestFilename: './manifest.json',
       useCredentialsForManifestTag: false,
-      extendGenerateSWOptions (cfg) {
-        cfg.skipWaiting = false
-        cfg.clientsClaim = false
-      },
+      extendGenerateSWOptions (cfg) {},
       extendInjectManifestOptions (cfg) {},
       extendManifestJson (json) {},
       extendPWACustomSWConf (esbuildConf) {},
