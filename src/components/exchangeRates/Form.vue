@@ -8,8 +8,8 @@
           mask="##.##.####"
           label="Data początkowa*"
           :rules="[
+            validationRules.todayOrPast,
             validationRules.required,
-            date => !isFuture(parse(date, 'dd.MM.yyyy', new Date())) || 'Wybierz datę z przeszłości lub dzisiejszą'
           ]">
           <template v-slot:append>
             <q-icon
@@ -27,8 +27,8 @@
           mask="##.##.####"
           label="Data końcowa*"
           :rules="[
+            validationRules.todayOrPast,
             validationRules.required,
-            date => !isFuture(parse(date, 'dd.MM.yyyy', new Date())) || 'Wybierz datę z przeszłości lub dzisiejszą'
           ]">
           <template v-slot:append>
             <q-icon
@@ -54,97 +54,76 @@
   </q-form>
 </template>
 
-<script>
+<script lang="ts" setup>
 import {computed, ref} from 'vue'
 import {format, isFuture, parse, subMonths} from 'date-fns'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
 import {useQuasar} from 'quasar'
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 import DatePopup from 'components/partials/DatePopup.vue'
-import api from './api'
-import constants from 'src/logic/constants'
+import npb from 'src/api/nbp'
 import validationRules from 'src/logic/validationRules'
 
-export default {
-  components: {
-    DatePopup,
-  },
-  setup() {
-    const $q = useQuasar()
-    const currencyRateStore = useCurrencyRateStore()
-    const route = useRoute()
+const $q = useQuasar()
+const currencyRateStore = useCurrencyRateStore()
+const route = useRoute()
 
-    const now = new Date()
-    const monthAgo = subMonths(now, 1)
-    const startDate = ref(format(monthAgo, 'dd.MM.y'))
-    const endDate = ref(format(now, 'dd.MM.y'))
+const now = new Date()
+const monthAgo = subMonths(now, 1)
+const startDate = ref(format(monthAgo, 'dd.MM.y'))
+const endDate = ref(format(now, 'dd.MM.y'))
 
-    const formattedStartDate = computed(() => {
-      return parse(
-        startDate.value,
-        'dd.MM.y',
-        new Date(),
-      )
+const formattedStartDate = computed(() => {
+  return parse(
+    startDate.value,
+    'dd.MM.y',
+    new Date(),
+  )
+})
+
+const formattedEndDate = computed(() => {
+  return parse(
+    endDate.value,
+    'dd.MM.y',
+    new Date(),
+  )
+})
+
+const isDisabledButton = computed(() => {
+  if (!startDate.value || !endDate.value) {
+    return true
+  }
+  if (isFuture(formattedStartDate.value) || isFuture(formattedEndDate.value)) {
+    return true
+  }
+  return formattedStartDate.value >= formattedEndDate.value
+})
+
+const loadData = () => {
+  currencyRateStore.isLoading = true
+
+  npb.loadExchangeRateCurrency(
+    route.params.currency as string,
+    format(formattedStartDate.value, 'y-MM-dd'),
+    format(formattedEndDate.value, 'y-MM-dd'),
+  ).then(response => {
+    currencyRateStore.currencyRate = response.data
+    $q.notify({
+      message: 'Źródło danych: Narodowy Bank Polski',
     })
-
-    const formattedEndDate = computed(() => {
-      return parse(
-        endDate.value,
-        'dd.MM.y',
-        new Date(),
-      )
-    })
-
-    const isDisabledButton = computed(() => {
-      if (!startDate.value || !endDate.value) {
-        return true
-      }
-      if (isFuture(formattedStartDate.value) || isFuture(formattedEndDate.value)) {
-        return true
-      }
-      return formattedStartDate.value >= formattedEndDate.value
-    })
-
-    const loadData = () => {
-      currencyRateStore.isLoading = true
-
-      api.loadExchangeRateCurrency(
-        route.params.currency,
-        format(formattedStartDate.value, 'y-MM-dd'),
-        format(formattedEndDate.value, 'y-MM-dd'),
-      ).then(response => {
-        currencyRateStore.currencyRate = response.data
-        $q.notify({
-          message: 'Źródło danych: Narodowy Bank Polski',
-        })
-      }).catch((error) => {
-        let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
-        if (error.response) {
-          message = error.response.data
-        }
-        $q.notify({
-          message: message,
-        })
-        currencyRateStore.currencyRate = null
-      }).finally(() => {
-        currencyRateStore.isLoading = false
-      })
+  }).catch((error) => {
+    let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
+    if (error.response) {
+      message = error.response.data
     }
-
-    loadData()
-
-    return {
-      constants,
-      endDate,
-      formattedEndDate,
-      formattedStartDate,
-      isDisabledButton,
-      isFuture,
-      loadData,
-      parse,
-      startDate,
-      validationRules,
-    }
-  },
+    $q.notify({
+      message: message,
+    })
+    currencyRateStore.currencyRate = null
+  }).finally(() => {
+    currencyRateStore.isLoading = false
+  })
 }
+
+loadData()
 </script>

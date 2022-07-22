@@ -5,56 +5,40 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_description" />
+        <q-icon name="o_description"/>
         Wypełnij formularz
       </SectionHeader>
       <Form
         class="q-mt-md q-mb-lg q-px-md"
         @scroll="scrollTo"
       />
-      <Advert />
+      <Advert/>
       <SectionHeader ref="scrollTarget">
-        <q-icon name="o_credit_card" />
+        <q-icon name="o_credit_card"/>
         Podsumowanie
       </SectionHeader>
-      <Table />
+      <Summary/>
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {defineComponent, ref} from 'vue'
 import {useAppStore} from 'stores/app-store'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/currencyConverter/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Table from 'components/currencyConverter/Table.vue'
+import Summary from 'components/currencyConverter/Summary.vue'
 import helpers from 'src/logic/helpers'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    Form,
-    SectionHeader,
-    Table,
-  },
-  setup () {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Przelicznik walut'
+const appStore = useAppStore()
+appStore.moduleTitle = 'Przelicznik walut'
 
-    const scrollTarget = ref(null) as any
+const scrollTarget = ref(null) as any
 
-    const scrollTo = () => {
-      helpers.scrollToElement(scrollTarget?.value?.$el)
-    }
-
-    return {
-      scrollTarget,
-      scrollTo,
-    }
-  },
-})
+const scrollTo = () => {
+  helpers.scrollToElement(scrollTarget?.value?.$el)
+}
 </script>

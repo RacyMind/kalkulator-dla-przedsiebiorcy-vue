@@ -9,7 +9,8 @@
           step="0.01"
           label="Kwota*"
           color="brand"
-          required
+          :rules="[validationRules.requiredAmount]"
+          lazy-rules
         />
       </div>
       <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
@@ -50,11 +51,12 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {computed, defineComponent, ref} from 'vue'
 import {useCurrencyConverterStore} from 'stores/currency-converter-store'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
 import currencyConverter from './currencyConverter'
+import validationRules from 'src/logic/validationRules'
 
 const pln = {
   code: 'PLN',
@@ -62,67 +64,56 @@ const pln = {
   label: 'PLN złoty',
   mid: 1,
 }
-export default defineComponent({
-  setup (props, context) {
-    const currencyRateStore = useCurrencyRateStore()
-    const currencyConverterStore = useCurrencyConverterStore()
 
-    currencyRateStore.loadLatestExchangeRates()
+const emit = defineEmits(['scroll'])
 
-    const amount = ref(null)
-    const currencies = ref([pln])
-    const fromCurrency = ref(pln)
-    const toCurrency = ref(pln)
+const currencyRateStore = useCurrencyRateStore()
+const currencyConverterStore = useCurrencyConverterStore()
 
-    const isDisabledButton = computed(() => {
-      if(currencyRateStore.isLoading) {
-        return false
-      }
-      return !amount.value || !fromCurrency.value || !toCurrency.value
-    })
+currencyRateStore.loadLatestExchangeRates()
 
-    const filterCurrency =  (val: string, update: any) => {
-      let allRates = [pln]
-      allRates = allRates.concat(JSON.parse(JSON.stringify(currencyRateStore.currencyRates)))
-      allRates.forEach(rate => {
-        rate.label = `${rate.code} ${rate.currency}`
-      })
+const amount = ref(null)
+const currencies = ref([pln])
+const fromCurrency = ref(pln)
+const toCurrency = ref(pln)
 
-      if (val === '') {
-        update(() => {
-          currencies.value = allRates
-        })
-        return
-      }
-
-      update(() => {
-        const needle = val.toLowerCase()
-        currencies.value = allRates.filter(currency => currency.label.toLowerCase().indexOf(needle) > -1)
-      })
-    }
-
-    const calculate =  () => {
-      const fromRatio = Number(fromCurrency.value.mid)
-      const toRatio = Number(toCurrency.value.mid)
-
-      currencyConverterStore.amount = amount.value
-      currencyConverterStore.valueForOne = currencyConverter.convert(1, fromRatio, toRatio)
-      currencyConverterStore.valueForWholeAmount = currencyConverter.convert(amount.value, fromRatio, toRatio)
-      currencyConverterStore.fromCurrency = fromCurrency.value.code
-      currencyConverterStore.toCurrency = toCurrency.value.code
-
-      context.emit('scroll')
-    }
-
-    return {
-      amount,
-      calculate,
-      currencies,
-      filterCurrency,
-      fromCurrency,
-      isDisabledButton,
-      toCurrency,
-    }
-  },
+const isDisabledButton = computed(() => {
+  if (currencyRateStore.isLoading) {
+    return false
+  }
+  return !amount.value || !fromCurrency.value || !toCurrency.value
 })
+
+const filterCurrency = (val: string, update: any) => {
+  let allRates = [pln]
+  allRates = allRates.concat(JSON.parse(JSON.stringify(currencyRateStore.currencyRates)))
+  allRates.forEach(rate => {
+    rate.label = `${rate.code} ${rate.currency}`
+  })
+
+  if (val === '') {
+    update(() => {
+      currencies.value = allRates
+    })
+    return
+  }
+
+  update(() => {
+    const needle = val.toLowerCase()
+    currencies.value = allRates.filter(currency => currency.label.toLowerCase().indexOf(needle) > -1)
+  })
+}
+
+const calculate = () => {
+  const fromRatio = Number(fromCurrency.value.mid)
+  const toRatio = Number(toCurrency.value.mid)
+
+  currencyConverterStore.amount = amount.value
+  currencyConverterStore.valueForOne = currencyConverter.convert(1, fromRatio, toRatio)
+  currencyConverterStore.valueForWholeAmount = currencyConverter.convert(amount.value, fromRatio, toRatio)
+  currencyConverterStore.fromCurrency = fromCurrency.value.code
+  currencyConverterStore.toCurrency = toCurrency.value.code
+
+  emit('scroll')
+}
 </script>
