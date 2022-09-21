@@ -16,7 +16,9 @@
               name="event"
               class="cursor-pointer"/>
           </template>
-          <DatePopup v-model="startDate"/>
+          <DatePopup
+            v-model="startDate"
+            only-past-or-today/>
         </q-input>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -35,7 +37,9 @@
               name="event"
               class="cursor-pointer"/>
           </template>
-          <DatePopup v-model="endDate"/>
+          <DatePopup
+            v-model="endDate"
+            only-past-or-today/>
         </q-input>
       </div>
     </div>
