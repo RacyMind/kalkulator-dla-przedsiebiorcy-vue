@@ -38,6 +38,18 @@
       hide-pagination
       class="no-shadow"
       :pagination="{rowsPerPage: 999}">
+      <template v-slot:body-cell-action="props">
+        <q-td :props="props">
+          <q-btn
+            color="negative"
+            icon-right="chevron_right"
+            no-caps
+            flat
+            dense
+            @click="openCurrency(props.row)"
+          />
+        </q-td>
+      </template>
       <template v-slot:no-data>
         <div class="full-width row flex-center q-gutter-sm">
           <span>
@@ -71,7 +83,7 @@ const columns = [
     label: 'Nazwa waluty',
     name: 'currency',
     required: true,
-    style: 'max-width:200px;  white-space: normal !important;word-wrap: break-word;',
+    style: 'max-width:130px; white-space: normal !important;word-wrap: break-word;',
   },
   {
     align: 'left',
@@ -87,6 +99,12 @@ const columns = [
     format: (val: string) => `${val}`,
     label: 'Kurs średni',
     name: 'mid',
+    required: true,
+  },
+  {
+    field:'action',
+    label: '',
+    name: 'action',
     required: true,
   },
 ]
