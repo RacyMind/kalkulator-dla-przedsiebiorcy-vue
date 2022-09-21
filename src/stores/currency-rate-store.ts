@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import {useQuasar} from 'quasar'
-import api from 'components/exchangeRates/api'
+import npb from 'src/api/nbp'
 
 export const useCurrencyRateStore = defineStore('currency-rate', {
   actions: {
@@ -9,7 +9,7 @@ export const useCurrencyRateStore = defineStore('currency-rate', {
 
       this.isLoading = true
 
-      api.loadLatestExchangeRates().then(response => {
+      npb.loadLatestExchangeRates().then(response => {
         this.date = response.data[0].effectiveDate
         this.currencyRates = response.data[0].rates
         $q.notify({

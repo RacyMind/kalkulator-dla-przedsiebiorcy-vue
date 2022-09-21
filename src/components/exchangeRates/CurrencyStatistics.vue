@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-md">
     <LineChart
-      v-if="currency"
-      :key="componentKey"
+      v-if="currencyRateStore.currencyRate"
       :chart-data="chartData"
       :chart-options="chartOptions"
     />
@@ -10,76 +9,39 @@
   </div>
 </template>
 
-<script>
-import { colors } from 'quasar'
-import { deepEqual } from 'src/use/deepEqual'
+<script lang="ts" setup>
+import {computed} from 'vue'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import {useLineChart} from 'src/use/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
-import constants from 'src/logic/constants'
-export default {
-  components: {
-    LineChart,
+
+const currencyRateStore = useCurrencyRateStore()
+
+const chartOptions = {
+  legend: {
+    display: false,
   },
-  computed: {
-    chartData () {
-      return {
-        datasets: [{
-          borderColor: colors.lighten(constants.COLORS.EXCHANGE_RATES, -20),
-          data: this.rates,
-          fill: false,
-          label: this.currency.currency,
-        }],
-        labels: this.dates,
-      }
-    },
-    currency() {
-      const currencyRateStore = useCurrencyRateStore()
-      return currencyRateStore.currencyRate
-    },
-    dates () {
-      return this.currency.rates.map(rate => rate.effectiveDate)
-    },
-    rates () {
-      return this.currency.rates.map(rate => {
+}
+
+const chartData = computed(() => {
+    let dates: any[] = []
+    let rates: any[] = []
+    if (currencyRateStore.currencyRate && currencyRateStore.currencyRate.rates) {
+      dates = currencyRateStore.currencyRate.rates.map(rate => {
+        return rate.effectiveDate
+      })
+      rates = currencyRateStore.currencyRate.rates.map(rate => {
         return {
           x: new Date(rate.effectiveDate),
           y: rate.mid,
         }
       })
-    },
-  },
-  data () {
-    return {
-      chartOptions: {
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            time: {
-              unit: 'day',
-            },
-            type: 'time',
-          }],
-        },
-      },
-      componentKey: 0,
     }
+    return useLineChart(
+      currencyRateStore.currencyRate.currency,
+      dates,
+      rates,
+    )
   },
-  methods: {
-    forceRerender () {
-      this.componentKey += 1
-    },
-  },
-  watch: {
-    currency: {
-      handler (prevState, newState) {
-        if (!deepEqual(prevState, newState)) {
-          this.forceRerender()
-        }
-      },
-      immediate: true,
-    },
-  },
-}
+)
 </script>

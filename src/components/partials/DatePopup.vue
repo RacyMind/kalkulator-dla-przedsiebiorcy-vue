@@ -4,8 +4,9 @@
     class="no-shadow bg-transparent">
     <q-date
       v-model="date"
-      mask="DD.MM.YYYY"
       :locale="polishLocalisation"
+      mask="DD.MM.YYYY"
+      :options="validDays"
       @update:model-value="changeDate"
     >
     </q-date>
@@ -14,6 +15,7 @@
 
 <script lang="ts">
 import {defineComponent, ref, watch} from 'vue'
+import {isFuture, isWeekend, parse} from 'date-fns'
 
 const polishLocalisation = {
   days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
@@ -27,6 +29,16 @@ export default defineComponent({
     modelValue: {
       required: true,
       type: String,
+    },
+    onlyPastOrToday: {
+      defaut: false,
+      required: false,
+      type: Boolean,
+    },
+    onlyWorkDays: {
+      defaut: false,
+      required: false,
+      type: Boolean,
     },
   },
   setup(props, context) {
@@ -42,11 +54,24 @@ export default defineComponent({
       context.emit('update:modelValue', date.value)
     }
 
+    const validDays = (dateStr: string) => {
+      const date = parse(dateStr,'y/MM/dd', new Date())
+
+      if (props.onlyPastOrToday && isFuture(date)) {
+        return false
+      }
+      if (props.onlyWorkDays && isWeekend(date)) {
+        return false
+      }
+      return true
+    }
+
     return {
       changeDate,
       date,
       polishLocalisation,
       qDateProxyRef,
+      validDays,
     }
   },
 })

@@ -35,6 +35,7 @@ export default defineComponent({
     const chart = {
       data: {
         ...props.chartData,
+        labels: [...props.chartData.labels],
       },
       options: {
         ...props.chartOptions,
@@ -44,10 +45,9 @@ export default defineComponent({
 
 
     watch(props, async () => {
-      chart.data.datasets[0].data = {
-        ...props.chartData.datasets[0].data,
-      }
-      chartRef.value.update(4)
+      chart.data.datasets[0].data = [...props.chartData.datasets[0].data]
+      chart.data.labels = [...props.chartData.labels]
+      chartRef.value.update(1)
     }, {deep: true})
 
     return {
