@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header
-      v-if="appStore.moduleTitle"
+      v-if="breadcrumbStore.items.length"
       class="bg-red-8"
       elevated>
       <q-toolbar>
@@ -15,10 +15,28 @@
         />
         <q-toolbar-title>
           <div class="row justify-between">
-            <div v-if="appStore.moduleTitle">
-              {{ appStore.moduleTitle }}
+            <div>
+              <q-breadcrumbs
+                active-color="white"
+                gutter="xs"
+                class="text-subtitle1">
+                <template v-slot:separator>
+                  <q-icon
+                    name="chevron_right"
+                  />
+                </template>
+                <q-breadcrumbs-el
+                  icon="home"
+                  to="/" />
+                <q-breadcrumbs-el
+                  v-for="item in breadcrumbStore.items"
+                  :key="item.name"
+                  :label="item.name"
+                  :to="item.to"
+                />
+              </q-breadcrumbs>
             </div>
-            <div class="xs-hide">
+            <div class="xs-hide text-subtitle1">
               {{ constants.APP.NAME }}
             </div>
           </div>
@@ -54,7 +72,7 @@
     <q-page-container
       class="flex flex-center bg-teal-1"
       :class="{
-        'q-pt-lg': !appStore.moduleTitle
+        'q-pt-lg': !breadcrumbStore.items.length
       }"
     >
       <router-view/>
@@ -62,30 +80,14 @@
   </q-layout>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {defineComponent, ref} from 'vue'
-import {useAppStore} from 'stores/app-store'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import constants from 'src/logic/constants'
 
-
-export default defineComponent({
-  components: {
-    Menu,
-    SupportProject,
-  },
-  setup() {
-    const appStore = useAppStore()
-    const leftDrawerOpen = ref(false)
-    const openModal = ref(false)
-
-    return {
-      appStore,
-      constants,
-      leftDrawerOpen,
-      openModal,
-    }
-  },
-})
+const breadcrumbStore = useBreadcrumbStore()
+const leftDrawerOpen = ref(false)
+const openModal = ref(false)
 </script>

@@ -32,10 +32,10 @@
   </q-page>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
-import {defineComponent, ref} from 'vue'
-import {useAppStore} from 'stores/app-store'
+import {ref} from 'vue'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/unregisteredCompany/Form.vue'
@@ -44,36 +44,22 @@ import Statistics from 'components/unregisteredCompany/Statistics.vue'
 import Summary from 'components/unregisteredCompany/Summary.vue'
 import helpers from 'src/logic/helpers'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    Form,
-    SectionHeader,
-    Statistics,
-    Summary,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Działalność niezarejestrowana',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Działalność niezarejestrowana'
+]
 
-    const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
-      expenses: 0,
-      incomeAmount: 0,
-    })
-
-    const scrollTarget = ref(null) as any
-
-    const save = (input: UnregisteredCompanyInputFields) => {
-      unregisteredCompanyInputFields.value = input
-      helpers.scrollToElement(scrollTarget?.value?.$el)
-    }
-
-    return {
-      save,
-      scrollTarget,
-      unregisteredCompanyInputFields,
-    }
-  },
+const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
+  expenses: 0,
+  incomeAmount: 0,
 })
+
+const scrollTarget = ref(null) as any
+
+const save = (input: UnregisteredCompanyInputFields) => {
+  unregisteredCompanyInputFields.value = input
+  helpers.scrollToElement(scrollTarget?.value?.$el)
+}
 </script>

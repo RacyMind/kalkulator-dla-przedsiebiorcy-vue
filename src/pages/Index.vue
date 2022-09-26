@@ -22,15 +22,11 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script lang="ts" setup>
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Footer from 'components/partials/Footer.vue'
 import Menu from 'components/partials/menu/Menu.vue'
-export default defineComponent({
-  components: {
-    Footer,
-    Menu,
-  },
 
-})
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = []
 </script>

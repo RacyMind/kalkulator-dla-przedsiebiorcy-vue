@@ -16,12 +16,16 @@
 </template>
 
 <script lang="ts" setup>
-import {useAppStore} from 'stores/app-store'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Table from 'components/exchangeRates/Table.vue'
 
-const appStore = useAppStore()
-appStore.moduleTitle = 'Kursy walut'
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Kursy walut',
+  },
+]
 </script>

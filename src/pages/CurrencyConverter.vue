@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-import {defineComponent, ref} from 'vue'
-import {useAppStore} from 'stores/app-store'
+import {ref} from 'vue'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/currencyConverter/Form.vue'
@@ -33,8 +33,12 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/currencyConverter/Summary.vue'
 import helpers from 'src/logic/helpers'
 
-const appStore = useAppStore()
-appStore.moduleTitle = 'Przelicznik walut'
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Przelicznik walut',
+  },
+]
 
 const scrollTarget = ref(null) as any
 
