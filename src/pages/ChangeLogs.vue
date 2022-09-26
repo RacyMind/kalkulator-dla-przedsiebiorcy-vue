@@ -5,17 +5,17 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="list" />
+        <q-icon name="list"/>
         Historia zmian
       </SectionHeader>
-      <Advert />
+      <Advert/>
       <div
         v-for="log in logItems"
         :key="log.version">
         <ChangeLog
           :log="log"
         />
-        <q-separator v-if="log !== logItems[logItems.length - 1]" />
+        <q-separator v-if="log !== logItems[logItems.length - 1]"/>
       </div>
 
       <div class="text-center">
@@ -30,43 +30,32 @@
         />
       </div>
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, ref} from 'vue'
-import {useAppStore} from 'stores/app-store'
+<script lang="ts" setup>
+import {computed, ref} from 'vue'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import ChangeLog from 'components/changeLogs/ChangeLog.vue'
 import Footer from 'components/partials/Footer.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import logs from 'components/changeLogs/logs'
 
-export default defineComponent({
-  components: {
-    Advert,
-    ChangeLog,
-    Footer,
-    SectionHeader,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Historia zmian',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Historia zmian'
+]
 
-    const showAll = ref(false)
+const showAll = ref(false)
 
-    const logItems = computed(() => {
-      if (!showAll.value) {
-        return logs.slice(0, 5)
-      }
-      return logs
-    })
-
-    return {
-      logItems,
-      showAll,
-    }
-  },
+const logItems = computed(() => {
+  if (!showAll.value) {
+    return logs.slice(0, 5)
+  }
+  return logs
 })
 </script>

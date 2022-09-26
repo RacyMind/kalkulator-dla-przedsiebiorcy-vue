@@ -5,34 +5,27 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_credit_card" />
+        <q-icon name="o_credit_card"/>
         Dane statystyczne
       </SectionHeader>
-      <Summary />
-      <Advert />
+      <Summary/>
+      <Advert/>
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {useAppStore} from 'stores/app-store'
+<script lang="ts" setup>
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/salaryStats/Summary.vue'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    SectionHeader,
-    Summary,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Informacje o wynagrodzeniu',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Informacje o wynagrodzeniu'
-  },
-})
+]
 </script>

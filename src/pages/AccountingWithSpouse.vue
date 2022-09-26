@@ -1,3 +1,4 @@
+<!--
 <template>
   <q-page
     class="q-py-md full-width c-work"
@@ -203,3 +204,4 @@ export default {
   },
 }
 </script>
+-->
