@@ -25,7 +25,7 @@
   </q-page>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
