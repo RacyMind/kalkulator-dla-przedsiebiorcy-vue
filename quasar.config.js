@@ -176,6 +176,10 @@ module.exports = configure(function (ctx) {
       swFilename: './sw.js',
       manifestFilename: './manifest.json',
       useCredentialsForManifestTag: false,
+      workboxOptions: {
+        skipWaiting: true,
+        clientsClaim: true,
+      },
       extendGenerateSWOptions (cfg) {},
       extendInjectManifestOptions (cfg) {},
       extendManifestJson (json) {},

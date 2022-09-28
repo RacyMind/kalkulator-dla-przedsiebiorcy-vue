@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineComponent, ref} from 'vue'
+import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'

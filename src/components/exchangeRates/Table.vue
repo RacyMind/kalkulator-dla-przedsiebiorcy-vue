@@ -127,7 +127,6 @@ watch(rateDate, () => {
 })
 
 const openCurrency = (event:Event, row:any) => {
-  console.log(`/kursy-walut/${row.code.toLowerCase()}`)
   router.push({
     path: `/kursy-walut/${row.code.toLowerCase()}`,
   })

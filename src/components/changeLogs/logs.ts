@@ -1,7 +1,7 @@
 export default [
   {
     content: '<ul><li>Refaktoryzacja modułu Kursy walut.</li><li>Refaktoryzacja modułu Przelicznik walut.</li><li>Aktualizacja odsetek ustawowych.</<li><li>Dodanie nawigacji Breadcrumbs.</li></ul>',
-    publish_date: '2022-09-21',
+    publish_date: '2022-09-28',
     version: '4.9.0',
   },
   {

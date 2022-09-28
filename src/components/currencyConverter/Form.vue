@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineComponent, ref} from 'vue'
+import {computed, ref} from 'vue'
 import {useCurrencyConverterStore} from 'stores/currency-converter-store'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
 import currencyConverter from './currencyConverter'

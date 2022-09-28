@@ -47,8 +47,6 @@ breadcrumbStore.items = [
   },
 ]
 
-const year = ref(helpers.getDefaultYear())
-const openModal = ref(false)
 const scrollTarget = ref(null) as any
 
 const inputFields: Ref<PartialZusContributionInputFields> = ref({
