@@ -1,8 +1,9 @@
 import {AvailableYear} from 'src/types/AvailableYear'
 
 export interface SalaryForUnusedHolidaysFields {
-  year: AvailableYear,
   amount: number
+  dailyNorm: number
   holidayHours: number
+  year: AvailableYear,
   workingTime: number
 }

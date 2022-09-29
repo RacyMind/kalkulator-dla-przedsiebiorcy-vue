@@ -150,5 +150,11 @@ export default {
       link: '/zasilek-chorobowy',
       title: 'Zasiłek chorobowy',
     } as MenuItem,
+    {
+      caption: 'Moduł oblicza ekwiwalent za niewykorzystany urlop',
+      className: 'c-contractWork',
+      link: '/ekwiwalent-za-niewykorzystany-urlop',
+      title: 'Ekwiwalent za niewykorzystany urlop',
+    } as MenuItem,
   ],
 }
