@@ -103,6 +103,7 @@ const defaultParams = {
       SMALL_AMOUNT: 840,
     },
   },
+  HOLIDAY_RATE: 21,
 }
 const from2021 = {
   ...defaultParams,
@@ -183,6 +184,7 @@ const from2022 = {
       SMALL_AMOUNT: 903,
     },
   },
+  HOLIDAY_RATE: 20.92,
 }
 export default {
   ACCIDENT_RATE: 1.67,
@@ -194,7 +196,7 @@ export default {
   },
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.9.0',
+    VERSION: '4.10.0',
   },
   AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',

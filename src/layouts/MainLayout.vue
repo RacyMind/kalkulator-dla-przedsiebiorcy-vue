@@ -33,6 +33,7 @@
                   :key="item.name"
                   :label="item.name"
                   :to="item.to"
+                  class="c-breadcrumbs__element"
                 />
               </q-breadcrumbs>
             </div>
