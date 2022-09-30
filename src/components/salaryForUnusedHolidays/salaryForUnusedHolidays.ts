@@ -3,7 +3,6 @@ import {SalaryForUnusedHolidaysFields} from 'components/salaryForUnusedHolidays/
 import {SalaryForUnusedHolidaysResult} from 'components/salaryForUnusedHolidays/interfaces/SalaryForUnusedHolidaysResult'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import ownerContributions from 'src/logic/ownerContributions'
 import taxes from 'src/logic/taxes'
 
 let params = {
@@ -23,8 +22,8 @@ function setParams (year:AvailableYear) {
 /**
  * Returns the result
  *
- * @param {InvestmentInputFields} input
- * @returns {InvestmentResult}
+ * @param {SalaryForUnusedHolidaysFields} input
+ * @returns {SalaryForUnusedHolidaysResult}
  */
 function getResult (input:SalaryForUnusedHolidaysFields):SalaryForUnusedHolidaysResult {
   if(!input.dailyNorm || !input.dailyNorm) {
