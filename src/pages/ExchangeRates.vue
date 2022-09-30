@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-py-md full-width c-exchangeRates"
+    class="q-py-md full-width c-currencies"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
