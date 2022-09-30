@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodanie modułu Ekwiwalent za niewykorzystany urlop.</li></ul>',
+    publish_date: '2022-09-28',
+    version: '4.10.0',
+  },
+  {
     content: '<ul><li>Refaktoryzacja modułu Kursy walut.</li><li>Refaktoryzacja modułu Przelicznik walut.</li><li>Aktualizacja odsetek ustawowych.</<li><li>Dodanie nawigacji Breadcrumbs.</li></ul>',
     publish_date: '2022-09-28',
     version: '4.9.0',
