@@ -4,25 +4,25 @@ export default {
   app: [
     {
       caption: 'Pokazuje historię zmian w aplikacji',
-      className: 'c-changeLogs',
+      className: 'c-app',
       link: '/historia-zmian',
       title: 'Historia zmian',
     } as MenuItem,
     {
       caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
-      className: 'c-contact',
+      className: 'c-app',
       link: '/kontakt',
       title: 'Formularz kontaktowy',
     } as MenuItem,
     {
       caption: '',
-      className: 'c-aboutApp',
+      className: 'c-app',
       link: 'https://kalkulatorfinansowy.app',
       title: 'O aplikacji',
     } as MenuItem,
     {
       caption: '@kalkulator.finansowy',
-      className: 'c-aboutApp',
+      className: 'c-app',
       link: 'https://www.facebook.com/kalkulator.finansowy',
       title: 'Polub na Facebooku',
     } as MenuItem,
@@ -30,37 +30,37 @@ export default {
   business: [
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
-      className: 'c-selfEmployment',
+      className: 'c-business',
       link: '/samozatrudnienie',
       title: 'Samozatrudnienie',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',
-      className: 'c-unregisteredCompany',
+      className: 'c-business',
       link: '/dzialalnosc-niezarejestrowana',
       title: 'Działalność niezarejestrowana',
     } as MenuItem,
     {
       caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
-      className: 'c-invoice',
+      className: 'c-business',
       link: '/faktura-vat',
       title: 'Faktura VAT',
     } as MenuItem,
     {
       caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',
-      className: 'c-cashRegisterLimit',
+      className: 'c-business',
       link: '/limit-obrotu-dla-kasy-fiskalnej',
       title: 'Limit zwolnienia z ewidencjonowania w kasie fiskalnej',
     } as MenuItem,
     {
       caption: 'Moduł oblicza kwotę przychodu, którego przekroczenie powoduje utratę prawa do zwolnienia z VAT',
-      className: 'c-vatLimit',
+      className: 'c-business',
       link: '/limit-zwolnienia-z-vat',
       title: 'Limit zwolnienia z VAT',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składki ZUS dla przedsiębiorców za część miesiąca',
-      className: 'c-partialZusContributions',
+      className: 'c-business',
       link: '/skladki-zus-za-czesc-miesiaca',
       title: 'Składki ZUS za część miesiąca',
     } as MenuItem,
@@ -68,13 +68,13 @@ export default {
   currencies: [
     {
       caption: 'Moduł pokazuje kursy walut',
-      className: 'c-exchangeRates',
+      className: 'c-currencies',
       link: '/kursy-walut',
       title: 'Kursy walut',
     } as MenuItem,
     {
       caption: 'Moduł służy do przeliczania jednej waluty na drugą',
-      className: 'c-currencyConverter',
+      className: 'c-currencies',
       link: '/przelicznik-walut',
       title: 'Przelicznik walut',
     } as MenuItem,
@@ -108,13 +108,13 @@ export default {
   percentage: [
     {
       caption: 'Moduł oblicza zysk z lokaty',
-      className: 'c-investment',
+      className: 'c-percentage',
       link: '/lokata',
       title: 'Lokata',
     } as MenuItem,
     {
       caption: 'Moduł oblicza odsetki za każdy dzień',
-      className: 'c-interest',
+      className: 'c-percentage',
       link: '/odsetki',
       title: 'Odsetki',
     } as MenuItem,
@@ -122,19 +122,19 @@ export default {
   work: [
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o pracę',
-      className: 'c-contractOfEmployment',
+      className: 'c-work',
       link: '/umowa-o-prace',
       title: 'Umowa o pracę',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy umowie zlecenie',
-      className: 'c-contractOfMandate',
+      className: 'c-work',
       link: '/umowa-zlecenie',
       title: 'Umowa zlecenie',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy umowie o dzieło',
-      className: 'c-contractWork',
+      className: 'c-work',
       link: '/umowa-o-dzielo',
       title: 'Umowa o dzieło',
     } as MenuItem,
@@ -146,13 +146,13 @@ export default {
     } as MenuItem,*/
     {
       caption: 'Moduł oblicza wysokość zasiłku chorobowego',
-      className: 'c-sickPay',
+      className: 'c-work',
       link: '/zasilek-chorobowy',
       title: 'Zasiłek chorobowy',
     } as MenuItem,
     {
       caption: 'Moduł oblicza ekwiwalent za niewykorzystany urlop',
-      className: 'c-contractWork',
+      className: 'c-work',
       link: '/ekwiwalent-za-niewykorzystany-urlop',
       title: 'Ekwiwalent za niewykorzystany urlop',
     } as MenuItem,
