@@ -31,6 +31,10 @@ function setParams (year:AvailableYear) {
  * @returns {number}
  */
 function calculateExpenses (grossAmount:number, expenseRate:ExpenseRate):number {
+  // for the amount <= lumpSumUpToAmount, the expenses don't exist
+  if (grossAmount <= params.lumpSumUpToAmount) {
+    return 0
+  }
   const expenses = helpers.round(grossAmount * expenseRate, 2)
 
   if (expenseRate === constants.CONTRACT_WORK.EXPENSES_50 && expenses > params.amountOfTaxThreshold) {
@@ -161,4 +165,5 @@ function getResult (input:ContractWorkInputFields):ContractWorkResult {
 
 export default {
   getResult,
+  setParams,
 }
