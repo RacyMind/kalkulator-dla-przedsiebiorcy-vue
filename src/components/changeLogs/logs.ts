@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodanie modułu Ekwiwalent za niewykorzystany urlop.</li><li>Poprawa obliczeń podatku zryczałtowanego w Umowie o zzieło.</li></ul>',
+    content: '<ul><li>Dodanie modułu Ekwiwalent za niewykorzystany urlop.</li><li>Poprawa obliczeń podatku zryczałtowanego w Umowie o dzieło.</li></ul>',
     publish_date: '2022-09-28',
     version: '4.10.0',
   },
