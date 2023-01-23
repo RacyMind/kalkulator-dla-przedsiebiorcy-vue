@@ -44,7 +44,6 @@ import Footer from 'components/partials/Footer.vue'
 import Form from 'components/salaryForUnusedHolidays/Form.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/salaryForUnusedHolidays/Summary.vue'
-import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
 const breadcrumbStore = useBreadcrumbStore()

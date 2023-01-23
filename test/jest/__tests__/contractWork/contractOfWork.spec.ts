@@ -2,7 +2,6 @@ import {ContractWorkInputFields} from 'components/contractWork/interfaces/Contra
 import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
-import constants from '../../../../src/logic/constants'
 import contractWork from 'components/contractWork/contractWork'
 import helpers from '../../../../src/logic/helpers'
 
