@@ -171,16 +171,16 @@ module.exports = configure(function (ctx) {
 
 // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'generateSW', // or 'injectManifest'
-      injectPwaMetaTags: false,
-      swFilename: './sw.js',
+      workboxMode: 'generateSW',
       manifestFilename: './manifest.json',
-      useCredentialsForManifestTag: false,
       workboxOptions: {
         skipWaiting: true,
         clientsClaim: true,
       },
-      extendGenerateSWOptions (cfg) {},
+      extendGenerateSWOptions (cfg) {
+        cfg.skipWaiting = true
+        cfg.clientsClaim = true
+      },
       extendInjectManifestOptions (cfg) {},
       extendManifestJson (json) {},
       extendPWACustomSWConf (esbuildConf) {},
@@ -219,7 +219,7 @@ module.exports = configure(function (ctx) {
 // will mess up SSR
 // extendSSRWebserverConf (esbuildConf) {},
 // extendPackageJson (json) {},
-      pwa: false,
+      // pwa: false,
     },
   }
 })
