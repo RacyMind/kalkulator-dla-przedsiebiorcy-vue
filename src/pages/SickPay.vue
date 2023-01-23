@@ -25,10 +25,10 @@
   </q-page>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
-import {defineComponent, ref} from 'vue'
-import {useAppStore} from 'stores/app-store'
+import {ref} from 'vue'
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import Form from 'components/sickPay/Form.vue'
@@ -36,36 +36,23 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/sickPay/Summary.vue'
 import helpers from 'src/logic/helpers'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    Form,
-    SectionHeader,
-    Summary,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Zasiłek chorobowy',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Zasiłek chorobowy'
+]
 
-    const inputFields = ref(<SickPayInputFields>{
-      basicAmount: 0,
-      dayCount: 0,
-      rate: 1,
-    })
-
-    const scrollTarget = ref(null) as any
-
-    const save = (input: SickPayInputFields) => {
-      inputFields.value = input
-      helpers.scrollToElement(scrollTarget?.value?.$el)
-    }
-
-    return {
-      inputFields,
-      save,
-      scrollTarget,
-    }
-  },
+const inputFields = ref(<SickPayInputFields>{
+  basicAmount: 0,
+  dayCount: 0,
+  rate: 1,
 })
+
+const scrollTarget = ref(null) as any
+
+const save = (input: SickPayInputFields) => {
+  inputFields.value = input
+  helpers.scrollToElement(scrollTarget?.value?.$el)
+}
 </script>

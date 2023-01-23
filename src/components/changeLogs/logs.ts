@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Refaktoryzacja modułu Kursy walut.</li><li>Refaktoryzacja modułu Przelicznik walut.</li><li>Aktualizacja odsetek ustawowych.</<li><li>Dodanie nawigacji Breadcrumbs.</li></ul>',
+    publish_date: '2022-09-28',
+    version: '4.9.0',
+  },
+  {
     content: '<ul><li>Poprawiono błąd w odliczaniu składki zdrowotnej.</li><li>Poprawiono błąd w odliczaniu kwoty wolnej od podatku po przekroczeniu 2. progu.</li><li>Refaktoryzacja modułu Składki ZUS za część miesiąca.</li><li>Aktualizacja bibliotek.</li></ul>',
     publish_date: '2022-07-09',
     version: '4.8.0',

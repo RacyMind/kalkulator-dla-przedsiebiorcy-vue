@@ -5,34 +5,33 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="event" />
+        <q-icon name="event"/>
         Terminy w US
       </SectionHeader>
-      <USSummary />
+      <USSummary/>
       <SectionHeader>
-        <q-icon name="event" />
+        <q-icon name="event"/>
         Terminy w ZUS
       </SectionHeader>
-      <ZUSSummary />
-      <Advert />
+      <ZUSSummary/>
+      <Advert/>
       <SectionHeader>
-        <q-icon name="event" />
+        <q-icon name="event"/>
         Terminy w PFRON
       </SectionHeader>
-      <PFRONSummary />
+      <PFRONSummary/>
       <p
         class="q-pa-md text-grey text-justify"
         style="font-size:0.8rem;">
         Ostatnia aktualizacja: 02.01.2022 r.
       </p>
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {useAppStore} from 'stores/app-store'
+<script lang="ts" setup>
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import PFRONSummary from 'components/terms/PFRONSummary.vue'
@@ -40,18 +39,10 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import USSummary from 'components/terms/USSummary.vue'
 import ZUSSummary from 'components/terms/ZUSSummary.vue'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    PFRONSummary,
-    SectionHeader,
-    USSummary,
-    ZUSSummary,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Terminy w US, ZUS i PFRON',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Terminy w US, ZUS i PFRON'
-  },
-})
+]
 </script>

@@ -1,5 +1,5 @@
 export default {
-  convert (amount, from, to) {
+  convert (amount:number, from:number, to:number) {
     return amount * from / to
   },
 }

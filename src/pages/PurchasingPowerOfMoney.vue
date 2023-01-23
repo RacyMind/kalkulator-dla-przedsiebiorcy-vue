@@ -5,34 +5,27 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="o_insights" />
+        <q-icon name="o_insights"/>
         Wykres
       </SectionHeader>
-      <Advert />
-      <PurchasingPowerOfMoneyStatistics />
+      <Advert/>
+      <PurchasingPowerOfMoneyStatistics/>
     </div>
-    <Footer />
+    <Footer/>
   </q-page>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {useAppStore} from 'stores/app-store'
+<script lang="ts" setup>
+import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import Footer from 'components/partials/Footer.vue'
 import PurchasingPowerOfMoneyStatistics from 'components/inflation/PurchasingPowerOfMoneyStatistics.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 
-export default defineComponent({
-  components: {
-    Advert,
-    Footer,
-    PurchasingPowerOfMoneyStatistics,
-    SectionHeader,
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.items = [
+  {
+    name: 'Siła nabywcza pieniądza',
   },
-  setup() {
-    const appStore = useAppStore()
-    appStore.moduleTitle = 'Siła nabywcza pieniądza'
-  },
-})
+]
 </script>

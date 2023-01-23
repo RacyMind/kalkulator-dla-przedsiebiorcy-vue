@@ -1,35 +1,24 @@
 <template>
-  <q-form @submit.prevent="save">
+  <q-form @submit.prevent="loadData">
     <div class="row justify-between">
       <div class="col-12 col-md-6 q-pr-md-sm">
         <q-input
           v-model="startDate"
           color="brand"
-          mask="date"
+          mask="##.##.####"
           label="Data początkowa*"
-          required
           :rules="[
-            'date',
-            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisiejszą'
+            validationRules.todayOrPast,
+            validationRules.required,
           ]">
           <template v-slot:append>
             <q-icon
               name="event"
-              class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy1"
-                transition-show="scale"
-                transition-hide="scale">
-                <q-date
-                  v-model="startDate"
-                  :locale="constants.LOCALE_DATE"
-                  :options="onlyPast"
-                  @input="() => $refs.qDateProxy1.hide()"
-                >
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
+              class="cursor-pointer"/>
           </template>
+          <DatePopup
+            v-model="startDate"
+            only-past-or-today/>
         </q-input>
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">
@@ -37,31 +26,20 @@
           v-model="endDate"
           class="q-pb-none"
           color="brand"
-          mask="date"
+          mask="##.##.####"
           label="Data końcowa*"
-          required
           :rules="[
-            'date',
-            date => !isFuture(new Date(date)) || 'Wybierz datę z przeszłości lub dzisiejszą'
+            validationRules.todayOrPast,
+            validationRules.required,
           ]">
           <template v-slot:append>
             <q-icon
               name="event"
-              class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy2"
-                transition-show="scale"
-                transition-hide="scale">
-                <q-date
-                  v-model="endDate"
-                  :locale="constants.LOCALE_DATE"
-                  :options="onlyPast"
-                  @input="() => $refs.qDateProxy2.hide()"
-                >
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
+              class="cursor-pointer"/>
           </template>
+          <DatePopup
+            v-model="endDate"
+            only-past-or-today/>
         </q-input>
       </div>
     </div>
@@ -80,79 +58,76 @@
   </q-form>
 </template>
 
-<script>
-import { format, isFuture, subMonths } from 'date-fns'
-import { ref } from 'vue'
+<script lang="ts" setup>
+import {computed, ref} from 'vue'
+import {format, isFuture, parse, subMonths} from 'date-fns'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
-import api from './api'
-import constants from 'src/logic/constants'
+import {useQuasar} from 'quasar'
+import {useRoute} from 'vue-router'
+import DatePopup from 'components/partials/DatePopup.vue'
+import npb from 'src/api/nbp'
+import validationRules from 'src/logic/validationRules'
 
-export default {
-  computed: {
-    isDisabledButton () {
-      if (!this.startDate || !this.endDate) {
-        return true
-      }
-      if (isFuture(new Date(this.startDate)) || isFuture(new Date(this.endDate))) {
-        return true
-      }
-      if (this.startDate >= this.endDate) {
-        return true
-      }
-      return false
-    },
-  },
-  created () {
-    const now = new Date()
-    const monthAgo = subMonths(now, 1)
+const $q = useQuasar()
+const currencyRateStore = useCurrencyRateStore()
+const route = useRoute()
 
-    this.startDate = format(monthAgo, 'Y/MM/dd')
-    this.endDate = format(now, 'Y/MM/dd')
+const now = new Date()
+const monthAgo = subMonths(now, 1)
+const startDate = ref(format(monthAgo, 'dd.MM.y'))
+const endDate = ref(format(now, 'dd.MM.y'))
 
-    this.save()
-  },
-  methods: {
-    save () {
-      const currencyRateStore = useCurrencyRateStore()
+const formattedStartDate = computed(() => {
+  return parse(
+    startDate.value,
+    'dd.MM.y',
+    new Date(),
+  )
+})
 
-      const startDate = format(new Date(this.startDate), 'Y-MM-dd')
-      const endDate = format(new Date(this.endDate), 'Y-MM-dd')
+const formattedEndDate = computed(() => {
+  return parse(
+    endDate.value,
+    'dd.MM.y',
+    new Date(),
+  )
+})
 
-      currencyRateStore.isLoading = true
+const isDisabledButton = computed(() => {
+  if (!startDate.value || !endDate.value) {
+    return true
+  }
+  if (isFuture(formattedStartDate.value) || isFuture(formattedEndDate.value)) {
+    return true
+  }
+  return formattedStartDate.value >= formattedEndDate.value
+})
 
-      api.loadExchangeRateCurrency(
-        this.$route.params.currency,
-        startDate,
-        endDate,
-      ).then(response => {
-        currencyRateStore.currencyRate =response.data
-        this.$q.notify({
-          message: 'Źródło danych: Narodowy Bank Polski',
-        })
-      }).catch((error) => {
-        let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
-        if (error.response) {
-          message = error.response.data
-        }
-        this.$q.notify({
-          message: message,
-        })
-        currencyRateStore.currencyRate = null
-      }).finally(() => {
-        currencyRateStore.isLoading = false
-      })
-    },
-  },
-  setup () {
-    return {
-      constants,
-      endDate: ref(null),
-      isFuture,
-      onlyPast (date) {
-        return date <= format(new Date(), 'y/MM/dd')
-      },
-      startDate: ref(null),
+const loadData = () => {
+  currencyRateStore.isLoading = true
+
+  npb.loadExchangeRateCurrency(
+    route.params.currency as string,
+    format(formattedStartDate.value, 'y-MM-dd'),
+    format(formattedEndDate.value, 'y-MM-dd'),
+  ).then(response => {
+    currencyRateStore.currencyRate = response.data
+    $q.notify({
+      message: 'Źródło danych: Narodowy Bank Polski',
+    })
+  }).catch((error) => {
+    let message = 'Nie udało się połączyć z serwerem NBP. Spróbuj ponownie'
+    if (error.response) {
+      message = error.response.data
     }
-  },
+    $q.notify({
+      message: message,
+    })
+    currencyRateStore.currencyRate = null
+  }).finally(() => {
+    currencyRateStore.isLoading = false
+  })
 }
+
+loadData()
 </script>
