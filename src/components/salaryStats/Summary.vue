@@ -2,12 +2,12 @@
   <div>
     <ListRow
       name="Minimalne wynagrodzenie"
-      :value="pln(3010)"
+      :value="pln(3490)"
     />
     <ListRow
       class="bg-teal-1"
       name="Minimalna stawka godzinowa"
-      :value="pln(19.70)"
+      :value="pln(22.8)"
     />
     <ListRow
       name="Przeciętne wynagrodzenie (ZUS)*"
@@ -16,7 +16,7 @@
     <ListRow
       class="bg-teal-1"
       name="Przeciętne wynagrodzenie (GUS)**"
-      :value="pln(5657)"
+      :value="pln(6965,94)"
     />
     <div
       class="q-pa-md text-grey text-justify"
@@ -28,11 +28,11 @@
         do 7 roboczego dnia lutego każdego roku.
       </p>
       <p class="q-mb-sm">
-        ** Dane opublikowane przez GUS za III kwartał 2021 r.
+        ** Dane opublikowane przez GUS za IV kwartał 2022 r.
       </p>
       <p
         class="q-mb-none">
-        Ostatnia aktualizacja: 02.01.2022 r.
+        Ostatnia aktualizacja: 23.01.2023 r.
       </p>
     </div>
   </div>

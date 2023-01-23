@@ -27,7 +27,6 @@ import {computed} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import salaryForUnusedHolidays from 'components/salaryForUnusedHolidays/salaryForUnusedHolidays'
-import selfEmployment from 'components/selfEmployment/selfEmployment'
 
 type Props = {
   input: SalaryForUnusedHolidaysFields,

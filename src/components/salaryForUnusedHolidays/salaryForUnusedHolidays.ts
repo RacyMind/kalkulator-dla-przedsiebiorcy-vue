@@ -3,7 +3,6 @@ import {SalaryForUnusedHolidaysFields} from 'components/salaryForUnusedHolidays/
 import {SalaryForUnusedHolidaysResult} from 'components/salaryForUnusedHolidays/interfaces/SalaryForUnusedHolidaysResult'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
-import taxes from 'src/logic/taxes'
 
 let params = {
   holidayRate: constants.PARAMS[helpers.getDefaultYear()].HOLIDAY_RATE,

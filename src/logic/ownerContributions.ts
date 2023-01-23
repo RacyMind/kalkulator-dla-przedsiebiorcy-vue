@@ -4,6 +4,7 @@ import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
 let year = helpers.getDefaultYear()
+const isFirstHalfOfYear = new Date().getMonth() <= 5
 
 let params = {
   averageSalary: constants.PARAMS[year].AVERAGE_SALARY,
@@ -13,10 +14,16 @@ let params = {
   healthContributionRateForLinearTax: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE_FOR_LINEAR_TAX || 0,
   healthContributionRateForTaxOffice: constants.PARAMS[year].US.OWNER.HEALTH_RATE,
   limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
-  minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
+  minimumSalary: 0,
   pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
   rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
   sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
+}
+const minimumSalary = constants.PARAMS[year].MINIMUM_SALARY
+if(typeof minimumSalary === 'object') {
+  params.minimumSalary = isFirstHalfOfYear ? minimumSalary.FISRT_HALF_OF_YEAR : minimumSalary.SECOND_HALF_OF_YEAR
+} else {
+  params.minimumSalary = minimumSalary
 }
 
 /**
@@ -34,10 +41,25 @@ function setParams (newYear:AvailableYear) {
     healthContributionRateForLinearTax: constants.PARAMS[year].ZUS.OWNER.HEALTH_RATE_FOR_LINEAR_TAX || 0,
     healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
     limitOfDeductionHealthContribution: constants.PARAMS[year].US.OWNER.LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION,
-    minimumSalary: constants.PARAMS[year].MINIMUM_SALARY,
+    minimumSalary: 0,
     pensionContributionRate: constants.PARAMS[year].ZUS.OWNER.PENSION_RATE,
     rentContributionRate: constants.PARAMS[year].ZUS.OWNER.RENT_RATE,
     sickContributionRate: constants.PARAMS[year].ZUS.OWNER.SICK_RATE,
+  }
+  const minimumSalary = constants.PARAMS[year].MINIMUM_SALARY
+  if(typeof minimumSalary === 'object') {
+    params.minimumSalary = isFirstHalfOfYear ? minimumSalary.FISRT_HALF_OF_YEAR : minimumSalary.SECOND_HALF_OF_YEAR
+  } else {
+    params.minimumSalary = minimumSalary
+  }
+}
+
+function updateParamsDuringYear(year: AvailableYear, isFirstHalfOfYear: boolean) {
+  const minimumSalary = constants.PARAMS[year].MINIMUM_SALARY
+  if(typeof minimumSalary === 'object') {
+    params.minimumSalary = isFirstHalfOfYear ? minimumSalary.FISRT_HALF_OF_YEAR : minimumSalary.SECOND_HALF_OF_YEAR
+  } else {
+    params.minimumSalary = minimumSalary
   }
 }
 
@@ -87,7 +109,7 @@ function calculateHealthContribution (amount:number, taxType:IncomeTaxType, year
   switch (taxType) {
     case constants.TAX_TYPES.LINEAR: {
       const healthContribution = helpers.round(params.healthContributionRateForLinearTax / 100 * amount, 2)
-      const healthContributionForMinimumSalary = Math.floor(params.minimumSalary * params.healthContributionRate / 100)
+      const healthContributionForMinimumSalary = helpers.round(params.minimumSalary * params.healthContributionRate / 100, 2)
 
       return Math.max(healthContribution, healthContributionForMinimumSalary)
     }
@@ -215,4 +237,5 @@ export default {
   calculateSickContribution,
   setParams,
   sumContributions,
+  updateParamsDuringYear,
 }
