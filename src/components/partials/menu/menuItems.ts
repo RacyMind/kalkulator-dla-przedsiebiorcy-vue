@@ -26,6 +26,12 @@ export default {
       link: 'https://www.facebook.com/kalkulator.finansowy',
       title: 'Polub na Facebooku',
     } as MenuItem,
+    {
+      caption: '',
+      className: 'c-app',
+      link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
+      title: 'GitHub',
+    } as MenuItem,
   ],
   business: [
     {
