@@ -8,11 +8,19 @@ import helpers from 'src/logic/helpers'
 import ownerContributions from 'src/logic/ownerContributions'
 import taxes from 'src/logic/taxes'
 
+let isFirstHalfOfYear = new Date().getMonth() <= 5
+
 let params = {
   bigBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.BIG_AMOUNT,
   freeAmountOfTax: constants.PARAMS[helpers.getDefaultYear()].FREE_AMOUNT_OF_TAX,
   grossAmountLimitForAid: constants.PARAMS[helpers.getDefaultYear()].GROSS_AMOUNT_LIMIT_FOR_AID,
-  smallBasisForZUS: constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT,
+  smallBasisForZUS: 0,
+}
+const smallAmount = constants.PARAMS[helpers.getDefaultYear()].ZUS.OWNER.SMALL_AMOUNT
+if(typeof smallAmount === 'object') {
+  params.smallBasisForZUS = isFirstHalfOfYear ? smallAmount.FISRT_HALF_OF_YEAR : smallAmount.SECOND_HALF_OF_YEAR
+} else {
+  params.smallBasisForZUS = smallAmount
 }
 
 let totalBasisForTax = 0
@@ -38,13 +46,31 @@ function setParams (year:AvailableYear) {
     bigBasisForZUS: constants.PARAMS[year].ZUS.OWNER.BIG_AMOUNT,
     freeAmountOfTax: constants.PARAMS[year].FREE_AMOUNT_OF_TAX,
     grossAmountLimitForAid: constants.PARAMS[year].GROSS_AMOUNT_LIMIT_FOR_AID,
-    smallBasisForZUS: constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT,
+    smallBasisForZUS: 0,
+  }
+
+  const smallAmount = constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT
+  if(typeof smallAmount === 'object') {
+    params.smallBasisForZUS = isFirstHalfOfYear ? smallAmount.FISRT_HALF_OF_YEAR : smallAmount.SECOND_HALF_OF_YEAR
+  } else {
+    params.smallBasisForZUS = smallAmount
   }
 
   resetTotalAmounts()
 
   taxes.setParams(year)
   ownerContributions.setParams(year)
+}
+
+function updateParamsDuringYear(year: AvailableYear) {
+  const smallAmount = constants.PARAMS[year].ZUS.OWNER.SMALL_AMOUNT
+  if(typeof smallAmount === 'object') {
+    params.smallBasisForZUS = isFirstHalfOfYear ? smallAmount.FISRT_HALF_OF_YEAR : smallAmount.SECOND_HALF_OF_YEAR
+  } else {
+    params.smallBasisForZUS = smallAmount
+  }
+
+  ownerContributions.updateParamsDuringYear(year, isFirstHalfOfYear)
 }
 
 /**
@@ -279,6 +305,13 @@ function getYearlyResult (monthlyInputs:SelfEmploymentInputFields[]):SelfEmploym
     let sickContribution = 0
     let basisForZus = 0
 
+    if(month <= 5) {
+      isFirstHalfOfYear = true
+    } else {
+      isFirstHalfOfYear = false
+    }
+    updateParamsDuringYear(input.year)
+
     const isReliefForCompanyStart = input.isReliefForCompanyStart && month <=5
 
     if (!input.isFullTimeJob && !isReliefForCompanyStart) {
@@ -306,6 +339,13 @@ function getYearlyResult (monthlyInputs:SelfEmploymentInputFields[]):SelfEmploym
   })
 
   monthlyInputs.forEach((input, index) => {
+    if(index <= 5) {
+      isFirstHalfOfYear = true
+    } else {
+      isFirstHalfOfYear = false
+    }
+    updateParamsDuringYear(input.year)
+
     // Aid can be for six months
     if (index > 5 && input.isReliefForCompanyStart) {
       input.isReliefForCompanyStart = false

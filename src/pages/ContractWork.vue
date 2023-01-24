@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-py-md full-width c-contractWork"
+    class="q-py-md full-width c-work"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">

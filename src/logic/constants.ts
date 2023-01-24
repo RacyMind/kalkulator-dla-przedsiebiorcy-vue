@@ -103,6 +103,7 @@ const defaultParams = {
       SMALL_AMOUNT: 840,
     },
   },
+  HOLIDAY_RATE: 21,
 }
 const from2021 = {
   ...defaultParams,
@@ -183,6 +184,29 @@ const from2022 = {
       SMALL_AMOUNT: 903,
     },
   },
+  HOLIDAY_RATE: 20.92,
+}
+const from2023 = {
+  ...from2022,
+  AVERAGE_SALARY: 6965.94,
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 208050,
+  MINIMUM_SALARY: {
+    FISRT_HALF_OF_YEAR: 3490,
+    SECOND_HALF_OF_YEAR: 3600,
+  },
+  ZUS: {
+    ...from2021.ZUS,
+    OWNER: {
+      ...from2021.ZUS.OWNER,
+      BIG_AMOUNT: 4161,
+      SMALL_AMOUNT: {
+        FISRT_HALF_OF_YEAR: 1047,
+        SECOND_HALF_OF_YEAR: 1080,
+      },
+      LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION: 10200,
+    },
+  },
+  HOLIDAY_RATE: 20.83,
 }
 export default {
   ACCIDENT_RATE: 1.67,
@@ -194,13 +218,13 @@ export default {
   },
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.9.0',
+    VERSION: '4.10.0',
   },
   AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
     SELF_EMPLOYMENT: 'selfEmployment',
   },
-  AVAILABLE_YEARS: [2021, 2022],
+  AVAILABLE_YEARS: [2021, 2022, 2023],
   BASIC_CAPITAL_INTEREST_RATE: 10.25,
   BASIC_LATE_INTEREST_RATE: 12.25,
   CASH_REGISTER_LIMIT: 20000,
@@ -259,6 +283,7 @@ export default {
   PARAMS: {
     2021: from2021,
     2022: from2022,
+    2023: from2023,
   },
   POLSKI_LAD_FREE_AMOUNT_FOR_TAX: 5100 / 12,
   PPK: {
@@ -354,4 +379,5 @@ export default {
     },
   },
 }
+
 

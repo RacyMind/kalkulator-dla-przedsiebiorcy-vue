@@ -53,7 +53,11 @@ export default defineComponent({
     })
 
     const currentYear = helpers.getDefaultYear()
-    const limitForUnregisteredCompany = constants.PARAMS[currentYear].MINIMUM_SALARY / 2
+    let minnimumSalary = constants.PARAMS[currentYear].MINIMUM_SALARY
+    if(typeof minnimumSalary === 'object') {
+      minnimumSalary = new Date().getMonth() <= 5 ? minnimumSalary.FISRT_HALF_OF_YEAR : minnimumSalary.SECOND_HALF_OF_YEAR
+    }
+    const limitForUnregisteredCompany = minnimumSalary / 2
 
     watch(result, () => {
       if (result.value.netIncomeAmount > limitForUnregisteredCompany) {

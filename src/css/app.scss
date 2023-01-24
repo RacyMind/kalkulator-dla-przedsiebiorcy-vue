@@ -1,25 +1,13 @@
 // app global css in SCSS form
+@import "objects/breadcrumbs";
 @import "objects/sectionHeader";
 @import "objects/chart";
 @import "objects/q-table-grid";
-@import "components/invoice";
-@import "components/investment";
-@import "components/interest";
-@import "components/contractWork";
-@import "components/contractOfMandate";
-@import "components/contractOfEmployment";
-@import "components/selfEmployment";
-@import "components/exchangeRates";
-@import "components/currencyConverter";
-@import "components/changeLogs";
-@import "components/aboutApp";
-@import "components/contact";
-@import "components/sickPay";
+@import "components/app";
+@import "components/business";
+@import "components/currencies";
 @import "components/informator";
-@import "components/cashRegisterLimit";
-@import "components/unregisteredCompany";
-@import "components/vatLimit";
-@import "components/partialZusContributions";
+@import "components/percentage";
 @import "components/work";
 
 @media screen and (max-width:600px) {
