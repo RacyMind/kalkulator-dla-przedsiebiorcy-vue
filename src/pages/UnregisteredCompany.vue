@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="q-py-md full-width c-unregisteredCompany"
+    class="q-py-md full-width c-business"
     style="max-width:800px;"
   >
     <div class="full-width bg-white">
