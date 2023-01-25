@@ -174,12 +174,12 @@ module.exports = configure(function (ctx) {
       workboxMode: 'generateSW',
       manifestFilename: './manifest.json',
       workboxOptions: {
-        skipWaiting: true,
-        clientsClaim: true,
+        skipWaiting: false,
+        clientsClaim: false,
       },
       extendGenerateSWOptions (cfg) {
-        cfg.skipWaiting = true
-        cfg.clientsClaim = true
+        cfg.skipWaiting = false
+        cfg.clientsClaim = false
       },
       extendInjectManifestOptions (cfg) {},
       extendManifestJson (json) {},

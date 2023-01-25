@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Poprawa maksymalnej kwoty odliczenia składki zdrowotnej w 2023 roku dla podatku liniowego.</li></ul>',
+    publish_date: '2023-01-24',
+    version: '4.10.1',
+  },
+  {
     content: '<ul><li>Dodanie modułu Ekwiwalent za niewykorzystany urlop.</li><li>Poprawa obliczeń podatku zryczałtowanego w Umowie o dzieło.</li><li>Aktualizacja wskaźników dla 2023 roku.</li></ul>',
     publish_date: '2023-01-23',
     version: '4.10.0',

@@ -194,10 +194,17 @@ const from2023 = {
     FISRT_HALF_OF_YEAR: 3490,
     SECOND_HALF_OF_YEAR: 3600,
   },
-  ZUS: {
-    ...from2021.ZUS,
+  US: {
+    ...from2022.US,
     OWNER: {
-      ...from2021.ZUS.OWNER,
+      ...from2022.US.OWNER,
+      LIMIT_OF_DEDUCTION_HEALTH_CONTRIBUTION: 10200,
+    },
+  },
+  ZUS: {
+    ...from2022.ZUS,
+    OWNER: {
+      ...from2022.ZUS.OWNER,
       BIG_AMOUNT: 4161,
       SMALL_AMOUNT: {
         FISRT_HALF_OF_YEAR: 1047,
@@ -218,7 +225,7 @@ export default {
   },
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.10.0',
+    VERSION: '4.10.1',
   },
   AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
