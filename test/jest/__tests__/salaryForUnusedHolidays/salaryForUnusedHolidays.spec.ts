@@ -12,18 +12,18 @@ const defaultInput:SalaryForUnusedHolidaysFields = {
   amount: 4800,
   dailyNorm: 8,
   holidayHours: 24,
-  year: helpers.getDefaultYear(),
+  year: 2022,
   workingTime: 1,
 }
 
-const yearlyHolidayRate = constants.PARAMS[helpers.getDefaultYear()].HOLIDAY_RATE
+const yearlyHolidayRate = constants.PARAMS[2022].HOLIDAY_RATE
 
 const getResult = (input:SalaryForUnusedHolidaysFields):SalaryForUnusedHolidaysResult => {
   salaryForUnusedHolidays.setParams(input.year)
   return salaryForUnusedHolidays.getResult(input)
 }
 
-describe('salaryForUnusedHolidays', () => {
+describe('salaryForUnusedHolidays - 2022', () => {
   it('full time', () => {
     const input:SalaryForUnusedHolidaysFields = {
       ...defaultInput,
