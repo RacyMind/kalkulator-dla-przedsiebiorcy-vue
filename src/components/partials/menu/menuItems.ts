@@ -27,7 +27,7 @@ export default {
       title: 'Polub na Facebooku',
     } as MenuItem,
     {
-      caption: '',
+      caption: 'Repozytorium aplikacji',
       className: 'c-app',
       link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
       title: 'GitHub',
