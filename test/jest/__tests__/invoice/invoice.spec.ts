@@ -42,6 +42,14 @@ describe('invoice', () => {
     expect(result.grossAmount).toBe(10000)
   })
 
+  it('Net amount, 0 amount', () => {
+    const result = invoice.getResult({...defaultInput, amount: 0})
+
+    expect(result.taxAmount).toBe(0)
+    expect(result.netAmount).toBe(0)
+    expect(result.grossAmount).toBe(0)
+  })
+
   it('Gross amount, 23% VAT', () => {
     const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS})
 
@@ -72,6 +80,14 @@ describe('invoice', () => {
     expect(result.taxAmount).toBe(0)
     expect(result.netAmount).toBe(10000)
     expect(result.grossAmount).toBe(10000)
+  })
+
+  it('Gross amount, 0 amount', () => {
+    const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS, amount: 0})
+
+    expect(result.taxAmount).toBe(0)
+    expect(result.netAmount).toBe(0)
+    expect(result.grossAmount).toBe(0)
   })
 
 })
