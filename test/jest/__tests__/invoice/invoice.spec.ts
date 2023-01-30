@@ -3,10 +3,10 @@ import {describe, expect, it} from '@jest/globals'
 import constants from 'src/logic/constants'
 import invoice from 'components/invoice/invoice'
 
-const defaultInput:InvoiceInputFields = {
-  amount:10000,
-  amountType:constants.AMOUNT_TYPES.NET,
-  taxRate:0.23,
+const defaultInput: InvoiceInputFields = {
+  amount: 10000,
+  amountType: constants.AMOUNT_TYPES.NET,
+  taxRate: 0.23,
 }
 
 describe('invoice', () => {
@@ -19,7 +19,7 @@ describe('invoice', () => {
   })
 
   it('Net amount, 8% VAT', () => {
-    const result = invoice.getResult({...defaultInput,taxRate:0.08})
+    const result = invoice.getResult({...defaultInput, taxRate: 0.08})
 
     expect(result.taxAmount).toBe(800)
     expect(result.netAmount).toBe(10000)
@@ -27,7 +27,7 @@ describe('invoice', () => {
   })
 
   it('Net amount, 5% VAT', () => {
-    const result = invoice.getResult({...defaultInput,taxRate:0.05})
+    const result = invoice.getResult({...defaultInput, taxRate: 0.05})
 
     expect(result.taxAmount).toBe(500)
     expect(result.netAmount).toBe(10000)
@@ -35,7 +35,7 @@ describe('invoice', () => {
   })
 
   it('Net amount, 0% VAT', () => {
-    const result = invoice.getResult({...defaultInput,taxRate:0})
+    const result = invoice.getResult({...defaultInput, taxRate: 0})
 
     expect(result.taxAmount).toBe(0)
     expect(result.netAmount).toBe(10000)
@@ -43,7 +43,7 @@ describe('invoice', () => {
   })
 
   it('Gross amount, 23% VAT', () => {
-    const result = invoice.getResult({...defaultInput,amountType:constants.AMOUNT_TYPES.GROSS})
+    const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS})
 
     expect(result.taxAmount).toBe(1869.92)
     expect(result.netAmount).toBe(8130.08)
@@ -51,7 +51,7 @@ describe('invoice', () => {
   })
 
   it('Gross amount, 8% VAT', () => {
-    const result = invoice.getResult({...defaultInput,amountType:constants.AMOUNT_TYPES.GROSS})
+    const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS, taxRate: 0.08})
 
     expect(result.taxAmount).toBe(740.74)
     expect(result.netAmount).toBe(9259.26)
@@ -59,7 +59,7 @@ describe('invoice', () => {
   })
 
   it('Gross amount, 5% VAT', () => {
-    const result = invoice.getResult({...defaultInput,amountType:constants.AMOUNT_TYPES.GROSS,taxRate:0.05})
+    const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS, taxRate: 0.05})
 
     expect(result.taxAmount).toBe(476.19)
     expect(result.netAmount).toBe(9523.81)
@@ -67,7 +67,7 @@ describe('invoice', () => {
   })
 
   it('Gross amount, 0% VAT', () => {
-    const result = invoice.getResult({...defaultInput,amountType:constants.AMOUNT_TYPES.GROSS,taxRate:0})
+    const result = invoice.getResult({...defaultInput, amountType: constants.AMOUNT_TYPES.GROSS, taxRate: 0})
 
     expect(result.taxAmount).toBe(0)
     expect(result.netAmount).toBe(10000)
