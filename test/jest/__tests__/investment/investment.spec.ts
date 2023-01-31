@@ -41,6 +41,30 @@ describe('investment',()=>{
     expect(taxAmount).toBe(15.83)
   })
 
+  it('0 months, 10%, 10000',()=>{
+    const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,monthCount:0})
+    expect(capital).toBe(10000)
+    expect(grossAmount).toBe(0)
+    expect(netAmount).toBe(0)
+    expect(taxAmount).toBe(0)
+  })
+
+  it('12 months, 0%, 10000',()=>{
+    const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,rate:0})
+    expect(capital).toBe(10000)
+    expect(grossAmount).toBe(0)
+    expect(netAmount).toBe(0)
+    expect(taxAmount).toBe(0)
+  })
+
+  it('12 months, 10%, 0',()=>{
+    const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,rate:0})
+    expect(capital).toBe(10000)
+    expect(grossAmount).toBe(0)
+    expect(netAmount).toBe(0)
+    expect(taxAmount).toBe(0)
+  })
+
   it('12 months, 5%, 5000',()=>{
     const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,amount:5000,rate:0.05})
     expect(capital).toBe(5000)
