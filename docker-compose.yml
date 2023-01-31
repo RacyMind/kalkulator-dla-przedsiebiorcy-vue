@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    build: .
+    container_name: 'kalkulator-finansowy'
+    ports:
+      - '8080:8080'
