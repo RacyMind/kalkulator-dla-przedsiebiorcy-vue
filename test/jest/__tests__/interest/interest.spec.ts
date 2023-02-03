@@ -1,6 +1,9 @@
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {describe, expect, it} from '@jest/globals'
+import {installQuasarPlugin} from '@quasar/quasar-app-extension-testing-unit-jest'
 import interest from 'components/interest/interest'
+
+installQuasarPlugin()
 
 const defaultInput:InterestInputFields = {
   amount:10000,
@@ -9,6 +12,8 @@ const defaultInput:InterestInputFields = {
 }
 
 describe('interest',()=>{
+
+
   it('0 , 15 days, rate 10%',()=>{
     const {dayCount,amount,interestAmount} = interest.getResult({...defaultInput,amount:0})
     expect(dayCount).toBe(15)

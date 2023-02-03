@@ -22,19 +22,23 @@
           min="0"
           step="0.01"
           suffix="%"
+          da
           label="Odsetki*"
           color="brand"
+          data-testid="rate"
           :rules="[validationRules.required]"
           lazy-rules
         />
         <q-toggle
           v-model="isBasicCapitalRate"
           class="q-mt-sm"
+          data-testid="basic-capital-rate"
           label="Ustawowe odsetki kapitałowe"
         />
         <q-toggle
           v-model="isBasicLateRate"
           class="q-mt-sm"
+          data-testid="basic-late-rate"
           label="Ustawowe odsetki za opóźnienie"
         />
       </div>
