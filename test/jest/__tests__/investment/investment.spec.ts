@@ -58,8 +58,8 @@ describe('investment',()=>{
   })
 
   it('12 months, 10%, 0',()=>{
-    const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,rate:0})
-    expect(capital).toBe(10000)
+    const {capital,grossAmount,netAmount,taxAmount} = investment.getResult({...defaultInput,amount:0})
+    expect(capital).toBe(0)
     expect(grossAmount).toBe(0)
     expect(netAmount).toBe(0)
     expect(taxAmount).toBe(0)
