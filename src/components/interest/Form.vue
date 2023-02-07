@@ -11,6 +11,7 @@
           label="Kwota*"
           autofocus
           color="brand"
+          data-testid="amount"
           :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
@@ -22,7 +23,6 @@
           min="0"
           step="0.01"
           suffix="%"
-          da
           label="Odsetki*"
           color="brand"
           data-testid="rate"
@@ -51,6 +51,7 @@
           mask="##.##.####"
           label="Termin zapłaty*"
           :rules="[validationRules.required]"
+          data-testid="startDate"
           lazy-rules>
           <template v-slot:append>
             <q-icon
@@ -69,6 +70,7 @@
           mask="##.##.####"
           label="Data zapłaty*"
           :rules="[validationRules.required]"
+          data-testid="endDate"
           lazy-rules>
           <template v-slot:append>
             <q-icon
@@ -89,6 +91,7 @@
           size="lg"
           label="Oblicz"
           :disable="isDisabledButton"
+          data-testid="button"
         />
       </div>
     </div>
