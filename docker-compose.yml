@@ -3,5 +3,8 @@ services:
   web:
     build: .
     container_name: 'kalkulator-finansowy'
+    volumes:
+      - ./:/app
+      - /app/node_modules
     ports:
       - '8080:8080'
