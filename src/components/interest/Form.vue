@@ -11,6 +11,7 @@
           label="Kwota*"
           autofocus
           color="brand"
+          data-testid="amount"
           :rules="[validationRules.requiredAmount]"
           lazy-rules
         />
@@ -24,17 +25,20 @@
           suffix="%"
           label="Odsetki*"
           color="brand"
+          data-testid="rate"
           :rules="[validationRules.required]"
           lazy-rules
         />
         <q-toggle
           v-model="isBasicCapitalRate"
           class="q-mt-sm"
+          data-testid="basic-capital-rate"
           label="Ustawowe odsetki kapitałowe"
         />
         <q-toggle
           v-model="isBasicLateRate"
           class="q-mt-sm"
+          data-testid="basic-late-rate"
           label="Ustawowe odsetki za opóźnienie"
         />
       </div>
@@ -47,6 +51,7 @@
           mask="##.##.####"
           label="Termin zapłaty*"
           :rules="[validationRules.required]"
+          data-testid="startDate"
           lazy-rules>
           <template v-slot:append>
             <q-icon
@@ -65,6 +70,7 @@
           mask="##.##.####"
           label="Data zapłaty*"
           :rules="[validationRules.required]"
+          data-testid="endDate"
           lazy-rules>
           <template v-slot:append>
             <q-icon
@@ -85,6 +91,7 @@
           size="lg"
           label="Oblicz"
           :disable="isDisabledButton"
+          data-testid="button"
         />
       </div>
     </div>
