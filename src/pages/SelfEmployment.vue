@@ -5,7 +5,7 @@
     <div class="full-width bg-white">
       <SectionHeader>
         <q-icon name="o_date_range"/>
-        Rok podatkowyccccc
+        Rok podatkowy
       </SectionHeader>
       <ChooseYear
         v-model="year"
