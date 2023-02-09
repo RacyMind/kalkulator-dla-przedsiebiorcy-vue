@@ -174,16 +174,9 @@ module.exports = configure(function (ctx) {
       workboxMode: 'generateSW',
       manifestFilename: './manifest.json',
       workboxOptions: {
-        skipWaiting: false,
-        clientsClaim: false,
+        skipWaiting: true,
+        clientsClaim: true,
       },
-      extendGenerateSWOptions (cfg) {
-        cfg.skipWaiting = false
-        cfg.clientsClaim = false
-      },
-      extendInjectManifestOptions (cfg) {},
-      extendManifestJson (json) {},
-      extendPWACustomSWConf (esbuildConf) {},
     },
 
 
