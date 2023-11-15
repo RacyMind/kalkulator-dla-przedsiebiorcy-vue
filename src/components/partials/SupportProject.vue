@@ -55,6 +55,9 @@
         />
       </div>
       <p  class="q-mb-none text-justify">
+        Jesteś programistą? Możesz wziąć aktywny udział w tworzeniu aplikacji. Zapraszam na <a href="https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue">GitHuba</a>.
+      </p>
+      <p  class="q-mb-none text-justify">
         Dzięki za wsparcie! Kalkulator był, jest i będzie darmowy.
       </p>
     </q-card-section>

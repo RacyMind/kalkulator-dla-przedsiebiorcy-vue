@@ -8,7 +8,7 @@
         <q-icon
           name="o_favorite_border"
           class="q-mr-sm" />
-        Wesprzyj twórcę
+        Wesprzyj projekt
       </q-btn>
       <div style="font-size: 0.75rem;">
         &copy; 2011-{{year}} Kalkulator finansowy<br>

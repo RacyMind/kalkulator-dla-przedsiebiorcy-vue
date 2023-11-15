@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Aktualizacja bibliotek aplikacji.</li><li>Poprawa service workera do odświeżenia aplikacji po wydaniu nowej wersji.</li></li></ul>',
+    publish_date: '2023-02-09',
+    version: '4.10.2',
+  },
+  {
     content: '<ul><li>Poprawa maksymalnej kwoty odliczenia składki zdrowotnej w 2023 roku dla podatku liniowego.</li></ul>',
     publish_date: '2023-01-24',
     version: '4.10.1',
