@@ -26,7 +26,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const labels =  [
+    const labels = [
+      'Wynagrodzenie netto',
       'Zaliczka na podatek dochodowy',
       'Składka zdrowotna',
       'Składka chorobowa',
