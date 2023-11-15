@@ -7,10 +7,7 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
 import Donate from 'components/partials/adrverts/Donate.vue'
-import SupportAuthor from 'components/partials/SupportAuthor.vue'
 import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
-
-const openModal = ref(false)
 
 const isTaxDonationTimeFrame = () => {
   const nmonth = new Date().getMonth()
