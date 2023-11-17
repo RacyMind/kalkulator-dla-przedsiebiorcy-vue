@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Poprawa wyświetlania wartości w wykresach dla pracownika.</li></ul>',
+    publish_date: '2023-11-17',
+    version: '4.11.0',
+  },
+  {
     content: '<ul><li>Aktualizacja bibliotek aplikacji.</li><li>Poprawa service workera do odświeżenia aplikacji po wydaniu nowej wersji.</li></li></ul>',
     publish_date: '2023-02-09',
     version: '4.10.2',
