@@ -1,7 +1,7 @@
 export default [
   {
     content: '<ul><li>Poprawa wyświetlania wartości w wykresach dla pracownika.</li></ul>',
-    publish_date: '2023-02-09',
+    publish_date: '2023-11-17',
     version: '4.11.0',
   },
   {
