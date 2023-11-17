@@ -5,7 +5,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
 import Donate from 'components/partials/adrverts/Donate.vue'
 import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
 
