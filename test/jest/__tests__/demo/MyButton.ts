@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'MyButton',
@@ -9,12 +9,12 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const counter = ref(0);
-    const input = ref('rocket muffin');
+    const counter = ref(0)
+    const input = ref('rocket muffin')
     function increment() {
-      counter.value += props.incrementStep;
+      counter.value += props.incrementStep
     }
 
-    return { counter, input, increment };
+    return { counter, input, increment }
   },
-});
+})
