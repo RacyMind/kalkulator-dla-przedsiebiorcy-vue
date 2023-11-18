@@ -1,4 +1,6 @@
 export class TaxSystem {
+  public static readonly defaultExpenseRate = 0.2
+  public static readonly authorExpenseRate = 0.5
   /**
    * It uses by civil agrreements - contract of mandate and work contract
    */

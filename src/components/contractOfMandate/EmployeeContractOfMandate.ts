@@ -7,31 +7,44 @@ import employeeContributions from 'src/logic/employeeContributions'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeContractOfMandate{
-  public static readonly defaultExpenseRate = 0.2
-  public static readonly authorExpenseRate = 0.5
   protected readonly input:ContractOfMandateInputFields
   protected readonly zusContribution: EmployeeZusContribution
   protected sumUpBasisForContributions = 0
+  protected sumUpAuthorExpenses = 0
 
   constructor(input:ContractOfMandateInputFields) {
     this.input = input
     this.zusContribution = new EmployeeZusContribution()
   }
 
-  protected getExpenses(basisForExpenses:number):number {
-    let expenseRate = EmployeeContractOfMandate.defaultExpenseRate
-
-    if(this.input.grossAmount <= TaxSystem.withoutExpensesUpTo) {
-      expenseRate = 0
+  protected getAuthorExpenses(basisForExpenses:number):number {
+    if (!this.input.partOfWorkWithAuthorExpenses) {
+      return 0
     }
+
+    if(this.sumUpAuthorExpenses >= TaxSystem.taxThreshold) {
+      return 0
+    }
+
+    const expenses = helpers.round(basisForExpenses * this.input.partOfWorkWithAuthorExpenses * TaxSystem.authorExpenseRate, 2)
+
+    if(expenses + this.sumUpAuthorExpenses > TaxSystem.taxThreshold) {
+      return TaxSystem.taxThreshold - this.sumUpAuthorExpenses
+    }
+
+    return expenses
+  }
+
+  protected getExpenses(basisForExpenses:number):number {
+    const expenseRate = this.input.grossAmount <= TaxSystem.withoutExpensesUpTo ? 0 : TaxSystem.defaultExpenseRate
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.input.partOfWorkWithAuthorExpenses
 
     let expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
 
-    if (this.input.partOfWorkWithAuthorExpenses) {
-      expenses += helpers.round(basisForExpenses * this.input.partOfWorkWithAuthorExpenses * EmployeeContractOfMandate.authorExpenseRate, 2)
-    }
+    const authorExpenses = this.getAuthorExpenses(basisForExpenses)
+    expenses += authorExpenses
+    this.sumUpAuthorExpenses += authorExpenses
 
     return expenses
 
@@ -72,8 +85,11 @@ export class EmployeeContractOfMandate{
 
     const expenses = this.getExpenses(this.input.grossAmount - socialContributions)
 
-    if(isPartOfAnnualResult) {
-      this.sumUpBasisForContributions += basisForContributions
+    this.sumUpBasisForContributions += basisForContributions
+
+    if(!isPartOfAnnualResult) {
+      this.sumUpBasisForContributions = 0
+      this.sumUpAuthorExpenses = 0
     }
 
     return {
