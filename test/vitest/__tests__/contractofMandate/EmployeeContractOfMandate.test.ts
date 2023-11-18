@@ -121,5 +121,42 @@ describe('Contract of Mandate in 2023', () => {
       expect(simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(2, true).expenses).toBe(TaxSystem.taxThreshold)
     })
 
+    it('The expenses with the young aid and the author expenses', () => {
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold,
+        partOfWorkWithAuthorExpenses: 1,
+        isReliefForYoung: true,
+      }).getMonthlyResult().expenses).toBe(0)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold + 1,
+        partOfWorkWithAuthorExpenses: 1,
+        isReliefForYoung: true,
+      }).getMonthlyResult().expenses).toBe(0.5)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold,
+        partOfWorkWithAuthorExpenses: 1,
+        isReliefForYoung: true,
+      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold + 1,
+        partOfWorkWithAuthorExpenses: 1,
+        isReliefForYoung: true,
+      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold * 10,
+        partOfWorkWithAuthorExpenses: 1,
+        isReliefForYoung: true,
+      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+    })
+
   })
 })

@@ -9,4 +9,8 @@ export class TaxSystem {
    * Over the amount, the tax percentage is increased
    */
   public static readonly taxThreshold = 120000
+  /**
+   * Over the amount, the young aid is end
+   */
+  public static readonly aidThreshold = 8528
 }

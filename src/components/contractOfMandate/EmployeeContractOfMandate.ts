@@ -10,6 +10,7 @@ export class EmployeeContractOfMandate{
   protected readonly input:ContractOfMandateInputFields
   protected readonly zusContribution: EmployeeZusContribution
   protected sumUpBasisForContributions = 0
+  protected sumUpBasisForExpenses = 0
   protected sumUpAuthorExpenses = 0
 
   constructor(input:ContractOfMandateInputFields) {
@@ -17,7 +18,10 @@ export class EmployeeContractOfMandate{
     this.zusContribution = new EmployeeZusContribution()
   }
 
-  protected getAuthorExpenses(basisForExpenses:number):number {
+  /**
+   * It's necessary to calculate the "potential" expenses because of cases when the aid for youngs is over
+   */
+  protected getPotentialAuthorExpenses(basisForExpenses:number):number {
     if (!this.input.partOfWorkWithAuthorExpenses) {
       return 0
     }
@@ -34,6 +38,28 @@ export class EmployeeContractOfMandate{
 
     return expenses
   }
+  protected getRealAuthorExpenses(basisForExpenses:number):number {
+
+    let authorExpenses = this.getPotentialAuthorExpenses(basisForExpenses)
+
+    if(!this.input.isReliefForYoung) {
+      this.sumUpAuthorExpenses += authorExpenses
+      return authorExpenses
+    }
+
+    if(this.sumUpBasisForExpenses + basisForExpenses <= TaxSystem.aidThreshold) {
+      // if the tax is 0, the real expenses are 0
+      this.sumUpAuthorExpenses += authorExpenses
+      return 0
+    }
+
+    const basisForExpensesOverAidLimit = Math.min(this.sumUpBasisForExpenses + basisForExpenses, TaxSystem.taxThreshold) - TaxSystem.aidThreshold
+    authorExpenses = this.getPotentialAuthorExpenses(basisForExpensesOverAidLimit)
+
+    this.sumUpAuthorExpenses += authorExpenses
+
+    return authorExpenses
+  }
 
   protected getExpenses(basisForExpenses:number):number {
     const expenseRate = this.input.grossAmount <= TaxSystem.withoutExpensesUpTo ? 0 : TaxSystem.defaultExpenseRate
@@ -42,9 +68,8 @@ export class EmployeeContractOfMandate{
 
     let expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
 
-    const authorExpenses = this.getAuthorExpenses(basisForExpenses)
+    const authorExpenses = this.getRealAuthorExpenses(basisForExpenses)
     expenses += authorExpenses
-    this.sumUpAuthorExpenses += authorExpenses
 
     return expenses
 
@@ -86,9 +111,11 @@ export class EmployeeContractOfMandate{
     const expenses = this.getExpenses(this.input.grossAmount - socialContributions)
 
     this.sumUpBasisForContributions += basisForContributions
+    this.sumUpBasisForExpenses = this.input.grossAmount - socialContributions
 
     if(!isPartOfAnnualResult) {
       this.sumUpBasisForContributions = 0
+      this.sumUpBasisForExpenses = 0
       this.sumUpAuthorExpenses = 0
     }
 
