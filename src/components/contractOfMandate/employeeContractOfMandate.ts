@@ -12,8 +12,19 @@ export class EmployeeContractOfMandate{
     this.zusContributions = new EmployeeZusContribution()
   }
 
-  public getSIngleMonthResult() {
+  /**
+   *
+   * @param month - 0 means January, 11 - December
+   * @param isPartOfAnnualResult if isPartOfAnnualResult is true, it saves important values for next month calculations
+   */
+  public getMonthlyResult(month = 0, isPartOfAnnualResult = false) {
     const basisForContributions = this.zusContributions.getBasisForContributions(this.input.grossAmount, this.sumUpBasisForContributions)
-    this.sumUpBasisForContributions += basisForContributions
+
+    if(isPartOfAnnualResult) {
+      this.sumUpBasisForContributions += basisForContributions
+    }
+  }
+  public getAnnualResult() {
+
   }
 }
