@@ -1,28 +1,9 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {EmployeeContractOfMandate} from 'components/contractOfMandate/EmployeeContractOfMandate'
-import {EmployeeZusContribution} from 'src/logic/EmployeeZusContribution'
 import {TaxSystem} from 'src/logic/TaxSystem'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
-import contractWork from 'components/contractWork/contractWork'
-import helpers from 'src/logic/helpers'
-
-const defaultInput:ContractOfMandateInputFields = {
-  accidentContributionRate: 0.0167,
-  employeePpkContributionRate: 0.02,
-  employerPpkContributionRate: 0.015,
-  grossAmount: 1000,
-  isDisabilityContribution: true,
-  isFpContribution: true,
-  isFreeAmount: false,
-  isHealthContribution: true,
-  isPensionContribution: true,
-  isReliefForYoung: false,
-  isSickContribution: true,
-  partOfWorkWithAuthorExpenses: 0,
-  year: helpers.getDefaultYear(),
-}
 
 const annualInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandateInputFields[] => {
   const input:ContractOfMandateInputFields[] = []
@@ -34,11 +15,74 @@ const annualInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandat
   return input
 }
 
-describe('Contract of Mandate in 2023', () => {
+describe('Contract of Mandate on 1.11.2023', () => {
   beforeAll(() => {
     setActivePinia(createPinia())
     const settingStore = useSettingStore()
     settingStore.dateOfLawRules = new Date(2023,11,1)
+  })
+
+  describe('Test ZUS contributions', () => {
+    const input: ContractOfMandateInputFields = {
+      accidentContributionRate: 0,
+      employeePpkContributionRate: 0.02,
+      employerPpkContributionRate: 0,
+      grossAmount: 1000,
+      isDisabilityContribution: true,
+      isFpContribution: true,
+      isFreeAmount: false,
+      isHealthContribution: true,
+      isPensionContribution: true,
+      isReliefForYoung: false,
+      isSickContribution: true,
+      partOfWorkWithAuthorExpenses: 0,
+      canLumpSumTaxBe: true,
+    }
+
+    it('The health contribution', () => {
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().healthContribution).toBe(77.66)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        isHealthContribution: false,
+      }).getMonthlyResult().healthContribution).toBe(0)
+    })
+
+    it('The sick contribution', () => {
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().sickContribution).toBe(24.50)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        isSickContribution: false,
+      }).getMonthlyResult().sickContribution).toBe(0)
+    })
+
+    it('The disability contribution', () => {
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().disabilityContribution).toBe(15)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        isDisabilityContribution: false,
+      }).getMonthlyResult().disabilityContribution).toBe(0)
+    })
+
+    it('The pension contribution', () => {
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().pensionContribution).toBe(97.6)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        isPensionContribution: false,
+      }).getMonthlyResult().pensionContribution).toBe(0)
+    })
+
+    it('The ppk contribution', () => {
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().ppkContribution).toBe(20)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        employeePpkContributionRate: 0,
+      }).getMonthlyResult().ppkContribution).toBe(0)
+    })
   })
 
   describe('Test expenses', () => {
@@ -55,7 +99,7 @@ describe('Contract of Mandate in 2023', () => {
       isReliefForYoung: false,
       isSickContribution: false,
       partOfWorkWithAuthorExpenses: 0,
-      year: helpers.getDefaultYear(),
+      canLumpSumTaxBe: true,
     }
 
     it('Standard cases', () => {
@@ -77,6 +121,12 @@ describe('Contract of Mandate in 2023', () => {
         ...input,
         grossAmount: 200,
       }).getMonthlyResult().expenses).toBe(0)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: 200,
+        canLumpSumTaxBe: false,
+      }).getMonthlyResult().expenses).toBe(40)
 
       expect(new EmployeeContractOfMandate({
         ...input,
@@ -157,6 +207,54 @@ describe('Contract of Mandate in 2023', () => {
         isReliefForYoung: true,
       }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
     })
+  })
 
+  describe('Test basis for tax', () => {
+    const input: ContractOfMandateInputFields = {
+      accidentContributionRate: 0,
+      employeePpkContributionRate: 0,
+      employerPpkContributionRate: 0,
+      grossAmount: 1000,
+      isDisabilityContribution: false,
+      isFpContribution: false,
+      isFreeAmount: false,
+      isHealthContribution: false,
+      isPensionContribution: false,
+      isReliefForYoung: false,
+      isSickContribution: false,
+      partOfWorkWithAuthorExpenses: 0,
+      canLumpSumTaxBe: true,
+    }
+
+    it('Standard cases', () => {
+
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().basisForTax).toBe(800)
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        isDisabilityContribution: true,
+        isHealthContribution: true,
+        isPensionContribution: true,
+        isSickContribution: true,
+      }).getMonthlyResult().basisForTax).toBe(690)
+    })
+
+    it('The gross amount is <= 200', () => {
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: 200,
+      }).getMonthlyResult().basisForTax).toBe(200)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: 200,
+        canLumpSumTaxBe: false,
+      }).getMonthlyResult().basisForTax).toBe(160)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: 200,
+        partOfWorkWithAuthorExpenses: 1,
+      }).getMonthlyResult().basisForTax).toBe(100)
+    })
   })
 })

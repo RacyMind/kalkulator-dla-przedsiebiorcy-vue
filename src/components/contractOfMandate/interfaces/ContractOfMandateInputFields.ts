@@ -1,11 +1,9 @@
-import {AvailableYear} from 'src/types/AvailableYear'
-
 export interface ContractOfMandateInputFields {
-  year: AvailableYear
   grossAmount: number
   isFreeAmount: boolean,
   isReliefForYoung: boolean,
   partOfWorkWithAuthorExpenses: number,
+  canLumpSumTaxBe: boolean
   isHealthContribution: boolean,
   isSickContribution: boolean,
   isDisabilityContribution: boolean,

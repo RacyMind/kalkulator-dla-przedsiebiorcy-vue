@@ -1,4 +1,4 @@
-import {EmployeeZusContribution} from 'src/logic/EmployeeZusContribution'
+import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'

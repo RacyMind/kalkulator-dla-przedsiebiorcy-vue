@@ -1,9 +1,7 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {EmployeeContractOfMandateResult} from 'components/contractOfMandate/interfaces/EmployeeContractOfMandateResult'
-import {EmployeeZusContribution} from 'src/logic/EmployeeZusContribution'
+import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {TaxSystem} from 'src/logic/TaxSystem'
-import constants from 'src/logic/constants'
-import employeeContributions from 'src/logic/employeeContributions'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeContractOfMandate{
@@ -38,6 +36,7 @@ export class EmployeeContractOfMandate{
 
     return expenses
   }
+
   protected getRealAuthorExpenses(basisForExpenses:number):number {
 
     let authorExpenses = this.getPotentialAuthorExpenses(basisForExpenses)
@@ -62,14 +61,12 @@ export class EmployeeContractOfMandate{
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const expenseRate = this.input.grossAmount <= TaxSystem.withoutExpensesUpTo ? 0 : TaxSystem.defaultExpenseRate
+    const expenseRate = this.input.canLumpSumTaxBe && this.input.grossAmount <= TaxSystem.withoutExpensesUpTo ? 0 : TaxSystem.defaultExpenseRate
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.input.partOfWorkWithAuthorExpenses
 
     let expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
-
-    const authorExpenses = this.getRealAuthorExpenses(basisForExpenses)
-    expenses += authorExpenses
+    expenses += this.getRealAuthorExpenses(basisForExpenses)
 
     return expenses
 
@@ -110,6 +107,8 @@ export class EmployeeContractOfMandate{
 
     const expenses = this.getExpenses(this.input.grossAmount - socialContributions)
 
+    const basisForTax = helpers.round(this.input.grossAmount - socialContributions - expenses)
+
     this.sumUpBasisForContributions += basisForContributions
     this.sumUpBasisForExpenses = this.input.grossAmount - socialContributions
 
@@ -120,7 +119,13 @@ export class EmployeeContractOfMandate{
     }
 
     return {
+      healthContribution,
+      sickContribution,
+      ppkContribution,
+      pensionContribution,
+      disabilityContribution,
       expenses,
+      basisForTax,
     }
   }
   public getAnnualResult() {

@@ -1,14 +1,11 @@
+import {ZusContribution} from 'src/logic/zus/ZusContribution'
 import helpers from 'src/logic/helpers'
 
-export class EmployeeZusContribution{
+export class EmployeeZusContribution extends ZusContribution {
   protected readonly healthContributionRate:number = 0.09
   protected readonly disabilityContributionRate:number = 0.015
   protected readonly pensionContributionRate:number = 0.0976
   protected readonly sickContributionRate:number = 0.0245
-  /**
-   * the limit of basis for sick, pension and disability contributions
-   */
-  public static readonly limitOfBasisForContributions:number = 208050
 
   /**
    * Returns the health contribution of the employee
@@ -67,24 +64,5 @@ export class EmployeeZusContribution{
     }
 
     return helpers.round(ppkRate * grossAmount, 2)
-  }
-
-  /**
-   * Returns the basis for sick, pension and disability contributions
-   */
-  public getBasisForContributions(grossAmount:number, sumUpBasisForContributions = 0): number {
-    if(grossAmount < 0) {
-      return 0
-    }
-
-    if(sumUpBasisForContributions >= EmployeeZusContribution.limitOfBasisForContributions) {
-      return 0
-    }
-
-    if(grossAmount + sumUpBasisForContributions > EmployeeZusContribution.limitOfBasisForContributions) {
-      return EmployeeZusContribution.limitOfBasisForContributions - sumUpBasisForContributions
-    }
-
-    return grossAmount
   }
 }
