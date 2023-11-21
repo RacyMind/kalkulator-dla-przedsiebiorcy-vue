@@ -8,7 +8,6 @@ export class EmployeeContractOfMandate{
   protected readonly input:ContractOfMandateInputFields
   protected readonly zusContribution: EmployeeZusContribution
   protected sumUpBasisForContributions = 0
-  protected sumUpBasisForExpenses = 0
   protected sumUpAuthorExpenses = 0
   protected sumUpGrossAmount = 0
 
@@ -20,7 +19,7 @@ export class EmployeeContractOfMandate{
   /**
    * Returns the salary amount over the aid threshold. This amount is important for tax calculations
    */
-  protected getMonthlyAmountOverAid(): number{
+  protected getImportantSalaryAmountForTax(): number{
     if(!this.input.hasAidForYoung) {
       return this.input.grossAmount
     }
@@ -86,8 +85,6 @@ export class EmployeeContractOfMandate{
     let healthContribution = 0
     let ppkContribution = 0
 
-    const monthlyAmountOverAid = this.getMonthlyAmountOverAid()
-
     const basisForContributions = this.zusContribution.getBasisForContributions(this.input.grossAmount, this.sumUpBasisForContributions)
 
     if (this.input.isPensionContribution) {
@@ -103,23 +100,22 @@ export class EmployeeContractOfMandate{
       ppkContribution = this.zusContribution.getPPKContribution(this.input.grossAmount, this.input.employeePpkContributionRate)
     }
 
+    // these contributions reduce the basis for tax
     const socialContributions = pensionContribution + disabilityContribution + sickContribution
 
     if(this.input.isHealthContribution) {
       healthContribution = this.zusContribution.getHealthContribution(this.input.grossAmount - socialContributions)
     }
 
-    const expenses = this.getExpenses(monthlyAmountOverAid - socialContributions)
-
-    const basisForTax =  Math.round(monthlyAmountOverAid - socialContributions - expenses)
+    const importantSalaryAmountForTax = this.getImportantSalaryAmountForTax()
+    const expenses = this.getExpenses(importantSalaryAmountForTax - socialContributions)
+    const basisForTax =  Math.round(importantSalaryAmountForTax - socialContributions - expenses)
 
     this.sumUpBasisForContributions += basisForContributions
-    this.sumUpBasisForExpenses = this.input.grossAmount - socialContributions
     this.sumUpGrossAmount += this.input.grossAmount
 
     if(!isPartOfAnnualResult) {
       this.sumUpBasisForContributions = 0
-      this.sumUpBasisForExpenses = 0
       this.sumUpAuthorExpenses = 0
       this.sumUpGrossAmount = 0
     }
