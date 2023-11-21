@@ -1,7 +1,7 @@
 export interface ContractOfMandateInputFields {
   grossAmount: number
   isFreeAmount: boolean,
-  isReliefForYoung: boolean,
+  hasAidForYoung: boolean,
   partOfWorkWithAuthorExpenses: number,
   canLumpSumTaxBe: boolean
   isHealthContribution: boolean,

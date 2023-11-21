@@ -10,6 +10,7 @@ export class EmployeeContractOfMandate{
   protected sumUpBasisForContributions = 0
   protected sumUpBasisForExpenses = 0
   protected sumUpAuthorExpenses = 0
+  protected sumUpGrossAmount = 0
 
   constructor(input:ContractOfMandateInputFields) {
     this.input = input
@@ -17,47 +18,46 @@ export class EmployeeContractOfMandate{
   }
 
   /**
-   * It's necessary to calculate the "potential" expenses because of cases when the aid for youngs is over
+   * Returns the salary amount over the aid threshold. This amount is important for tax calculations
    */
-  protected getPotentialAuthorExpenses(basisForExpenses:number):number {
+  protected getMonthlyAmountOverAid(): number{
+    if(!this.input.hasAidForYoung) {
+      return this.input.grossAmount
+    }
+
+    if(this.sumUpGrossAmount > TaxSystem.aidThreshold) {
+      return this.input.grossAmount
+    }
+    if(this.sumUpGrossAmount + this.input.grossAmount > TaxSystem.aidThreshold) {
+      return this.sumUpGrossAmount + this.input.grossAmount -  TaxSystem.aidThreshold
+    }
+
+    return 0
+  }
+
+  protected getAuthorExpenses(basisForAuthorExpenses:number):number {
     if (!this.input.partOfWorkWithAuthorExpenses) {
       return 0
     }
 
-    if(this.sumUpAuthorExpenses >= TaxSystem.taxThreshold) {
+    let realThreshold = TaxSystem.taxThreshold
+
+    if(this.input.hasAidForYoung) {
+      // it's reduced because the sum of the aid and the expense limit can't be more than the the tax threshold
+      realThreshold = TaxSystem.taxThreshold - TaxSystem.aidThreshold
+    }
+
+    if(this.sumUpAuthorExpenses >= realThreshold) {
       return 0
     }
 
-    const expenses = helpers.round(basisForExpenses * this.input.partOfWorkWithAuthorExpenses * TaxSystem.authorExpenseRate, 2)
+    const expenses = helpers.round(basisForAuthorExpenses * this.input.partOfWorkWithAuthorExpenses * TaxSystem.authorExpenseRate, 2)
 
-    if(expenses + this.sumUpAuthorExpenses > TaxSystem.taxThreshold) {
-      return TaxSystem.taxThreshold - this.sumUpAuthorExpenses
+    if(expenses + this.sumUpAuthorExpenses > realThreshold) {
+      return realThreshold - this.sumUpAuthorExpenses
     }
 
     return expenses
-  }
-
-  protected getRealAuthorExpenses(basisForExpenses:number):number {
-
-    let authorExpenses = this.getPotentialAuthorExpenses(basisForExpenses)
-
-    if(!this.input.isReliefForYoung) {
-      this.sumUpAuthorExpenses += authorExpenses
-      return authorExpenses
-    }
-
-    if(this.sumUpBasisForExpenses + basisForExpenses <= TaxSystem.aidThreshold) {
-      // if the tax is 0, the real expenses are 0
-      this.sumUpAuthorExpenses += authorExpenses
-      return 0
-    }
-
-    const basisForExpensesOverAidLimit = Math.min(this.sumUpBasisForExpenses + basisForExpenses, TaxSystem.taxThreshold) - TaxSystem.aidThreshold
-    authorExpenses = this.getPotentialAuthorExpenses(basisForExpensesOverAidLimit)
-
-    this.sumUpAuthorExpenses += authorExpenses
-
-    return authorExpenses
   }
 
   protected getExpenses(basisForExpenses:number):number {
@@ -65,10 +65,12 @@ export class EmployeeContractOfMandate{
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.input.partOfWorkWithAuthorExpenses
 
-    let expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
-    expenses += this.getRealAuthorExpenses(basisForExpenses)
+    const expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
 
-    return expenses
+    const authorExpenses = this.getAuthorExpenses(basisForExpenses)
+    this.sumUpAuthorExpenses += authorExpenses
+
+    return expenses + authorExpenses
 
   }
 
@@ -83,6 +85,8 @@ export class EmployeeContractOfMandate{
     let sickContribution = 0
     let healthContribution = 0
     let ppkContribution = 0
+
+    const monthlyAmountOverAid = this.getMonthlyAmountOverAid()
 
     const basisForContributions = this.zusContribution.getBasisForContributions(this.input.grossAmount, this.sumUpBasisForContributions)
 
@@ -105,17 +109,19 @@ export class EmployeeContractOfMandate{
       healthContribution = this.zusContribution.getHealthContribution(this.input.grossAmount - socialContributions)
     }
 
-    const expenses = this.getExpenses(this.input.grossAmount - socialContributions)
+    const expenses = this.getExpenses(monthlyAmountOverAid - socialContributions)
 
-    const basisForTax = helpers.round(this.input.grossAmount - socialContributions - expenses)
+    const basisForTax =  Math.round(monthlyAmountOverAid - socialContributions - expenses)
 
     this.sumUpBasisForContributions += basisForContributions
     this.sumUpBasisForExpenses = this.input.grossAmount - socialContributions
+    this.sumUpGrossAmount += this.input.grossAmount
 
     if(!isPartOfAnnualResult) {
       this.sumUpBasisForContributions = 0
       this.sumUpBasisForExpenses = 0
       this.sumUpAuthorExpenses = 0
+      this.sumUpGrossAmount = 0
     }
 
     return {

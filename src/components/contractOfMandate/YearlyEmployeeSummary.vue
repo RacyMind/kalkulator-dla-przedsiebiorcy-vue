@@ -132,7 +132,7 @@ export default defineComponent({
             message: `Osiągnięto limit 30-krotności składek ZUS (${pln(constants.PARAMS[props.input.year].LIMIT_BASIC_AMOUNT_FOR_ZUS)}). Powyżej limitu nie ma obowiązku opłacania składki emerytalnej i rentowej.`,
           })
         }
-        if (props.input.isReliefForYoung && result.value.yearlyResult.grossAmount > constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD) {
+        if (props.input.hasAidForYoung && result.value.yearlyResult.grossAmount > constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD) {
           $q.notify({
             message: `Przekroczono próg podatkowy (${pln(constants.PARAMS[props.input.year].AMOUNT_OF_TAX_THRESHOLD)}). Od nadwyżki oblicza się ${constants.TAX_RATES.FIRST_RATE}% podatku.`,
           })

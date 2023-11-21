@@ -33,7 +33,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: true,
       isPensionContribution: true,
-      isReliefForYoung: false,
+      hasAidForYoung: false,
       isSickContribution: true,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -96,7 +96,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: false,
       isPensionContribution: false,
-      isReliefForYoung: false,
+      hasAidForYoung: false,
       isSickContribution: false,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -176,36 +176,36 @@ describe('Contract of Mandate on 1.11.2023', () => {
         ...input,
         grossAmount: TaxSystem.aidThreshold,
         partOfWorkWithAuthorExpenses: 1,
-        isReliefForYoung: true,
+        hasAidForYoung: true,
       }).getMonthlyResult().expenses).toBe(0)
 
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: TaxSystem.aidThreshold + 1,
         partOfWorkWithAuthorExpenses: 1,
-        isReliefForYoung: true,
+        hasAidForYoung: true,
       }).getMonthlyResult().expenses).toBe(0.5)
 
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: TaxSystem.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
-        isReliefForYoung: true,
+        hasAidForYoung: true,
       }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold + 1,
+        grossAmount: 2 * TaxSystem.taxThreshold + 1,
         partOfWorkWithAuthorExpenses: 1,
-        isReliefForYoung: true,
-      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+        hasAidForYoung: true,
+      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold - TaxSystem.aidThreshold)
 
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: TaxSystem.taxThreshold * 10,
         partOfWorkWithAuthorExpenses: 1,
-        isReliefForYoung: true,
-      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+        hasAidForYoung: true,
+      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold - TaxSystem.aidThreshold)
     })
   })
 
@@ -220,7 +220,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: false,
       isPensionContribution: false,
-      isReliefForYoung: false,
+      hasAidForYoung: false,
       isSickContribution: false,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -255,6 +255,59 @@ describe('Contract of Mandate on 1.11.2023', () => {
         grossAmount: 200,
         partOfWorkWithAuthorExpenses: 1,
       }).getMonthlyResult().basisForTax).toBe(100)
+    })
+
+    it('The expenses are over limit of author expenses', () => {
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold * 2,
+        partOfWorkWithAuthorExpenses: 1,
+      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold * 2 + 1,
+        partOfWorkWithAuthorExpenses: 1,
+      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold + 1)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.taxThreshold * 2 + 10,
+        partOfWorkWithAuthorExpenses: 1,
+      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold + 10)
+    })
+
+    it('The aid for yound is active', () => {
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        hasAidForYoung: true,
+      }).getMonthlyResult().basisForTax).toBe(0)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold,
+        hasAidForYoung: true,
+      }).getMonthlyResult().basisForTax).toBe(0)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold + 100,
+        hasAidForYoung: true,
+      }).getMonthlyResult().basisForTax).toBe(80)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold + 100.1,
+        hasAidForYoung: true,
+      }).getMonthlyResult().basisForTax).toBe(80)
+
+      expect(new EmployeeContractOfMandate({
+        ...input,
+        grossAmount: TaxSystem.aidThreshold + 100,
+        hasAidForYoung: true,
+        partOfWorkWithAuthorExpenses: 1,
+      }).getMonthlyResult().basisForTax).toBe(50)
+
     })
   })
 })

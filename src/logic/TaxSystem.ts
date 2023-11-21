@@ -12,5 +12,5 @@ export class TaxSystem {
   /**
    * Over the amount, the young aid is end
    */
-  public static readonly aidThreshold = 8528
+  public static readonly aidThreshold = 85528
 }
