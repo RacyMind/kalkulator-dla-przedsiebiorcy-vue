@@ -1,5 +1,5 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {EmployeeContractOfMandate} from 'components/contractOfMandate/EmployeeContractOfMandate'
+import {EmployeeContractOfMandate} from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
@@ -30,7 +30,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       grossAmount: 1000,
       isDisabilityContribution: true,
       isFpContribution: true,
-      isFreeAmount: false,
+      partTaxReducingAmount: 0,
       isHealthContribution: true,
       isPensionContribution: true,
       hasTaxRelief: false,
@@ -93,7 +93,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       grossAmount: 1000,
       isDisabilityContribution: false,
       isFpContribution: false,
-      isFreeAmount: false,
+      partTaxReducingAmount: 0,
       isHealthContribution: false,
       isPensionContribution: false,
       hasTaxRelief: false,
@@ -217,7 +217,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       grossAmount: 1000,
       isDisabilityContribution: false,
       isFpContribution: false,
-      isFreeAmount: false,
+      partTaxReducingAmount: 0,
       isHealthContribution: false,
       isPensionContribution: false,
       hasTaxRelief: false,
@@ -308,6 +308,72 @@ describe('Contract of Mandate on 1.11.2023', () => {
         partOfWorkWithAuthorExpenses: 1,
       }).getMonthlyResult().taxBasis).toBe(50)
 
+    })
+  })
+
+  describe('Test the full result', () => {
+    const input: ContractOfMandateInputFields = {
+      accidentContributionRate: 0,
+      employeePpkContributionRate: 0.02,
+      employerPpkContributionRate: 0,
+      grossAmount: 5000,
+      isDisabilityContribution: true,
+      isFpContribution: true,
+      partTaxReducingAmount: 12,
+      isHealthContribution: true,
+      isPensionContribution: true,
+      hasTaxRelief: false,
+      isSickContribution: true,
+      partOfWorkWithAuthorExpenses: 0,
+      canLumpSumTaxBe: true,
+    }
+
+    it('The standard cases', () => {
+      const result  = new EmployeeContractOfMandate(input).getMonthlyResult()
+
+      expect(result.healthContribution).toBe(388.31)
+      expect(result.ppkContribution).toBe(100)
+      expect(result.disabilityContribution).toBe(75)
+      expect(result.pensionContribution).toBe(488)
+      expect(result.sickContribution).toBe(122.5)
+      expect(result.taxAmount).toBe(114)
+      expect(result.netAmount).toBe(3712.19)
+    })
+
+    it('with the tax relief', () => {
+      const result  = new EmployeeContractOfMandate({
+        ...input,
+        hasTaxRelief: true,
+      }).getMonthlyResult()
+
+      expect(result.healthContribution).toBe(388.31)
+      expect(result.ppkContribution).toBe(100)
+      expect(result.disabilityContribution).toBe(75)
+      expect(result.pensionContribution).toBe(488)
+      expect(result.sickContribution).toBe(122.5)
+      expect(result.taxAmount).toBe(0)
+      expect(result.netAmount).toBe(3826.19)
+    })
+
+    it('without ZUS contributions', () => {
+      const result  = new EmployeeContractOfMandate({
+        ...input,
+        isDisabilityContribution: false,
+        isFpContribution: false,
+        partTaxReducingAmount: 12,
+        isHealthContribution: false,
+        isPensionContribution: false,
+        isSickContribution: false,
+        employeePpkContributionRate: 0,
+      }).getMonthlyResult()
+
+      expect(result.healthContribution).toBe(0)
+      expect(result.ppkContribution).toBe(0)
+      expect(result.disabilityContribution).toBe(0)
+      expect(result.pensionContribution).toBe(0)
+      expect(result.sickContribution).toBe(0)
+      expect(result.taxAmount).toBe(180)
+      expect(result.netAmount).toBe(4820)
     })
   })
 })

@@ -12,7 +12,7 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {PropType, computed, defineComponent} from 'vue'
 import SalarySummaryTable from 'src/components/partials//SalarySummaryTable.vue'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 import employerContractOfMandate from 'components/contractOfMandate/employerContractOfMandate'
 
 export default defineComponent({

@@ -7,4 +7,6 @@ export interface EmployeeContractOfMandateResult {
   readonly expenses: number,
   readonly taxBasis: number,
   readonly taxAmount: number
+  readonly grossAmount: number
+  readonly netAmount: number
 }

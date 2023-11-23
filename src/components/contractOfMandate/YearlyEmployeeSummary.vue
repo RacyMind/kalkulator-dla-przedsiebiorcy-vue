@@ -15,7 +15,7 @@ import {pln} from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
 import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
 import constants from 'src/logic/constants'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 
 const columns = [
   {

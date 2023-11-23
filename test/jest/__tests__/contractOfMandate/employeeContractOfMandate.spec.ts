@@ -4,7 +4,7 @@ import {ContractOfMandateInputFields} from '../../../../src/components/contractO
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import constants from '../../../../src/logic/constants'
-import employeeContractOfMandate from '../../../../src/components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()

@@ -13,7 +13,7 @@ import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfa
 import {PropType, computed, defineComponent} from 'vue'
 import {usePieChart} from 'src/use/usePieChart'
 import PieChart from 'components/partials/PieChart.vue'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 
 export default defineComponent({
   components: {

@@ -64,7 +64,7 @@ import {pln} from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
 import ListRow from 'components/partials/ListRow.vue'
 import constants from 'src/logic/constants'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 
 export default defineComponent({
   components: {

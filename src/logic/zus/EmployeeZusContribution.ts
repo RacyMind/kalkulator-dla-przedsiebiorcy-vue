@@ -42,13 +42,16 @@ export class EmployeeZusContribution extends ZusContribution {
 
   /**
    * Returns the pension contribution of the employee
+   * Art. 20. syst. ubezp. społ.:
+   * Przy ustalaniu podstawy wymiaru składek na ubezpieczenie chorobowe nie stosuje się ograniczenia,
+   * o którym mowa w art. 19 roczna podstawa wymiaru składek - zasady, skutek przekroczenia ust. 1.
    */
-  public getSickContribution(basisForContribution: number): number {
-    if(basisForContribution < 0) {
+  public getSickContribution(grossAmount: number): number {
+    if(grossAmount < 0) {
       return 0
     }
 
-    return helpers.round(this.sickContributionRate * basisForContribution, 2)
+    return helpers.round(this.sickContributionRate * grossAmount, 2)
   }
 
   /**
@@ -60,7 +63,7 @@ export class EmployeeZusContribution extends ZusContribution {
     }
 
     if(ppkRate < 0.005 || ppkRate > 0.04) {
-      throw new Error('Invalid argument. The PPK rate has to be between 0.05% - 4%')
+      throw new Error('Invalid argument. The PPK rate has to be between 0.5% - 4%')
     }
 
     return helpers.round(ppkRate * grossAmount, 2)

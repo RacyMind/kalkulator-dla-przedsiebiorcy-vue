@@ -227,7 +227,7 @@ import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfa
 import {Ref, computed, defineComponent, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
-import employeeContractOfMandate from 'components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
 
 export default defineComponent({
   props: {

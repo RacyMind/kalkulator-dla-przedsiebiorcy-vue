@@ -52,10 +52,9 @@ export class EmployeeContractOfMandate{
     const expenses = helpers.round(basisForExpenses * partOfWorkWithoutAuthorExpenses * expenseRate, 2)
 
     const authorExpenses = this.getAuthorExpenses(basisForExpenses)
-    this.sumUpAuthorExpenses += authorExpenses
+    this.sumUpAuthorExpenses = helpers.round(this.sumUpAuthorExpenses + authorExpenses, 2)
 
     return expenses + authorExpenses
-
   }
 
   /**
@@ -70,7 +69,7 @@ export class EmployeeContractOfMandate{
     let healthContribution = 0
     let ppkContribution = 0
 
-    const contributionBasis = this.zusContribution.getContributionBasis(this.input.grossAmount, this.sumUpContributionBasis)
+    const contributionBasis = this.zusContribution.getContributionBasis(this.input.grossAmount, this.sumUpContributionBasis, this.sumUpContributionBasis)
 
     if (this.input.isPensionContribution) {
       pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
@@ -79,28 +78,28 @@ export class EmployeeContractOfMandate{
       disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
     }
     if (this.input.isSickContribution) {
-      sickContribution = this.zusContribution.getSickContribution(contributionBasis)
+      sickContribution = this.zusContribution.getSickContribution(this.input.grossAmount)
     }
     if (this.input.employeePpkContributionRate) {
       ppkContribution = this.zusContribution.getPPKContribution(this.input.grossAmount, this.input.employeePpkContributionRate)
     }
 
     // these contributions reduce the basis for tax
-    const socialContributions = pensionContribution + disabilityContribution + sickContribution
+    const socialContributions = helpers.round(pensionContribution + disabilityContribution + sickContribution, 2)
 
     if(this.input.isHealthContribution) {
       healthContribution = this.zusContribution.getHealthContribution(this.input.grossAmount - socialContributions)
     }
 
-    const salaryAmountOverTaxReliefThreshold = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.input.grossAmount, this.sumUpGrossAmount, this.input.hasTaxRelief)
-    const expenses = this.getExpenses(salaryAmountOverTaxReliefThreshold - socialContributions)
-    const taxBasis =  Math.round(salaryAmountOverTaxReliefThreshold - socialContributions - expenses)
-
+    const salaryAmountOverTaxReliefLimit = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.input.grossAmount, this.sumUpGrossAmount, this.input.hasTaxRelief)
+    const expenses = this.getExpenses(salaryAmountOverTaxReliefLimit - socialContributions)
+    const taxBasis =  Math.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis, this.sumUpTaxBasis, this.input.partTaxReducingAmount)
+    const netAmount = helpers.round(this.input.grossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)
 
-    this.sumUpContributionBasis += contributionBasis
-    this.sumUpTaxBasis += taxBasis
-    this.sumUpGrossAmount += this.input.grossAmount
+    this.sumUpContributionBasis = helpers.round(this.sumUpContributionBasis + contributionBasis, 2)
+    this.sumUpTaxBasis = helpers.round(this.sumUpTaxBasis + taxBasis, 0)
+    this.sumUpGrossAmount = helpers.round(this.sumUpGrossAmount + this.input.grossAmount, 2)
 
     if(!isPartOfAnnualResult) {
       this.sumUpTaxBasis = 0
@@ -110,6 +109,7 @@ export class EmployeeContractOfMandate{
     }
 
     return {
+      grossAmount: this.input.grossAmount,
       healthContribution,
       sickContribution,
       ppkContribution,
@@ -118,6 +118,7 @@ export class EmployeeContractOfMandate{
       expenses,
       taxBasis,
       taxAmount,
+      netAmount,
     }
   }
 }
