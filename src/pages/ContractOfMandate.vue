@@ -123,7 +123,7 @@ const inputFields: Ref<ContractOfMandateInputFields> = ref({
   isFreeAmount: false,
   isHealthContribution: true,
   isPensionContribution: true,
-  hasAidForYoung: false,
+  hasTaxRelief: false,
   isSickContribution: true,
   partOfWorkWithAuthorExpenses: 0,
   year: helpers.getDefaultYear(),

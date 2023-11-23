@@ -1,37 +1,22 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {EmployeeContractOfMandateResult} from 'components/contractOfMandate/interfaces/EmployeeContractOfMandateResult'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
-import {TaxSystem} from 'src/logic/TaxSystem'
+import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeContractOfMandate{
   protected readonly input:ContractOfMandateInputFields
   protected readonly zusContribution: EmployeeZusContribution
-  protected sumUpBasisForContributions = 0
+  protected readonly incomeTax: GeneraLRule
+  protected sumUpContributionBasis = 0
+  protected sumUpTaxBasis = 0
   protected sumUpAuthorExpenses = 0
   protected sumUpGrossAmount = 0
 
   constructor(input:ContractOfMandateInputFields) {
     this.input = input
     this.zusContribution = new EmployeeZusContribution()
-  }
-
-  /**
-   * Returns the salary amount over the aid threshold. This amount is important for tax calculations
-   */
-  protected getImportantSalaryAmountForTax(): number{
-    if(!this.input.hasAidForYoung) {
-      return this.input.grossAmount
-    }
-
-    if(this.sumUpGrossAmount > TaxSystem.aidThreshold) {
-      return this.input.grossAmount
-    }
-    if(this.sumUpGrossAmount + this.input.grossAmount > TaxSystem.aidThreshold) {
-      return this.sumUpGrossAmount + this.input.grossAmount -  TaxSystem.aidThreshold
-    }
-
-    return 0
+    this.incomeTax = new GeneraLRule()
   }
 
   protected getAuthorExpenses(basisForAuthorExpenses:number):number {
@@ -39,18 +24,18 @@ export class EmployeeContractOfMandate{
       return 0
     }
 
-    let realThreshold = TaxSystem.taxThreshold
+    let realThreshold = GeneraLRule.taxThreshold
 
-    if(this.input.hasAidForYoung) {
-      // it's reduced because the sum of the aid and the expense limit can't be more than the the tax threshold
-      realThreshold = TaxSystem.taxThreshold - TaxSystem.aidThreshold
+    if(this.input.hasTaxRelief) {
+      // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
+      realThreshold = GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit
     }
 
     if(this.sumUpAuthorExpenses >= realThreshold) {
       return 0
     }
 
-    const expenses = helpers.round(basisForAuthorExpenses * this.input.partOfWorkWithAuthorExpenses * TaxSystem.authorExpenseRate, 2)
+    const expenses = helpers.round(basisForAuthorExpenses * this.input.partOfWorkWithAuthorExpenses * GeneraLRule.authorExpenseRate, 2)
 
     if(expenses + this.sumUpAuthorExpenses > realThreshold) {
       return realThreshold - this.sumUpAuthorExpenses
@@ -60,7 +45,7 @@ export class EmployeeContractOfMandate{
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const expenseRate = this.input.canLumpSumTaxBe && this.input.grossAmount <= TaxSystem.withoutExpensesUpTo ? 0 : TaxSystem.defaultExpenseRate
+    const expenseRate = this.input.canLumpSumTaxBe && this.input.grossAmount <= GeneraLRule.withoutExpensesUpTo ? 0 : GeneraLRule.defaultExpenseRate
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.input.partOfWorkWithAuthorExpenses
 
@@ -85,16 +70,16 @@ export class EmployeeContractOfMandate{
     let healthContribution = 0
     let ppkContribution = 0
 
-    const basisForContributions = this.zusContribution.getBasisForContributions(this.input.grossAmount, this.sumUpBasisForContributions)
+    const contributionBasis = this.zusContribution.getContributionBasis(this.input.grossAmount, this.sumUpContributionBasis)
 
     if (this.input.isPensionContribution) {
-      pensionContribution = this.zusContribution.gePensionContribution(basisForContributions)
+      pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
     }
     if (this.input.isDisabilityContribution) {
-      disabilityContribution = this.zusContribution.geDisabilityContribution(basisForContributions)
+      disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
     }
     if (this.input.isSickContribution) {
-      sickContribution = this.zusContribution.getSickContribution(basisForContributions)
+      sickContribution = this.zusContribution.getSickContribution(contributionBasis)
     }
     if (this.input.employeePpkContributionRate) {
       ppkContribution = this.zusContribution.getPPKContribution(this.input.grossAmount, this.input.employeePpkContributionRate)
@@ -107,15 +92,19 @@ export class EmployeeContractOfMandate{
       healthContribution = this.zusContribution.getHealthContribution(this.input.grossAmount - socialContributions)
     }
 
-    const importantSalaryAmountForTax = this.getImportantSalaryAmountForTax()
-    const expenses = this.getExpenses(importantSalaryAmountForTax - socialContributions)
-    const basisForTax =  Math.round(importantSalaryAmountForTax - socialContributions - expenses)
+    const salaryAmountOverTaxReliefThreshold = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.input.grossAmount, this.sumUpGrossAmount, this.input.hasTaxRelief)
+    const expenses = this.getExpenses(salaryAmountOverTaxReliefThreshold - socialContributions)
+    const taxBasis =  Math.round(salaryAmountOverTaxReliefThreshold - socialContributions - expenses)
 
-    this.sumUpBasisForContributions += basisForContributions
+    const taxAmount = this.incomeTax.getIncomeTax(taxBasis, this.sumUpTaxBasis, this.input.partTaxReducingAmount)
+
+    this.sumUpContributionBasis += contributionBasis
+    this.sumUpTaxBasis += taxBasis
     this.sumUpGrossAmount += this.input.grossAmount
 
     if(!isPartOfAnnualResult) {
-      this.sumUpBasisForContributions = 0
+      this.sumUpTaxBasis = 0
+      this.sumUpContributionBasis = 0
       this.sumUpAuthorExpenses = 0
       this.sumUpGrossAmount = 0
     }
@@ -127,10 +116,8 @@ export class EmployeeContractOfMandate{
       pensionContribution,
       disabilityContribution,
       expenses,
-      basisForTax,
+      taxBasis,
+      taxAmount,
     }
-  }
-  public getAnnualResult() {
-
   }
 }

@@ -1,6 +1,6 @@
 import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
 import {EmployeeContractOfMandate} from 'components/contractOfMandate/EmployeeContractOfMandate'
-import {TaxSystem} from 'src/logic/TaxSystem'
+import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
@@ -33,7 +33,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: true,
       isPensionContribution: true,
-      hasAidForYoung: false,
+      hasTaxRelief: false,
       isSickContribution: true,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -96,7 +96,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: false,
       isPensionContribution: false,
-      hasAidForYoung: false,
+      hasTaxRelief: false,
       isSickContribution: false,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -138,19 +138,19 @@ describe('Contract of Mandate on 1.11.2023', () => {
     it('The expenses are over limit of author expenses', () => {
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 2 + 1,
+        grossAmount: GeneraLRule.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold)
+      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 5 + 1,
+        grossAmount: GeneraLRule.taxThreshold * 5 + 1,
         partOfWorkWithAuthorExpenses: 0,
-      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold + 0.2)
+      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold + 0.2)
 
       const simulateMultipleMonthsWithAuthorExpenses = new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold,
+        grossAmount: GeneraLRule.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
       })
 
@@ -161,51 +161,51 @@ describe('Contract of Mandate on 1.11.2023', () => {
 
       const simulateMultipleMonthsWithoutAuthorExpenses = new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 5,
+        grossAmount: GeneraLRule.taxThreshold * 5,
         partOfWorkWithAuthorExpenses: 0,
       })
 
       simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(0, true)
       simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(1, true)
 
-      expect(simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(2, true).expenses).toBe(TaxSystem.taxThreshold)
+      expect(simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(2, true).expenses).toBe(GeneraLRule.taxThreshold)
     })
 
-    it('The expenses with the young aid and the author expenses', () => {
+    it('The expenses with the tax relief and the author expenses', () => {
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold,
+        grossAmount: GeneraLRule.taxReliefLimit,
         partOfWorkWithAuthorExpenses: 1,
-        hasAidForYoung: true,
+        hasTaxRelief: true,
       }).getMonthlyResult().expenses).toBe(0)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold + 1,
+        grossAmount: GeneraLRule.taxReliefLimit + 1,
         partOfWorkWithAuthorExpenses: 1,
-        hasAidForYoung: true,
+        hasTaxRelief: true,
       }).getMonthlyResult().expenses).toBe(0.5)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold,
+        grossAmount: GeneraLRule.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
-        hasAidForYoung: true,
-      }).getMonthlyResult().expenses).toBe((TaxSystem.taxThreshold - TaxSystem.aidThreshold) / 2)
+        hasTaxRelief: true,
+      }).getMonthlyResult().expenses).toBe((GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit) / 2)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: 2 * TaxSystem.taxThreshold + 1,
+        grossAmount: 2 * GeneraLRule.taxThreshold + 1,
         partOfWorkWithAuthorExpenses: 1,
-        hasAidForYoung: true,
-      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold - TaxSystem.aidThreshold)
+        hasTaxRelief: true,
+      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 10,
+        grossAmount: GeneraLRule.taxThreshold * 10,
         partOfWorkWithAuthorExpenses: 1,
-        hasAidForYoung: true,
-      }).getMonthlyResult().expenses).toBe(TaxSystem.taxThreshold - TaxSystem.aidThreshold)
+        hasTaxRelief: true,
+      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
     })
   })
 
@@ -220,7 +220,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
       isFreeAmount: false,
       isHealthContribution: false,
       isPensionContribution: false,
-      hasAidForYoung: false,
+      hasTaxRelief: false,
       isSickContribution: false,
       partOfWorkWithAuthorExpenses: 0,
       canLumpSumTaxBe: true,
@@ -228,85 +228,85 @@ describe('Contract of Mandate on 1.11.2023', () => {
 
     it('Standard cases', () => {
 
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().basisForTax).toBe(800)
+      expect(new EmployeeContractOfMandate(input).getMonthlyResult().taxBasis).toBe(800)
       expect(new EmployeeContractOfMandate({
         ...input,
         isDisabilityContribution: true,
         isHealthContribution: true,
         isPensionContribution: true,
         isSickContribution: true,
-      }).getMonthlyResult().basisForTax).toBe(690)
+      }).getMonthlyResult().taxBasis).toBe(690)
     })
 
     it('The gross amount is <= 200', () => {
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: 200,
-      }).getMonthlyResult().basisForTax).toBe(200)
+      }).getMonthlyResult().taxBasis).toBe(200)
 
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: 200,
         canLumpSumTaxBe: false,
-      }).getMonthlyResult().basisForTax).toBe(160)
+      }).getMonthlyResult().taxBasis).toBe(160)
 
       expect(new EmployeeContractOfMandate({
         ...input,
         grossAmount: 200,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().basisForTax).toBe(100)
+      }).getMonthlyResult().taxBasis).toBe(100)
     })
 
     it('The expenses are over limit of author expenses', () => {
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 2,
+        grossAmount: GeneraLRule.taxThreshold * 2,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold)
+      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 2 + 1,
+        grossAmount: GeneraLRule.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold + 1)
+      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold + 1)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.taxThreshold * 2 + 10,
+        grossAmount: GeneraLRule.taxThreshold * 2 + 10,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().basisForTax).toBe(TaxSystem.taxThreshold + 10)
+      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold + 10)
     })
 
-    it('The aid for yound is active', () => {
+    it('The tax relief is active', () => {
       expect(new EmployeeContractOfMandate({
         ...input,
-        hasAidForYoung: true,
-      }).getMonthlyResult().basisForTax).toBe(0)
+        hasTaxRelief: true,
+      }).getMonthlyResult().taxBasis).toBe(0)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold,
-        hasAidForYoung: true,
-      }).getMonthlyResult().basisForTax).toBe(0)
+        grossAmount: GeneraLRule.taxReliefLimit,
+        hasTaxRelief: true,
+      }).getMonthlyResult().taxBasis).toBe(0)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold + 100,
-        hasAidForYoung: true,
-      }).getMonthlyResult().basisForTax).toBe(80)
+        grossAmount: GeneraLRule.taxReliefLimit + 100,
+        hasTaxRelief: true,
+      }).getMonthlyResult().taxBasis).toBe(80)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold + 100.1,
-        hasAidForYoung: true,
-      }).getMonthlyResult().basisForTax).toBe(80)
+        grossAmount: GeneraLRule.taxReliefLimit + 100.1,
+        hasTaxRelief: true,
+      }).getMonthlyResult().taxBasis).toBe(80)
 
       expect(new EmployeeContractOfMandate({
         ...input,
-        grossAmount: TaxSystem.aidThreshold + 100,
-        hasAidForYoung: true,
+        grossAmount: GeneraLRule.taxReliefLimit + 100,
+        hasTaxRelief: true,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().basisForTax).toBe(50)
+      }).getMonthlyResult().taxBasis).toBe(50)
 
     })
   })

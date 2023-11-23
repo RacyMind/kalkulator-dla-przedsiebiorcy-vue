@@ -226,13 +226,13 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
     amountOfDeductionOfHealthContributionFromTax = employeeContributions.calculateAmountOfDeductionOfHealthContributionFromTax(input.grossAmount, grossAmountMinusEmployeeContributions)
   }
 
-  const expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, input.hasAidForYoung, input.partOfWorkWithAuthorExpenses)
+  const expenses = calculateExpenses(grossAmountMinusEmployeeContributions, expenseRate, input.hasTaxRelief, input.partOfWorkWithAuthorExpenses)
   // Adds the employer PPK contribution to the basis for tax. The tax office cares it as income
   if (month > 0) {
     employerPPkContribution += employerContributions.calculatePpkContribution(input.grossAmount, input.employerPpkContributionRate)
   }
 
-  const basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions + employerPPkContribution, expenses, input.hasAidForYoung)
+  const basisForTax = calculateBasisForTax(input.grossAmount, grossAmountMinusEmployeeContributions + employerPPkContribution, expenses, input.hasTaxRelief)
   const taxAmount = calculateTaxAmount(input.grossAmount, basisForTax, amountOfDeductionOfHealthContributionFromTax, input.isFreeAmount)
   const totalContributions = employeeContributions.sumContributions(pensionContribution, disabilityContribution, sickContribution, healthContribution)
   const netAmount = calculateNetAmount(input.grossAmount, taxAmount, totalContributions, ppkContribution)

@@ -19,7 +19,7 @@ const defaultInput:ContractOfMandateInputFields = {
   isFreeAmount: false,
   isHealthContribution: true,
   isPensionContribution: true,
-  hasAidForYoung: false,
+  hasTaxRelief: false,
   isSickContribution: true,
   partOfWorkWithAuthorExpenses: 0,
   year: helpers.getDefaultYear(),
@@ -68,7 +68,7 @@ describe('employeeContractOfMandate', () => {
   it('the monthly calculation, with all contributions and the relief for young, for the default year', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
-      hasAidForYoung: true,
+      hasTaxRelief: true,
     }
 
     const result = monthlyResult(input)
@@ -236,7 +236,7 @@ describe('employeeContractOfMandate', () => {
   it('the yearly calculation, with all contributions and the relief for young, for the default year', () => {
     const input:ContractOfMandateInputFields = {
       ...defaultInput,
-      hasAidForYoung: true,
+      hasTaxRelief: true,
     }
 
     const result = yearlyResult(yearlyInput(input))

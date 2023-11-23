@@ -307,7 +307,7 @@ export default defineComponent({
         isFreeAmount: isFreeAmount.value,
         isHealthContribution: isHealthContribution.value,
         isPensionContribution: isPensionContribution.value,
-        hasAidForYoung: isReliefForYoung.value,
+        hasTaxRelief: isReliefForYoung.value,
         isSickContribution: isSickContribution.value,
         partOfWorkWithAuthorExpenses: partOfWorkWithAuthorExpenses.value,
         year: <AvailableYear>props.year,

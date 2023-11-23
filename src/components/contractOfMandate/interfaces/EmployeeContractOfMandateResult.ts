@@ -5,5 +5,6 @@ export interface EmployeeContractOfMandateResult {
   readonly pensionContribution: number,
   readonly ppkContribution: number,
   readonly expenses: number,
-  readonly basisForTax: number,
+  readonly taxBasis: number,
+  readonly taxAmount: number
 }

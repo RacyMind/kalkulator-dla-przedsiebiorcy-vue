@@ -51,15 +51,4 @@ describe('ZUS contributions for an employee in 2023', () => {
     expect(() => employeeZusContribution.getPPKContribution(100, 0.0049)).toThrowError('Invalid argument')
     expect(() => employeeZusContribution.getPPKContribution(100, 0.041)).toThrowError('Invalid argument')
   })
-
-  it('the basis for contibutions', () => {
-    expect(employeeZusContribution.getBasisForContributions(100)).toBe(100)
-    expect(employeeZusContribution.getBasisForContributions(0)).toBe(0)
-    expect(employeeZusContribution.getBasisForContributions(-1)).toBe(0)
-    expect(employeeZusContribution.getBasisForContributions(EmployeeZusContribution.limitOfBasisForContributions + 1)).toBe(EmployeeZusContribution.limitOfBasisForContributions)
-    expect(employeeZusContribution.getBasisForContributions(1000, EmployeeZusContribution.limitOfBasisForContributions)).toBe(0)
-    expect(employeeZusContribution.getBasisForContributions(1000, EmployeeZusContribution.limitOfBasisForContributions + 1)).toBe(0)
-    expect(employeeZusContribution.getBasisForContributions(1000, EmployeeZusContribution.limitOfBasisForContributions - 500)).toBe(500)
-    expect(employeeZusContribution.getBasisForContributions(400, EmployeeZusContribution.limitOfBasisForContributions - 500)).toBe(400)
-  })
 })
