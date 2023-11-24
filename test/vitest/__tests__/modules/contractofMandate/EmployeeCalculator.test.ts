@@ -80,7 +80,7 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
       }).calculate().getResult().pensionContribution).toBe(0)
     })
 
-    it('The ppk contribution', () => {
+    it('The PPK contribution', () => {
       expect(new EmployeeCalculator().setInputData(input).calculate().getResult().ppkContribution).toBe(20)
 
       expect(new EmployeeCalculator().setInputData({

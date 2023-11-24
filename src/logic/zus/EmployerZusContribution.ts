@@ -2,7 +2,7 @@ import {ZusContribution} from 'src/logic/zus/ZusContribution'
 import helpers from 'src/logic/helpers'
 
 export class EmployerZusContribution extends ZusContribution {
-  protected readonly disabilityContributionRate:number = 0.015
+  protected readonly disabilityContributionRate:number = 0.065
   protected readonly pensionContributionRate:number = 0.0976
   protected readonly fpContributionRate:number = 0.01
   protected readonly fgspContributionRate:number = 0.001

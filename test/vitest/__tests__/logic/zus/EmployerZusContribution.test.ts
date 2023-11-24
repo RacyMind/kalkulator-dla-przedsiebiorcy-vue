@@ -16,7 +16,7 @@ describe('ZUS contributions for an employer in 2023', () => {
   })
 
   it('the disability contibution', () => {
-    expect(employerZusContribution.geDisabilityContribution(100)).toBe(1.5)
+    expect(employerZusContribution.geDisabilityContribution(100)).toBe(6.5)
     expect(employerZusContribution.geDisabilityContribution(0)).toBe(0)
     expect(employerZusContribution.geDisabilityContribution(-1)).toBe(0)
   })

@@ -4,7 +4,7 @@ import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
-class EmployerCalculator implements Calculator<InputFields, EmployerResult>
+export class EmployerCalculator implements Calculator<InputFields, EmployerResult>
 {
   protected readonly zusContribution: EmployerZusContribution
   protected inputData: InputFields | undefined
@@ -39,7 +39,7 @@ class EmployerCalculator implements Calculator<InputFields, EmployerResult>
   calculate(): this {
     let pensionContribution = 0
     let disabilityContribution = 0
-    let accidntContribution = 0
+    let accidentContribution = 0
     let ppkContribution = 0
     let fpContribution = 0
     let fgspContribution = 0
@@ -54,9 +54,9 @@ class EmployerCalculator implements Calculator<InputFields, EmployerResult>
       disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
     }
     if (this.getInputData().accidentContributionRate) {
-      accidntContribution = this.zusContribution.getAccidentContribution(this.getInputData().grossAmount, this.getInputData().accidentContributionRate)
+      accidentContribution = this.zusContribution.getAccidentContribution(this.getInputData().grossAmount, this.getInputData().accidentContributionRate)
     }
-    if (this.getInputData().employeePpkContributionRate) {
+    if (this.getInputData().employerPpkContributionRate) {
       ppkContribution = this.zusContribution.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employerPpkContributionRate)
     }
     if(this.getInputData().isFpContribution) {
@@ -65,20 +65,20 @@ class EmployerCalculator implements Calculator<InputFields, EmployerResult>
       fsContribution = this.zusContribution.getFSContribution(this.getInputData().grossAmount)
     }
 
-    const totalAmount = helpers.round(this.getInputData().grossAmount + accidntContribution + fsContribution + fgspContribution + ppkContribution + fpContribution
+    const totalAmount = helpers.round(this.getInputData().grossAmount + accidentContribution + fsContribution + fgspContribution + ppkContribution + fpContribution
      + disabilityContribution + pensionContribution, 2)
 
     this.sumUpContributionBasis = helpers.round(this.sumUpContributionBasis + contributionBasis, 2)
 
     this.result = {
       grossAmount: this.getInputData().grossAmount,
-      disabilityContribution: accidntContribution,
-      fsContribution: fsContribution,
-      fgspContribution: fgspContribution,
-      ppkContribution: ppkContribution,
-      fpContribution: fpContribution,
-      accidentContribution: accidntContribution,
-      pensionContribution: pensionContribution,
+      disabilityContribution,
+      pensionContribution,
+      ppkContribution,
+      fpContribution,
+      fsContribution,
+      fgspContribution,
+      accidentContribution,
       totalAmount,
     }
 
