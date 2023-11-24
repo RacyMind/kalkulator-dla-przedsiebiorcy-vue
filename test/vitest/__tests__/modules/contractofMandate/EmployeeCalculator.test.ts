@@ -345,6 +345,21 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
       expect(result.netAmount).toBe(3712.19)
     })
 
+
+    it('With the employer\'s PPK contribution', () => {
+      const result  = new EmployeeCalculator().setInputData({
+        ...input,
+        employerPpkContributionRate: 0.015,
+      }).calculate().getResult()
+
+      expect(result.healthContribution).toBe(388.31)
+      expect(result.ppkContribution).toBe(100)
+      expect(result.disabilityContribution).toBe(75)
+      expect(result.pensionContribution).toBe(488)
+      expect(result.sickContribution).toBe(122.5)
+      expect(result.taxAmount).toBe(121)
+      expect(result.netAmount).toBe(3705.19)
+    })
     it('with the tax relief', () => {
       const result  = new EmployeeCalculator().setInputData({
         ...input,

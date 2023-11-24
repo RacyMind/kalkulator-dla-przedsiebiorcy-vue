@@ -1,12 +1,13 @@
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
+import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeCalculator implements Calculator<InputFields, EmployeeResult>{
-  protected readonly zusContribution: EmployeeZusContribution
+  protected readonly employeeZus: EmployeeZusContribution
   protected readonly incomeTax: GeneraLRule
   protected inputData: InputFields | undefined
   protected result: EmployeeResult | undefined
@@ -21,7 +22,7 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
    */
   constructor(isPartOfAnnualResult = false) {
     this.isPartOfAnnualResult = isPartOfAnnualResult
-    this.zusContribution = new EmployeeZusContribution()
+    this.employeeZus = new EmployeeZusContribution()
     this.incomeTax = new GeneraLRule()
   }
 
@@ -88,32 +89,40 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
     let sickContribution = 0
     let healthContribution = 0
     let ppkContribution = 0
+    let employerPpkpkContribution = 0
 
-    const contributionBasis = this.zusContribution.getContributionBasis(this.getInputData().grossAmount, this.sumUpContributionBasis)
+    const contributionBasis = this.employeeZus.getContributionBasis(this.getInputData().grossAmount, this.sumUpContributionBasis)
 
     if (this.getInputData().isPensionContribution) {
-      pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
+      pensionContribution = this.employeeZus.gePensionContribution(contributionBasis)
     }
     if (this.getInputData().isDisabilityContribution) {
-      disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
+      disabilityContribution = this.employeeZus.geDisabilityContribution(contributionBasis)
     }
     if (this.getInputData().isSickContribution) {
-      sickContribution = this.zusContribution.getSickContribution(this.getInputData().grossAmount)
+      sickContribution = this.employeeZus.getSickContribution(this.getInputData().grossAmount)
     }
     if (this.getInputData().employeePpkContributionRate) {
-      ppkContribution = this.zusContribution.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employeePpkContributionRate)
+      ppkContribution = this.employeeZus.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employeePpkContributionRate)
+    }
+    if (this.getInputData().employerPpkContributionRate) {
+      const employerZUs = new EmployerZusContribution()
+      employerPpkpkContribution = employerZUs.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employerPpkContributionRate)
+      console.log('employerPpkpkContribution', employerPpkpkContribution)
+      console.log('this.getInputData().grossAmount + employerPpkpkContribution', this.getInputData().grossAmount + employerPpkpkContribution)
     }
 
     // these contributions reduce the basis for tax
     const socialContributions = helpers.round(pensionContribution + disabilityContribution + sickContribution, 2)
 
     if(this.getInputData().isHealthContribution) {
-      healthContribution = this.zusContribution.getHealthContribution(this.getInputData().grossAmount - socialContributions)
+      healthContribution = this.employeeZus.getHealthContribution(this.getInputData().grossAmount - socialContributions)
     }
 
-    const salaryAmountOverTaxReliefLimit = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.getInputData().grossAmount, this.sumUpGrossAmount, this.getInputData().hasTaxRelief)
+    const salaryAmountOverTaxReliefLimit = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.getInputData().grossAmount + employerPpkpkContribution, this.sumUpGrossAmount, this.getInputData().hasTaxRelief)
     const expenses = this.getExpenses(salaryAmountOverTaxReliefLimit - socialContributions)
     const taxBasis =  helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0)
+    console.log('taxBasis', taxBasis)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)
     const netAmount = helpers.round(this.getInputData().grossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)
 
@@ -123,6 +132,7 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
 
     this.result = {
       grossAmount: this.getInputData().grossAmount,
+      ppkIncomeFromEmployer: employerPpkpkContribution,
       healthContribution,
       sickContribution,
       ppkContribution,

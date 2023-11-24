@@ -3,6 +3,7 @@ import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
+import helpers from 'src/logic/helpers'
 
 export class AnnualEmployeeCalculator implements Calculator<InputFields[], AnnualEmployeeResult>{
   protected readonly employeeCalculator:EmployeeCalculator
@@ -39,8 +40,8 @@ export class AnnualEmployeeCalculator implements Calculator<InputFields[], Annua
       monthlyResults.push(this.employeeCalculator.setInputData(monthlyInput).calculate().getResult())
     })
 
-    const sum = (property: keyof EmployeeResult) => monthlyResults.reduce((accumulator:number, object:EmployeeResult) => {
-      return accumulator + object[property]
+    const sum = (property: keyof EmployeeResult) => monthlyResults.reduce((accumulator:number, result:EmployeeResult) => {
+      return helpers.round(accumulator + result[property], 2)
     }, 0)
 
     const annualResult:EmployeeResult = {
