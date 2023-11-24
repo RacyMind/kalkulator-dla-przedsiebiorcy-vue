@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, ref, watch} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
@@ -113,7 +113,7 @@ const openEmployeeModal = ref(false)
 const openEmployerModal = ref(false)
 const scrollTarget = ref(null) as any
 
-const inputFields: Ref<ContractOfMandateInputFields> = ref({
+const inputFields: Ref<InputFields> = ref({
   accidentContributionRate: 0,
   employeePpkContributionRate: 0,
   employerPpkContributionRate: 0,
@@ -133,7 +133,7 @@ watch(year, () => {
   inputFields.value.grossAmount = 0
 })
 
-const save = (input: ContractOfMandateInputFields) => {
+const save = (input: InputFields) => {
   inputFields.value = input
   helpers.scrollToElement(scrollTarget?.value?.$el)
 }

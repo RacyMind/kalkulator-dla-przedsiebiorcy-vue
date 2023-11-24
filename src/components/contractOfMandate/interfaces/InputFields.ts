@@ -1,4 +1,4 @@
-export interface ContractOfMandateInputFields {
+export interface InputFields {
   canLumpSumTaxBe: boolean,
   accidentContributionRate: number,
   employerPpkContributionRate: number,

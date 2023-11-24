@@ -1,7 +1,7 @@
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateEmployerSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {ContractOfMandateEmployerYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import constants from 'src/logic/constants'
 import employerContributions from 'src/logic/employerContributions'
 import helpers from 'src/logic/helpers'
@@ -62,10 +62,10 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number) {
 /**
  * Returns the monthly results of an employer
  *
- * @param {ContractOfMandateInputFields} input
+ * @param {InputFields} input
  * @returns {ContractOfMandateEmployerSingleResult}
  */
-function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandateEmployerSingleResult {
+function getMonthlyResult (input:InputFields):ContractOfMandateEmployerSingleResult {
 
   let pensionContribution = 0
   let disabilityContribution = 0
@@ -114,10 +114,10 @@ function getMonthlyResult (input:ContractOfMandateInputFields):ContractOfMandate
 /**
  * Returns the yearly results of an employer
  *
- * @param {ContractOfMandateInputFields[]} monthlyInputs
+ * @param {InputFields[]} monthlyInputs
  * @returns {ContractOfMandateEmployerYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployerYearlyResult {
+function getYearlyResult (monthlyInputs:InputFields[]):ContractOfMandateEmployerYearlyResult {
   const results:ContractOfMandateEmployerSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
 

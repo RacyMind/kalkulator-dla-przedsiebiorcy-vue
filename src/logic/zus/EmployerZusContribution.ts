@@ -6,6 +6,7 @@ export class EmployerZusContribution extends ZusContribution {
   protected readonly pensionContributionRate:number = 0.0976
   protected readonly fpContributionRate:number = 0.01
   protected readonly fgspContributionRate:number = 0.001
+  protected readonly fsContributionRate:number = 0.0145
 
   /**
    * Returns the disability contribution of the employer
@@ -36,6 +37,10 @@ export class EmployerZusContribution extends ZusContribution {
    * o którym mowa w art. 19 roczna podstawa wymiaru składek - zasady, skutek przekroczenia ust. 1.
    */
   public getAccidentContribution(grossAmount: number, contributionRate: number): number {
+    if(grossAmount < 0) {
+      return 0
+    }
+
     return helpers.round(contributionRate * grossAmount, 2)
   }
 
@@ -45,6 +50,10 @@ export class EmployerZusContribution extends ZusContribution {
    * https://www.zus.pl/pracujacy/fundusze-pozaubezpieczeniowe/fp
    */
   public getFPContribution(grossAmount: number): number {
+    if(grossAmount < 0) {
+      return 0
+    }
+
     return helpers.round(this.fpContributionRate * grossAmount, 2)
   }
 
@@ -54,13 +63,30 @@ export class EmployerZusContribution extends ZusContribution {
    * https://www.zus.pl/pracujacy/fundusze-pozaubezpieczeniowe/fp
    */
   public getFGSPContribution(grossAmount: number): number {
-    return helpers.round(this.fpContributionRate * grossAmount, 2)
+    if(grossAmount < 0) {
+      return 0
+    }
+
+    return helpers.round(this.fgspContributionRate * grossAmount, 2)
+  }
+
+  /**
+   * Returns the "Fundusz Solidarnościowy" contribution of the employer
+   * Przy ustalaniu podstawy wymiaru składek na Fundusz Gwarantowanych Świadczeń Pracowniczych nie stosuje się ograniczenia limitu podstawy składek
+   * https://www.zus.pl/pracujacy/fundusze-pozaubezpieczeniowe/fp
+   */
+  public getFSContribution(grossAmount: number): number {
+    if(grossAmount < 0) {
+      return 0
+    }
+
+    return helpers.round(this.fsContributionRate * grossAmount, 2)
   }
 
   /**
    * Returns the PPK (Pracownicze Plany Kapitałowe) contribution of the employer
    */
-  public getPPKContribution(grossAmount: number, ppkRate = 0.02): number {
+  public getPPKContribution(grossAmount: number, ppkRate = 0.015): number {
     if(grossAmount < 0) {
       return 0
     }

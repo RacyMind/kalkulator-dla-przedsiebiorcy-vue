@@ -223,11 +223,11 @@
 
 <script lang="ts">
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, computed, defineComponent, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import constants from 'src/logic/constants'
-import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeCalculator'
 
 export default defineComponent({
   props: {
@@ -297,7 +297,7 @@ export default defineComponent({
     })
 
     const save = () => {
-      const input: ContractOfMandateInputFields = {
+      const input: InputFields = {
         accidentContributionRate: accidentContributionRate.value / 100,
         employeePpkContributionRate: employeePpkContributionRate.value,
         employerPpkContributionRate: employerPpkContributionRate.value,

@@ -9,13 +9,13 @@
 
 <script lang="ts">
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {PropType, Ref, computed, defineComponent, ref, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
 import YearlySummaryTable from 'components/partials/YearlySummaryTable.vue'
 import constants from 'src/logic/constants'
-import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeCalculator'
 
 const columns = [
   {
@@ -98,13 +98,13 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<ContractOfMandateInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {
     const $q = useQuasar()
 
-    const monthlyInputs: Ref<ContractOfMandateInputFields[]> = ref([])
+    const monthlyInputs: Ref<InputFields[]> = ref([])
 
     for (let i = 0; i < 12; i++) {
       monthlyInputs.value.push(JSON.parse(JSON.stringify(props.input)))

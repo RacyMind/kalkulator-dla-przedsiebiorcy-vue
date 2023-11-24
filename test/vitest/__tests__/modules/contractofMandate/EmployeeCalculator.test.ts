@@ -1,12 +1,12 @@
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
-import {EmployeeContractOfMandate} from 'components/contractOfMandate/logic/EmployeeContractOfMandate'
+import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
 
-const annualInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandateInputFields[] => {
-  const input:ContractOfMandateInputFields[] = []
+const annualInput = (monthlyInput:InputFields):InputFields[] => {
+  const input:InputFields[] = []
 
   for(let i = 0; i < 12; i++) {
     input.push(monthlyInput)
@@ -15,15 +15,20 @@ const annualInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandat
   return input
 }
 
-describe('Contract of Mandate on 1.11.2023', () => {
+describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
   beforeAll(() => {
     setActivePinia(createPinia())
     const settingStore = useSettingStore()
     settingStore.dateOfLawRules = new Date(2023,11,1)
   })
 
+  it('The invalid data', () => {
+    expect(() => new EmployeeCalculator().getResult()).toThrowError('undefined')
+    expect(() => new EmployeeCalculator().calculate().getResult()).toThrowError('undefined')
+  })
+
   describe('Test ZUS contributions', () => {
-    const input: ContractOfMandateInputFields = {
+    const input: InputFields = {
       accidentContributionRate: 0,
       employeePpkContributionRate: 0.02,
       employerPpkContributionRate: 0,
@@ -40,53 +45,53 @@ describe('Contract of Mandate on 1.11.2023', () => {
     }
 
     it('The health contribution', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().healthContribution).toBe(77.66)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().healthContribution).toBe(77.66)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         isHealthContribution: false,
-      }).getMonthlyResult().healthContribution).toBe(0)
+      }).calculate().getResult().healthContribution).toBe(0)
     })
 
     it('The sick contribution', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().sickContribution).toBe(24.50)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().sickContribution).toBe(24.50)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         isSickContribution: false,
-      }).getMonthlyResult().sickContribution).toBe(0)
+      }).calculate().getResult().sickContribution).toBe(0)
     })
 
     it('The disability contribution', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().disabilityContribution).toBe(15)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().disabilityContribution).toBe(15)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         isDisabilityContribution: false,
-      }).getMonthlyResult().disabilityContribution).toBe(0)
+      }).calculate().getResult().disabilityContribution).toBe(0)
     })
 
     it('The pension contribution', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().pensionContribution).toBe(97.6)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().pensionContribution).toBe(97.6)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         isPensionContribution: false,
-      }).getMonthlyResult().pensionContribution).toBe(0)
+      }).calculate().getResult().pensionContribution).toBe(0)
     })
 
     it('The ppk contribution', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().ppkContribution).toBe(20)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().ppkContribution).toBe(20)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         employeePpkContributionRate: 0,
-      }).getMonthlyResult().ppkContribution).toBe(0)
+      }).calculate().getResult().ppkContribution).toBe(0)
     })
   })
 
   describe('Test expenses', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -103,114 +108,114 @@ describe('Contract of Mandate on 1.11.2023', () => {
     }
 
     it('Standard cases', () => {
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().expenses).toBe(200)
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().expenses).toBe(200)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().expenses).toBe(500)
+      }).calculate().getResult().expenses).toBe(500)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         partOfWorkWithAuthorExpenses: 0.5,
-      }).getMonthlyResult().expenses).toBe(250 + 100)
+      }).calculate().getResult().expenses).toBe(250 + 100)
     })
 
     it('The gross amount is <= 200', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
-      }).getMonthlyResult().expenses).toBe(0)
+      }).calculate().getResult().expenses).toBe(0)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
         canLumpSumTaxBe: false,
-      }).getMonthlyResult().expenses).toBe(40)
+      }).calculate().getResult().expenses).toBe(40)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().expenses).toBe(100)
+      }).calculate().getResult().expenses).toBe(100)
     })
 
     it('The expenses are over limit of author expenses', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold)
+      }).calculate().getResult().expenses).toBe(GeneraLRule.taxThreshold)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 5 + 1,
         partOfWorkWithAuthorExpenses: 0,
-      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold + 0.2)
+      }).calculate().getResult().expenses).toBe(GeneraLRule.taxThreshold + 0.2)
 
-      const simulateMultipleMonthsWithAuthorExpenses = new EmployeeContractOfMandate({
+      const simulateMultipleMonthsWithAuthorExpenses = new EmployeeCalculator(true).setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
       })
 
-      simulateMultipleMonthsWithAuthorExpenses.getMonthlyResult(0, true)
-      simulateMultipleMonthsWithAuthorExpenses.getMonthlyResult(1, true)
+      simulateMultipleMonthsWithAuthorExpenses.calculate().getResult()
+      simulateMultipleMonthsWithAuthorExpenses.calculate().getResult()
 
-      expect(simulateMultipleMonthsWithAuthorExpenses.getMonthlyResult(2, true).expenses).toBe(0)
+      expect(simulateMultipleMonthsWithAuthorExpenses.calculate().getResult().expenses).toBe(0)
 
-      const simulateMultipleMonthsWithoutAuthorExpenses = new EmployeeContractOfMandate({
+      const simulateMultipleMonthsWithoutAuthorExpenses = new EmployeeCalculator(true).setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 5,
         partOfWorkWithAuthorExpenses: 0,
       })
 
-      simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(0, true)
-      simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(1, true)
+      simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult()
+      simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult()
 
-      expect(simulateMultipleMonthsWithoutAuthorExpenses.getMonthlyResult(2, true).expenses).toBe(GeneraLRule.taxThreshold)
+      expect(simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult().expenses).toBe(GeneraLRule.taxThreshold)
     })
 
     it('The expenses with the tax relief and the author expenses', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).getMonthlyResult().expenses).toBe(0)
+      }).calculate().getResult().expenses).toBe(0)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit + 1,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).getMonthlyResult().expenses).toBe(0.5)
+      }).calculate().getResult().expenses).toBe(0.5)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).getMonthlyResult().expenses).toBe((GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit) / 2)
+      }).calculate().getResult().expenses).toBe((GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit) / 2)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 2 * GeneraLRule.taxThreshold + 1,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
+      }).calculate().getResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 10,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).getMonthlyResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
+      }).calculate().getResult().expenses).toBe(GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit)
     })
   })
 
   describe('Test basis for tax', () => {
-    const input: ContractOfMandateInputFields = {
+    const input: InputFields = {
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -228,91 +233,91 @@ describe('Contract of Mandate on 1.11.2023', () => {
 
     it('Standard cases', () => {
 
-      expect(new EmployeeContractOfMandate(input).getMonthlyResult().taxBasis).toBe(800)
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData(input).calculate().getResult().taxBasis).toBe(800)
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         isDisabilityContribution: true,
         isHealthContribution: true,
         isPensionContribution: true,
         isSickContribution: true,
-      }).getMonthlyResult().taxBasis).toBe(690)
+      }).calculate().getResult().taxBasis).toBe(690)
     })
 
     it('The gross amount is <= 200', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
-      }).getMonthlyResult().taxBasis).toBe(200)
+      }).calculate().getResult().taxBasis).toBe(200)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
         canLumpSumTaxBe: false,
-      }).getMonthlyResult().taxBasis).toBe(160)
+      }).calculate().getResult().taxBasis).toBe(160)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: 200,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().taxBasis).toBe(100)
+      }).calculate().getResult().taxBasis).toBe(100)
     })
 
     it('The expenses are over limit of author expenses', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 2,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold)
+      }).calculate().getResult().taxBasis).toBe(GeneraLRule.taxThreshold)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold + 1)
+      }).calculate().getResult().taxBasis).toBe(GeneraLRule.taxThreshold + 1)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxThreshold * 2 + 10,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().taxBasis).toBe(GeneraLRule.taxThreshold + 10)
+      }).calculate().getResult().taxBasis).toBe(GeneraLRule.taxThreshold + 10)
     })
 
     it('The tax relief is active', () => {
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         hasTaxRelief: true,
-      }).getMonthlyResult().taxBasis).toBe(0)
+      }).calculate().getResult().taxBasis).toBe(0)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit,
         hasTaxRelief: true,
-      }).getMonthlyResult().taxBasis).toBe(0)
+      }).calculate().getResult().taxBasis).toBe(0)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit + 100,
         hasTaxRelief: true,
-      }).getMonthlyResult().taxBasis).toBe(80)
+      }).calculate().getResult().taxBasis).toBe(80)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit + 100.1,
         hasTaxRelief: true,
-      }).getMonthlyResult().taxBasis).toBe(80)
+      }).calculate().getResult().taxBasis).toBe(80)
 
-      expect(new EmployeeContractOfMandate({
+      expect(new EmployeeCalculator().setInputData({
         ...input,
         grossAmount: GeneraLRule.taxReliefLimit + 100,
         hasTaxRelief: true,
         partOfWorkWithAuthorExpenses: 1,
-      }).getMonthlyResult().taxBasis).toBe(50)
+      }).calculate().getResult().taxBasis).toBe(50)
 
     })
   })
 
   describe('Test the full result', () => {
-    const input: ContractOfMandateInputFields = {
+    const input: InputFields = {
       accidentContributionRate: 0,
       employeePpkContributionRate: 0.02,
       employerPpkContributionRate: 0,
@@ -329,7 +334,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
     }
 
     it('The standard cases', () => {
-      const result  = new EmployeeContractOfMandate(input).getMonthlyResult()
+      const result  = new EmployeeCalculator().setInputData(input).calculate().getResult()
 
       expect(result.healthContribution).toBe(388.31)
       expect(result.ppkContribution).toBe(100)
@@ -341,10 +346,10 @@ describe('Contract of Mandate on 1.11.2023', () => {
     })
 
     it('with the tax relief', () => {
-      const result  = new EmployeeContractOfMandate({
+      const result  = new EmployeeCalculator().setInputData({
         ...input,
         hasTaxRelief: true,
-      }).getMonthlyResult()
+      }).calculate().getResult()
 
       expect(result.healthContribution).toBe(388.31)
       expect(result.ppkContribution).toBe(100)
@@ -356,7 +361,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
     })
 
     it('without ZUS contributions', () => {
-      const result  = new EmployeeContractOfMandate({
+      const result  = new EmployeeCalculator().setInputData({
         ...input,
         isDisabilityContribution: false,
         isFpContribution: false,
@@ -365,7 +370,7 @@ describe('Contract of Mandate on 1.11.2023', () => {
         isPensionContribution: false,
         isSickContribution: false,
         employeePpkContributionRate: 0,
-      }).getMonthlyResult()
+      }).calculate().getResult()
 
       expect(result.healthContribution).toBe(0)
       expect(result.ppkContribution).toBe(0)

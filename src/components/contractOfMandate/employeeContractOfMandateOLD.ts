@@ -1,7 +1,7 @@
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import {ContractOfMandateEmployeeYearlyResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
-import {ContractOfMandateInputFields} from 'components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import constants from 'src/logic/constants'
 import employeeContributions from 'src/logic/employeeContributions'
 import employerContributions from 'src/logic/employerContributions'
@@ -186,11 +186,11 @@ function calculateBasisForRentAndPensionContributions (grossAmount:number):numbe
 /**
  * Returns the monthly results
  *
- * @param {ContractOfMandateInputFields} input
+ * @param {InputFields} input
  * @param {number} month
  * @returns {ContractOfMandateEmployeeSingleResult}
  */
-function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):ContractOfMandateEmployeeSingleResult {
+function getMonthlyResult (input:InputFields, month = 0):ContractOfMandateEmployeeSingleResult {
   let expenseRate = 0
   let pensionContribution = 0
   let disabilityContribution = 0
@@ -256,10 +256,10 @@ function getMonthlyResult (input:ContractOfMandateInputFields, month = 0):Contra
 /**
  * Returns the yearly results
  *
- * @param {ContractOfMandateInputFields[]} monthlyInputs
+ * @param {InputFields[]} monthlyInputs
  * @returns {ContractOfMandateEmployeeYearlyResult}
  */
-function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):ContractOfMandateEmployeeYearlyResult {
+function getYearlyResult (monthlyInputs:InputFields[]):ContractOfMandateEmployeeYearlyResult {
   const results:ContractOfMandateEmployeeSingleResult[] = []
   totalBasisForRentAndPensionContributions = 0
   totalExpenses = 0
@@ -291,7 +291,7 @@ function getYearlyResult (monthlyInputs:ContractOfMandateInputFields[]):Contract
  * @param input
  * @returns {number}
  */
-function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, targetAmount:number, input:ContractOfMandateInputFields):number {
+function findGrossAmountUsingNetAmount (min:number, max:number, scale:number, targetAmount:number, input:InputFields):number {
   for (let iterator = max; iterator >= min; iterator -= scale) {
     input.grossAmount = iterator
     const result = getMonthlyResult(input)
