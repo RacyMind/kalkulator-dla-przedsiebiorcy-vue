@@ -1,48 +1,27 @@
 import {AnnualEmployeeResult} from 'components/contractOfMandate/interfaces/AnnualEmployeeResult'
+import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
-export class AnnualEmployeeCalculator implements Calculator<InputFields[], AnnualEmployeeResult>{
+export class AnnualEmployeeCalculator extends BasicCalculator<InputFields[], AnnualEmployeeResult> implements Calculator<InputFields[], AnnualEmployeeResult>{
   protected readonly employeeCalculator:EmployeeCalculator
-  protected inputData: InputFields[] | undefined
-  protected result: AnnualEmployeeResult | undefined
 
   constructor() {
-   this.employeeCalculator = new EmployeeCalculator(true)
+    super()
+    this.employeeCalculator = new EmployeeCalculator(true)
   }
 
-  protected getInputData():InputFields[] {
-    if( this.inputData === undefined) {
-      throw Error('The input data is undefined!')
-    }
-    return this.inputData
-  }
-
-  setInputData(input: InputFields[]): this {
-    this.inputData = input
-    return this
-  }
-
-  getResult(): AnnualEmployeeResult {
-    if( this.result === undefined) {
-      throw Error('The result is undefined!')
-    }
-    return this.result
-  }
-
-  calculate(): this {
+  public calculate(): this {
     const monthlyResults:EmployeeResult[] = []
 
     this.getInputData().forEach((monthlyInput) => {
       monthlyResults.push(this.employeeCalculator.setInputData(monthlyInput).calculate().getResult())
     })
 
-    const sum = (property: keyof EmployeeResult) => monthlyResults.reduce((accumulator:number, result:EmployeeResult) => {
-      return helpers.round(accumulator + result[property], 2)
-    }, 0)
+    const sum = (property: keyof EmployeeResult) => helpers.sum<EmployeeResult>(monthlyResults, property)
 
     const annualResult:EmployeeResult = {
       grossAmount: sum('grossAmount'),

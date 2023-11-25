@@ -1,39 +1,20 @@
+import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployerResult} from 'components/contractOfMandate/interfaces/EmployerResult'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
-export class EmployerCalculator implements Calculator<InputFields, EmployerResult>
+export class EmployerCalculator extends BasicCalculator<InputFields, EmployerResult> implements Calculator<InputFields, EmployerResult>
 {
   protected readonly zusContribution: EmployerZusContribution
-  protected inputData: InputFields | undefined
-  protected result: EmployerResult | undefined
   protected sumUpContributionBasis = 0
   protected isPartOfAnnualResult = false
 
   constructor(isPartOfAnnualResult = false) {
+    super()
     this.isPartOfAnnualResult = isPartOfAnnualResult
     this.zusContribution = new EmployerZusContribution()
-  }
-
-  protected getInputData():InputFields {
-    if( this.inputData === undefined) {
-      throw Error('The input data is undefined!')
-    }
-    return this.inputData
-  }
-
-  public getResult():EmployerResult {
-    if( this.result === undefined) {
-      throw Error('The result is undefined!')
-    }
-    return this.result
-  }
-
-  public setInputData(input:InputFields):this {
-    this.inputData = input
-    return this
   }
 
   calculate(): this {

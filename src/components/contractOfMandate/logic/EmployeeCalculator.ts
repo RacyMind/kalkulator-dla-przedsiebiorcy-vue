@@ -1,3 +1,4 @@
+import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
@@ -6,11 +7,9 @@ import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
-export class EmployeeCalculator implements Calculator<InputFields, EmployeeResult>{
+export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeResult> implements Calculator<InputFields, EmployeeResult>{
   protected readonly employeeZus: EmployeeZusContribution
   protected readonly incomeTax: GeneraLRule
-  protected inputData: InputFields | undefined
-  protected result: EmployeeResult | undefined
   protected isPartOfAnnualResult = false
   protected sumUpContributionBasis = 0
   protected sumUpTaxBasis = 0
@@ -21,28 +20,10 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
    * @param isPartOfAnnualResult if isPartOfAnnualResult is true, it saves important values for next month calculations
    */
   constructor(isPartOfAnnualResult = false) {
+    super()
     this.isPartOfAnnualResult = isPartOfAnnualResult
     this.employeeZus = new EmployeeZusContribution()
     this.incomeTax = new GeneraLRule()
-  }
-
-  public setInputData(input:InputFields):this {
-    this.inputData = input
-    return this
-  }
-
-  public getResult():EmployeeResult {
-    if( this.result === undefined) {
-      throw Error('The result is undefined!')
-    }
-    return this.result
-  }
-
-  protected getInputData():InputFields {
-    if( this.inputData === undefined) {
-      throw Error('The input data is undefined!')
-    }
-    return this.inputData
   }
 
   protected getAuthorExpenses(basisForAuthorExpenses:number):number {
