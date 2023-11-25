@@ -105,6 +105,9 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
       expect(result.pensionContribution).toBe(20305.68)
       expect(result.accidentContribution).toBe(10020)
       expect(result.ppkContribution).toBe(9000)
+      expect(result.fpContribution).toBe(6000)
+      expect(result.fgspContribution).toBe(600)
+      expect(result.fsContribution).toBe(8700)
     })
   })
 
