@@ -108,8 +108,6 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
     if (this.getInputData().employerPpkContributionRate) {
       const employerZUs = new EmployerZusContribution()
       employerPpkpkContribution = employerZUs.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employerPpkContributionRate)
-      console.log('employerPpkpkContribution', employerPpkpkContribution)
-      console.log('this.getInputData().grossAmount + employerPpkpkContribution', this.getInputData().grossAmount + employerPpkpkContribution)
     }
 
     // these contributions reduce the basis for tax
@@ -122,7 +120,6 @@ export class EmployeeCalculator implements Calculator<InputFields, EmployeeResul
     const salaryAmountOverTaxReliefLimit = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.getInputData().grossAmount + employerPpkpkContribution, this.sumUpGrossAmount, this.getInputData().hasTaxRelief)
     const expenses = this.getExpenses(salaryAmountOverTaxReliefLimit - socialContributions)
     const taxBasis =  helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0)
-    console.log('taxBasis', taxBasis)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)
     const netAmount = helpers.round(this.getInputData().grossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)
 

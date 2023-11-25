@@ -5,16 +5,6 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
 
-const annualInput = (monthlyInput:InputFields):InputFields[] => {
-  const input:InputFields[] = []
-
-  for(let i = 0; i < 12; i++) {
-    input.push(monthlyInput)
-  }
-
-  return input
-}
-
 describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
   beforeAll(() => {
     setActivePinia(createPinia())

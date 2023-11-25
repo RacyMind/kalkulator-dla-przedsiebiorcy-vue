@@ -55,6 +55,7 @@ export class AnnualEmployeeCalculator implements Calculator<InputFields[], Annua
       pensionContribution: sum('pensionContribution'),
       ppkContribution: sum('ppkContribution'),
       sickContribution: sum('sickContribution'),
+      ppkIncomeFromEmployer: sum('ppkIncomeFromEmployer'),
     }
 
     this.result = {
