@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pt-md">
+  <div class="q-py-md">
     <div class="q-px-md">
       <div class="row jusstify-between">
         <div class="col">
@@ -29,10 +29,10 @@
         </div>
       </q-slide-transition>
     </div>
-    <q-separator
-      class="q-mt-md"
-      color="teal-1" />
   </div>
+  <q-separator
+    size="8px"
+    color="teal-1" />
 </template>
 <script setup lang="ts">
 import {ref} from 'vue'
