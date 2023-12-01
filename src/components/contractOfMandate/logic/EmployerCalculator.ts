@@ -1,6 +1,6 @@
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
-import {EmployerResult} from 'components/contractOfMandate/interfaces/EmployerResult'
+import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'

@@ -1,8 +1,8 @@
-import {AnnualEmployeeResult} from 'components/contractOfMandate/interfaces/AnnualEmployeeResult'
+import {AnnualEmployeeResult} from 'src/logic/interfaces/AnnualEmployeeResult'
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
-import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 

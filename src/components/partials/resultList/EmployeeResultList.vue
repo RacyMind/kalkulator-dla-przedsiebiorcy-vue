@@ -8,12 +8,51 @@
         {{ pln(result.grossAmount)}}
       </template>
     </list-row>
+    <list-row>
+      <template #name>
+        Koszty przychodu
+      </template>
+      <template #value>
+        {{ pln(result.expenses)}}
+      </template>
+    </list-row>
+    <list-row>
+      <template #name>
+        Podstawa opodatkowania
+      </template>
+      <template #value>
+        {{ pln(result.taxBasis)}}
+      </template>
+    </list-row>
+    <list-row>
+      <template #name>
+        <div class="row items-center">
+          <div class="flex">Zaliczka na podatek dochodowy</div>
+          <tooltip
+            v-if="result.ppkIncomeFromEmployer"
+            class="q-ml-xs">
+            Składka PPK wpłacona przez pracodawcę ({{ pln(result.ppkIncomeFromEmployer ) }}) traktowana jest jako dochód od którego potrącany jset podatek.
+          </tooltip>
+        </div>
+      </template>
+      <template #value>
+        {{ pln(result.taxAmount)}}
+      </template>
+    </list-row>
     <list-row class="text-bold">
       <template #name>
         Składki ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions) }}
+      </template>
+    </list-row>
+    <list-row nested>
+      <template #name>
+        Składka zdrowotna
+      </template>
+      <template #value>
+        {{ pln(result.healthContribution)}}
       </template>
     </list-row>
     <list-row nested>
@@ -34,34 +73,10 @@
     </list-row>
     <list-row nested>
       <template #name>
-        Składka wypadkowa
+        Składka chorobowa
       </template>
       <template #value>
-        {{ pln(result.accidentContribution)}}
-      </template>
-    </list-row>
-    <list-row nested>
-      <template #name>
-        Składka na Fundusz Pracy
-      </template>
-      <template #value>
-        {{ pln(result.fpContribution)}}
-      </template>
-    </list-row>
-    <list-row nested>
-      <template #name>
-        Składka na FGŚP
-      </template>
-      <template #value>
-        {{ pln(result.fgspContribution)}}
-      </template>
-    </list-row>
-    <list-row nested>
-      <template #name>
-        Składka na Fundusz Solidarnościowy
-      </template>
-      <template #value>
-        {{ pln(result.fsContribution)}}
+        {{ pln(result.sickContribution)}}
       </template>
     </list-row>
     <list-row nested>
@@ -74,17 +89,17 @@
     </list-row>
     <list-row highlight>
       <template #name>
-        Suma kosztów pracodawcy
+        Wynagrodzenie netto
       </template>
       <template #value>
-        {{ pln(result.totalAmount) }}
+        {{ pln(result.netAmount)}}
       </template>
     </list-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import {EmployerResult} from 'components/contractOfMandate/interfaces/EmployerResult'
+import {EmployeeResult} from '../../../logic/interfaces/EmployeeResult'
 import {computed} from 'vue'
 import {pln} from '../../../use/currencyFormat'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
@@ -92,11 +107,11 @@ import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
-  result: EmployerResult
+  result: EmployeeResult
 }
 const props = defineProps<Props>()
 
 const totalZusContributions = computed(() => {
-  return props.result.fpContribution + props.result.fgspContribution + props.result.fsContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.accidentContribution + props.result.ppkContribution
+  return props.result.healthContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.ppkContribution
 })
 </script>

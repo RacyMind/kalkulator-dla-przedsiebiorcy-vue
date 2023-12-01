@@ -1,4 +1,4 @@
-import {EmployerResult} from 'components/contractOfMandate/interfaces/EmployerResult'
+import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 
 export interface AnnualEmployerResult{
   monthlyResults: EmployerResult[],

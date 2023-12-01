@@ -1,6 +1,6 @@
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
-import {EmployeeResult} from 'components/contractOfMandate/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
