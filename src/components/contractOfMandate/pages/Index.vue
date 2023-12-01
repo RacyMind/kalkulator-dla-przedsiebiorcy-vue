@@ -9,13 +9,17 @@
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
-    >
+      :breakpoint="0"
+      align="justify">
       <q-tab
         :name="Tabs.Employee"
         label="Pracownik" />
       <q-tab
         :name="Tabs.Employer"
         label="Pracodawca" />
+      <q-tab
+        :name="Tabs.Summary"
+        label="Podsumowanie" />
     </q-tabs>
     <q-tab-panels
       v-model="tab"
@@ -30,6 +34,11 @@
         :name="Tabs.Employer"
         class="q-pa-none">
         <EmployerTabPanel/>
+      </q-tab-panel>
+      <q-tab-panel
+        :name="Tabs.Summary"
+        class="q-pa-none">
+        <SummaryTabPanel/>
       </q-tab-panel>
     </q-tab-panels>
   </ModulePageLayout>
@@ -49,10 +58,12 @@ import Form from 'components/contractOfMandate/components/Form.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
+import SummaryTabPanel from 'components/contractOfMandate/components/SummaryTabPanel.vue'
 
 enum Tabs {
   Employee = 1,
   Employer = 2,
+  Summary = 3,
 }
 
 const store = useMandateContractStore()

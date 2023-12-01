@@ -18,7 +18,11 @@
           :result="monthlyResult" />
       </template>
     </template>
-    <template v-else>Brak danych</template>
+    <div
+      v-else
+      class="q-pa-md">
+      Brak danych
+    </div>
   </div>
 </template>
 
