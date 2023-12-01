@@ -3,7 +3,7 @@
     flat
     round
     size="sm"
-    padding="sm"
+    padding="none"
     color="primary"
     icon="help">
     <q-tooltip>

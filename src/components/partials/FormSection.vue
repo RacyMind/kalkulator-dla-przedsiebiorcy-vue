@@ -30,15 +30,19 @@
       </q-slide-transition>
     </div>
   </div>
-  <q-separator
-    size="8px"
-    color="teal-1" />
+  <Separator v-if="!hideSeparator" />
 </template>
 <script setup lang="ts">
 import {ref} from 'vue'
+import Separator from 'components/partials/Separator.vue'
 
 const props = defineProps({
   title: String,
+  hideSeparator: {
+    type: Boolean,
+    reqired: false,
+    default: false,
+  },
 })
 const visible = ref(true)
 </script>

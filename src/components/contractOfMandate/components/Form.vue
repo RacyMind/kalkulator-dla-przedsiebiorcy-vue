@@ -1,5 +1,7 @@
 <template>
-  <q-form @submit.prevent="save">
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="handleFormSubmit">
     <FormSection title="Wynagrodzenie">
       <div class="row">
         <div class="col">
@@ -83,13 +85,13 @@
       <div class="row q-col-gutter-md q-mb-md">
         <div class="col-12 col-sm-grow">
           <q-toggle
-            v-model="isAuthorExpenses"
+            v-model="areAuthorExpenses"
             checked-icon="check"
             unchecked-icon="clear"
             label="Autorskie koszty uzyskania przychodu (50%)"
           />
           <q-input
-            v-if="isAuthorExpenses"
+            v-if="areAuthorExpenses"
             v-model.number="partOfWorkWithAuthorExpenses"
             type="number"
             min="0"
@@ -128,7 +130,7 @@
             unchecked-icon="clear"
             label="Ulga podatkowa"
           />
-          <Tooltip>
+          <Tooltip class="q-ml-sm">
             Brak naliczania podatku dochodowego dla wynagrrodzenia brutto do {{ pln(GeneraLRule.taxReliefLimit)}}.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów
           </Tooltip>
         </div>
@@ -149,7 +151,6 @@
         <div class="col-6 col-sm-3">
           <q-toggle
             v-model="isHealthContribution"
-            :disable="isSHealthContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka zdrowotna"
@@ -158,7 +159,6 @@
         <div class="col-6 col-sm-3">
           <q-toggle
             v-model="isDisabilityContribution"
-            :disable="isDisabilityContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka rentowa"
@@ -167,7 +167,6 @@
         <div class="col-6 col-sm-3">
           <q-toggle
             v-model="isPensionContribution"
-            :disable="isPensionContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka emerytalna"
@@ -176,7 +175,6 @@
         <div class="col-6 col-sm-3">
           <q-toggle
             v-model="isSickContribution"
-            :disable="isSickContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka chorobowa"
@@ -187,7 +185,6 @@
         <div class="col-12 col-sm-grow">
           <q-toggle
             v-model="isFpContribution"
-            :disable="isFpContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka na Fundusz Pracy"
@@ -196,7 +193,6 @@
         <div class="col">
           <q-input
             v-model.number="accidentContributionRate"
-            :disable="isAccidentContributionEnabled"
             type="number"
             class="full-width"
             min="0"
@@ -204,10 +200,6 @@
             label="Składka wypadkowa*"
             color="brand"
             suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-            lazy-rules="ondemand"
           />
         </div>
       </div>
@@ -215,7 +207,6 @@
         <div class="col">
           <q-toggle
             v-model="isPpkContribution"
-            :disable="isPpkContributionEnabled"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka na Pracownicze Plany Kapitałowe"
@@ -278,8 +269,10 @@
 import {AmountType} from 'src/types/AmountType'
 import {AvailableYear} from 'src/types/AvailableYear'
 import {GeneraLRule} from '../../../logic/taxes/GeneraLRule'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, computed, ref, watch} from 'vue'
 import {pln} from '../../../use/currencyFormat'
+import {useMandateContractStore} from 'components/contractOfMandate/store'
 import {useQuasar} from 'quasar'
 import FormSection from 'components/partials/FormSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
@@ -287,6 +280,7 @@ import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
 const $q = useQuasar()
+const store = useMandateContractStore()
 
 const employerCountOptions = [
   {
@@ -302,18 +296,35 @@ const employerCountOptions = [
     value: 3,
   },
 ]
+
 enum ContributionSchemes {
   Unemployed = 1,
-  Student = 2,
+  ContractWithEmployer = 2,
+  Student = 3,
+  Pensioner = 4,
+  ContractorWorksInAnotherCompany = 5,
 }
+
 const contributionSchemeOptions = [
   {
     label: 'Osoba bez innego zatrudnienia',
     value: ContributionSchemes.Unemployed,
   },
   {
-    label: 'Uczeń / student do 26. roku życia',
+    label: 'Dodatkowa umowa z obecnym pracodawcą',
+    value: ContributionSchemes.ContractWithEmployer,
+  },
+  {
+    label: 'Uczeń lub student do 26. roku życia',
     value: ContributionSchemes.Student,
+  },
+  {
+    label: 'Emeryt lub rencista',
+    value: ContributionSchemes.Pensioner,
+  },
+  {
+    label: 'Pracownik innej firmy z wynagrodzeniem co najmniej w wysokości pensji minimalnej',
+    value: ContributionSchemes.ContractorWorksInAnotherCompany,
   },
 ]
 
@@ -325,7 +336,7 @@ const hourCount:Ref<number|null> = ref(null)
 const amountType:Ref<AmountType> = ref(constants.AMOUNT_TYPES.GROSS)
 
 // the income tax section
-const isAuthorExpenses = ref(false)
+const areAuthorExpenses = ref(false)
 const partOfWorkWithAuthorExpenses = ref(100)
 const hasTaxRelief = ref(false)
 const hasTaxFreeAmount = ref(true)
@@ -343,34 +354,6 @@ const employerPpkContributionRate = ref(constants.PPK.EMPLOYER.DEFAULT_RATE)
 const employeePpkContributionRate = ref(constants.PPK.EMPLOYEE.DEFAULT_RATE)
 const accidentContributionRate = ref(constants.ACCIDENT_RATE)
 
-const isSHealthContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isDisabilityContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isPensionContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isSickContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isFpContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isAccidentContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
-const isPpkContributionEnabled = computed(() => {
-  return contributionScheme.value === ContributionSchemes.Student
-})
-
 watch(amountType, () => {
   if (amountType.value === constants.AMOUNT_TYPES.NET) {
     $q.notify({
@@ -387,11 +370,35 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
-      isPpkContribution.value = true
+      accidentContributionRate.value = constants.ACCIDENT_RATE
+      break
+    case ContributionSchemes.ContractWithEmployer:
+      isHealthContribution.value = true
+      isSickContribution.value = true
+      isDisabilityContribution.value = true
+      isPensionContribution.value = true
+      isFpContribution.value = true
       accidentContributionRate.value = constants.ACCIDENT_RATE
       break
     case ContributionSchemes.Student:
       isHealthContribution.value = false
+      isSickContribution.value = false
+      isDisabilityContribution.value = false
+      isPensionContribution.value = false
+      isFpContribution.value = false
+      isPpkContribution.value = false
+      accidentContributionRate.value = 0
+      break
+    case ContributionSchemes.Pensioner:
+      isHealthContribution.value = true
+      isSickContribution.value = false
+      isDisabilityContribution.value = true
+      isPensionContribution.value = true
+      isFpContribution.value = false
+      accidentContributionRate.value = constants.ACCIDENT_RATE
+      break
+    case ContributionSchemes.ContractorWorksInAnotherCompany:
+      isHealthContribution.value = true
       isSickContribution.value = false
       isDisabilityContribution.value = false
       isPensionContribution.value = false
@@ -421,7 +428,36 @@ watch(hourCount, () => {
   amount.value = helpers.round(hourlyAmount.value * hourCount.value, 2)
 })
 
-const save = () => {
-  //
+const handleValidationError = () => {
+  $q.notify({
+    color: 'negative',
+    message: 'Formularz zawiera błędy.',
+  })
+}
+
+const handleFormSubmit = () => {
+  const inputFields: InputFields = {
+    grossAmount: amount.value ?? 0,
+    hasTaxRelief: hasTaxRelief.value,
+    partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
+    canLumpSumTaxBe: true,
+    partOfWorkWithAuthorExpenses: areAuthorExpenses.value ? helpers.round(partOfWorkWithAuthorExpenses.value / 100, 2) : 0,
+    isHealthContribution: isHealthContribution.value,
+    isDisabilityContribution: isDisabilityContribution.value,
+    isPensionContribution: isPensionContribution.value,
+    isSickContribution: isSickContribution.value,
+    isFpContribution: isFpContribution.value,
+    accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 3),
+    employeePpkContributionRate: isPpkContribution.value ? helpers.round(employeePpkContributionRate.value / 100, 3) : 0,
+    employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 3) : 0,
+  }
+
+  const monhtlyInputFields: InputFields[] = []
+
+  for (let i = 0; i < 12; i++) {
+    monhtlyInputFields.push(inputFields)
+  }
+
+  store.monthlyInputFields = monhtlyInputFields
 }
 </script>

@@ -4,25 +4,25 @@ import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {acceptHMRUpdate, defineStore} from 'pinia'
 
 type Store = {
-  inputFields: InputFields[] | undefined
+  monthlyInputFields: InputFields[] | undefined
 }
 
 export const useMandateContractStore = defineStore('mandateContractStore', {
   state: ():Store => ({
-    inputFields:  undefined,
+    monthlyInputFields:  undefined,
   }),
   getters: {
     annualEmployeeResult(state) {
-      if(state.inputFields === undefined) {
+      if(state.monthlyInputFields === undefined) {
         return undefined
       }
-      return new AnnualEmployeeCalculator().setInputData(state.inputFields).calculate().getResult()
+      return new AnnualEmployeeCalculator().setInputData(state.monthlyInputFields).calculate().getResult()
     },
     annualEmployerResult(state) {
-      if(state.inputFields === undefined) {
+      if(state.monthlyInputFields === undefined) {
         return undefined
       }
-      return new AnnualEmployerCalculator().setInputData(state.inputFields).calculate().getResult()
+      return new AnnualEmployerCalculator().setInputData(state.monthlyInputFields).calculate().getResult()
     },
   },
 })
