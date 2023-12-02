@@ -15,7 +15,12 @@
         :employer-result="employerAnnualResult"
       />
       <template v-else>
-        <ListHeader title="Umowa jednorazowa" />
+        <ListHeader>
+          Umowa jednorazowa
+          <Tooltip color="white">
+            Do obliczeń brana jest pod uwagę kwota z 1. miesiąca
+          </Tooltip>
+        </ListHeader>
         <SummaryResultList
           :employee-result="employeeMonthlyResult"
           :employer-result="employerRonthlyResult"
@@ -37,6 +42,7 @@ import {useMandateContractStore} from 'components/contractOfMandate/store'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import SummaryAnnualResultList from 'components/partials/resultList/SummaryAnnualResultList.vue'
 import SummaryResultList from 'components/partials/resultList/SummaryResultList.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
 
 const store = useMandateContractStore()
 

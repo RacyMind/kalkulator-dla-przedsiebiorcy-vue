@@ -8,7 +8,7 @@
         {{ pln(result.grossAmount)}}
       </template>
     </list-row>
-    <list-row class="text-bold">
+    <list-row>
       <template #name>
         Składki ZUS
       </template>

@@ -13,9 +13,16 @@
         v-if="showAnnualResult"
         :result="annualResult" />
       <template v-else>
-        <ListHeader title="Umowa jednorazowa" />
+        <ListHeader>
+          Umowa jednorazowa
+          <Tooltip color="white">
+            Do obliczeń brana jest pod uwagę kwota z 1. miesiąca
+          </Tooltip>
+        </ListHeader>
         <EmployeeResultList
           :result="monthlyResult" />
+        <Separator />
+        <EmployeeStatistics :result="monthlyResult" />
       </template>
     </template>
     <div
@@ -32,7 +39,10 @@ import {computed, ref} from 'vue'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import EmployeeAnnualResultList from 'components/partials/resultList/EmployeeAnnualResultList.vue'
 import EmployeeResultList from 'components/partials/resultList/EmployeeResultList.vue'
+import EmployeeStatistics from 'components/partials/statistics/EmployeeStatistics.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
+import Separator from 'components/partials/Separator.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
 
 const store = useMandateContractStore()
 

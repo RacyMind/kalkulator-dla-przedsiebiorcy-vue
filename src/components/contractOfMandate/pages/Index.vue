@@ -3,9 +3,10 @@
     <SectionHeader>
       Wypełnij formularz
     </SectionHeader>
-    <Form />
+    <Form @submit="handleSubmit" />
     <Advert />
     <q-tabs
+      ref="qtabs"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -44,7 +45,8 @@
   </ModulePageLayout>
 </template>
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {QTabs} from 'quasar'
+import {Ref, computed, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import Advert from 'components/partials/Advert.vue'
@@ -59,6 +61,7 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import SummaryTabPanel from 'components/contractOfMandate/components/SummaryTabPanel.vue'
+import helpers from 'src/logic/helpers'
 
 enum Tabs {
   Employee = 1,
@@ -67,6 +70,7 @@ enum Tabs {
 }
 
 const store = useMandateContractStore()
+store.monthlyInputFields = undefined
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -75,11 +79,9 @@ breadcrumbStore.items = [
   },
 ]
 const tab = ref(Tabs.Employee)
-const showEmployeeAnnualResult = ref(false)
-const showEmployerAnnualResult = ref(false)
+const qtabs:Ref<QTabs|null> = ref(null)
 
-const employeeAnnuaResult = computed(() => store.annualEmployeeResult)
-const employeeMonthlyResult = computed(() => employeeAnnuaResult.value?.monthlyResults[0] ?? null)
-const employerAnnuaResult = computed(() => store.annualEmployerResult)
-const employerMonthlyResult = computed(() => employerAnnuaResult.value?.monthlyResults[0] ?? null)
+const handleSubmit = () => {
+  helpers.scrollToElement(qtabs?.value?.$el)
+}
 </script>

@@ -1,12 +1,16 @@
 <template>
   <div v-if="result">
-    <ListHeader :title="constants.FULL_YEAR" />
+    <ListHeader>
+      {{ constants.FULL_YEAR }}
+    </ListHeader>
     <EmployerResultList :result="props.result.annualResult" />
     <Separator />
     <div
       v-for="(monthlyResult, index) in props.result.monthlyResults"
       :key="index">
-      <ListHeader :title="constants.MONTH_NAMES[index]" />
+      <ListHeader>
+        {{ constants.MONTH_NAMES[index] }}
+      </ListHeader>
       <EmployerResultList :result="monthlyResult" />
       <Separator v-if="index < 12" />
     </div>

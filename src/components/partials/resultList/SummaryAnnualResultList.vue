@@ -1,6 +1,8 @@
 <template>
   <div v-if="employeeResult">
-    <ListHeader :title="constants.FULL_YEAR" />
+    <ListHeader>
+      {{ constants.FULL_YEAR }}
+    </ListHeader>
     <SummaryResultList
       :employee-result="props.employeeResult.annualResult"
       :employer-result="props.employerResult.annualResult" />
@@ -8,7 +10,9 @@
     <div
       v-for="(monthlyResult, index) in props.employeeResult.monthlyResults"
       :key="index">
-      <ListHeader :title="constants.MONTH_NAMES[index]" />
+      <ListHeader>
+        {{ constants.MONTH_NAMES[index] }}
+      </ListHeader>
       <SummaryResultList
         :employee-result="monthlyResult"
         :employer-result="props.employerResult.monthlyResults[index]"

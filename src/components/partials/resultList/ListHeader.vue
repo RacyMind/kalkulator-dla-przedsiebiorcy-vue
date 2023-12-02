@@ -1,12 +1,9 @@
 <template>
-  <div class="s-row row justify-between q-px-md q-py-sm bg-brand text-white">
-    {{ props.title }}
-  </div>
+  <SectionHeader>
+    <slot />
+  </SectionHeader>
 </template>
 
 <script setup lang="ts">
-
-const props = defineProps({
-  title: String,
-})
+import SectionHeader from 'components/partials/SectionHeader.vue'
 </script>

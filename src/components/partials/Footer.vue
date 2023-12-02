@@ -1,5 +1,5 @@
 <template>
-  <div class="text-teal-7 q-pt-lg q-pb-sm text-center">
+  <div class="text-teal-7 q-pt-md text-center">
     <div>
       <q-btn
         class="q-mb-sm"

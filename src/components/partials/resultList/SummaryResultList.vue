@@ -10,10 +10,18 @@
     </list-row>
     <list-row>
       <template #name>
+        Zaliczka na podatek dochodowy
+      </template>
+      <template #value>
+        {{ pln(employeeResult.taxAmount) }}
+      </template>
+    </list-row>
+    <list-row>
+      <template #name>
         Składki ZUS
       </template>
       <template #value>
-        {{ pln(totalEmployeeZusContributions) }}
+        {{ pln(totalZusContributions) }}
       </template>
     </list-row>
     <list-row highlight>
@@ -50,5 +58,5 @@ const totalEmployerZusContributions = computed(() => {
   return props.employerResult.fpContribution + props.employerResult.fgspContribution + props.employerResult.fsContribution + props.employerResult.pensionContribution + props.employerResult.disabilityContribution + props.employerResult.accidentContribution + props.employerResult.ppkContribution
 })
 
-const totalZUsContributions = computed(() => totalEmployerZusContributions.value + totalEmployeeZusContributions.value)
+const totalZusContributions = computed(() => totalEmployerZusContributions.value + totalEmployeeZusContributions.value)
 </script>

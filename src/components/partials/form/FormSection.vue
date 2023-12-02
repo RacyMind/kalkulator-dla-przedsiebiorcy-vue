@@ -3,13 +3,14 @@
     <div class="q-px-md">
       <div class="row jusstify-between">
         <div class="col">
-          <div class="text-subtitle1 text-teal-4">{{ props.title }}</div>
+          <div class="text-subtitle2 text-teal-4">{{ props.title }}</div>
         </div>
         <div class="col-shrink">
           <q-btn
             size="sm"
             flat
-            padding="sm"
+            rounded
+            padding="xs"
             color="teal-4"
             @click="visible = !visible">
             <q-icon

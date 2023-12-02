@@ -6,5 +6,9 @@
     <div class="full-width bg-white">
       <slot></slot>
     </div>
+    <Footer/>
   </q-page>
 </template>
+<script setup lang="ts">
+import Footer from 'components/partials/Footer.vue'
+</script>

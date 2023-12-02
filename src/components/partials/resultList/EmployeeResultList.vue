@@ -31,7 +31,7 @@
           <tooltip
             v-if="result.ppkIncomeFromEmployer"
             class="q-ml-xs">
-            Składka PPK wpłacona przez pracodawcę ({{ pln(result.ppkIncomeFromEmployer ) }}) traktowana jest jako dochód od którego potrącany jset podatek.
+            Składka na PPK wpłacona przez pracodawcę ({{ pln(result.ppkIncomeFromEmployer ) }}) traktowana jest jako dochód od którego potrącany jset podatek.
           </tooltip>
         </div>
       </template>
@@ -39,7 +39,7 @@
         {{ pln(result.taxAmount)}}
       </template>
     </list-row>
-    <list-row class="text-bold">
+    <list-row>
       <template #name>
         Składki ZUS
       </template>
