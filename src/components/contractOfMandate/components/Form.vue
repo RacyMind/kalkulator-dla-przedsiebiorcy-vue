@@ -478,7 +478,7 @@ const handleFormSubmit = () => {
     const inputFields:InputFields = {...basicInputFields}
 
     if(hasAmountForEachMonth.value) {
-      const monthlyAmount = monthlyAmounts.value[i] ?? 0
+      const monthlyAmount = Number(monthlyAmounts.value[i])
 
       if(amountType.value === constants.AMOUNT_TYPES.NET) {
         inputFields.grossAmount = findGrossAmountUsingNetAmount(0.5 * monthlyAmount, 2 * monthlyAmount, monthlyAmount, basicInputFields)

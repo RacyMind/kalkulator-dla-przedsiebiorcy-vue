@@ -35,8 +35,8 @@ const monthlyAmounts = computed({
   get() {
     return props.modelValue
   },
-  set(value) {
-    emit('update:modelValue', value)
+  set(amounts) {
+    emit('update:modelValue', amounts.map(amount => Number(amount)))
   },
 })
 </script>
