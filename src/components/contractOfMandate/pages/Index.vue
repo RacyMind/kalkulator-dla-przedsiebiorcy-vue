@@ -29,38 +29,56 @@
       <q-tab-panel
         :name="Tabs.Employee"
         class="q-pa-none">
-        <EmployeeTabPanel />
+        <EmployeeTabPanel
+          v-if="store.annualEmployeeResult"
+          :result="store.annualEmployeeResult" />
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
       </q-tab-panel>
       <q-tab-panel
         :name="Tabs.Employer"
         class="q-pa-none">
-        <EmployerTabPanel/>
+        <EmployerTabPanel
+          v-if="store.annualEmployerResult"
+          :result="store.annualEmployerResult"/>
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
       </q-tab-panel>
       <q-tab-panel
         :name="Tabs.Summary"
         class="q-pa-none">
-        <SummaryTabPanel/>
+        <SummaryTabPanel
+          v-if="store.annualEmployeeResult && store.annualEmployerResult"
+          :employee-result="store.annualEmployeeResult"
+          :employer-result="store.annualEmployerResult"
+        />
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
       </q-tab-panel>
     </q-tab-panels>
   </ModulePageLayout>
 </template>
 <script setup lang="ts">
 import {QTabs} from 'quasar'
-import {Ref, computed, ref} from 'vue'
+import {Ref, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import Advert from 'components/partials/Advert.vue'
-import EmployeeAnnualResultList from 'components/partials/resultList/EmployeeAnnualResultList.vue'
-import EmployeeResultList from 'components/partials/resultList/EmployeeResultList.vue'
-import EmployeeTabPanel from 'components/contractOfMandate/components/EmployeeTabPanel.vue'
-import EmployerAnnualResultList from 'components/partials/resultList/EmployerAnnualResultList.vue'
-import EmployerResultList from 'components/partials/resultList/EmployerResultList.vue'
-import EmployerTabPanel from 'components/contractOfMandate/components/EmployerTabPanel.vue'
+import EmployeeTabPanel from 'components/partials/tabPanel/EmployeeTabPanel.vue'
+import EmployerTabPanel from 'components/partials/tabPanel/EmployerTabPanel.vue'
 import Form from 'components/contractOfMandate/components/Form.vue'
-import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import SummaryTabPanel from 'components/contractOfMandate/components/SummaryTabPanel.vue'
+import SummaryTabPanel from 'components/partials/tabPanel/SummaryTabPanel.vue'
 import helpers from 'src/logic/helpers'
 
 enum Tabs {

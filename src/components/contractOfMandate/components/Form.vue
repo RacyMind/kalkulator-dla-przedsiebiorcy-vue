@@ -7,6 +7,7 @@
         <div class="col">
           <q-toggle
             v-model="isHourlyAmount"
+            :disable="hasAmountForEachMonth"
             checked-icon="check"
             unchecked-icon="clear"
             label="Stawka godzinowa"
@@ -20,6 +21,7 @@
           <q-input
             v-model.number="hourlyAmount"
             :autofocus="isHourlyAmount"
+            :disable="hasAmountForEachMonth"
             type="number"
             min="0"
             step="0.01"
@@ -35,6 +37,7 @@
         <div class="col">
           <q-input
             v-model.number="hourCount"
+            :disable="hasAmountForEachMonth"
             type="number"
             class="full-width"
             min="1"
@@ -52,7 +55,7 @@
         <div class="col-grow">
           <q-input
             v-model.number="amount"
-            :disable="isHourlyAmount"
+            :disable="isHourlyAmount || hasAmountForEachMonth"
             type="number"
             min="0"
             step="0.01"
@@ -304,15 +307,17 @@
   </q-form>
 </template>
 <script setup lang="ts">
-import {AmountType} from 'src/types/AmountType'
-import {AvailableYear} from 'src/types/AvailableYear'
 import {GeneraLRule} from '../../../logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
-import {Ref, computed, ref, watch} from 'vue'
+import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
+import {useAmmmountType} from 'src/composables/amountType'
+import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
+import {useMonthlyAmounts} from 'src/composables/montlyAmounts'
 import {useQuasar} from 'quasar'
+import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
@@ -323,21 +328,6 @@ const emit = defineEmits(['submit'])
 
 const $q = useQuasar()
 const store = useMandateContractStore()
-
-const employerCountOptions = [
-  {
-    label: '1 pracodawcy',
-    value: 1,
-  },
-  {
-    label: '2 pracodawców',
-    value: 2,
-  },
-  {
-    label: '3 pracodawców',
-    value: 3,
-  },
-]
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -371,20 +361,16 @@ const contributionSchemeOptions = [
 ]
 
 // the salary section
-const isHourlyAmount = ref(false)
 const amount:Ref<number|null> = ref(null)
-const hourlyAmount:Ref<number|null> = ref(null)
-const hourCount:Ref<number|null> = ref(null)
-const amountType:Ref<AmountType> = ref(constants.AMOUNT_TYPES.GROSS)
-const hasAmountForEachMonth = ref(false)
-const monthlyAmounts: Ref<number[]> = ref([])
+const {hourCount, hourlyAmount, isHourlyAmount} = useHourlyAmount(amount)
+const amountType = useAmmmountType()
+const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount)
 
 // the income tax section
 const areAuthorExpenses = ref(false)
 const partOfWorkWithAuthorExpenses = ref(100)
 const hasTaxRelief = ref(false)
-const hasTaxFreeAmount = ref(true)
-const employerCount = ref(1)
+const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
 const canLumpSumTaxBe = ref(true)
 
 // the ZUS contribution section
@@ -399,52 +385,12 @@ const employerPpkContributionRate = ref(constants.PPK.EMPLOYER.DEFAULT_RATE)
 const employeePpkContributionRate = ref(constants.PPK.EMPLOYEE.DEFAULT_RATE)
 const accidentContributionRate = ref(constants.ACCIDENT_RATE)
 
-watch(amountType, () => {
-  if (amountType.value === constants.AMOUNT_TYPES.NET) {
-    $q.notify({
-      message: 'Przy wynagrodzeniu netto obliczenia są szacunkowe. Zalecane jest korzystanie z wynagroodzenia brutto, by poznać dokładne obliczenia.',
-    })
-  }
-})
-
-watch(hasAmountForEachMonth, () => {
-  if (!hasAmountForEachMonth.value) {
-    return
-  }
-  if(monthlyAmounts.value.length) {
-    return
-  }
-
-  for(let i = 0; i < 12; i++) {
-    monthlyAmounts.value[i] = amount.value ?? 0
-  }
-})
-
 watch(isHourlyAmount, () => {
   if (isHourlyAmount.value) {
     canLumpSumTaxBe.value = false
   } else {
     canLumpSumTaxBe.value = true
   }
-})
-
-watch(hourlyAmount, () => {
-  if (!isHourlyAmount.value) {
-    return
-  }
-  if(!hourlyAmount.value || !hourCount.value) {
-    return
-  }
-  amount.value = helpers.round(hourlyAmount.value * hourCount.value, 2)
-})
-watch(hourCount, () => {
-  if (!isHourlyAmount.value) {
-    return
-  }
-  if(!hourlyAmount.value || !hourCount.value) {
-    return
-  }
-  amount.value = helpers.round(hourlyAmount.value * hourCount.value, 2)
 })
 
 watch(contributionScheme, () => {
@@ -533,10 +479,11 @@ const handleFormSubmit = () => {
 
     if(hasAmountForEachMonth.value) {
       const monthlyAmount = monthlyAmounts.value[i] ?? 0
-      inputFields.grossAmount = monthlyAmount
 
       if(amountType.value === constants.AMOUNT_TYPES.NET) {
         inputFields.grossAmount = findGrossAmountUsingNetAmount(0.5 * monthlyAmount, 2 * monthlyAmount, monthlyAmount, basicInputFields)
+      } else {
+        inputFields.grossAmount = monthlyAmount
       }
     }
 

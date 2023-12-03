@@ -1,5 +1,4 @@
 import {AnnualEmployerCalculator} from 'components/contractOfMandate/logic/AnnualEmployerCalculator'
-import {EmployerCalculator} from 'components/contractOfMandate/logic/EmployerCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'

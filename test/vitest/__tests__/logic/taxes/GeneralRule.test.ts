@@ -1,4 +1,3 @@
-import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'

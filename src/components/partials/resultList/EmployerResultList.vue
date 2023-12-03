@@ -87,9 +87,7 @@
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {computed} from 'vue'
 import {pln} from '../../../use/currencyFormat'
-import {useMandateContractStore} from 'components/contractOfMandate/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
-import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   result: EmployerResult
