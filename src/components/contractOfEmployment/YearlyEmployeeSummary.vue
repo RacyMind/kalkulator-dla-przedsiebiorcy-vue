@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
-import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {PropType, Ref, computed, defineComponent, ref, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
@@ -98,13 +98,13 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<ContractOfEmploymentInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {
     const $q = useQuasar()
 
-    const monthlyInputs: Ref<ContractOfEmploymentInputFields[]> = ref([])
+    const monthlyInputs: Ref<InputFields[]> = ref([])
 
     for (let i = 0; i < 12; i++) {
       monthlyInputs.value.push(JSON.parse(JSON.stringify(props.input)))

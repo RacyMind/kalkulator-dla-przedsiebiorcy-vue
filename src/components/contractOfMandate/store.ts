@@ -12,13 +12,13 @@ export const useMandateContractStore = defineStore('mandateContractStore', {
     monthlyInputFields:  undefined,
   }),
   getters: {
-    annualEmployeeResult(state) {
+    employeeResult(state) {
       if(state.monthlyInputFields === undefined) {
         return undefined
       }
       return new AnnualEmployeeCalculator().setInputData(state.monthlyInputFields).calculate().getResult()
     },
-    annualEmployerResult(state) {
+    employerResult(state) {
       if(state.monthlyInputFields === undefined) {
         return undefined
       }

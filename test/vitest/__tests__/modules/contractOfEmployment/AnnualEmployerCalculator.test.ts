@@ -1,5 +1,5 @@
-import {AnnualEmployerCalculator} from 'components/contractOfMandate/logic/AnnualEmployerCalculator'
-import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
+import {AnnualEmployerCalculator} from 'components/contractOfEmployment/logic/AnnualEmployerCalculator'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
@@ -14,7 +14,7 @@ const annualInput = (monthlyInput:InputFields):InputFields[] => {
   return input
 }
 
-describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () => {
+describe('Annual Employer Calculator of Contract of Employment on 1.11.2023', () => {
   beforeAll(() => {
     setActivePinia(createPinia())
     const settingStore = useSettingStore()
@@ -32,15 +32,11 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
       employeePpkContributionRate: 0.02,
       employerPpkContributionRate: 0.015,
       grossAmount: 1000,
-      isDisabilityContribution: true,
       isFpContribution: true,
       partTaxReducingAmount: 0,
-      isHealthContribution: true,
-      isPensionContribution: true,
       hasTaxRelief: false,
-      isSickContribution: true,
       partOfWorkWithAuthorExpenses: 0,
-      canLumpSumTaxBe: true,
+      workInLivePlace: true,
     }
 
     it('The accident contribution', () => {
@@ -54,29 +50,14 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
 
     it('The disability contribution', () => {
       expect(new AnnualEmployerCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult.disabilityContribution).toBe(780)
-
-      expect(new AnnualEmployerCalculator().setInputData(annualInput({
-        ...input,
-        isDisabilityContribution: false,
-      })).calculate().getResult().annualResult.disabilityContribution).toBe(0)
     })
 
     it('The pension contribution', () => {
       expect(new AnnualEmployerCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult.pensionContribution).toBe(1171.2)
-
-      expect(new AnnualEmployerCalculator().setInputData(annualInput({
-        ...input,
-        isPensionContribution: false,
-      })).calculate().getResult().annualResult.pensionContribution).toBe(0)
     })
 
     it('The PPK contribution', () => {
       expect(new AnnualEmployerCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult.ppkContribution).toBe(180)
-
-      expect(new AnnualEmployerCalculator().setInputData(annualInput({
-        ...input,
-        employerPpkContributionRate: 0,
-      })).calculate().getResult().annualResult.ppkContribution).toBe(0)
     })
 
     it('The FP (+ all related)  contributions', () => {
@@ -110,21 +91,17 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
     })
   })
 
-  describe('Test the net and total amount', () => {
+  describe('Test the gross and total amount', () => {
     const input: InputFields = {
       accidentContributionRate: 0.0167,
       employeePpkContributionRate: 0.02,
       employerPpkContributionRate: 0.015,
       grossAmount: 1000,
-      isDisabilityContribution: true,
       isFpContribution: true,
       partTaxReducingAmount: 0,
-      isHealthContribution: true,
-      isPensionContribution: true,
       hasTaxRelief: false,
-      isSickContribution: true,
       partOfWorkWithAuthorExpenses: 0,
-      canLumpSumTaxBe: true,
+      workInLivePlace: true,
     }
 
     it('The standard cases', () => {

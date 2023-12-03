@@ -1,13 +1,10 @@
 import {AvailableYear} from 'src/types/AvailableYear'
 
-export interface ContractOfEmploymentInputFields {
-  year: AvailableYear,
+export interface InputFields {
   grossAmount: number,
   workInLivePlace: boolean,
-  isFreeAmount: boolean,
-  isReliefForYoung: boolean,
-  isReliefForBigFamily: boolean,
-  isReliefForSenior: boolean,
+  hasTaxRelief: boolean,
+  partTaxReducingAmount: number,
   partOfWorkWithAuthorExpenses: number,
   isFpContribution: boolean,
   accidentContributionRate: number,

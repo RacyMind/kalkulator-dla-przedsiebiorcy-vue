@@ -166,7 +166,7 @@
 
 <script lang="ts">
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {Ref, computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
 import employeeContractOfEmployment from 'components/contractOfEmployment/employeeContractOfEmployment'
@@ -211,7 +211,7 @@ export default defineComponent({
     })
 
     const save = () => {
-      const input: ContractOfEmploymentInputFields = {
+      const input: InputFields = {
         accidentContributionRate: accidentContributionRate.value / 100,
         employeePpkContributionRate: employeePpkContributionRate.value,
         employerPpkContributionRate: employerPpkContributionRate.value,

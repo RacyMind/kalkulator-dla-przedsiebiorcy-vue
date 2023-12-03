@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import {ContractOfEmploymentInputFields} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {PropType, computed, defineComponent, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
@@ -74,7 +74,7 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<ContractOfEmploymentInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {

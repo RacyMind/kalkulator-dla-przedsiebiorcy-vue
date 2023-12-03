@@ -2,6 +2,11 @@
   <q-form
     @validation-error="handleValidationError"
     @submit.prevent="handleFormSubmit">
+    <FormSection
+      v-if="availableDates.length > 1"
+      title="Data obowiązywania przepisów">
+      <LawRuleDate />
+    </FormSection>
     <FormSection title="Wynagrodzenie">
       <div class="row">
         <div class="col">
@@ -107,7 +112,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(GeneraLRule.taxReliefLimit)}} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów
+            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(GeneraLRule.taxReliefLimit)}} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -315,12 +320,13 @@ import {pln} from '../../../use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
+import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
-import {useQuasar} from 'quasar'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
@@ -328,6 +334,7 @@ import helpers from 'src/logic/helpers'
 const emit = defineEmits(['submit'])
 const store = useMandateContractStore()
 const {handleValidationError} = useFormValidation()
+const { availableDates } = useLawRuleDate()
 
 enum ContributionSchemes {
   Unemployed = 1,

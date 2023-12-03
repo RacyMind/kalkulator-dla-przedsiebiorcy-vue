@@ -30,8 +30,8 @@
         :name="Tabs.Employee"
         class="q-pa-none">
         <EmployeeTabPanel
-          v-if="store.annualEmployeeResult"
-          :result="store.annualEmployeeResult" />
+          v-if="store.employeeResult"
+          :result="store.employeeResult" />
         <div
           v-else
           class="q-pa-md">
@@ -42,8 +42,8 @@
         :name="Tabs.Employer"
         class="q-pa-none">
         <EmployerTabPanel
-          v-if="store.annualEmployerResult"
-          :result="store.annualEmployerResult"/>
+          v-if="store.employerResult"
+          :result="store.employerResult"/>
         <div
           v-else
           class="q-pa-md">
@@ -54,9 +54,9 @@
         :name="Tabs.Summary"
         class="q-pa-none">
         <SummaryTabPanel
-          v-if="store.annualEmployeeResult && store.annualEmployerResult"
-          :employee-result="store.annualEmployeeResult"
-          :employer-result="store.annualEmployerResult"
+          v-if="store.employeeResult && store.employerResult"
+          :employee-result="store.employeeResult"
+          :employer-result="store.employerResult"
         />
         <div
           v-else
