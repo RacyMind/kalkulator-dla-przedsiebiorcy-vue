@@ -313,9 +313,10 @@ import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
+import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
-import {useMonthlyAmounts} from 'src/composables/montlyAmounts'
+import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useQuasar} from 'quasar'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
@@ -325,9 +326,8 @@ import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
-
-const $q = useQuasar()
 const store = useMandateContractStore()
+const {handleValidationError} = useFormValidation()
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -439,13 +439,6 @@ watch(contributionScheme, () => {
       break
   }
 }, {immediate: true})
-
-const handleValidationError = () => {
-  $q.notify({
-    color: 'negative',
-    message: 'Formularz zawiera błędy.',
-  })
-}
 
 const handleFormSubmit = () => {
   if(!amount.value) {
