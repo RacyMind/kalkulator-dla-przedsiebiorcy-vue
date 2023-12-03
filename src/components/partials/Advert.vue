@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center bg-teal-1 q-py-md">
+  <div class="text-center bg-teal-1 q-py-md q-px-sm">
     <TaxDonation v-if="isTaxDonationTimeFrame() && Math.random() < 0.5" />
     <Donate v-else />
   </div>

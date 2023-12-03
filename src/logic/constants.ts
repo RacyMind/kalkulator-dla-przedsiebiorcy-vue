@@ -385,6 +385,21 @@ export default {
       SMALL_AMOUNT: 903,
     },
   },
+  MONTH_NAMES: [
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień',
+  ],
+  FULL_YEAR: 'Cały rok',
 }
 
 

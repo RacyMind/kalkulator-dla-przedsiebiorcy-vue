@@ -1,15 +1,15 @@
 import {ContractOfMandateEmployeeSingleResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import {ContractOfMandateEmployeeYearlyResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployeeYearlyResult'
-import {ContractOfMandateInputFields} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import constants from '../../../../src/logic/constants'
-import employeeContractOfMandate from '../../../../src/components/contractOfMandate/employeeContractOfMandate'
+import employeeContractOfMandate from 'components/contractOfMandate/logic/EmployeeCalculator'
 import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 
-const defaultInput:ContractOfMandateInputFields = {
+const defaultInput:InputFields = {
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
@@ -19,14 +19,14 @@ const defaultInput:ContractOfMandateInputFields = {
   isFreeAmount: false,
   isHealthContribution: true,
   isPensionContribution: true,
-  isReliefForYoung: false,
+  hasTaxRelief: false,
   isSickContribution: true,
   partOfWorkWithAuthorExpenses: 0,
   year: helpers.getDefaultYear(),
 }
 
-const yearlyInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandateInputFields[] => {
-  const inputs:ContractOfMandateInputFields[] = []
+const yearlyInput = (monthlyInput:InputFields):InputFields[] => {
+  const inputs:InputFields[] = []
   for(let i = 0; i < 12; i++) {
     inputs.push(monthlyInput)
   }
@@ -34,19 +34,19 @@ const yearlyInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandat
   return inputs
 }
 
-const yearlyResult = (input:ContractOfMandateInputFields[]):ContractOfMandateEmployeeYearlyResult => {
+const yearlyResult = (input:InputFields[]):ContractOfMandateEmployeeYearlyResult => {
   employeeContractOfMandate.setParams(input[0].year)
   return employeeContractOfMandate.getYearlyResult(input)
 }
 
-const monthlyResult = (input:ContractOfMandateInputFields):ContractOfMandateEmployeeSingleResult => {
+const monthlyResult = (input:InputFields):ContractOfMandateEmployeeSingleResult => {
   employeeContractOfMandate.setParams(input.year)
   return employeeContractOfMandate.getMonthlyResult(input)
 }
 
 describe('employeeContractOfMandate', () => {
   it('the monthly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -66,9 +66,9 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the monthly calculation, with all contributions and the relief for young, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
-      isReliefForYoung: true,
+      hasTaxRelief: true,
     }
 
     const result = monthlyResult(input)
@@ -87,7 +87,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the monthly calculation, using the gross amount equals the lump sum amount, with all contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: constants.PARAMS[helpers.getDefaultYear()].LUMP_SUM_UP_TO_AMOUNT,
     }
@@ -108,7 +108,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the monthly calculation, without contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
@@ -134,7 +134,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the monthly calculation, with all contributions and the author expenses, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       partOfWorkWithAuthorExpenses: 0.75,
     }
@@ -154,7 +154,7 @@ describe('employeeContractOfMandate', () => {
     expect(result.netAmount).toBe(681.24)
   })
   it('the monthly calculation, with all contributions and 150 gross amount, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: 150,
     }
@@ -175,7 +175,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -192,7 +192,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions and 15 000 gross amount, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: 15000,
     }
@@ -210,7 +210,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the yearly calculation, without contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
@@ -234,9 +234,9 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions and the relief for young, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
-      isReliefForYoung: true,
+      hasTaxRelief: true,
     }
 
     const result = yearlyResult(yearlyInput(input))
@@ -252,7 +252,7 @@ describe('employeeContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions and the free amount, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       isFreeAmount: true,
     }

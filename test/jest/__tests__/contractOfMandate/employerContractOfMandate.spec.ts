@@ -1,6 +1,6 @@
 import {ContractOfMandateEmployerSingleResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployerSingleResult'
 import {ContractOfMandateEmployerYearlyResult} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateEmployerYearlyResult'
-import {ContractOfMandateInputFields} from '../../../../src/components/contractOfMandate/interfaces/ContractOfMandateInputFields'
+import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import employerContractOfMandate from '../../../../src/components/contractOfMandate/employerContractOfMandate'
@@ -8,7 +8,7 @@ import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 
-const defaultInput:ContractOfMandateInputFields = {
+const defaultInput:InputFields = {
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
@@ -18,14 +18,14 @@ const defaultInput:ContractOfMandateInputFields = {
   isFreeAmount: false,
   isHealthContribution: true,
   isPensionContribution: true,
-  isReliefForYoung: false,
+  hasTaxRelief: false,
   isSickContribution: true,
   partOfWorkWithAuthorExpenses: 0,
   year: helpers.getDefaultYear(),
 }
 
-const yearlyInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandateInputFields[] => {
-  const inputs:ContractOfMandateInputFields[] = []
+const yearlyInput = (monthlyInput:InputFields):InputFields[] => {
+  const inputs:InputFields[] = []
   for(let i = 0; i < 12; i++) {
     inputs.push(monthlyInput)
   }
@@ -33,19 +33,19 @@ const yearlyInput = (monthlyInput:ContractOfMandateInputFields):ContractOfMandat
   return inputs
 }
 
-const yearlyResult = (input:ContractOfMandateInputFields[]):ContractOfMandateEmployerYearlyResult => {
+const yearlyResult = (input:InputFields[]):ContractOfMandateEmployerYearlyResult => {
   employerContractOfMandate.setParams(input[0].year)
   return employerContractOfMandate.getYearlyResult(input)
 }
 
-const monthlyResult = (input:ContractOfMandateInputFields):ContractOfMandateEmployerSingleResult => {
+const monthlyResult = (input:InputFields):ContractOfMandateEmployerSingleResult => {
   employerContractOfMandate.setParams(input.year)
   return employerContractOfMandate.getMonthlyResult(input)
 }
 
 describe('employerContractOfMandate', () => {
   it('the monthly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -63,7 +63,7 @@ describe('employerContractOfMandate', () => {
   })
 
   it('the monthly calculation, without contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       accidentContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -88,7 +88,7 @@ describe('employerContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -106,7 +106,7 @@ describe('employerContractOfMandate', () => {
   })
 
   it('the yearly calculation, with all contributions 15 000 gross amount, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: 15000,
     }
@@ -125,7 +125,7 @@ describe('employerContractOfMandate', () => {
   })
 
   it('the yearly calculation, without contributions, for the default year', () => {
-    const input:ContractOfMandateInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       accidentContributionRate: 0,
       employeePpkContributionRate: 0,
