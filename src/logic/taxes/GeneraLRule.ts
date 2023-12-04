@@ -43,6 +43,34 @@ export class GeneraLRule {
     return 0
   }
 
+  public getAuthorExpenses(basisForAuthorExpenses:number, partOfWorkWithAuthorExpenses: number, hasTaxRelief: boolean, sumUpAuthorExpenses:number):number {
+    if (!partOfWorkWithAuthorExpenses) {
+      return 0
+    }
+    if (basisForAuthorExpenses <= 0) {
+      return 0
+    }
+
+    let realThreshold = GeneraLRule.taxThreshold
+
+    if(hasTaxRelief) {
+      // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
+      realThreshold = GeneraLRule.taxThreshold - GeneraLRule.taxReliefLimit
+    }
+
+    if(sumUpAuthorExpenses >= realThreshold) {
+      return 0
+    }
+
+    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * GeneraLRule.authorExpenseRate, 2)
+
+    if(expenses + sumUpAuthorExpenses > realThreshold) {
+      return realThreshold - sumUpAuthorExpenses
+    }
+
+    return expenses
+  }
+
   /**
    *
    * @param partTaxReducingAmount 0 - no tax reducing amount, 1 - the annual tax reducing amount, 12 - the monthly tax reducing amount
