@@ -77,12 +77,12 @@
         <div class="col-shrink">
           <q-radio
             v-model="amountType"
-            :val="constants.AMOUNT_TYPES.NET"
+            :val="AmountTypes.Net"
             label="netto"
           />
           <q-radio
             v-model="amountType"
-            :val="constants.AMOUNT_TYPES.GROSS"
+            :val="AmountTypes.Gross"
             label="brutto"
           />
         </div>
@@ -267,8 +267,8 @@
             v-model.number="employerPpkContributionRate"
             type="number"
             class="full-width"
-            :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
-            :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
+            :min="zusConstants.employer.rates.ppkContribution.min * 100"
+            :max="zusConstants.employer.rates.ppkContribution.max * 100"
             step="0.01"
             label="Pracodawca"
             color="brand"
@@ -284,8 +284,8 @@
             v-model.number="employeePpkContributionRate"
             type="number"
             class="full-width"
-            :min="constants.PPK.EMPLOYER.MINIMUM_RATE"
-            :max="constants.PPK.EMPLOYER.MAXIMUM_RATE"
+            :min="zusConstants.employee.rates.ppkContribution.min * 100"
+            :max="zusConstants.employee.rates.ppkContribution.max * 100"
             step="0.01"
             label="Pracownik"
             color="brand"
@@ -318,6 +318,7 @@ import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
+import {useConstants} from 'src/composables/constants'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -328,13 +329,14 @@ import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
-import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
+
 const store = useMandateContractStore()
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
+const {AmountTypes, zusConstants } = useConstants()
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -388,9 +390,9 @@ const isDisabilityContribution = ref(true)
 const isPensionContribution = ref(true)
 const isFpContribution = ref(false)
 const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(constants.PPK.EMPLOYER.DEFAULT_RATE)
-const employeePpkContributionRate = ref(constants.PPK.EMPLOYEE.DEFAULT_RATE)
-const accidentContributionRate = ref(constants.ACCIDENT_RATE)
+const employerPpkContributionRate = ref(zusConstants.employer.rates.ppkContribution.default * 100)
+const employeePpkContributionRate = ref(zusConstants.employee.rates.ppkContribution.default * 100)
+const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
 
 watch(isHourlyAmount, () => {
   if (isHourlyAmount.value) {
@@ -408,7 +410,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
-      accidentContributionRate.value = constants.ACCIDENT_RATE
+      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractWithEmployer:
       isHealthContribution.value = true
@@ -416,7 +418,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
-      accidentContributionRate.value = constants.ACCIDENT_RATE
+      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.Student:
       isHealthContribution.value = false
@@ -433,7 +435,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = false
-      accidentContributionRate.value = constants.ACCIDENT_RATE
+      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractorWorksInAnotherCompany:
       isHealthContribution.value = true
@@ -468,7 +470,7 @@ const handleFormSubmit = () => {
     employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,
   }
 
-  if(amountType.value === constants.AMOUNT_TYPES.NET) {
+  if(amountType.value === AmountTypes.Net) {
     basicInputFields.grossAmount = findGrossAmountUsingNetAmount(0.5 * amount.value, 2 * amount.value, amount.value, basicInputFields)
   }
 
@@ -480,7 +482,7 @@ const handleFormSubmit = () => {
     if(hasAmountForEachMonth.value) {
       const monthlyAmount = Number(monthlyAmounts.value[i])
 
-      if(amountType.value === constants.AMOUNT_TYPES.NET) {
+      if(amountType.value === AmountTypes.Net) {
         inputFields.grossAmount = findGrossAmountUsingNetAmount(0.5 * monthlyAmount, 2 * monthlyAmount, monthlyAmount, basicInputFields)
       } else {
         inputFields.grossAmount = monthlyAmount

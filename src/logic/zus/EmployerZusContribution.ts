@@ -2,12 +2,6 @@ import {ZusContribution} from 'src/logic/zus/ZusContribution'
 import helpers from 'src/logic/helpers'
 
 export class EmployerZusContribution extends ZusContribution {
-  protected readonly disabilityContributionRate:number = 0.065
-  protected readonly pensionContributionRate:number = 0.0976
-  protected readonly fpContributionRate:number = 0.01
-  protected readonly fgspContributionRate:number = 0.001
-  protected readonly fsContributionRate:number = 0.0145
-
   /**
    * Returns the disability contribution of the employer
    */
@@ -16,7 +10,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.disabilityContributionRate * basisForContribution, 2)
+    return helpers.round(this.zusConstants.employer.rates.disabilityContribution * basisForContribution, 2)
   }
 
   /**
@@ -27,7 +21,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.pensionContributionRate * basisForContribution, 2)
+    return helpers.round(this.zusConstants.employer.rates.pensionContribution * basisForContribution, 2)
   }
 
   /**
@@ -54,7 +48,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.fpContributionRate * grossAmount, 2)
+    return helpers.round(this.zusConstants.employer.rates.fpContribution * grossAmount, 2)
   }
 
   /**
@@ -67,7 +61,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.fgspContributionRate * grossAmount, 2)
+    return helpers.round(this.zusConstants.employer.rates.fgspContribution * grossAmount, 2)
   }
 
   /**
@@ -80,18 +74,18 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.fsContributionRate * grossAmount, 2)
+    return helpers.round(this.zusConstants.employer.rates.fsContribution * grossAmount, 2)
   }
 
   /**
    * Returns the PPK (Pracownicze Plany Kapitałowe) contribution of the employer
    */
-  public getPPKContribution(grossAmount: number, ppkRate = 0.015): number {
+  public getPPKContribution(grossAmount: number, ppkRate = this.zusConstants.employer.rates.ppkContribution.default): number {
     if(grossAmount < 0) {
       return 0
     }
 
-    if(ppkRate < 0.015 || ppkRate > 0.04) {
+    if(ppkRate < this.zusConstants.employer.rates.ppkContribution.min || ppkRate > this.zusConstants.employer.rates.ppkContribution.max) {
       throw new Error('Invalid argument. The PPK rate has to be between 1.5% - 4%')
     }
 

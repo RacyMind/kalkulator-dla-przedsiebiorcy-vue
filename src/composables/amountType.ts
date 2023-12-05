@@ -1,15 +1,15 @@
-import {AmountType} from 'src/types/AmountType'
-import {Ref, ref, watch} from 'vue'
+import {ref, watch} from 'vue'
+import {useConstants} from 'src/composables/constants'
 import {useQuasar} from 'quasar'
-import constants from 'src/logic/constants'
 
 export const useAmmmountType = () => {
   const $q = useQuasar()
+  const {AmountTypes} = useConstants()
 
-  const amountType:Ref<AmountType> = ref(constants.AMOUNT_TYPES.GROSS)
+  const amountType = ref(AmountTypes.Gross)
 
   watch(amountType, () => {
-    if (amountType.value === constants.AMOUNT_TYPES.NET) {
+    if (amountType.value === AmountTypes.Net) {
       $q.notify({
         message: 'Przy wynagrodzeniu netto obliczenia są szacunkowe. Zalecane jest korzystanie z wynagroodzenia brutto, by poznać dokładne obliczenia.',
       })
