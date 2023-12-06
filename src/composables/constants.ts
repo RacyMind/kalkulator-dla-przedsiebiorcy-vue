@@ -44,7 +44,47 @@ interface zusConstants {
   employer: EmployerZusConstants,
 }
 
+interface IncomeTaxConstants{
+  generalRule: {
+    expenses: {
+      rates: {
+        default: number,
+        author: number
+      },
+      // It uses by civil agrreements - contract of mandate and work contract
+      withoutExpensesUpTo: number,
+    },
+    taxFreeAmount: number,
+    // Over the amount, the tax percentage is increased
+    taxThreshold: number,
+    taxRates: {
+      first: number,
+      second: number,
+    },
+    // Over the amount, the tax relief is end
+    taxReliefLimit: number,
+  }
+}
+
 export const useConstants = () => {
+  const incomeTaxConstnts: IncomeTaxConstants = {
+    generalRule: {
+      expenses: {
+        rates: {
+          default: 0.2,
+          author: 0.5,
+        },
+        withoutExpensesUpTo: 200,
+      },
+      taxFreeAmount: 30000,
+      taxThreshold: 120000,
+      taxRates: {
+        first: 0.12,
+        second: 0.32,
+      },
+      taxReliefLimit: 85528,
+    },
+  }
 
   const zusConstants: zusConstants = {
     contributionBasisLimit: 208050,
@@ -84,6 +124,7 @@ export const useConstants = () => {
 
   return {
     AmountTypes,
+    incomeTaxConstnts,
     zusConstants,
   }
 }
