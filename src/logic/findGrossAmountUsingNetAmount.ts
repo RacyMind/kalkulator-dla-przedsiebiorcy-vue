@@ -1,10 +1,11 @@
+import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
+import {HasGrossAmount} from 'src/logic/interfaces/HasGrossAmount'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
-export function findGrossAmountUsingNetAmount (min:number, max:number, targetAmount:number, input:InputFields, scale = 100):number {
-  const calculator = new EmployeeCalculator()
-
+export function findGrossAmountUsingNetAmount <InputDataType extends HasGrossAmount>(calculator:Calculator<InputDataType, EmployeeResult>, min:number, max:number, targetAmount:number, input:InputDataType, scale = 100):number {
   for (let iterator = max; iterator >= min; iterator -= scale) {
     input.grossAmount = iterator
     const result = calculator.setInputData(input).calculate().getResult()
@@ -14,7 +15,7 @@ export function findGrossAmountUsingNetAmount (min:number, max:number, targetAmo
     }
 
     if (Math.abs(result.netAmount - targetAmount) <= scale) {
-      return findGrossAmountUsingNetAmount(result.netAmount - scale, result.grossAmount + scale, targetAmount, input, scale / 2)
+      return findGrossAmountUsingNetAmount(calculator, result.netAmount - scale, result.grossAmount + scale, targetAmount, input, scale / 2)
     }
   }
 

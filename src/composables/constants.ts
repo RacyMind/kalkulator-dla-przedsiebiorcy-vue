@@ -47,6 +47,10 @@ interface zusConstants {
 interface IncomeTaxConstants{
   generalRule: {
     expenses: {
+      amounts: {
+        workInLivingPlace: number,
+        workOutsideLivingPlace: number,
+      },
       rates: {
         default: number,
         author: number
@@ -70,6 +74,10 @@ export const useConstants = () => {
   const incomeTaxConstnts: IncomeTaxConstants = {
     generalRule: {
       expenses: {
+        amounts: {
+          workInLivingPlace: 250,
+          workOutsideLivingPlace: 300,
+        },
         rates: {
           default: 0.2,
           author: 0.5,

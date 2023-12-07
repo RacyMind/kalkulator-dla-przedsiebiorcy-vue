@@ -5,6 +5,7 @@ import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
+import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeResult> implements Calculator<InputFields, EmployeeResult>{
@@ -27,10 +28,11 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
   }
 
   protected getExpenses(basisForExpenses:number):number {
+    const { incomeTaxConstnts } = useConstants()
     let expenses = 0
 
     if(this.getInputData().partOfWorkWithAuthorExpenses < 1) {
-      expenses = this.getInputData().workInLivePlace ? 250 : 300
+      expenses = this.getInputData().workInLivePlace ? incomeTaxConstnts.generalRule.expenses.amounts.workInLivingPlace : incomeTaxConstnts.generalRule.expenses.amounts.workOutsideLivingPlace
     }
 
     const authorExpenses = this.incomeTax.getAuthorExpenses(basisForExpenses, this.getInputData().partOfWorkWithAuthorExpenses, this.getInputData().hasTaxRelief, this.sumUpAuthorExpenses)
