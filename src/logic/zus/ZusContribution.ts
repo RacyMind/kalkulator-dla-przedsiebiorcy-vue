@@ -1,8 +1,12 @@
+import {useConstants} from 'src/composables/constants'
+
 export class  ZusContribution{
-  /**
-   * the limit of basis for sick, pension and disability contributions
-   */
-  public static readonly contributionBasisLimit:number = 208050
+  protected readonly zusConstants
+
+  constructor() {
+    const {zusConstants} = useConstants()
+    this.zusConstants = zusConstants
+  }
 
   /**
    * Returns the basis for sick, pension and disability contributions
@@ -12,12 +16,12 @@ export class  ZusContribution{
       return 0
     }
 
-    if(sumUpContributionBasis >= ZusContribution.contributionBasisLimit) {
+    if(sumUpContributionBasis >= this.zusConstants.contributionBasisLimit) {
       return 0
     }
 
-    if(grossAmount + sumUpContributionBasis > ZusContribution.contributionBasisLimit) {
-      return ZusContribution.contributionBasisLimit - sumUpContributionBasis
+    if(grossAmount + sumUpContributionBasis > this.zusConstants.contributionBasisLimit) {
+      return this.zusConstants.contributionBasisLimit - sumUpContributionBasis
     }
 
     return grossAmount

@@ -1,9 +1,10 @@
-export interface InputFields {
+import {HasGrossAmount} from 'src/logic/interfaces/HasGrossAmount'
+
+export interface InputFields extends HasGrossAmount{
   canLumpSumTaxBe: boolean,
   accidentContributionRate: number,
   employerPpkContributionRate: number,
   employeePpkContributionRate: number,
-  grossAmount: number
   hasTaxRelief: boolean,
   isDisabilityContribution: boolean,
   isFpContribution: boolean,

@@ -1,13 +1,13 @@
-import {AnnualEmployeeCalculator} from 'components/contractOfMandate/logic/AnnualEmployeeCalculator'
-import {AnnualEmployerCalculator} from 'components/contractOfMandate/logic/AnnualEmployerCalculator'
-import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
+import {AnnualEmployeeCalculator} from 'components/contractOfEmployment/logic/AnnualEmployeeCalculator'
+import {AnnualEmployerCalculator} from 'components/contractOfEmployment/logic/AnnualEmployerCalculator'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {acceptHMRUpdate, defineStore} from 'pinia'
 
 type Store = {
   monthlyInputFields: InputFields[] | undefined
 }
 
-export const useMandateContractStore = defineStore('mandateContractStore', {
+export const useEmploymentContractStore = defineStore('mandateContractStore', {
   state: ():Store => ({
     monthlyInputFields:  undefined,
   }),
@@ -28,5 +28,5 @@ export const useMandateContractStore = defineStore('mandateContractStore', {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMandateContractStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useEmploymentContractStore, import.meta.hot))
 }

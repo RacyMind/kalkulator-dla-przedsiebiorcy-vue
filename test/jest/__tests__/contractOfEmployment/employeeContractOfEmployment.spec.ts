@@ -1,6 +1,6 @@
 import {ContractOfEmploymentEmployeeSingleResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
 import {ContractOfEmploymentEmployeeYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeYearlyResult'
-import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import employeeContractOfEmployment from '../../../../src/components/contractOfEmployment/employeeContractOfEmployment'
@@ -8,7 +8,7 @@ import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 
-const defaultInput:ContractOfEmploymentInputFields = {
+const defaultInput:InputFields = {
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
@@ -24,8 +24,8 @@ const defaultInput:ContractOfEmploymentInputFields = {
   year: helpers.getDefaultYear(),
 }
 
-const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmploymentInputFields[] => {
-  const inputs:ContractOfEmploymentInputFields[] = []
+const yearlyInput = (monthlyInput:InputFields):InputFields[] => {
+  const inputs:InputFields[] = []
   for(let i = 0; i < 12; i++) {
     inputs.push(monthlyInput)
   }
@@ -33,19 +33,19 @@ const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmp
   return inputs
 }
 
-const yearlyResult = (input:ContractOfEmploymentInputFields[]):ContractOfEmploymentEmployeeYearlyResult => {
+const yearlyResult = (input:InputFields[]):ContractOfEmploymentEmployeeYearlyResult => {
   employeeContractOfEmployment.setParams(input[0].year)
   return employeeContractOfEmployment.getYearlyResult(input)
 }
 
-const monthlyResult = (input:ContractOfEmploymentInputFields):ContractOfEmploymentEmployeeSingleResult => {
+const monthlyResult = (input:InputFields):ContractOfEmploymentEmployeeSingleResult => {
   employeeContractOfEmployment.setParams(input.year)
   return employeeContractOfEmployment.getMonthlyResult(input)
 }
 
 describe('employeeContractOfEmployment', () => {
   it('the monthly calculation for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -65,7 +65,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the monthly calculation, without PPK contributions, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -87,7 +87,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the monthly calculation, without PPK contributions, 7 000 gross amount and the relief for the middle class, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -110,7 +110,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the monthly calculation, without PPK contributions, 7 000 gross amount and without the relief for the middle class, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -134,7 +134,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the monthly calculation, without the free amount, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       isFreeAmount: false,
     }
@@ -155,7 +155,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the monthly calculation, with all contributions and the author expenses, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       partOfWorkWithAuthorExpenses: 0.75,
     }
@@ -176,7 +176,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the yearly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -193,7 +193,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the yearly calculation, with all contributions, 15 000 gross amount, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: 15000,
     }
@@ -211,7 +211,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for young, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -232,7 +232,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for the big family, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -253,7 +253,7 @@ describe('employeeContractOfEmployment', () => {
   })
 
   it('the yearly calculation, without PPK contribution, 15 000 gross amount and the relief for senior, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,

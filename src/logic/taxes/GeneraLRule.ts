@@ -1,28 +1,15 @@
+import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
 export class GeneraLRule {
-  public static readonly defaultExpenseRate = 0.2
-  public static readonly authorExpenseRate = 0.5
-  /**
-   * It uses by civil agrreements - contract of mandate and work contract
-   */
-  public static readonly withoutExpensesUpTo = 200
-  /**
-   * Over the amount, the tax percentage is increased
-   */
-  public static readonly taxThreshold = 120000
-  /**
-   * Over the amount, the tax relief is end
-   */
-  public static readonly taxReliefLimit = 85528
-
-  protected readonly firstTaxRate = 0.12
-  protected readonly secondTaxRate = 0.32
-  protected taxFreeAmount = 30000
+  protected readonly incomeTaxConstants
   protected annualTaxReducingAmount:number
 
   public constructor() {
-    this.annualTaxReducingAmount = this.taxFreeAmount * this.firstTaxRate
+    const { incomeTaxConstnts} = useConstants()
+
+    this.incomeTaxConstants = incomeTaxConstnts
+    this.annualTaxReducingAmount = this.incomeTaxConstants.generalRule.taxFreeAmount * this.incomeTaxConstants.generalRule.taxRates.first
   }
 
   /**
@@ -33,14 +20,42 @@ export class GeneraLRule {
       return grossAmount
     }
 
-    if(sumUpGrossAmount > GeneraLRule.taxReliefLimit) {
+    if(sumUpGrossAmount > this.incomeTaxConstants.generalRule.taxReliefLimit) {
       return grossAmount
     }
-    if(sumUpGrossAmount + grossAmount > GeneraLRule.taxReliefLimit) {
-      return helpers.round(sumUpGrossAmount + grossAmount -  GeneraLRule.taxReliefLimit, 2)
+    if(sumUpGrossAmount + grossAmount > this.incomeTaxConstants.generalRule.taxReliefLimit) {
+      return helpers.round(sumUpGrossAmount + grossAmount -  this.incomeTaxConstants.generalRule.taxReliefLimit, 2)
     }
 
     return 0
+  }
+
+  public getAuthorExpenses(basisForAuthorExpenses:number, partOfWorkWithAuthorExpenses: number, hasTaxRelief: boolean, sumUpAuthorExpenses:number):number {
+    if (!partOfWorkWithAuthorExpenses) {
+      return 0
+    }
+    if (basisForAuthorExpenses <= 0) {
+      return 0
+    }
+
+    let realThreshold = this.incomeTaxConstants.generalRule.taxThreshold
+
+    if(hasTaxRelief) {
+      // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
+      realThreshold = this.incomeTaxConstants.generalRule.taxThreshold - this.incomeTaxConstants.generalRule.taxReliefLimit
+    }
+
+    if(sumUpAuthorExpenses >= realThreshold) {
+      return 0
+    }
+
+    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * this.incomeTaxConstants.generalRule.expenses.rates.author, 2)
+
+    if(expenses + sumUpAuthorExpenses > realThreshold) {
+      return realThreshold - sumUpAuthorExpenses
+    }
+
+    return expenses
   }
 
   /**
@@ -51,15 +66,15 @@ export class GeneraLRule {
     let taxAmount:number
 
     // If the total basis for the tax is grater than the amount of the tax threshold, there is the second tax rate
-    if (sumUpTaxBasis > GeneraLRule.taxThreshold) {
-      taxAmount = taxBasis * this.secondTaxRate
-    } else if (taxBasis + sumUpTaxBasis > GeneraLRule.taxThreshold) {
+    if (sumUpTaxBasis > this.incomeTaxConstants.generalRule.taxThreshold) {
+      taxAmount = taxBasis * this.incomeTaxConstants.generalRule.taxRates.second
+    } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.generalRule.taxThreshold) {
       // first rate
-      taxAmount = (GeneraLRule.taxThreshold - sumUpTaxBasis) * this.firstTaxRate
+      taxAmount = (this.incomeTaxConstants.generalRule.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.generalRule.taxRates.first
       // second rate
-      taxAmount += (taxBasis + sumUpTaxBasis - GeneraLRule.taxThreshold) * this.secondTaxRate
+      taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.generalRule.taxThreshold) * this.incomeTaxConstants.generalRule.taxRates.second
     } else {
-      taxAmount = taxBasis * this.firstTaxRate
+      taxAmount = taxBasis * this.incomeTaxConstants.generalRule.taxRates.first
     }
 
     if(partTaxReducingAmount) {

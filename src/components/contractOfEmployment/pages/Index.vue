@@ -71,11 +71,11 @@
 import {QTabs} from 'quasar'
 import {Ref, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
-import {useMandateContractStore} from 'components/contractOfMandate/store'
+import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
 import EmployeeTabPanel from 'components/partials/tabPanel/EmployeeTabPanel.vue'
 import EmployerTabPanel from 'components/partials/tabPanel/EmployerTabPanel.vue'
-import Form from 'components/contractOfMandate/components/Form.vue'
+import Form from 'components/contractOfEmployment/components/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import SummaryTabPanel from 'components/partials/tabPanel/SummaryTabPanel.vue'
@@ -87,13 +87,13 @@ enum Tabs {
   Summary = 3,
 }
 
-const store = useMandateContractStore()
+const store = useEmploymentContractStore()
 store.monthlyInputFields = undefined
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
   {
-    name: 'Umowa zlecenie',
+    name: 'Umowa o pracę',
   },
 ]
 const tab = ref(Tabs.Employee)

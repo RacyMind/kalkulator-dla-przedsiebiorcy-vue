@@ -1,6 +1,6 @@
 import {ContractOfEmploymentEmployerSingleResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerSingleResult'
 import {ContractOfEmploymentEmployerYearlyResult} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentEmployerYearlyResult'
-import {ContractOfEmploymentInputFields} from '../../../../src/components/contractOfEmployment/interfaces/ContractOfEmploymentInputFields'
+import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import { describe, expect, it } from '@jest/globals'
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest'
 import employerContractOfEmployment from '../../../../src/components/contractOfEmployment/employerContractOfEmployment'
@@ -8,7 +8,7 @@ import helpers from '../../../../src/logic/helpers'
 
 installQuasarPlugin()
 
-const defaultInput:ContractOfEmploymentInputFields = {
+const defaultInput:InputFields = {
   accidentContributionRate: 0.0167,
   employeePpkContributionRate: 0.02,
   employerPpkContributionRate: 0.015,
@@ -24,8 +24,8 @@ const defaultInput:ContractOfEmploymentInputFields = {
   year: helpers.getDefaultYear(),
 }
 
-const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmploymentInputFields[] => {
-  const inputs:ContractOfEmploymentInputFields[] = []
+const yearlyInput = (monthlyInput:InputFields):InputFields[] => {
+  const inputs:InputFields[] = []
   for(let i = 0; i < 12; i++) {
     inputs.push(monthlyInput)
   }
@@ -33,19 +33,19 @@ const yearlyInput = (monthlyInput:ContractOfEmploymentInputFields):ContractOfEmp
   return inputs
 }
 
-const yearlyResult = (input:ContractOfEmploymentInputFields[]):ContractOfEmploymentEmployerYearlyResult => {
+const yearlyResult = (input:InputFields[]):ContractOfEmploymentEmployerYearlyResult => {
   employerContractOfEmployment.setParams(input[0].year)
   return employerContractOfEmployment.getYearlyResult(input)
 }
 
-const monthlyResult = (input:ContractOfEmploymentInputFields):ContractOfEmploymentEmployerSingleResult => {
+const monthlyResult = (input:InputFields):ContractOfEmploymentEmployerSingleResult => {
   employerContractOfEmployment.setParams(input.year)
   return employerContractOfEmployment.getMonthlyResult(input)
 }
 
 describe('employerContractOfEmployment', () => {
   it('the monthly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -62,7 +62,7 @@ describe('employerContractOfEmployment', () => {
     expect(result.totalAmount).toBe(4879.20)
   })
   it('the monthly calculation, without PPK contribution, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -82,7 +82,7 @@ describe('employerContractOfEmployment', () => {
   })
 
   it('the yearly calculation, with all contributions, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
     }
 
@@ -99,7 +99,7 @@ describe('employerContractOfEmployment', () => {
   })
 
   it('the yearly calculation, with all contributions 15 000 gross amount, for the default year', () => {
-    const input:ContractOfEmploymentInputFields = {
+    const input:InputFields = {
       ...defaultInput,
       grossAmount: 15000,
     }

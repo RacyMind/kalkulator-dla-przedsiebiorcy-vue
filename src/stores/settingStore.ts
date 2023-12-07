@@ -5,8 +5,9 @@ export type Settings = {
 }
 
 export const useSettingStore = defineStore('settingStore', {
-  state: ():Settings => ({
-    dateOfLawRules: new Date(),
+  state: ():Settings => (
+    {
+    dateOfLawRules: new Date(2023,  10, 1),
   }),
 })
 
