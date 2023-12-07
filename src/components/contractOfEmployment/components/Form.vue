@@ -59,7 +59,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(GeneraLRule.taxReliefLimit)}} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstnts.generalRule.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -221,7 +221,7 @@ const emit = defineEmits(['submit'])
 
 const store = useEmploymentContractStore()
 const {handleValidationError} = useFormValidation()
-const { AmountTypes, zusConstants } = useConstants()
+const { AmountTypes, zusConstants, incomeTaxConstnts } = useConstants()
 
 // the salary section
 const amount:Ref<number|null> = ref(null)
@@ -229,7 +229,7 @@ const amountType = useAmmmountType()
 const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount)
 
 // the income tax section
-const workInLivePlace = ref(false)
+const workInLivePlace = ref(true)
 const areAuthorExpenses = ref(false)
 const partOfWorkWithAuthorExpenses = ref(100)
 const hasTaxRelief = ref(false)
