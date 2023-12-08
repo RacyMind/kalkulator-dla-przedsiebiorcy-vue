@@ -1,18 +1,16 @@
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
+import {describe, expect, it } from 'vitest'
 import {useConstants} from 'src/composables/constants'
 import {useSettingStore} from 'stores/settingStore'
 
-const { incomeTaxConstnts} = useConstants()
-
 describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
-  beforeAll(() => {
-    setActivePinia(createPinia())
-    const settingStore = useSettingStore()
-    settingStore.dateOfLawRules = new Date(2023,11,1)
-  })
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2023,11,1)
+
+  const { incomeTaxConstnts} = useConstants()
 
   it('The invalid data', () => {
     expect(() => new EmployeeCalculator().getResult()).toThrowError('undefined')

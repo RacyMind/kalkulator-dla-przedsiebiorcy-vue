@@ -7,7 +7,7 @@ export class EmployeeZusContribution extends ZusContribution {
    * Returns the health contribution of the employee
    */
   public getHealthContribution(amount: number): number {
-    if(amount < 0) {
+    if(amount <= 0) {
       return 0
     }
 
@@ -18,7 +18,7 @@ export class EmployeeZusContribution extends ZusContribution {
    * Returns the disability contribution of the employee
    */
   public geDisabilityContribution(basisForContribution: number): number {
-    if(basisForContribution < 0) {
+    if(basisForContribution <= 0) {
       return 0
     }
 
@@ -29,7 +29,7 @@ export class EmployeeZusContribution extends ZusContribution {
    * Returns the pension contribution of the employee
    */
   public gePensionContribution(basisForContribution: number): number {
-    if(basisForContribution < 0) {
+    if(basisForContribution <= 0) {
       return 0
     }
 
@@ -43,7 +43,7 @@ export class EmployeeZusContribution extends ZusContribution {
    * o którym mowa w art. 19 roczna podstawa wymiaru składek - zasady, skutek przekroczenia ust. 1.
    */
   public getSickContribution(grossAmount: number): number {
-    if(grossAmount < 0) {
+    if(grossAmount <= 0) {
       return 0
     }
 
@@ -54,7 +54,7 @@ export class EmployeeZusContribution extends ZusContribution {
    * Returns the PPK (Pracownicze Plany Kapitałowe) contribution of the employee
    */
   public getPPKContribution(grossAmount: number, ppkRate = this.zusConstants.employee.rates.ppkContribution.default): number {
-    if(grossAmount < 0) {
+    if(grossAmount <= 0) {
       return 0
     }
 

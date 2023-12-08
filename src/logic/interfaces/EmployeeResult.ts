@@ -1,7 +1,7 @@
 import {EmployeeZusResult} from 'src/logic/zus/interfaces/EmployeeZusResult'
-import {GeneralRuleResult} from 'src/logic/taxes/interfaces/GeneralRuleResult'
+import {IncomeTaxResult} from 'src/logic/taxes/interfaces/IncomeTaxResult'
 
-export interface EmployeeResult extends EmployeeZusResult, GeneralRuleResult{
+export interface EmployeeResult extends EmployeeZusResult, IncomeTaxResult{
   readonly grossAmount: number,
   readonly netAmount: number,
   readonly ppkIncomeFromEmployer: number,

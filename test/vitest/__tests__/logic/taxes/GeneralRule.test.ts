@@ -1,21 +1,18 @@
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
-import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
+import { describe, expect, it } from 'vitest'
 import {useConstants} from 'src/composables/constants'
 import {useSettingStore} from 'stores/settingStore'
 
 
 describe('Income tax using General Rules in 2023', () => {
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2023,11,1)
+
+  const generalRule = new GeneraLRule()
+
   const { incomeTaxConstnts} = useConstants()
-  let generalRule:GeneraLRule
-
-  beforeAll(() => {
-    setActivePinia(createPinia())
-    const settingStore = useSettingStore()
-    settingStore.dateOfLawRules = new Date(2023,11,1)
-
-    generalRule = new GeneraLRule()
-  })
 
   it('the tax relief limit', () => {
     expect(generalRule.getSalaryAmountOverTaxReliefLimit(incomeTaxConstnts.generalRule.taxReliefLimit, 0, true)).toBe(0)
