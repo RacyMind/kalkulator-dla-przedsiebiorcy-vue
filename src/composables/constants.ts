@@ -1,10 +1,17 @@
 import {useSettingStore} from 'stores/settingStore'
+import helpers from 'src/logic/helpers'
 
 type numericFunction = (num?: number) => number
 
 enum AmountTypes {
   Gross = 1,
   Net = 2,
+}
+
+export enum EntrepreneurTaxSystem {
+  GeneralRules = 1,
+  FlatTax = 2,
+  LumpSumTax = 3,
 }
 
 interface EmployeeZusConstants {
@@ -57,7 +64,10 @@ interface EntrepreneurZusConstants {
     fgspContribution: number,
     fpContribution: number,
     fsContribution: number,
-    healthContribution: number,
+    healthContribution: {
+      generalRules: number,
+      flatTax: number,
+    },
     pensionContribution: number,
     sickContribution: number,
   }
@@ -97,8 +107,26 @@ interface IncomeTaxConstants{
   }
 }
 
+interface WageStats {
+  minimumWage: numericFunction
+}
+
 export const useConstants = () => {
   const settingStore = useSettingStore()
+
+  const wageStats:WageStats = {
+    minimumWage: (monthIndex = settingStore.dateOfLawRules.getMonth()) => {
+      if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
+        if(monthIndex <= 5) {
+          return 3490
+        }
+        return 3600
+      }
+      if(monthIndex <= 5) {
+        return 4242
+      }
+      return 4300
+    }}
 
   const incomeTaxConstnts: IncomeTaxConstants = {
     generalRule: {
@@ -161,16 +189,7 @@ export const useConstants = () => {
     basises: {
       big: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 4161 : 4694.40,
       small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => {
-        if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
-          if(monthIndex <= 5) {
-            return 1047
-          }
-          return 1080
-        }
-        if(monthIndex <= 5) {
-          return 1272.60
-        }
-        return 1290
+        return helpers.round(0.3 * wageStats.minimumWage(monthIndex), 2)
       },
       startRelief: 0,
     },
@@ -180,7 +199,10 @@ export const useConstants = () => {
       fgspContribution: employerZusConstants.rates.fgspContribution,
       fpContribution: employerZusConstants.rates.fpContribution,
       fsContribution: employerZusConstants.rates.fsContribution,
-      healthContribution: employeeZusConstants.rates.healthContribution,
+      healthContribution: {
+        generalRules: employeeZusConstants.rates.healthContribution,
+        flatTax: 0.049,
+      },
       pensionContribution: employeeZusConstants.rates.pensionContribution + employerZusConstants.rates.pensionContribution,
       sickContribution: employeeZusConstants.rates.sickContribution,
     },
@@ -195,7 +217,9 @@ export const useConstants = () => {
 
   return {
     AmountTypes,
+    EntrepreneurTaxSystem,
     incomeTaxConstnts,
+    wageStats,
     zusConstants,
   }
 }

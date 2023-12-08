@@ -1,3 +1,4 @@
+import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {ZusAccidentContribution} from 'src/logic/zus/traits/ZusAccidentContribution'
 import {ZusContribution} from 'src/logic/zus/ZusContribution'
 import {ZusFpContribution} from 'src/logic/zus/traits/ZusFpContribution'
@@ -5,7 +6,24 @@ import helpers from 'src/logic/helpers'
 
 export class EntrepreneurZusContribution extends ZusContribution {
   /**
-   * Returns the disability contribution of the employer
+   * Returns the health contribution of the entrepreneur
+   */
+  public getHealthContribution(grossAmount: number, taxSystem: EntrepreneurTaxSystem): number {
+
+    if(grossAmount <= 0) {
+      return 0
+    }
+
+    switch (taxSystem) {
+      case EntrepreneurTaxSystem.GeneralRules:
+        return helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * grossAmount, 2)
+      default:
+        throw Error('Invalid tax system')
+    }
+  }
+
+  /**
+   * Returns the disability contribution of the entrepreneur
    */
   public geDisabilityContribution(contributionBasis: number): number {
     if(contributionBasis <= 0) {

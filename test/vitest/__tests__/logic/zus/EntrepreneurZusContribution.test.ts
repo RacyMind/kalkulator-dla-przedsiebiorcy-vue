@@ -4,7 +4,6 @@ import {describe, expect, it } from 'vitest'
 import {useConstants} from 'src/composables/constants'
 import {useSettingStore} from 'stores/settingStore'
 
-
 describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   setActivePinia(createPinia())
   const settingStore = useSettingStore()
@@ -50,5 +49,39 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   it('the FS contibution', () => {
     expect(entrepreneurZusContribution.getFSContribution(zusConstants.entrepreneur.basises.big)).toBe(60.33)
     expect(entrepreneurZusContribution.getFSContribution(0)).toBe(0)
+  })
+})
+
+describe('ZUS contribution basises in 2023', () => {
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2023,11,1)
+
+  const { zusConstants} = useConstants()
+
+  it('1.2023', () => {
+    expect(zusConstants.entrepreneur.basises.big).toBe(4161)
+    expect(zusConstants.entrepreneur.basises.small(0)).toBe(1047)
+  })
+
+  it('7.2023', () => {
+    expect(zusConstants.entrepreneur.basises.small(6)).toBe(1080)
+  })
+})
+
+describe('ZUS contribution basises in 2024', () => {
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2024,1,1)
+
+  const { zusConstants} = useConstants()
+
+  it('1.2024', () => {
+    expect(zusConstants.entrepreneur.basises.big).toBe(4694.40)
+    expect(zusConstants.entrepreneur.basises.small(0)).toBe(1272.60)
+  })
+
+  it('7.2024', () => {
+    expect(zusConstants.entrepreneur.basises.small(6)).toBe(1290)
   })
 })
