@@ -1,7 +1,7 @@
+import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {createPinia, setActivePinia} from 'pinia'
 import {describe, expect, it } from 'vitest'
-import {useConstants} from 'src/composables/constants'
 import {useSettingStore} from 'stores/settingStore'
 
 describe('ZUS contributions for an entrepreneur in 2023.12', () => {
@@ -49,6 +49,28 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   it('the FS contibution', () => {
     expect(entrepreneurZusContribution.getFSContribution(zusConstants.entrepreneur.basises.big)).toBe(60.33)
     expect(entrepreneurZusContribution.getFSContribution(0)).toBe(0)
+  })
+
+  describe('the helth contibution', () => {
+    it('the general rules', () => {
+      expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.GeneralRules)).toBe(900)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.GeneralRules)).toBe(314.1)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.GeneralRules, 0)).toBe(270.9)
+    })
+
+    it('the flat tax', () => {
+      expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax)).toBe(490)
+      expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax)).toBe(314.1)
+      expect(entrepreneurZusContribution.getHealthContribution(6510.10, EntrepreneurTaxSystem.FlatTax)).toBe(318.99)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax)).toBe(314.1)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(270.9)
+    })
+
+    it('the lump sum tax', () => {
+      expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(376.16)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60000)).toBe(626.93)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300000)).toBe(1128.48)
+    })
   })
 })
 

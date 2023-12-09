@@ -108,15 +108,22 @@ interface IncomeTaxConstants{
 }
 
 interface WageStats {
-  minimumWage: numericFunction
+  averageWageInLastQuarter: number,
+  minimumWage: (year: number, monthIndex:number) => number,
+  projectedAverageWage: number,
 }
 
 export const useConstants = () => {
   const settingStore = useSettingStore()
 
   const wageStats:WageStats = {
-    minimumWage: (monthIndex = settingStore.dateOfLawRules.getMonth()) => {
-      if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
+    // Q4 2022
+    averageWageInLastQuarter: 6965.94,
+    minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
+      if(year <= 2022) {
+        return 3010
+      }
+      if(year <= 2023) {
         if(monthIndex <= 5) {
           return 3490
         }
@@ -126,7 +133,9 @@ export const useConstants = () => {
         return 4242
       }
       return 4300
-    }}
+    },
+    projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
+  }
 
   const incomeTaxConstnts: IncomeTaxConstants = {
     generalRule: {
@@ -187,10 +196,8 @@ export const useConstants = () => {
 
   const entrepreneurZusConstants:EntrepreneurZusConstants = {
     basises: {
-      big: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 4161 : 4694.40,
-      small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => {
-        return helpers.round(0.3 * wageStats.minimumWage(monthIndex), 2)
-      },
+      big: helpers.round(0.6 * wageStats.projectedAverageWage, 2),
+      small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => helpers.round(0.3 * wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), monthIndex), 2),
       startRelief: 0,
     },
     rates: {
@@ -209,7 +216,7 @@ export const useConstants = () => {
   }
 
   const zusConstants: zusConstants = {
-    contributionBasisLimit: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 208050 : 234720,
+    contributionBasisLimit: helpers.round(30 * wageStats.projectedAverageWage, 2),
     employee: employeeZusConstants,
     employer: employerZusConstants,
     entrepreneur: entrepreneurZusConstants,
