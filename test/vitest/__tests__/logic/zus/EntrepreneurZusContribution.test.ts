@@ -9,7 +9,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { zusConstants} = useConstants()
+  const { zusConstants, incomeTaxConstnts} = useConstants()
   const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
   it('the disability contibution', () => {
@@ -68,8 +68,24 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
 
     it('the lump sum tax', () => {
       expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(376.16)
-      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60000)).toBe(626.93)
-      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300000)).toBe(1128.48)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60001)).toBe(626.93)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1128.48)
+    })
+
+    describe('the deductible helth contibution', () => {
+      it('the general rules', () => {
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.GeneralRules)).toBe(0)
+      })
+
+      it('the flat tax', () => {
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax)).toBe(100)
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.flatTax.deductibleHealthContributionLimit)).toBe(0)
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(200, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.flatTax.deductibleHealthContributionLimit - 100)).toBe(100)
+      })
+
+      it('the lump sum tax', () => {
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.LumpSumTax)).toBe(50)
+      })
     })
   })
 })

@@ -104,6 +104,10 @@ interface IncomeTaxConstants{
     },
     // Over the amount, the tax relief is end
     taxReliefLimit: number,
+  },
+  flatTax: {
+    deductibleHealthContributionLimit: number
+    taxRate: number
   }
 }
 
@@ -157,6 +161,10 @@ export const useConstants = () => {
         second: 0.32,
       },
       taxReliefLimit: 85528,
+    },
+    flatTax: {
+      deductibleHealthContributionLimit: 10200,
+      taxRate: 0.19,
     },
   }
 

@@ -17,12 +17,12 @@ export class EntrepreneurZusContribution extends ZusContribution {
   /**
    * Returns the health contribution of the entrepreneur
    */
-  public getHealthContribution(grossAmount: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), sumUpIncome = 0): number {
-    const { wageStats } = useConstants()
+  public getHealthContribution(grossAmount: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0): number {
+    const {wageStats} = useConstants()
 
     let year = this.settingStore.dateOfLawRules.getFullYear()
 
-    if(monthIndex === 0) {
+    if (monthIndex === 0) {
       // the contribution year is from February to January.
       // It's the reason why it's necessary
       // to take the minimum wage from previous year for January
@@ -30,9 +30,9 @@ export class EntrepreneurZusContribution extends ZusContribution {
     }
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
-    const minimumContribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules  * wageStats.minimumWage(year, 0), 2)
+    const minimumContribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * wageStats.minimumWage(year, 0), 2)
 
-    let contribution:number
+    let contribution: number
 
     switch (taxSystem) {
       case EntrepreneurTaxSystem.GeneralRules:
@@ -44,15 +44,13 @@ export class EntrepreneurZusContribution extends ZusContribution {
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.LumpSumTax:
-        const totalIncome = grossAmount + sumUpIncome
-
         let contributionBasis = helpers.round(1.8 * wageStats.averageWageInLastQuarter, 2)
 
-        if(totalIncome <= 300000) {
-          contributionBasis =  helpers.round( wageStats.averageWageInLastQuarter, 2)
+        if (yearlyIncome <= 300000) {
+          contributionBasis = helpers.round(wageStats.averageWageInLastQuarter, 2)
         }
-        if(totalIncome <= 60000) {
-          contributionBasis =  helpers.round(0.6 * wageStats.averageWageInLastQuarter, 2)
+        if (yearlyIncome <= 60000) {
+          contributionBasis = helpers.round(0.6 * wageStats.averageWageInLastQuarter, 2)
         }
 
         return helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * contributionBasis, 2)
@@ -61,6 +59,33 @@ export class EntrepreneurZusContribution extends ZusContribution {
         throw Error('Invalid tax system')
     }
   }
+
+    /**
+     * Returns the deductible health contribution of the entrepreneur
+     */
+  public getDeductibleHealthContribution(healthContribution: number, taxSystem: EntrepreneurTaxSystem, sumUpDeductibleHealthContribution = 0): number {
+    const { incomeTaxConstnts } = useConstants()
+
+      switch (taxSystem) {
+        case EntrepreneurTaxSystem.GeneralRules:
+          return 0
+
+        case EntrepreneurTaxSystem.FlatTax:
+          if(sumUpDeductibleHealthContribution >= incomeTaxConstnts.flatTax.deductibleHealthContributionLimit) {
+            return 0
+          }
+          if(sumUpDeductibleHealthContribution + sumUpDeductibleHealthContribution >= incomeTaxConstnts.flatTax.deductibleHealthContributionLimit) {
+            return helpers.round(incomeTaxConstnts.flatTax.deductibleHealthContributionLimit - sumUpDeductibleHealthContribution, 2)
+          }
+          return healthContribution
+
+        case EntrepreneurTaxSystem.LumpSumTax:
+          return helpers.round(0.5 * healthContribution, 2)
+
+        default:
+          throw Error('Invalid tax system')
+      }
+    }
 
   /**
    * Returns the disability contribution of the entrepreneur
