@@ -1,3 +1,4 @@
+import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
@@ -12,24 +13,6 @@ export class GeneraLRule {
     this.annualTaxReducingAmount = this.incomeTaxConstants.generalRule.taxFreeAmount * this.incomeTaxConstants.generalRule.taxRates.first
   }
 
-  /**
-   * Returns the salary amount over the tax relief limit. This amount is important for tax calculations
-   */
-  public getSalaryAmountOverTaxReliefLimit(grossAmount: number, sumUpGrossAmount:number, hasTaxRelief:boolean): number{
-    if(!hasTaxRelief) {
-      return grossAmount
-    }
-
-    if(sumUpGrossAmount > this.incomeTaxConstants.generalRule.taxReliefLimit) {
-      return grossAmount
-    }
-    if(sumUpGrossAmount + grossAmount > this.incomeTaxConstants.generalRule.taxReliefLimit) {
-      return helpers.round(sumUpGrossAmount + grossAmount -  this.incomeTaxConstants.generalRule.taxReliefLimit, 2)
-    }
-
-    return 0
-  }
-
   public getAuthorExpenses(basisForAuthorExpenses:number, partOfWorkWithAuthorExpenses: number, hasTaxRelief: boolean, sumUpAuthorExpenses:number):number {
     if (!partOfWorkWithAuthorExpenses) {
       return 0
@@ -42,7 +25,7 @@ export class GeneraLRule {
 
     if(hasTaxRelief) {
       // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
-      realThreshold = this.incomeTaxConstants.generalRule.taxThreshold - this.incomeTaxConstants.generalRule.taxReliefLimit
+      realThreshold = this.incomeTaxConstants.generalRule.taxThreshold - this.incomeTaxConstants.taxReliefLimit
     }
 
     if(sumUpAuthorExpenses >= realThreshold) {
@@ -88,3 +71,6 @@ export class GeneraLRule {
     return helpers.round(taxAmount)
   }
 }
+
+export interface GeneraLRule extends HasTaxReliefLimit {}
+helpers.applyMixins(GeneraLRule, [HasTaxReliefLimit])

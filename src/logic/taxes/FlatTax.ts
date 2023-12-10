@@ -1,3 +1,4 @@
+import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
@@ -12,3 +13,6 @@ export class FlatTax{
     return helpers.round(this.incomeTaxConstants.flatTax.taxRate * taxBasis)
   }
 }
+
+export interface FlatTax extends HasTaxReliefLimit {}
+helpers.applyMixins(FlatTax, [HasTaxReliefLimit])

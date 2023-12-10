@@ -82,6 +82,8 @@ interface zusConstants {
 }
 
 interface IncomeTaxConstants{
+  // Over the amount, the tax relief is end
+  taxReliefLimit: number,
   generalRule: {
     expenses: {
       amounts: {
@@ -102,8 +104,6 @@ interface IncomeTaxConstants{
       first: number,
       second: number,
     },
-    // Over the amount, the tax relief is end
-    taxReliefLimit: number,
   },
   flatTax: {
     deductibleHealthContributionLimit: number
@@ -142,6 +142,7 @@ export const useConstants = () => {
   }
 
   const incomeTaxConstnts: IncomeTaxConstants = {
+    taxReliefLimit: 85528,
     generalRule: {
       expenses: {
         amounts: {
@@ -160,7 +161,6 @@ export const useConstants = () => {
         first: 0.12,
         second: 0.32,
       },
-      taxReliefLimit: 85528,
     },
     flatTax: {
       deductibleHealthContributionLimit: 10200,

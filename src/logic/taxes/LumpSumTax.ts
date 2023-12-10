@@ -1,3 +1,4 @@
+import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import helpers from 'src/logic/helpers'
 
 export type LumpSumTaxRate = 0.17 | 0.15 | 0.14 | 0.12 | 0.1 | 0.85 | 0.055 | 0.035 | 0.02
@@ -10,3 +11,6 @@ export class LumpSumTax{
     return helpers.round(rate * taxBasis)
   }
 }
+
+export interface LumpSumTax extends HasTaxReliefLimit {}
+helpers.applyMixins(LumpSumTax, [HasTaxReliefLimit])
