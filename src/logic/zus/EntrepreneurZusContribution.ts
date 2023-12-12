@@ -17,7 +17,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
   /**
    * Returns the health contribution of the entrepreneur
    */
-  public getHealthContribution(grossAmount: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0): number {
+  public getHealthContribution(healthContributionBasis: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0): number {
     const {wageStats} = useConstants()
 
     let year = this.settingStore.dateOfLawRules.getFullYear()
@@ -36,11 +36,11 @@ export class EntrepreneurZusContribution extends ZusContribution {
 
     switch (taxSystem) {
       case EntrepreneurTaxSystem.GeneralRules:
-        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * grossAmount, 2)
+        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * healthContributionBasis, 2)
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.FlatTax:
-        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.flatTax * grossAmount, 2)
+        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.flatTax * healthContributionBasis, 2)
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.LumpSumTax:
