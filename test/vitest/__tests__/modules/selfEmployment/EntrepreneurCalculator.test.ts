@@ -34,7 +34,8 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       contributionBasis: zusConstants.entrepreneur.basises.big,
     }
 
-    it('The "big" zus contribution basis"', () => {
+    describe('The "big" zus contribution basis', () => {
+      it('all contributions', () => {
       const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
 
       expect(result.healthContribution).toBe(900)
@@ -48,6 +49,26 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       expect(result.taxBasis).toBe(8582)
       expect(result.taxAmount).toBe(1030)
       expect(result.netAmount).toBe(6651.52)
+      })
+
+      it('is also an employee', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          hasEmploymentContract: true,
+        }).calculate().getResult()
+
+        expect(result.healthContribution).toBe(900)
+        expect(result.disabilityContribution).toBe(0)
+        expect(result.pensionContribution).toBe(0)
+        expect(result.accidentContribution).toBe(0)
+        expect(result.sickContribution).toBe(0)
+        expect(result.fpContribution).toBe(0)
+        expect(result.fsContribution).toBe(0)
+        expect(result.healthContributionBasis).toBe(10000)
+        expect(result.taxBasis).toBe(10000)
+        expect(result.taxAmount).toBe(1200)
+        expect(result.netAmount).toBe(7900)
+      })
     })
   })
 })
