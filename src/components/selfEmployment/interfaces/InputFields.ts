@@ -8,12 +8,12 @@ export interface InputFields{
   contributionBasis: number
   isFpContribution: boolean
   isSickContribution: boolean
-  hasEmploymentContract:number
+  hasEmploymentContract:boolean
   accidentContributionRate: number
   hasTaxRelief: boolean
   partTaxReducingAmount: number
-  lumpSumTaxRate:LumpSumTaxRate
+  lumpSumTaxRate?:LumpSumTaxRate
   yearlyIncome: number
-  lastMonthHealthContributionBasis: number
+  previousMonthHealthContributionBasis: number
   monthIndex: number
 }

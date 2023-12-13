@@ -15,15 +15,15 @@ describe('Income tax using General Rules in 2023', () => {
   const { incomeTaxConstnts} = useConstants()
 
   it('the tax relief limit', () => {
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit, 0, true)).toBe(0)
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit + 0.01, 0, true)).toBe(0.01)
+    expect(generalRule.geIncomeOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit, 0, true)).toBe(0)
+    expect(generalRule.geIncomeOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit + 0.01, 0, true)).toBe(0.01)
 
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(0, incomeTaxConstnts.taxReliefLimit, true)).toBe(0)
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(0.01, incomeTaxConstnts.taxReliefLimit + 0.01, true)).toBe(0.01)
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(0.01, incomeTaxConstnts.taxReliefLimit + 100, true)).toBe(0.01)
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(0, incomeTaxConstnts.taxReliefLimit + 0.01, true)).toBe(0)
+    expect(generalRule.geIncomeOverTaxReliefLimit(0, incomeTaxConstnts.taxReliefLimit, true)).toBe(0)
+    expect(generalRule.geIncomeOverTaxReliefLimit(0.01, incomeTaxConstnts.taxReliefLimit + 0.01, true)).toBe(0.01)
+    expect(generalRule.geIncomeOverTaxReliefLimit(0.01, incomeTaxConstnts.taxReliefLimit + 100, true)).toBe(0.01)
+    expect(generalRule.geIncomeOverTaxReliefLimit(0, incomeTaxConstnts.taxReliefLimit + 0.01, true)).toBe(0)
 
-    expect(generalRule.getSalaryAmountOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit, 0, false)).toBe(incomeTaxConstnts.taxReliefLimit)
+    expect(generalRule.geIncomeOverTaxReliefLimit(incomeTaxConstnts.taxReliefLimit, 0, false)).toBe(incomeTaxConstnts.taxReliefLimit)
   })
 
   it('The income tax without the tax free amount', () => {

@@ -1,17 +1,20 @@
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
+import {EntrepreneurResult} from 'src/logic/interfaces/EntrepreneurResult'
 import {EntrepreneurTaxSystem} from 'src/composables/constants'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {FlatTax} from 'src/logic/taxes/FlatTax'
 import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
+import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
-import {LumpSumTax} from 'src/logic/taxes/LumpSumTax'
+import {LumpSumTax, LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import helpers from 'src/logic/helpers'
 
-export class EntrepreneurCalculator extends BasicCalculator<InputFields, EntrepreneurCalculator> implements Calculator<InputFields, EntrepreneurCalculator>{
+export class EntrepreneurCalculator extends BasicCalculator<InputFields, EntrepreneurResult> implements Calculator<InputFields, EntrepreneurResult>{
   zus: EntrepreneurZusContribution
   protected isPartOfAnnualResult = false
   protected sumUpContributionBasis = 0
+  protected sumUpIncome = 0
   protected sumUpTaxBasis = 0
   protected sumUpDeductibleHealthContribution = 0
 
@@ -25,12 +28,13 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
   }
 
   public calculate(): this {
-
     let income = this.getInputData().revenue
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
       income = helpers.round(this.getInputData().revenue - this.getInputData().expenses, 2)
     }
+
+    const incomeOverTaxReliefLimit = new HasTaxReliefLimit().geIncomeOverTaxReliefLimit(income, this.sumUpIncome, this.getInputData().hasTaxRelief)
 
     const {
       contributionBasis,
@@ -39,18 +43,21 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       pensionContribution,
       sickContribution,
       fpContribution,
-      fgspContribution,
       fsContribution,
     } = this.getZusContributions()
 
-    let incomeReducedByZUsContributions = helpers.round(income - disabilityContribution - pensionContribution - sickContribution - accidentContribution, 2)
+    const socialContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution, 2)
+
+    let incomeReducedByContributions = helpers.round(income - socialContributions, 2)
+    let incomeOverReliefLimitReducedByContributions = helpers.round(incomeOverTaxReliefLimit - socialContributions, 2)
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
-      incomeReducedByZUsContributions = helpers.round(incomeReducedByZUsContributions - fpContribution - fgspContribution - fsContribution, 2)
+      incomeOverReliefLimitReducedByContributions = helpers.round(incomeOverReliefLimitReducedByContributions - fpContribution - fsContribution, 2)
+      incomeReducedByContributions = helpers.round(incomeReducedByContributions - fpContribution - fsContribution, 2)
     }
 
     const healthContribution = this.zus.getHealthContribution(
-      this.getInputData().lastMonthHealthContributionBasis,
+      this.getInputData().previousMonthHealthContributionBasis,
       this.getInputData().taxSystem,
       this.getInputData().monthIndex,
       this.getInputData().yearlyIncome,
@@ -58,7 +65,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     const deductibleHealthContribution= this.zus.getDeductibleHealthContribution(healthContribution, this.getInputData().taxSystem, this.sumUpDeductibleHealthContribution)
 
-    const taxBasis = helpers.round(incomeReducedByZUsContributions - deductibleHealthContribution)
+    const taxBasis = helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution)
     let taxAmount:number
 
     switch (this.getInputData().taxSystem) {
@@ -69,15 +76,39 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
         taxAmount = new FlatTax().getIncomeTax(taxBasis)
         break
       case EntrepreneurTaxSystem.LumpSumTax:
-        taxAmount = new LumpSumTax().getIncomeTax(taxBasis, this.getInputData().lumpSumTaxRate)
+        if( typeof this.getInputData().lumpSumTaxRate === undefined) {
+          throw Error('The unknown lump sum tax rate')
+        }
+
+        taxAmount = new LumpSumTax().getIncomeTax(taxBasis, <LumpSumTaxRate>this.getInputData().lumpSumTaxRate)
         break
     }
 
+    const netAmount = helpers.round(income - socialContributions - fpContribution - fsContribution - healthContribution - taxAmount, 2)
+
+    this.sumUpIncome = helpers.round(this.sumUpIncome + income, 2)
     this.sumUpContributionBasis = helpers.round(this.sumUpContributionBasis + contributionBasis, 2)
     this.sumUpDeductibleHealthContribution = helpers.round(this.sumUpDeductibleHealthContribution + deductibleHealthContribution, 2)
     this.sumUpTaxBasis = helpers.round(this.sumUpTaxBasis + taxBasis)
 
+    this.result = {
+      revenue: this.getInputData().revenue,
+      netAmount,
+      expenses: this.getInputData().expenses,
+      taxBasis,
+      taxAmount,
+      accidentContribution,
+      healthContributionBasis: incomeReducedByContributions,
+      healthContribution,
+      sickContribution,
+      pensionContribution,
+      disabilityContribution,
+      fpContribution,
+      fsContribution,
+    }
+
     if(!this.isPartOfAnnualResult) {
+      this.sumUpIncome = 0
       this.sumUpTaxBasis = 0
       this.sumUpContributionBasis = 0
       this.sumUpDeductibleHealthContribution = 0
@@ -93,7 +124,6 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     let disabilityContribution = 0
     let sickContribution = 0
     let fpContribution = 0
-    let fgspContribution = 0
     let fsContribution = 0
 
     if(!this.getInputData().hasEmploymentContract) {
@@ -107,7 +137,6 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       }
       if(this.getInputData().isFpContribution) {
         fpContribution = this.zus.getFPContribution(this.getInputData().contributionBasis)
-        fgspContribution = this.zus.getFGSPContribution(this.getInputData().contributionBasis)
         fsContribution = this.zus.getFSContribution(this.getInputData().contributionBasis)
       }
       if (this.getInputData().accidentContributionRate) {
@@ -122,7 +151,6 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       disabilityContribution,
       sickContribution,
       fpContribution,
-      fgspContribution,
       fsContribution,
     }
   }
