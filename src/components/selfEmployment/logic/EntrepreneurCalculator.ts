@@ -65,7 +65,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     const deductibleHealthContribution= this.zus.getDeductibleHealthContribution(healthContribution, this.getInputData().taxSystem, this.sumUpDeductibleHealthContribution)
 
-    const taxBasis = helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution)
+    const taxBasis = incomeOverTaxReliefLimit > 0 ? helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution) : 0
     let taxAmount:number
 
     switch (this.getInputData().taxSystem) {
