@@ -253,6 +253,16 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.netAmount).toBe(6554.52)
       })
 
+      it('over the deductible health contribution limit', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          previousMonthHealthContributionBasis: 250000,
+        }).calculate().getResult()
+        expect(result.healthContribution).toBe(12250)
+        expect(result.taxBasis).toBe(-3668)
+        expect(result.taxAmount).toBe(-697)
+      })
+
       it('is also an employee', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
@@ -292,6 +302,30 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
 
         expect(result.healthContribution).toBe(314.1)
       })
+    })
+
+    describe('with the tax relief', () => {
+      it('with the revenue within the tax relief limit', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          hasTaxRelief: true,
+        }).calculate().getResult()
+        expect(result.healthContributionBasis).toBe(8581.52)
+        expect(result.taxBasis).toBe(0)
+        expect(result.taxAmount).toBe(0)
+      })
+
+      it('with the revenue over the tax relief limit', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          revenue: incomeTaxConstnts.taxReliefLimit + 10000,
+          hasTaxRelief: true,
+        }).calculate().getResult()
+        expect(result.healthContributionBasis).toBe(94109.52)
+        expect(result.taxBasis).toBe(8092)
+        expect(result.taxAmount).toBe(1537)
+      })
+
     })
   })
 })
