@@ -3,6 +3,8 @@ import {IncomeTaxResult} from 'src/logic/taxes/interfaces/IncomeTaxResult'
 export interface EntrepreneurResult extends IncomeTaxResult{
   readonly revenue: number,
   readonly expenses: number,
+  // the expenses which can reduce the income in the next month
+  readonly deductibleExpenses: number,
   readonly netAmount: number,
   readonly healthContributionBasis:number,
   readonly healthContribution:number,

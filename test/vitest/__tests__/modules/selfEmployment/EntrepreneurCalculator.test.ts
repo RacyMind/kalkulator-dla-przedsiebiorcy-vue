@@ -36,19 +36,19 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
 
     describe('The "big" zus contribution basis', () => {
       it('all contributions', () => {
-      const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
+        const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
 
-      expect(result.healthContribution).toBe(900)
-      expect(result.disabilityContribution).toBe(332.88)
-      expect(result.pensionContribution).toBe(812.23)
-      expect(result.accidentContribution).toBe(69.49)
-      expect(result.sickContribution).toBe(101.94)
-      expect(result.fpContribution).toBe(41.61)
-      expect(result.fsContribution).toBe(60.33)
-      expect(result.healthContributionBasis).toBe(8581.52)
-      expect(result.taxBasis).toBe(8582)
-      expect(result.taxAmount).toBe(1030)
-      expect(result.netAmount).toBe(6651.52)
+        expect(result.healthContribution).toBe(900)
+        expect(result.disabilityContribution).toBe(332.88)
+        expect(result.pensionContribution).toBe(812.23)
+        expect(result.accidentContribution).toBe(69.49)
+        expect(result.sickContribution).toBe(101.94)
+        expect(result.fpContribution).toBe(41.61)
+        expect(result.fsContribution).toBe(60.33)
+        expect(result.healthContributionBasis).toBe(8581.52)
+        expect(result.taxBasis).toBe(8582)
+        expect(result.taxAmount).toBe(1030)
+        expect(result.netAmount).toBe(6651.52)
       })
 
       it('is also an employee', () => {
@@ -184,7 +184,6 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.taxBasis).toBe(8582)
         expect(result.taxAmount).toBe(1030)
       })
-
     })
 
     describe('over the tax threshold', () => {
@@ -215,6 +214,33 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         }).calculate().getResult()
         expect(result.taxBasis).toBe(43054)
         expect(result.taxAmount).toBe(5166)
+      })
+    })
+
+    describe('with expenses', () => {
+      it('the tax basis over 0', () => {
+      const result = new EntrepreneurCalculator().setInputData({
+        ...input,
+        revenue: 12000,
+        expenses: 2000,
+      }).calculate().getResult()
+
+        expect(result.deductibleExpenses).toBe(0)
+      expect(result.taxBasis).toBe(8582)
+      expect(result.taxAmount).toBe(1030)
+      expect(result.netAmount).toBe(6651.52)
+      })
+
+      it('with deductible expenses', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          expenses: 10000,
+        }).calculate().getResult()
+
+        expect(result.deductibleExpenses).toBe(1418)
+        expect(result.taxBasis).toBe(0)
+        expect(result.taxAmount).toBe(0)
+        expect(result.netAmount).toBe(-2318.48)
       })
     })
   })
@@ -259,8 +285,9 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
           previousMonthHealthContributionBasis: 250000,
         }).calculate().getResult()
         expect(result.healthContribution).toBe(12250)
-        expect(result.taxBasis).toBe(-3668)
-        expect(result.taxAmount).toBe(-697)
+        expect(result.deductibleExpenses).toBe(3668)
+        expect(result.taxBasis).toBe(0)
+        expect(result.taxAmount).toBe(0)
       })
 
       it('is also an employee', () => {
@@ -325,7 +352,140 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.taxBasis).toBe(8092)
         expect(result.taxAmount).toBe(1537)
       })
+    })
 
+    describe('with expenses', () => {
+      it('the tax basis over 0', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          revenue: 12000,
+          expenses: 2000,
+        }).calculate().getResult()
+
+        expect(result.deductibleExpenses).toBe(0)
+        expect(result.taxBasis).toBe(8092)
+        expect(result.taxAmount).toBe(1537)
+        expect(result.netAmount).toBe(6554.52)
+      })
+
+      it('with deductible expenses', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          expenses: 10000,
+        }).calculate().getResult()
+
+        expect(result.deductibleExpenses).toBe(1908)
+        expect(result.taxBasis).toBe(0)
+        expect(result.taxAmount).toBe(0)
+        expect(result.netAmount).toBe(-1908.48)
+      })
+    })
+  })
+
+  describe('Tests with the flat tax rate', () => {
+    const input: InputFields = {
+      revenue: 10000,
+      expenses: 0,
+      taxSystem: EntrepreneurTaxSystem.LumpSumTax,
+      lumpSumTaxRate: 0.1,
+      monthIndex: 10,
+      previousMonthHealthContributionBasis: 10000,
+      accidentContributionRate: 0.0167,
+      isFpContribution: true,
+      isSickContribution: true,
+      partTaxReducingAmount: 0,
+      hasTaxRelief: false,
+      yearlyIncome: 0,
+      hasEmploymentContract: false,
+      contributionBasis: zusConstants.entrepreneur.basises.big,
+    }
+
+    describe('The "big" zus contribution basis', () => {
+      it('all contributions', () => {
+        const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
+
+        expect(result.healthContribution).toBe(376.16)
+        expect(result.disabilityContribution).toBe(332.88)
+        expect(result.pensionContribution).toBe(812.23)
+        expect(result.accidentContribution).toBe(69.49)
+        expect(result.sickContribution).toBe(101.94)
+        expect(result.fpContribution).toBe(41.61)
+        expect(result.fsContribution).toBe(60.33)
+        expect(result.taxBasis).toBe(8495)
+        expect(result.taxAmount).toBe(850)
+        expect(result.netAmount).toBe(7355.36)
+      })
+
+      it('over 60 000 zł of the yearly income', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          yearlyIncome: 60001,
+        }).calculate().getResult()
+
+        expect(result.healthContribution).toBe(626.93)
+        expect(result.disabilityContribution).toBe(332.88)
+        expect(result.pensionContribution).toBe(812.23)
+        expect(result.accidentContribution).toBe(69.49)
+        expect(result.sickContribution).toBe(101.94)
+        expect(result.fpContribution).toBe(41.61)
+        expect(result.fsContribution).toBe(60.33)
+        expect(result.taxBasis).toBe(8370)
+        expect(result.taxAmount).toBe(837)
+        expect(result.netAmount).toBe(7117.59)
+      })
+
+      it('over 300 000 zł of the yearly income', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          yearlyIncome: 300001,
+        }).calculate().getResult()
+
+        expect(result.healthContribution).toBe(1128.48)
+        expect(result.disabilityContribution).toBe(332.88)
+        expect(result.pensionContribution).toBe(812.23)
+        expect(result.accidentContribution).toBe(69.49)
+        expect(result.sickContribution).toBe(101.94)
+        expect(result.fpContribution).toBe(41.61)
+        expect(result.fsContribution).toBe(60.33)
+        expect(result.taxBasis).toBe(8119)
+        expect(result.taxAmount).toBe(812)
+        expect(result.netAmount).toBe(6641.04)
+      })
+    })
+
+    describe('with the tax relief', () => {
+      it('with the revenue within the tax relief limit', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          hasTaxRelief: true,
+        }).calculate().getResult()
+        expect(result.taxBasis).toBe(0)
+        expect(result.taxAmount).toBe(0)
+      })
+
+      it('with the revenue over the tax relief limit', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          revenue: incomeTaxConstnts.taxReliefLimit + 10000,
+          hasTaxRelief: true,
+        }).calculate().getResult()
+        expect(result.taxBasis).toBe(8495)
+        expect(result.taxAmount).toBe(850)
+      })
+    })
+
+    describe('with expenses', () => {
+      it('the tax basis over 0', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          revenue: 12000,
+          expenses: 2000,
+        }).calculate().getResult()
+
+        expect(result.taxBasis).toBe(10495)
+        expect(result.taxAmount).toBe(1050)
+        expect(result.netAmount).toBe(9155.36)
+      })
     })
   })
 })

@@ -65,7 +65,11 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     const deductibleHealthContribution= this.zus.getDeductibleHealthContribution(healthContribution, this.getInputData().taxSystem, this.sumUpDeductibleHealthContribution)
 
-    const taxBasis = incomeOverTaxReliefLimit > 0 ? helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution) : 0
+    // tax basis can't be negative if the tax relief is active, and the income is not over the limit
+    let taxBasis = incomeOverTaxReliefLimit <= 0 && this.getInputData().hasTaxRelief ? 0 : helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution)
+    const deductibleExpenses = this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax && taxBasis < 0 ? Math.abs(taxBasis) : 0
+    taxBasis = taxBasis < 0 ? 0 : taxBasis
+
     let taxAmount:number
 
     switch (this.getInputData().taxSystem) {
@@ -96,6 +100,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       netAmount,
       expenses: this.getInputData().expenses,
       taxBasis,
+      deductibleExpenses,
       taxAmount,
       accidentContribution,
       healthContributionBasis: incomeReducedByContributions,
