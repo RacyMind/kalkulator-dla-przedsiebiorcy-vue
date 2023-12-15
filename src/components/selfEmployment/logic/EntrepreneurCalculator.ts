@@ -98,7 +98,6 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     this.result = {
       revenue: this.getInputData().revenue,
       netAmount,
-      expenses: this.getInputData().expenses,
       taxBasis,
       deductibleExpenses,
       taxAmount,
