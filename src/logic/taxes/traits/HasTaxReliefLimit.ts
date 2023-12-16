@@ -6,18 +6,18 @@ export class HasTaxReliefLimit{
   /**
    * Returns the salary amount over the tax relief limit. This amount is important for tax calculations
    */
-  public geIncomeOverTaxReliefLimit(income: number, sumUpIncome:number, hasTaxRelief:boolean): number{
+  public geRevenueOverTaxReliefLimit(revenue: number, sumUpRevenue:number, hasTaxRelief:boolean): number{
     const {incomeTaxConstnts} = useConstants()
 
     if(!hasTaxRelief) {
-      return income
+      return revenue
     }
 
-    if(sumUpIncome > incomeTaxConstnts.taxReliefLimit) {
-      return income
+    if(sumUpRevenue > incomeTaxConstnts.taxReliefLimit) {
+      return revenue
     }
-    if(sumUpIncome + income > incomeTaxConstnts.taxReliefLimit) {
-      return helpers.round(sumUpIncome + income -  incomeTaxConstnts.taxReliefLimit, 2)
+    if(sumUpRevenue + revenue > incomeTaxConstnts.taxReliefLimit) {
+      return helpers.round(sumUpRevenue + revenue -  incomeTaxConstnts.taxReliefLimit, 2)
     }
 
     return 0

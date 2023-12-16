@@ -14,7 +14,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
   zus: EntrepreneurZusContribution
   protected isPartOfAnnualResult = false
   protected sumUpContributionBasis = 0
-  protected sumUpIncome = 0
+  protected sumUpRevenue = 0
   protected sumUpTaxBasis = 0
   protected sumUpDeductibleHealthContribution = 0
 
@@ -28,13 +28,13 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
   }
 
   public calculate(): this {
-    let income = this.getInputData().revenue
+    let expensesToReduceTaxBasis = 0
+    const revenueOverTaxReliefLimit = new HasTaxReliefLimit().geRevenueOverTaxReliefLimit(this.getInputData().revenue, this.sumUpRevenue, this.getInputData().hasTaxRelief)
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
-      income = helpers.round(this.getInputData().revenue - this.getInputData().expenses, 2)
+      // for the lump sum tax, the expenses can't reduce the tax basis
+      expensesToReduceTaxBasis = this.getInputData().expenses
     }
-
-    const incomeOverTaxReliefLimit = new HasTaxReliefLimit().geIncomeOverTaxReliefLimit(income, this.sumUpIncome, this.getInputData().hasTaxRelief)
 
     const {
       contributionBasis,
@@ -46,27 +46,31 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       fsContribution,
     } = this.getZusContributions()
 
-    const socialContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution, 2)
-
-    let incomeReducedByContributions = helpers.round(income - socialContributions, 2)
-    let incomeOverReliefLimitReducedByContributions = helpers.round(incomeOverTaxReliefLimit - socialContributions, 2)
+    // all social contributions can be the expenses
+    expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + disabilityContribution + pensionContribution + sickContribution + accidentContribution, 2)
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
-      incomeOverReliefLimitReducedByContributions = helpers.round(incomeOverReliefLimitReducedByContributions - fpContribution - fsContribution, 2)
-      incomeReducedByContributions = helpers.round(incomeReducedByContributions - fpContribution - fsContribution, 2)
+      // for the lump sum tax, FP contributions can't the expenses
+      expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + fpContribution + fsContribution, 2)
     }
+
+    const healthContributionBasis = helpers.round(this.getInputData().revenue - expensesToReduceTaxBasis, 2)
 
     const healthContribution = this.zus.getHealthContribution(
       this.getInputData().previousMonthHealthContributionBasis,
       this.getInputData().taxSystem,
       this.getInputData().monthIndex,
       this.getInputData().yearlyIncome,
-  )
+    )
+
+    // the sum of all ZUS contributions
+    const zusContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpContribution + fsContribution + healthContribution, 2)
 
     const deductibleHealthContribution= this.zus.getDeductibleHealthContribution(healthContribution, this.getInputData().taxSystem, this.sumUpDeductibleHealthContribution)
+    expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + deductibleHealthContribution, 2)
 
-    // tax basis can't be negative if the tax relief is active, and the income is not over the limit
-    let taxBasis = incomeOverTaxReliefLimit <= 0 && this.getInputData().hasTaxRelief ? 0 : helpers.round(incomeOverReliefLimitReducedByContributions - deductibleHealthContribution)
+    // tax basis can't be negative if the tax relief is active, and the revenue is not over the limit
+    let taxBasis = revenueOverTaxReliefLimit <= 0 && this.getInputData().hasTaxRelief ? 0 : helpers.round(revenueOverTaxReliefLimit - expensesToReduceTaxBasis)
     const deductibleExpenses = this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax && taxBasis < 0 ? Math.abs(taxBasis) : 0
     taxBasis = taxBasis < 0 ? 0 : taxBasis
 
@@ -88,9 +92,9 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
         break
     }
 
-    const netAmount = helpers.round(income - socialContributions - fpContribution - fsContribution - healthContribution - taxAmount, 2)
+    const netAmount = helpers.round(this.getInputData().revenue - this.getInputData().expenses - zusContributions - taxAmount, 2)
 
-    this.sumUpIncome = helpers.round(this.sumUpIncome + income, 2)
+    this.sumUpRevenue = helpers.round(this.sumUpRevenue + this.getInputData().revenue, 2)
     this.sumUpContributionBasis = helpers.round(this.sumUpContributionBasis + contributionBasis, 2)
     this.sumUpDeductibleHealthContribution = helpers.round(this.sumUpDeductibleHealthContribution + deductibleHealthContribution, 2)
     this.sumUpTaxBasis = helpers.round(this.sumUpTaxBasis + taxBasis)
@@ -102,7 +106,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       deductibleExpenses,
       taxAmount,
       accidentContribution,
-      healthContributionBasis: incomeReducedByContributions,
+      healthContributionBasis,
       healthContribution,
       sickContribution,
       pensionContribution,
@@ -112,7 +116,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     }
 
     if(!this.isPartOfAnnualResult) {
-      this.sumUpIncome = 0
+      this.sumUpRevenue = 0
       this.sumUpTaxBasis = 0
       this.sumUpContributionBasis = 0
       this.sumUpDeductibleHealthContribution = 0

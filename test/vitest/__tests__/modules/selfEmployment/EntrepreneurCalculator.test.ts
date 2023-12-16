@@ -184,6 +184,18 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.taxBasis).toBe(8582)
         expect(result.taxAmount).toBe(1030)
       })
+
+      it('with the revenue over the tax relief limit and expenses', () => {
+        const result = new EntrepreneurCalculator().setInputData({
+          ...input,
+          revenue: incomeTaxConstnts.taxReliefLimit + 20000,
+          expenses: 10000,
+          hasTaxRelief: true,
+        }).calculate().getResult()
+        expect(result.healthContributionBasis).toBe(94109.52)
+        expect(result.taxBasis).toBe(8582)
+        expect(result.taxAmount).toBe(1030)
+      })
     })
 
     describe('over the tax threshold', () => {
@@ -484,7 +496,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
 
         expect(result.taxBasis).toBe(10495)
         expect(result.taxAmount).toBe(1050)
-        expect(result.netAmount).toBe(9155.36)
+        expect(result.netAmount).toBe(7155.36)
       })
     })
   })
