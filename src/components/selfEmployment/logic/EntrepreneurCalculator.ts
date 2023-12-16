@@ -56,6 +56,10 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     const healthContributionBasis = helpers.round(this.getInputData().revenue - expensesToReduceTaxBasis, 2)
 
+    if(healthContributionBasis < 0) {
+      healthContributionBasis
+    }
+
     const healthContribution = this.zus.getHealthContribution(
       this.getInputData().previousMonthHealthContributionBasis,
       this.getInputData().taxSystem,
