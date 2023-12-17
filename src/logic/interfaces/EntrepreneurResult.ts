@@ -6,7 +6,7 @@ export interface EntrepreneurResult extends IncomeTaxResultWithoutExpenses{
   readonly revenue: number,
   // the expenses which can reduce the income in the next month
   readonly deductibleExpenses: number,
-  readonly netAmount: number,
+  readonly income: number,
   readonly healthContributionBasis:number,
   readonly healthContribution:number,
   readonly sickContribution: number,

@@ -74,7 +74,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
           if(sumUpDeductibleHealthContribution >= incomeTaxConstnts.flatTax.deductibleHealthContributionLimit) {
             return 0
           }
-          if(sumUpDeductibleHealthContribution + sumUpDeductibleHealthContribution >= incomeTaxConstnts.flatTax.deductibleHealthContributionLimit) {
+          if(healthContribution + sumUpDeductibleHealthContribution >= incomeTaxConstnts.flatTax.deductibleHealthContributionLimit) {
             return helpers.round(incomeTaxConstnts.flatTax.deductibleHealthContributionLimit - sumUpDeductibleHealthContribution, 2)
           }
           return healthContribution

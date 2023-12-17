@@ -50,7 +50,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + disabilityContribution + pensionContribution + sickContribution + accidentContribution, 2)
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
-      // for the lump sum tax, FP contributions can't the expenses
+      // for the lump sum tax, FP contributions can't be the expenses
       expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + fpContribution + fsContribution, 2)
     }
 
@@ -96,7 +96,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
         break
     }
 
-    const netAmount = helpers.round(this.getInputData().revenue - this.getInputData().expenses - zusContributions - taxAmount, 2)
+    const income = helpers.round(this.getInputData().revenue - this.getInputData().expenses - zusContributions - taxAmount, 2)
 
     this.sumUpRevenue = helpers.round(this.sumUpRevenue + this.getInputData().revenue, 2)
     this.sumUpContributionBasis = helpers.round(this.sumUpContributionBasis + contributionBasis, 2)
@@ -105,7 +105,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     this.result = {
       revenue: this.getInputData().revenue,
-      netAmount,
+      income,
       taxBasis,
       deductibleExpenses,
       taxAmount,

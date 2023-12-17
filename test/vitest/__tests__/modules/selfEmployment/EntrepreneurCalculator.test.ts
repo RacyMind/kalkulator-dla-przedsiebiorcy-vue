@@ -48,7 +48,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(8581.52)
         expect(result.taxBasis).toBe(8582)
         expect(result.taxAmount).toBe(1030)
-        expect(result.netAmount).toBe(6651.52)
+        expect(result.income).toBe(6651.52)
       })
 
       it('is also an employee', () => {
@@ -67,7 +67,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(10000)
         expect(result.taxBasis).toBe(10000)
         expect(result.taxAmount).toBe(1200)
-        expect(result.netAmount).toBe(7900)
+        expect(result.income).toBe(7900)
       })
     })
 
@@ -89,7 +89,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(9668.74)
         expect(result.taxBasis).toBe(9669)
         expect(result.taxAmount).toBe(1160)
-        expect(result.netAmount).toBe(7608.74)
+        expect(result.income).toBe(7608.74)
       })
 
       it('the second half year', () => {
@@ -109,7 +109,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(9658.28)
         expect(result.taxBasis).toBe(9658)
         expect(result.taxAmount).toBe(1159)
-        expect(result.netAmount).toBe(7599.28)
+        expect(result.income).toBe(7599.28)
       })
     })
 
@@ -240,7 +240,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.deductibleExpenses).toBe(0)
       expect(result.taxBasis).toBe(8582)
       expect(result.taxAmount).toBe(1030)
-      expect(result.netAmount).toBe(6651.52)
+      expect(result.income).toBe(6651.52)
       })
 
       it('with deductible expenses', () => {
@@ -252,7 +252,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.deductibleExpenses).toBe(1418)
         expect(result.taxBasis).toBe(0)
         expect(result.taxAmount).toBe(0)
-        expect(result.netAmount).toBe(-2318.48)
+        expect(result.income).toBe(-2318.48)
       })
     })
   })
@@ -288,7 +288,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(8581.52)
         expect(result.taxBasis).toBe(8092)
         expect(result.taxAmount).toBe(1537)
-        expect(result.netAmount).toBe(6554.52)
+        expect(result.income).toBe(6554.52)
       })
 
       it('over the deductible health contribution limit', () => {
@@ -297,7 +297,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
           previousMonthHealthContributionBasis: 250000,
         }).calculate().getResult()
         expect(result.healthContribution).toBe(12250)
-        expect(result.deductibleExpenses).toBe(3668)
+        expect(result.deductibleExpenses).toBe(1618)
         expect(result.taxBasis).toBe(0)
         expect(result.taxAmount).toBe(0)
       })
@@ -318,7 +318,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.healthContributionBasis).toBe(10000)
         expect(result.taxBasis).toBe(9510)
         expect(result.taxAmount).toBe(1807)
-        expect(result.netAmount).toBe(7703)
+        expect(result.income).toBe(7703)
       })
     })
 
@@ -377,7 +377,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.deductibleExpenses).toBe(0)
         expect(result.taxBasis).toBe(8092)
         expect(result.taxAmount).toBe(1537)
-        expect(result.netAmount).toBe(6554.52)
+        expect(result.income).toBe(6554.52)
       })
 
       it('with deductible expenses', () => {
@@ -389,7 +389,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.deductibleExpenses).toBe(1908)
         expect(result.taxBasis).toBe(0)
         expect(result.taxAmount).toBe(0)
-        expect(result.netAmount).toBe(-1908.48)
+        expect(result.income).toBe(-1908.48)
       })
     })
   })
@@ -425,7 +425,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.fsContribution).toBe(60.33)
         expect(result.taxBasis).toBe(8495)
         expect(result.taxAmount).toBe(850)
-        expect(result.netAmount).toBe(7355.36)
+        expect(result.income).toBe(7355.36)
       })
 
       it('over 60 000 zł of the yearly income', () => {
@@ -443,7 +443,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.fsContribution).toBe(60.33)
         expect(result.taxBasis).toBe(8370)
         expect(result.taxAmount).toBe(837)
-        expect(result.netAmount).toBe(7117.59)
+        expect(result.income).toBe(7117.59)
       })
 
       it('over 300 000 zł of the yearly income', () => {
@@ -461,7 +461,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.fsContribution).toBe(60.33)
         expect(result.taxBasis).toBe(8119)
         expect(result.taxAmount).toBe(812)
-        expect(result.netAmount).toBe(6641.04)
+        expect(result.income).toBe(6641.04)
       })
     })
 
@@ -496,7 +496,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
 
         expect(result.taxBasis).toBe(10495)
         expect(result.taxAmount).toBe(1050)
-        expect(result.netAmount).toBe(7155.36)
+        expect(result.income).toBe(7155.36)
       })
     })
   })
