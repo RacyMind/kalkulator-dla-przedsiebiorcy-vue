@@ -224,4 +224,123 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       })
     })
   })
+
+  describe('Test the lump sum tax', () => {
+    const input: InputFields = {
+      revenue: 10000,
+      expenses:0,
+      taxSystem: EntrepreneurTaxSystem.LumpSumTax,
+      lumpSumTaxRate: 0.02,
+      monthIndex: 0,
+      previousMonthHealthContributionBasis: 0,
+      accidentContributionRate: 0.0167,
+      isFpContribution: true,
+      isSickContribution: true,
+      partTaxReducingAmount: 12,
+      hasTaxRelief: false,
+      yearlyIncome: 0,
+      hasEmploymentContract: false,
+      contributionBasis: zusConstants.entrepreneur.basises.big,
+    }
+
+    describe('The "big" zus contribution basis', () => {
+      it('all contributions', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult
+
+        expect(result.healthContribution).toBe(7523.16)
+        expect(result.disabilityContribution).toBe(3994.56)
+        expect(result.pensionContribution).toBe(9746.76)
+        expect(result.accidentContribution).toBe(	833.88)
+        expect(result.sickContribution).toBe(1223.28)
+        expect(result.fpContribution).toBe(499.32)
+        expect(result.fsContribution).toBe(723.96)
+        expect(result.taxAmount).toBe(2004)
+        expect(result.income).toBe(93451.08)
+      })
+
+      it('is also an employee', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+          ...input,
+          hasEmploymentContract: true,
+        })).calculate().getResult().annualResult
+
+
+        expect(result.healthContribution).toBe(7523.16)
+        expect(result.disabilityContribution).toBe(0)
+        expect(result.pensionContribution).toBe(0)
+        expect(result.accidentContribution).toBe(0)
+        expect(result.sickContribution).toBe(0)
+        expect(result.fpContribution).toBe(0)
+        expect(result.fsContribution).toBe(0)
+        expect(result.taxAmount).toBe(2328)
+        expect(result.income).toBe(110148.84)
+      })
+    })
+
+    it('The "small" zus contribution basis', () => {
+      const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+        ...input,
+        contributionBasis: zusConstants.entrepreneur.basises.small(0),
+        isFpContribution: false,
+      }, true)).calculate().getResult().annualResult
+
+      expect(result.healthContribution).toBe(7523.16)
+      expect(result.disabilityContribution).toBe(1020.96)
+      expect(result.pensionContribution).toBe(2491.14)
+      expect(result.accidentContribution).toBe(213.12)
+      expect(result.sickContribution).toBe(312.66)
+      expect(result.fpContribution).toBe(0)
+      expect(result.fsContribution).toBe(0)
+      expect(result.taxAmount).toBe(2244)
+      expect(result.income).toBe(106194.96)
+    })
+
+    describe('The different health contributions', () => {
+      it('the first amount', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+          ...input,
+          revenue: 5000,
+        })).calculate().getResult().annualResult
+
+        expect(result.healthContribution).toBe(4513.92)
+      })
+
+      it('the second amount', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult
+
+        expect(result.healthContribution).toBe(7523.16)
+      })
+
+      it('the third amount', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+          ...input,
+          revenue: 50000,
+        })).calculate().getResult().annualResult
+
+        expect(result.healthContribution).toBe(13541.76)
+      })
+    })
+
+    describe('with the tax relief', () => {
+      it('within the tax relief', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+          ...input,
+          revenue: 7000,
+          hasTaxRelief: true,
+        })).calculate().getResult().annualResult
+
+        expect(result.taxAmount).toBe(0)
+      })
+
+      it('over the tax threshold', () => {
+        const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
+          ...input,
+          revenue: 15000,
+          hasTaxRelief: true,
+        })).calculate().getResult().annualResult
+
+        expect(result.taxAmount).toBe(1659)
+      })
+    })
+  })
 })

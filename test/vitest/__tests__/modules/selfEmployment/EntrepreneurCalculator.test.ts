@@ -394,7 +394,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
     })
   })
 
-  describe('Tests with the flat tax rate', () => {
+  describe('Tests with the lump sum tax rate', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses: 0,
