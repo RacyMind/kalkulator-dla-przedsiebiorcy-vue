@@ -2,6 +2,11 @@
   <q-form
     @validation-error="handleValidationError"
     @submit.prevent="handleFormSubmit">
+    <FormSection
+      v-if="availableDates.length > 1"
+      title="Data obowiązywania przepisów">
+      <LawRuleDate />
+    </FormSection>
     <FormSection title="Wynagrodzenie">
       <div class="row items-center q-col-gutter-sm">
         <div class="col-grow">
@@ -208,10 +213,12 @@ import {useAmmmountType} from 'src/composables/amountType'
 import {useConstants} from 'src/composables/constants'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import {useFormValidation} from 'src/composables/formValidation'
+import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
@@ -219,6 +226,7 @@ import helpers from 'src/logic/helpers'
 const emit = defineEmits(['submit'])
 
 const store = useEmploymentContractStore()
+const { availableDates } = useLawRuleDate()
 const {handleValidationError} = useFormValidation()
 const { AmountTypes, zusConstants, incomeTaxConstnts } = useConstants()
 

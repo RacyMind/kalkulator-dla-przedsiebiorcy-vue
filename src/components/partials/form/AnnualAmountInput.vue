@@ -6,6 +6,7 @@
       class="col-4 col-sm-2">
       <q-input
         v-model.number="monthlyAmounts[index]"
+        :disable="disableUntilMonth !== null && index < disableUntilMonth"
         type="number"
         min="0"
         step="0.01"
@@ -22,13 +23,17 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import {computed, watch} from 'vue'
 import constants from 'src/logic/constants'
 
 interface Props {
   modelValue: number[]
+  disableUntilMonth: null | number
 }
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  disableUntilMonth: null,
+  },
+)
 const emit = defineEmits(['update:modelValue'])
 
 const monthlyAmounts = computed({
@@ -39,4 +44,14 @@ const monthlyAmounts = computed({
     emit('update:modelValue', amounts.map(amount => Number(amount)))
   },
 })
+
+watch(() => props.disableUntilMonth, (disableUntilMonth) => {
+  if(disableUntilMonth === null) {
+    return
+  }
+
+  for(let i = 0; i < disableUntilMonth; i++) {
+    monthlyAmounts.value[i] = 0
+  }
+}, {immediate: true})
 </script>
