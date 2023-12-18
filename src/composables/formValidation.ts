@@ -1,10 +1,8 @@
-import {useQuasar} from 'quasar'
+import {Notify} from 'quasar'
 
 export const useFormValidation = () => {
   const handleValidationError = () => {
-    const $q = useQuasar()
-
-    $q.notify({
+    Notify.create({
       color: 'negative',
       message: 'Formularz zawiera błędy.',
     })

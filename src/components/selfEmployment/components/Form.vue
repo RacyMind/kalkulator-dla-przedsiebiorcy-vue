@@ -16,8 +16,9 @@
           />
         </div>
       </div>
-      <div v-if="!businessHasStartedBeforeThisYear"
-           class="row">
+      <div
+        v-if="!businessHasStartedBeforeThisYear"
+        class="row">
         <div class="col">
           <q-select
             v-model.number="businessStartedInMonth"
@@ -130,7 +131,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstnts.taxReliefLimit) }} brutto.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstnts.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -190,6 +191,22 @@
           />
         </div>
       </div>
+      <div
+        v-if="businessHasStartedBeforeThisYear && incomeTaxType !== EntrepreneurTaxSystem.LumpSumTax"
+        class="row q-mb-md">
+        <div class="col">
+          <q-input
+            v-model.number="previousMonthHealthContributionBasis"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Dochód z grudnia poprzedniego roku"
+            suffix="zł"
+            color="brand"
+            hint="Przychód minus skłdki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
+          />
+        </div>
+      </div>
       <div class="row q-mb-md">
         <div class="col">
           <q-input
@@ -219,6 +236,9 @@
             unchecked-icon="clear"
             label="Zatrudniony na umowę o pracę"
           />
+          <Tooltip class="q-ml-sm">
+            Zatrudniony na umowę o pracę płaci tylko składkę zdrowotną.
+          </Tooltip>
         </div>
         <div>
           <q-toggle
@@ -236,6 +256,22 @@
             unchecked-icon="clear"
             label="Ulga na start"
           />
+          <Tooltip class="q-ml-sm">
+            Ulga zwalnia z płacenia składek ZUS (z wyjątkiem składki zdrowotnej) przez pierwsze 6 miesięcy działalności.
+          </Tooltip>
+        </div>
+      </div>
+      <div
+        v-if="zusRelief"
+        class="row">
+        <div class="col">
+          <q-select
+            v-model.number="zusReliefUntil"
+            :options="monthOptions"
+            emit-value
+            map-options
+            color="brand"
+            label="Ulga obowiązuje do" />
         </div>
       </div>
     </FormSection>
@@ -245,22 +281,30 @@
 
 <script setup lang="ts">
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {Ref, computed, ref, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
+import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
+import {useSelfemploymentStore} from 'components/selfEmployment/store'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import helpers from 'src/logic/helpers'
 
+const emit = defineEmits(['submit'])
+
+const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
 const { zusConstants, incomeTaxConstnts } = useConstants()
+const store = useSelfemploymentStore()
 
 enum ContributionBasises {
   Big = 1,
@@ -368,6 +412,8 @@ const isSickContribution = ref(false)
 const hasEmploymentContract = ref(false)
 const fpContributionIsDisabled = computed(() => choseContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
 const zusRelief = ref(false)
+const zusReliefUntil = ref(11)
+const previousMonthHealthContributionBasis = ref(0)
 
 watch(choseContributionBasis, () => {
   if(choseContributionBasis.value === ContributionBasises.Small) {
@@ -379,4 +425,65 @@ watch(hasEmploymentContract, () => {
     isFpContribution.value = false
   }
 })
+
+const getContributionBasis = (currentMonth: number): number => {
+  if(!businessHasStartedBeforeThisYear.value && businessStartedInMonth.value < currentMonth) {
+    return 0
+  }
+  if(zusRelief.value && zusReliefUntil.value <= currentMonth) {
+    return 0
+  }
+  if(choseContributionBasis.value === ContributionBasises.Custom) {
+    return customContributionBasis.value ?? 0
+  }
+  if(choseContributionBasis.value === ContributionBasises.Small) {
+    return zusConstants.entrepreneur.basises.small(currentMonth)
+  }
+
+  return zusConstants.entrepreneur.basises.big
+}
+
+const handleFormSubmit = () => {
+  if (!revenue.value) {
+    return
+  }
+
+  const basicInputFields: InputFields = {
+    revenue: revenue.value,
+    expenses: expenses.value ?? 0,
+    taxSystem: incomeTaxType.value,
+    hasTaxRelief: hasTaxRelief.value,
+    partTaxReducingAmount: hasTaxFreeAmount.value && incomeTaxType.value === EntrepreneurTaxSystem.TaxScale ? employerCount.value * 12 : 0,
+    hasEmploymentContract: hasEmploymentContract.value,
+    isFpContribution: isFpContribution.value,
+    isSickContribution: isSickContribution.value,
+    accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
+    contributionBasis: 0,
+    yearlyIncome: 0,
+    previousMonthHealthContributionBasis: previousMonthHealthContributionBasis.value,
+    monthIndex: 0,
+  }
+
+  const monhtlyInputFields: InputFields[] = []
+
+  for (let i = 0; i < 12; i++) {
+    const inputFields: InputFields = {
+      ...basicInputFields,
+      contributionBasis: getContributionBasis(i),
+    }
+
+    if(hasRevenueForEachMonth.value) {
+      inputFields.revenue = monthlyRevenues.value[i]
+    }
+    if(hasExpensesForEachMonth.value) {
+      inputFields.expenses = monthlyExpenses.value[i]
+    }
+
+    monhtlyInputFields.push(inputFields)
+  }
+
+  store.monthlyInputFields = monhtlyInputFields
+
+  emit('submit')
+}
 </script>
