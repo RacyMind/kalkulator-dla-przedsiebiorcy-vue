@@ -1,5 +1,4 @@
 import {AnnualEntrepreneurCalculator} from 'components/selfEmployment/logic/AnnualEntrepreneurCalculator'
-import {EntrepreneurCalculator} from 'components/selfEmployment/logic/EntrepreneurCalculator'
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {createPinia, setActivePinia} from 'pinia'
@@ -26,18 +25,18 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { incomeTaxConstnts, zusConstants} = useConstants()
+  const { zusConstants} = useConstants()
 
   it('The invalid data', () => {
     expect(() => new AnnualEntrepreneurCalculator().getResult()).toThrowError('undefined')
     expect(() => new AnnualEntrepreneurCalculator().calculate().getResult()).toThrowError('undefined')
   })
 
-  describe('Test general rules', () => {
+  describe('Test tax scales', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      taxSystem: EntrepreneurTaxSystem.GeneralRules,
+      taxSystem: EntrepreneurTaxSystem.TaxScale,
       monthIndex: 0,
       previousMonthHealthContributionBasis: 0,
       accidentContributionRate: 0.0167,

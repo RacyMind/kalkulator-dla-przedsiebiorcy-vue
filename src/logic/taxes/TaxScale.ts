@@ -2,7 +2,7 @@ import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
-export class GeneraLRule {
+export class TaxScale {
   protected readonly incomeTaxConstants
   protected annualTaxReducingAmount:number
 
@@ -10,7 +10,7 @@ export class GeneraLRule {
     const { incomeTaxConstnts} = useConstants()
 
     this.incomeTaxConstants = incomeTaxConstnts
-    this.annualTaxReducingAmount = this.incomeTaxConstants.generalRule.taxFreeAmount * this.incomeTaxConstants.generalRule.taxRates.first
+    this.annualTaxReducingAmount = this.incomeTaxConstants.taxScale.taxFreeAmount * this.incomeTaxConstants.taxScale.taxRates.first
   }
 
   public getAuthorExpenses(basisForAuthorExpenses:number, partOfWorkWithAuthorExpenses: number, hasTaxRelief: boolean, sumUpAuthorExpenses:number):number {
@@ -21,18 +21,18 @@ export class GeneraLRule {
       return 0
     }
 
-    let realThreshold = this.incomeTaxConstants.generalRule.taxThreshold
+    let realThreshold = this.incomeTaxConstants.taxScale.taxThreshold
 
     if(hasTaxRelief) {
       // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
-      realThreshold = this.incomeTaxConstants.generalRule.taxThreshold - this.incomeTaxConstants.taxReliefLimit
+      realThreshold = this.incomeTaxConstants.taxScale.taxThreshold - this.incomeTaxConstants.taxReliefLimit
     }
 
     if(sumUpAuthorExpenses >= realThreshold) {
       return 0
     }
 
-    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * this.incomeTaxConstants.generalRule.expenses.rates.author, 2)
+    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * this.incomeTaxConstants.taxScale.expenses.rates.author, 2)
 
     if(expenses + sumUpAuthorExpenses > realThreshold) {
       return realThreshold - sumUpAuthorExpenses
@@ -49,15 +49,15 @@ export class GeneraLRule {
     let taxAmount:number
 
     // If the total basis for the tax is grater than the amount of the tax threshold, there is the second tax rate
-    if (sumUpTaxBasis > this.incomeTaxConstants.generalRule.taxThreshold) {
-      taxAmount = taxBasis * this.incomeTaxConstants.generalRule.taxRates.second
-    } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.generalRule.taxThreshold) {
+    if (sumUpTaxBasis > this.incomeTaxConstants.taxScale.taxThreshold) {
+      taxAmount = taxBasis * this.incomeTaxConstants.taxScale.taxRates.second
+    } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.taxScale.taxThreshold) {
       // first rate
-      taxAmount = (this.incomeTaxConstants.generalRule.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.generalRule.taxRates.first
+      taxAmount = (this.incomeTaxConstants.taxScale.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.taxScale.taxRates.first
       // second rate
-      taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.generalRule.taxThreshold) * this.incomeTaxConstants.generalRule.taxRates.second
+      taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.taxScale.taxThreshold) * this.incomeTaxConstants.taxScale.taxRates.second
     } else {
-      taxAmount = taxBasis * this.incomeTaxConstants.generalRule.taxRates.first
+      taxAmount = taxBasis * this.incomeTaxConstants.taxScale.taxRates.first
     }
 
     if(partTaxReducingAmount) {
@@ -72,5 +72,6 @@ export class GeneraLRule {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface GeneraLRule extends HasTaxReliefLimit {}
-helpers.applyMixins(GeneraLRule, [HasTaxReliefLimit])
+helpers.applyMixins(TaxScale, [HasTaxReliefLimit])

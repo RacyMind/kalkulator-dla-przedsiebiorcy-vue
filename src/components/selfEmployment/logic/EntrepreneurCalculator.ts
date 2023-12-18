@@ -4,10 +4,10 @@ import {EntrepreneurResult} from 'src/logic/interfaces/EntrepreneurResult'
 import {EntrepreneurTaxSystem} from 'src/composables/constants'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {FlatTax} from 'src/logic/taxes/FlatTax'
-import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTax, LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
+import {TaxScale} from 'src/logic/taxes/TaxScale'
 import helpers from 'src/logic/helpers'
 
 export class EntrepreneurCalculator extends BasicCalculator<InputFields, EntrepreneurResult> implements Calculator<InputFields, EntrepreneurResult>{
@@ -81,8 +81,8 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     let taxAmount:number
 
     switch (this.getInputData().taxSystem) {
-      case EntrepreneurTaxSystem.GeneralRules:
-        taxAmount = new GeneraLRule().getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)
+      case EntrepreneurTaxSystem.TaxScale:
+        taxAmount = new TaxScale().getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)
         break
       case EntrepreneurTaxSystem.FlatTax:
         taxAmount = new FlatTax().getIncomeTax(taxBasis)

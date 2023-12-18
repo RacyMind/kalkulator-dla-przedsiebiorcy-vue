@@ -123,7 +123,7 @@
             label="Możliwy podatek zryczałtowany"
           />
           <Tooltip class="q-ml-sm">
-            Podatek zryczałtowany obowiązuje dla wynagrrodzenia do {{ pln(incomeTaxConstnts.generalRule.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
+            Podatek zryczałtowany obowiązuje dla wynagrrodzenia do {{ pln(incomeTaxConstnts.taxScale.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
             <ul>
               <li>gdy zleceniobiorca jest pracownikiem firmy,</li>
               <li>umowa ze stawką za wykonaną jednostkę - np. stawka za godzinę pracy lub na "akord".</li>
@@ -303,7 +303,6 @@
 </template>
 <script setup lang="ts">
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
-import {GeneraLRule} from '../../../logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'

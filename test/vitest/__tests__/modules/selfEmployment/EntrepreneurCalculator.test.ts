@@ -17,11 +17,11 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
     expect(() => new EntrepreneurCalculator().calculate().getResult()).toThrowError('undefined')
   })
 
-  describe('Test general rules', () => {
+  describe('Test tax scales', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      taxSystem: EntrepreneurTaxSystem.GeneralRules,
+      taxSystem: EntrepreneurTaxSystem.TaxScale,
       monthIndex: 10,
       previousMonthHealthContributionBasis: 10000,
       accidentContributionRate: 0.0167,
@@ -202,7 +202,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('the standard case', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.generalRule.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
         expect(result.taxAmount).toBe(17146)
@@ -211,7 +211,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax free amount', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.generalRule.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
           partTaxReducingAmount: 12,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
@@ -221,7 +221,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax relief', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.generalRule.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(43054)

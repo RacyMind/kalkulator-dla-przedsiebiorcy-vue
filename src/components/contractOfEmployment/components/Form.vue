@@ -200,7 +200,6 @@
 
 <script setup lang="ts">
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
-import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {Ref, ref} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'

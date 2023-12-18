@@ -1,5 +1,3 @@
-import {AvailableYear} from 'src/types/AvailableYear'
-
 export interface InputFields {
   grossAmount: number,
   workInLivePlace: boolean,

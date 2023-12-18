@@ -132,7 +132,7 @@ function calculateTaxAmount (
   }
   switch (incomeTaxType) {
     case constants.TAX_TYPES.GENERAL:
-      return taxes.calculateIncomeTaxUsingGeneralRules(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
+      return taxes.calculateIncomeTaxUsingTaxScales(grossAmount - expenses, basisForTax, amountOfDeductionOfHealthContributionFromTax, isFreeAmount, totalBasisForTax)
     case constants.TAX_TYPES.LINEAR:
       return taxes.calculateIncomeTaxUsingLinearRules(basisForTax, amountOfDeductionOfHealthContributionFromTax)
     case constants.TAX_TYPES.LUMP_SUM:

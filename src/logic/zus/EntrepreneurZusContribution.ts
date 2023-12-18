@@ -30,13 +30,13 @@ export class EntrepreneurZusContribution extends ZusContribution {
     }
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
-    const minimumContribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * wageStats.minimumWage(year, 0), 2)
+    const minimumContribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * wageStats.minimumWage(year, 0), 2)
 
     let contribution: number
 
     switch (taxSystem) {
-      case EntrepreneurTaxSystem.GeneralRules:
-        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * healthContributionBasis, 2)
+      case EntrepreneurTaxSystem.TaxScale:
+        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * healthContributionBasis, 2)
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.FlatTax:
@@ -53,7 +53,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
           contributionBasis = helpers.round(0.6 * wageStats.averageWageInLastQuarter, 2)
         }
 
-        return helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.generalRules * contributionBasis, 2)
+        return helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * contributionBasis, 2)
 
       default:
         throw Error('Invalid tax system')
@@ -67,7 +67,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
     const { incomeTaxConstnts } = useConstants()
 
       switch (taxSystem) {
-        case EntrepreneurTaxSystem.GeneralRules:
+        case EntrepreneurTaxSystem.TaxScale:
           return 0
 
         case EntrepreneurTaxSystem.FlatTax:

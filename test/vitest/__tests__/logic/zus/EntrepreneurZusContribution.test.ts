@@ -52,10 +52,10 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   describe('the helth contibution', () => {
-    it('the general rules', () => {
-      expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.GeneralRules)).toBe(900)
-      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.GeneralRules)).toBe(314.1)
-      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.GeneralRules, 0)).toBe(270.9)
+    it('the tax scales', () => {
+      expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale)).toBe(900)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale)).toBe(314.1)
+      expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(270.9)
     })
 
     it('the flat tax', () => {
@@ -73,8 +73,8 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     })
 
     describe('the deductible helth contibution', () => {
-      it('the general rules', () => {
-        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.GeneralRules)).toBe(0)
+      it('the tax scales', () => {
+        expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.TaxScale)).toBe(0)
       })
 
       it('the flat tax', () => {

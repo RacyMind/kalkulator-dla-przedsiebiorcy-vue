@@ -60,7 +60,7 @@ function calculateTaxAmount (
   isAidForMiddleClass,
   isFreeAmount,
 ) {
-  let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingGeneralRules(myGrossAmount + spouseGrossAmount, basisForTax, 0, isFreeAmount, 0, false, true, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
+  let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingTaxScales(myGrossAmount + spouseGrossAmount, basisForTax, 0, isFreeAmount, 0, false, true, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
 
   if (isAidForMiddleClass) {
     taxAmount -= taxes.calculateAidForMiddleClass(myGrossAmount, true)

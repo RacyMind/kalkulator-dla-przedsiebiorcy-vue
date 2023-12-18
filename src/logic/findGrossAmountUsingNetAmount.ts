@@ -1,8 +1,6 @@
 import {Calculator} from 'src/logic/interfaces/Calculator'
-import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {HasGrossAmount} from 'src/logic/interfaces/HasGrossAmount'
-import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 
 export function findGrossAmountUsingNetAmount <InputDataType extends HasGrossAmount>(calculator:Calculator<InputDataType, EmployeeResult>, min:number, max:number, targetAmount:number, input:InputDataType, scale = 100):number {

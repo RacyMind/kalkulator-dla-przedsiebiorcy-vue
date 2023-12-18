@@ -9,7 +9,7 @@ enum AmountTypes {
 }
 
 export enum EntrepreneurTaxSystem {
-  GeneralRules = 1,
+  TaxScale = 1,
   FlatTax = 2,
   LumpSumTax = 3,
 }
@@ -65,7 +65,7 @@ interface EntrepreneurZusConstants {
     fpContribution: number,
     fsContribution: number,
     healthContribution: {
-      generalRules: number,
+      taxScales: number,
       flatTax: number,
     },
     pensionContribution: number,
@@ -84,7 +84,7 @@ interface zusConstants {
 interface IncomeTaxConstants{
   // Over the amount, the tax relief is end
   taxReliefLimit: number,
-  generalRule: {
+  taxScale: {
     expenses: {
       amounts: {
         workInLivingPlace: number,
@@ -143,7 +143,7 @@ export const useConstants = () => {
 
   const incomeTaxConstnts: IncomeTaxConstants = {
     taxReliefLimit: 85528,
-    generalRule: {
+    taxScale: {
       expenses: {
         amounts: {
           workInLivingPlace: 250,
@@ -215,7 +215,7 @@ export const useConstants = () => {
       fpContribution: employerZusConstants.rates.fpContribution,
       fsContribution: employerZusConstants.rates.fsContribution,
       healthContribution: {
-        generalRules: employeeZusConstants.rates.healthContribution,
+        taxScales: employeeZusConstants.rates.healthContribution,
         flatTax: 0.049,
       },
       pensionContribution: employeeZusConstants.rates.pensionContribution + employerZusConstants.rates.pensionContribution,
