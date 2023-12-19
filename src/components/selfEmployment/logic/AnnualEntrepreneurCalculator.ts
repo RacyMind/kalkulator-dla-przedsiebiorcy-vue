@@ -40,6 +40,7 @@ export class AnnualEntrepreneurCalculator extends BasicCalculator<InputFields[],
 
     const annualResult:AnnualResult = {
       revenue: sum('revenue'),
+      expenses: sum('expenses'),
       income: sum('income'),
       taxBasis: sum('taxBasis'),
       taxAmount: sum('taxAmount'),

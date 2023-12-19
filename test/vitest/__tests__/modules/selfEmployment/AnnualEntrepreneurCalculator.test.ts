@@ -47,6 +47,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -147,6 +148,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -240,6 +242,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {

@@ -203,7 +203,7 @@
             label="Dochód z grudnia poprzedniego roku"
             suffix="zł"
             color="brand"
-            hint="Przychód minus skłdki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
+            hint="Przychód minus koszty i skłdki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
           />
         </div>
       </div>
@@ -452,6 +452,7 @@ const handleFormSubmit = () => {
     revenue: revenue.value,
     expenses: expenses.value ?? 0,
     taxSystem: incomeTaxType.value,
+    lumpSumTaxRate: lumpSumTaxRate.value,
     hasTaxRelief: hasTaxRelief.value,
     partTaxReducingAmount: hasTaxFreeAmount.value && incomeTaxType.value === EntrepreneurTaxSystem.TaxScale ? employerCount.value * 12 : 0,
     hasEmploymentContract: hasEmploymentContract.value,
@@ -461,6 +462,7 @@ const handleFormSubmit = () => {
     contributionBasis: 0,
     yearlyIncome: 0,
     previousMonthHealthContributionBasis: previousMonthHealthContributionBasis.value,
+    businessIsRuning: true,
     monthIndex: 0,
   }
 
@@ -477,6 +479,13 @@ const handleFormSubmit = () => {
     }
     if(hasExpensesForEachMonth.value) {
       inputFields.expenses = monthlyExpenses.value[i]
+    }
+
+    if(!businessHasStartedBeforeThisYear.value && i < businessStartedInMonth.value) {
+      inputFields.revenue = 0
+      inputFields.expenses = 0
+      inputFields.contributionBasis = 0
+      inputFields.businessIsRuning = false
     }
 
     monhtlyInputFields.push(inputFields)

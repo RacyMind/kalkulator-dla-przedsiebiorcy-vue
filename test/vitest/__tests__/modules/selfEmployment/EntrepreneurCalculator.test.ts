@@ -32,6 +32,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -272,6 +273,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -410,6 +412,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.entrepreneur.basises.big,
+      businessIsRuning: true,
     }
 
     describe('The "big" zus contribution basis', () => {

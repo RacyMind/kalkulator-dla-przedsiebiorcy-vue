@@ -1,8 +1,6 @@
 import {IncomeTaxResult} from 'src/logic/taxes/interfaces/IncomeTaxResult'
 
-type IncomeTaxResultWithoutExpenses = Omit<IncomeTaxResult, 'expenses'>
-
-export interface EntrepreneurResult extends IncomeTaxResultWithoutExpenses{
+export interface EntrepreneurResult extends IncomeTaxResult{
   readonly revenue: number,
   // the expenses which can reduce the income in the next month
   readonly deductibleExpenses: number,

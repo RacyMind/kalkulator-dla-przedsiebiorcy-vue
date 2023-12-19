@@ -19,6 +19,45 @@
         :name="Tabs.EachMonnth"
         label="Poszczególne miesiące" />
     </q-tabs>
+    <q-tab-panels
+      v-model="tab"
+      animated
+      swipeable>
+      <q-tab-panel
+        :name="Tabs.AnnualSummary"
+        class="q-pa-none">
+        <AnnualResultList
+          v-if="store.result"
+          :result="store.result.annualResult" />
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
+      </q-tab-panel>
+      <q-tab-panel
+        :name="Tabs.EachMonnth"
+        class="q-pa-none">
+        <tempplate v-if="store.result">
+          <div
+            v-for="(monthlyResult, index) in store.result.monthlyResults"
+            :key="index">
+            <ListHeader>
+              {{ monthNames[index] }}
+            </ListHeader>
+            <MonthlyResultList
+              :result="monthlyResult"
+              :month="index" />
+            <Separator v-if="index < 12" />
+          </div>
+        </tempplate>
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
+      </q-tab-panel>
+    </q-tab-panels>
   </ModulePageLayout>
 </template>
 
@@ -27,10 +66,16 @@
 import {QTabs} from 'quasar'
 import {Ref, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
+import {useMonths} from 'src/composables/months'
+import {useSelfemploymentStore} from 'components/selfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
+import AnnualResultList from 'components/selfEmployment/components/AnnualResultList.vue'
 import Form from 'components/selfEmployment/components/Form.vue'
+import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
+import MonthlyResultList from 'components/selfEmployment/components/MonthlyResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
+import Separator from 'components/partials/Separator.vue'
 import helpers from 'src/logic/helpers'
 
 enum Tabs {
@@ -38,6 +83,8 @@ enum Tabs {
   EachMonnth = 2,
 }
 
+const {monthNames} = useMonths()
+const store = useSelfemploymentStore()
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
   {

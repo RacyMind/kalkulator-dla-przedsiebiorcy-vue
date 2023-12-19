@@ -60,12 +60,12 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
       healthContributionBasis
     }
 
-    const healthContribution = this.zus.getHealthContribution(
+    const healthContribution = this.getInputData().businessIsRuning ? this.zus.getHealthContribution(
       this.getInputData().previousMonthHealthContributionBasis,
       this.getInputData().taxSystem,
       this.getInputData().monthIndex,
       this.getInputData().yearlyIncome,
-    )
+    ) : 0
 
     // the sum of all ZUS contributions
     const zusContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpContribution + fsContribution + healthContribution, 2)
@@ -105,6 +105,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     this.result = {
       revenue: this.getInputData().revenue,
+      expenses: this.getInputData().expenses,
       income,
       taxBasis,
       deductibleExpenses,

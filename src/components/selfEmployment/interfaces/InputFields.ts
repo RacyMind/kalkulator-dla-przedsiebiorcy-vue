@@ -15,5 +15,6 @@ export interface InputFields{
   lumpSumTaxRate?:LumpSumTaxRate
   yearlyIncome: number
   previousMonthHealthContributionBasis: number
+  businessIsRuning: boolean
   monthIndex: number
 }
