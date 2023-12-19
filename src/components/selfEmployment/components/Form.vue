@@ -142,6 +142,9 @@
             checked-icon="check"
             unchecked-icon="clear"
           />
+          <Tooltip class="q-ml-sm">
+            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
+          </Tooltip>
         </div>
       </div>
       <div
@@ -203,7 +206,7 @@
             label="Dochód z grudnia poprzedniego roku"
             suffix="zł"
             color="brand"
-            hint="Przychód minus koszty i skłdki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
+            hint="Przychód minus koszty i składki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
           />
         </div>
       </div>
@@ -412,7 +415,7 @@ const isSickContribution = ref(false)
 const hasEmploymentContract = ref(false)
 const fpContributionIsDisabled = computed(() => choseContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
 const zusRelief = ref(false)
-const zusReliefUntil = ref(11)
+const zusReliefUntil = ref(5)
 const previousMonthHealthContributionBasis = ref(0)
 
 watch(choseContributionBasis, () => {
@@ -425,12 +428,15 @@ watch(hasEmploymentContract, () => {
     isFpContribution.value = false
   }
 })
+watch(businessStartedInMonth, () => {
+  zusReliefUntil.value = Math.min(11, businessStartedInMonth.value + 5)
+})
 
 const getContributionBasis = (currentMonth: number): number => {
-  if(!businessHasStartedBeforeThisYear.value && businessStartedInMonth.value < currentMonth) {
+  if(!businessHasStartedBeforeThisYear.value && currentMonth < businessStartedInMonth.value) {
     return 0
   }
-  if(zusRelief.value && zusReliefUntil.value <= currentMonth) {
+  if(zusRelief.value && currentMonth <= zusReliefUntil.value) {
     return 0
   }
   if(choseContributionBasis.value === ContributionBasises.Custom) {
@@ -461,7 +467,7 @@ const handleFormSubmit = () => {
     accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
     contributionBasis: 0,
     yearlyIncome: 0,
-    previousMonthHealthContributionBasis: previousMonthHealthContributionBasis.value,
+    previousMonthHealthContributionBasis: businessHasStartedBeforeThisYear.value ? previousMonthHealthContributionBasis.value : 0,
     businessIsRuning: true,
     monthIndex: 0,
   }
@@ -472,6 +478,7 @@ const handleFormSubmit = () => {
     const inputFields: InputFields = {
       ...basicInputFields,
       contributionBasis: getContributionBasis(i),
+      monthIndex: i,
     }
 
     if(hasRevenueForEachMonth.value) {

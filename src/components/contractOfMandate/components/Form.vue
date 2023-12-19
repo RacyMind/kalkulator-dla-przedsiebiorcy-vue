@@ -56,7 +56,7 @@
           />
         </div>
       </div>
-      <div class="row items-center q-col-gutter-sm">
+      <div class="row items-center q-col-gutter-sm q-mb-sm">
         <div class="col-grow">
           <q-input
             v-model.number="amount"
@@ -72,6 +72,7 @@
               val => !!val || '* Wpisz kwotę',
             ]"
             lazy-rules="ondemand"
+            hide-bottom-space
           />
         </div>
         <div class="col-shrink">
@@ -139,6 +140,9 @@
             checked-icon="check"
             unchecked-icon="clear"
           />
+          <Tooltip class="q-ml-sm">
+            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
+          </Tooltip>
         </div>
       </div>
       <div

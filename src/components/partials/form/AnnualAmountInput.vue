@@ -25,6 +25,7 @@
 <script setup lang="ts">
 import {computed, watch} from 'vue'
 import constants from 'src/logic/constants'
+import helpers from 'src/logic/helpers'
 
 interface Props {
   modelValue: number[]
@@ -41,7 +42,7 @@ const monthlyAmounts = computed({
     return props.modelValue
   },
   set(amounts) {
-    emit('update:modelValue', amounts.map(amount => Number(amount)))
+    emit('update:modelValue', amounts.map(amount => helpers.round(amount, 2)))
   },
 })
 

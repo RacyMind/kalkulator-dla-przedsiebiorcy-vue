@@ -64,7 +64,7 @@
 <script setup lang="ts">
 
 import {QTabs} from 'quasar'
-import {Ref, ref} from 'vue'
+import {Ref, computed, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
 import {useSelfemploymentStore} from 'components/selfEmployment/store'
@@ -94,6 +94,8 @@ breadcrumbStore.items = [
 
 const tab = ref(Tabs.AnnualSummary)
 const qtabs:Ref<QTabs|null> = ref(null)
+
+const result = computed(() => store.result)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)
