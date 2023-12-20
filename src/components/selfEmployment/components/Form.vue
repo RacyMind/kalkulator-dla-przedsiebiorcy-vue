@@ -164,7 +164,7 @@
       <div class="row q-mb-md">
         <div class="col">
           <q-select
-            v-model.number="choseContributionBasis"
+            v-model.number="chosenContributionBasis"
             :options="contributionBasisOptions"
             label="Podstawa składek ZUS"
             color="brand"
@@ -175,7 +175,7 @@
         </div>
       </div>
       <div
-        v-if="choseContributionBasis === ContributionBasises.Custom"
+        v-if="chosenContributionBasis === ContributionBasises.Custom"
         class="row">
         <div class="col">
           <q-input
@@ -288,6 +288,7 @@ import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {Ref, computed, ref, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
+import {useContributionBasis} from 'src/composables/contributionBasises'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
@@ -314,21 +315,6 @@ enum ContributionBasises {
   Small = 2,
   Custom = 3,
 }
-
-const contributionBasisOptions = [
-  {
-    label: 'Duży ZUS',
-    value: ContributionBasises.Big,
-  },
-  {
-    label: 'Mały ZUS',
-    value: ContributionBasises.Small,
-  },
-  {
-    label: 'Własna podstawa',
-    value: ContributionBasises.Custom,
-  },
-]
 
 const incomeTaxTypes = [
   {
@@ -407,19 +393,19 @@ const hasTaxRelief = ref(false)
 const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
 
 // the ZUS contribution section
-const choseContributionBasis = ref(ContributionBasises.Big)
+const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
 const customContributionBasis:Ref<number|null> = ref(zusConstants.entrepreneur.basises.big)
 const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
 const isFpContribution = ref(true)
 const isSickContribution = ref(false)
 const hasEmploymentContract = ref(false)
-const fpContributionIsDisabled = computed(() => choseContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
+const fpContributionIsDisabled = computed(() => chosenContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
 const zusRelief = ref(false)
 const zusReliefUntil = ref(5)
 const previousMonthHealthContributionBasis = ref(0)
 
-watch(choseContributionBasis, () => {
-  if(choseContributionBasis.value === ContributionBasises.Small) {
+watch(chosenContributionBasis, () => {
+  if(chosenContributionBasis.value === ContributionBasises.Small) {
     isFpContribution.value = false
   }
 })
@@ -439,10 +425,10 @@ const getContributionBasis = (currentMonth: number): number => {
   if(zusRelief.value && currentMonth <= zusReliefUntil.value) {
     return 0
   }
-  if(choseContributionBasis.value === ContributionBasises.Custom) {
+  if(chosenContributionBasis.value === ContributionBasises.Custom) {
     return customContributionBasis.value ?? 0
   }
-  if(choseContributionBasis.value === ContributionBasises.Small) {
+  if(chosenContributionBasis.value === ContributionBasises.Small) {
     return zusConstants.entrepreneur.basises.small(currentMonth)
   }
 

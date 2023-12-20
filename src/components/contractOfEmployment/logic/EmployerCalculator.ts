@@ -26,7 +26,7 @@ export class EmployerCalculator extends BasicCalculator<InputFields, EmployerRes
     let fgspContribution = 0
     let fsContribution = 0
 
-    const contributionBasis = this.zusContribution.getContributionBasis(this.getInputData().grossAmount, this.sumUpContributionBasis)
+    const contributionBasis = this.zusContribution.getContributionBasisWithinLimit(this.getInputData().grossAmount, this.sumUpContributionBasis)
 
     pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
     disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)

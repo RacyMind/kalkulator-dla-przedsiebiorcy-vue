@@ -52,7 +52,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
     let ppkContribution = 0
     let employerPpkpkContribution = 0
 
-    const contributionBasis = this.employeeZus.getContributionBasis(this.getInputData().grossAmount, this.sumUpContributionBasis)
+    const contributionBasis = this.employeeZus.getContributionBasisWithinLimit(this.getInputData().grossAmount, this.sumUpContributionBasis)
 
     if (this.getInputData().isPensionContribution) {
       pensionContribution = this.employeeZus.gePensionContribution(contributionBasis)

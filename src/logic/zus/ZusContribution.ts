@@ -11,7 +11,7 @@ export class  ZusContribution{
   /**
    * Returns the basis for sick, pension and disability contributions
    */
-  public getContributionBasis(grossAmount:number, sumUpContributionBasis = 0): number {
+  public getContributionBasisWithinLimit(grossAmount:number, sumUpContributionBasis = 0): number {
     if(grossAmount < 0) {
       return 0
     }

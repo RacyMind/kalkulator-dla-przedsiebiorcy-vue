@@ -140,7 +140,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     let fsContribution = 0
 
     if(!this.getInputData().hasEmploymentContract) {
-      contributionBasis = this.zus.getContributionBasis(this.getInputData().contributionBasis, this.sumUpContributionBasis)
+      contributionBasis = this.zus.getContributionBasisWithinLimit(this.getInputData().contributionBasis, this.sumUpContributionBasis)
 
       pensionContribution = this.zus.gePensionContribution(contributionBasis)
       disabilityContribution = this.zus.geDisabilityContribution(contributionBasis)

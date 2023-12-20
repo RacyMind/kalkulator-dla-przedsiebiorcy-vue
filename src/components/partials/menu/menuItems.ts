@@ -38,7 +38,7 @@ export default {
       caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
       className: 'c-business',
       link: '/samozatrudnienie',
-      title: 'Samozatrudnienie',
+      title: 'Samozatrudnienie (B2B)',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',

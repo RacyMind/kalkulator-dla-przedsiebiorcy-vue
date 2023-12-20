@@ -1,9 +1,8 @@
-export interface PartialZusContributionInputFields {
+export interface InputFields {
   accidentContributionRate: number,
-  customBasisForZus: number,
+  contributionBasis: number,
   daysOfRunningBusiness: number,
-  daysInMonth: number,
-  isSmallZus: boolean,
+  monthIndex: number,
   isFpContribution: boolean,
   isSickContribution: boolean,
 }

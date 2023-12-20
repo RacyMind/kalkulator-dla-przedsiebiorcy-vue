@@ -95,8 +95,6 @@ breadcrumbStore.items = [
 const tab = ref(Tabs.AnnualSummary)
 const qtabs:Ref<QTabs|null> = ref(null)
 
-const result = computed(() => store.result)
-
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)
 }

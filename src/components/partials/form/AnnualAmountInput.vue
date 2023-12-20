@@ -1,7 +1,7 @@
 <template>
   <div class="row items-center q-col-gutter-sm">
     <div
-      v-for="(month, index) in constants.MONTH_NAMES"
+      v-for="(month, index) in monthNames"
       :key="index"
       class="col-4 col-sm-2">
       <q-input
@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import {computed, watch} from 'vue'
-import constants from 'src/logic/constants'
+import {useMonths} from 'src/composables/months'
 import helpers from 'src/logic/helpers'
 
 interface Props {
@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
   },
 )
 const emit = defineEmits(['update:modelValue'])
+
+const { monthNames } = useMonths()
 
 const monthlyAmounts = computed({
   get() {
