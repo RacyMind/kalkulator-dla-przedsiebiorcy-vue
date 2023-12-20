@@ -6,7 +6,10 @@
     padding="none"
     :color="props.color"
     icon="help">
-    <q-tooltip>
+    <q-tooltip
+      anchor="top middle"
+      self="bottom middle"
+      :offset="[0, 10]">
       <slot />
     </q-tooltip>
   </q-btn>
