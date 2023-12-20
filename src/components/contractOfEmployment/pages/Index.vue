@@ -30,8 +30,8 @@
         :name="Tabs.Employee"
         class="q-pa-none">
         <EmployeeTabPanel
-          v-if="store.employeeResult"
-          :result="store.employeeResult" />
+          v-if="employeeResult"
+          :result="employeeResult" />
         <div
           v-else
           class="q-pa-md">
@@ -42,8 +42,8 @@
         :name="Tabs.Employer"
         class="q-pa-none">
         <EmployerTabPanel
-          v-if="store.employerResult"
-          :result="store.employerResult"/>
+          v-if="employerResult"
+          :result="employerResult"/>
         <div
           v-else
           class="q-pa-md">
@@ -54,9 +54,9 @@
         :name="Tabs.Summary"
         class="q-pa-none">
         <SummaryTabPanel
-          v-if="store.employeeResult && store.employerResult"
-          :employee-result="store.employeeResult"
-          :employer-result="store.employerResult"
+          v-if="employeeResult && employerResult"
+          :employee-result="employeeResult"
+          :employer-result="employerResult"
         />
         <div
           v-else
@@ -69,7 +69,8 @@
 </template>
 <script setup lang="ts">
 import {QTabs} from 'quasar'
-import {Ref, ref} from 'vue'
+import {Ref, computed, ref} from 'vue'
+import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
@@ -96,8 +97,14 @@ breadcrumbStore.items = [
     name: 'Umowa o pracę',
   },
 ]
+
 const tab = ref(Tabs.Employee)
 const qtabs:Ref<QTabs|null> = ref(null)
+
+const employeeResult = computed(() => store.employeeResult)
+const employerResult = computed(() => store.employerResult)
+
+lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)

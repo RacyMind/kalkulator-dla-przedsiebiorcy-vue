@@ -1,18 +1,16 @@
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
+import {describe, expect, it } from 'vitest'
 import {useConstants} from 'src/composables/constants'
 import {useSettingStore} from 'stores/settingStore'
 
-const { incomeTaxConstnts} = useConstants()
-
 describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
-  beforeAll(() => {
-    setActivePinia(createPinia())
-    const settingStore = useSettingStore()
-    settingStore.dateOfLawRules = new Date(2023,11,1)
-  })
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2023,11,1)
+
+  const { incomeTaxConstnts} = useConstants()
 
   it('The invalid data', () => {
     expect(() => new EmployeeCalculator().getResult()).toThrowError('undefined')
@@ -96,13 +94,13 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
     it('The expenses are over limit of author expenses', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxThreshold * 3 + 1,
+        grossAmount: incomeTaxConstnts.taxScale.taxThreshold * 3 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.generalRule.taxThreshold)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.taxScale.taxThreshold)
 
       const simulateMultipleMonthsWithAuthorExpenses = new EmployeeCalculator(true).setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxThreshold * 2,
+        grossAmount: incomeTaxConstnts.taxScale.taxThreshold * 2,
         partOfWorkWithAuthorExpenses: 1,
       })
 
@@ -115,17 +113,17 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
     it('The expenses with the tax relief and the author expenses', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxReliefLimit,
+        grossAmount: incomeTaxConstnts.taxReliefLimit,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
       }).calculate().getResult().expenses).toBe(0)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxThreshold * 10,
+        grossAmount: incomeTaxConstnts.taxScale.taxThreshold * 10,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.generalRule.taxThreshold - incomeTaxConstnts.generalRule.taxReliefLimit)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.taxScale.taxThreshold - incomeTaxConstnts.taxReliefLimit)
     })
   })
 
@@ -154,13 +152,13 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxReliefLimit,
+        grossAmount: incomeTaxConstnts.taxReliefLimit,
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(0)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.generalRule.taxReliefLimit * 1.2,
+        grossAmount: incomeTaxConstnts.taxReliefLimit * 1.2,
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(2785)
 

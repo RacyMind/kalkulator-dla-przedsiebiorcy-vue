@@ -39,7 +39,7 @@ function setParams (newYear:AvailableYear) {
  * @param {boolean} isMarriage
  * @returns {number}
  */
-function calculateIncomeTaxUsingGeneralRules (
+function calculateIncomeTaxUsingTaxScales (
   grossAmount:number,
   basisForTax:number,
   amountOfDeductionOfHealthContributionFromTax:number,
@@ -126,7 +126,7 @@ function calculateIncomeTaxUsingLumpSumRules (
 }
 
 export default {
-  calculateIncomeTaxUsingGeneralRules,
+  calculateIncomeTaxUsingTaxScales,
   calculateIncomeTaxUsingLinearRules,
   calculateIncomeTaxUsingLumpSumRules,
   setParams,

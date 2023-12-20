@@ -2,18 +2,17 @@
   <q-card style="width: auto; max-width: 600px">
     <q-card-section>
       <p class="text-justify">
-        Cześć! Kalkulator finansowy (poprzednio kalkulator dla przedsiębiorcy) rozwijam hobbystycznie w tak zwanych „po
+        Cześć! Kalkulator finansowy rozwijam hobbystycznie w tak zwanych „po
         godzinach”. W ramach projektu rozwijam swoją i Twoją wiedzę księgową. Jeżeli uważasz to narzędzie za
-        wartościowe, postaw mi wirtualną kawę :)
+        wartościowe, możesz wsesprzeć projekt na zrzutka.pl :)
       </p>
       <q-btn
-        label="Postaw mi kawę"
-        icon="o_free_breakfast"
+        label="Link do zrzutki"
         no-caps
         style="width: 75%;max-width:180px"
         color="primary"
         type="a"
-        href="https://buycoffee.to/lukaszsocha"
+        href="https://zrzutka.pl/r4awyd"
         class="q-mb-md q-mx-auto text-center block"
         target="_blank"/>
       <p class="text-justify">

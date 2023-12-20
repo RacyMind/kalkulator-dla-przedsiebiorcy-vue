@@ -3,15 +3,15 @@ import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
-import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
+import {TaxScale} from 'src/logic/taxes/TaxScale'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeResult> implements Calculator<InputFields, EmployeeResult>{
   protected readonly incomeTaxConstants
   protected readonly employeeZus: EmployeeZusContribution
-  protected readonly incomeTax: GeneraLRule
+  protected readonly incomeTax: TaxScale
   protected isPartOfAnnualResult = false
   protected sumUpContributionBasis = 0
   protected sumUpTaxBasis = 0
@@ -28,11 +28,11 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
     this.incomeTaxConstants = incomeTaxConstnts
     this.isPartOfAnnualResult = isPartOfAnnualResult
     this.employeeZus = new EmployeeZusContribution()
-    this.incomeTax = new GeneraLRule()
+    this.incomeTax = new TaxScale()
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const expenseRate = this.getInputData().canLumpSumTaxBe && this.getInputData().grossAmount <= this.incomeTaxConstants.generalRule.expenses.withoutExpensesUpTo ? 0 : this.incomeTaxConstants.generalRule.expenses.rates.default
+    const expenseRate = this.getInputData().canLumpSumTaxBe && this.getInputData().grossAmount <= this.incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo ? 0 : this.incomeTaxConstants.taxScale.expenses.rates.default
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.getInputData().partOfWorkWithAuthorExpenses
 
@@ -52,7 +52,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
     let ppkContribution = 0
     let employerPpkpkContribution = 0
 
-    const contributionBasis = this.employeeZus.getContributionBasis(this.getInputData().grossAmount, this.sumUpContributionBasis)
+    const contributionBasis = this.employeeZus.getContributionBasisWithinLimit(this.getInputData().grossAmount, this.sumUpContributionBasis)
 
     if (this.getInputData().isPensionContribution) {
       pensionContribution = this.employeeZus.gePensionContribution(contributionBasis)
@@ -78,7 +78,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
       healthContribution = this.employeeZus.getHealthContribution(this.getInputData().grossAmount - socialContributions)
     }
 
-    const salaryAmountOverTaxReliefLimit = this.incomeTax.getSalaryAmountOverTaxReliefLimit(this.getInputData().grossAmount + employerPpkpkContribution, this.sumUpGrossAmount, this.getInputData().hasTaxRelief)
+    const salaryAmountOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(this.getInputData().grossAmount + employerPpkpkContribution, this.sumUpGrossAmount, this.getInputData().hasTaxRelief)
     const expenses = this.getExpenses(salaryAmountOverTaxReliefLimit - socialContributions)
     const taxBasis =  Math.max(helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0), 0)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)

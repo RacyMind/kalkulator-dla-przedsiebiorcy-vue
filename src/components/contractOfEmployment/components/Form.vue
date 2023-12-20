@@ -2,8 +2,13 @@
   <q-form
     @validation-error="handleValidationError"
     @submit.prevent="handleFormSubmit">
+    <FormSection
+      v-if="availableDates.length > 1"
+      title="Data obowiązywania przepisów">
+      <LawRuleDate />
+    </FormSection>
     <FormSection title="Wynagrodzenie">
-      <div class="row items-center q-col-gutter-sm">
+      <div class="row items-center q-col-gutter-sm q-mb-sm">
         <div class="col-grow">
           <q-input
             v-model.number="amount"
@@ -19,6 +24,7 @@
               val => !!val || '* Wpisz kwotę',
             ]"
             lazy-rules="ondemand"
+            hide-bottom-space
           />
         </div>
         <div class="col-shrink">
@@ -59,7 +65,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstnts.generalRule.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstnts.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -79,6 +85,9 @@
             checked-icon="check"
             unchecked-icon="clear"
           />
+          <Tooltip class="q-ml-sm">
+            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
+          </Tooltip>
         </div>
       </div>
       <div
@@ -199,20 +208,21 @@
 </template>
 
 <script setup lang="ts">
+import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
-import {GeneraLRule} from 'src/logic/taxes/GeneraLRule'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {Ref, ref} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from 'src/use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
-import {useConstants} from 'src/composables/constants'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import {useFormValidation} from 'src/composables/formValidation'
+import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
@@ -220,8 +230,9 @@ import helpers from 'src/logic/helpers'
 const emit = defineEmits(['submit'])
 
 const store = useEmploymentContractStore()
+const { availableDates } = useLawRuleDate()
 const {handleValidationError} = useFormValidation()
-const { AmountTypes, zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstnts } = useConstants()
 
 // the salary section
 const amount:Ref<number|null> = ref(null)
@@ -238,9 +249,9 @@ const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmou
 // the ZUS contribution section
 const isFpContribution = ref(true)
 const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
+const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
+const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
+const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
 
 const handleFormSubmit = () => {
   if (!amount.value) {

@@ -1,6 +1,6 @@
 import {useConstants} from 'src/composables/constants'
 
-export class  ZusContribution{
+export class ZusContribution{
   protected readonly zusConstants
 
   constructor() {
@@ -11,17 +11,17 @@ export class  ZusContribution{
   /**
    * Returns the basis for sick, pension and disability contributions
    */
-  public getContributionBasis(grossAmount:number, sumUpContributionBasis = 0): number {
+  public getContributionBasisWithinLimit(grossAmount:number, sumUpContributionBasis = 0): number {
     if(grossAmount < 0) {
       return 0
     }
 
-    if(sumUpContributionBasis >= this.zusConstants.contributionBasisLimit) {
+    if(sumUpContributionBasis >= this.zusConstants.value.contributionBasisLimit) {
       return 0
     }
 
-    if(grossAmount + sumUpContributionBasis > this.zusConstants.contributionBasisLimit) {
-      return this.zusConstants.contributionBasisLimit - sumUpContributionBasis
+    if(grossAmount + sumUpContributionBasis > this.zusConstants.value.contributionBasisLimit) {
+      return this.zusConstants.value.contributionBasisLimit - sumUpContributionBasis
     }
 
     return grossAmount

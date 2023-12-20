@@ -1,10 +1,9 @@
+import {AmountTypes} from 'src/composables/constants'
 import {ref, watch} from 'vue'
-import {useConstants} from 'src/composables/constants'
 import {useQuasar} from 'quasar'
 
 export const useAmmmountType = () => {
   const $q = useQuasar()
-  const {AmountTypes} = useConstants()
 
   const amountType = ref(AmountTypes.Gross)
 

@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Przebudowa modułu Samozatrudnienie (B2B).</li><li>Przebudowa modułu Umowa o pracę.</li><li>Przebudowa modułu Umowa zlecenie.</li><li>Przebudowa modułu Składki ZUS za część miesiąca.</li><li>Napisanie testów sprawdzających poprawność obliczeń.</li><li>Aktualizacja bibliotek.</li></ul>',
+    publish_date: '2023-12-20',
+    version: '5.0.0',
+  },
+  {
     content: '<ul><li>Poprawa wyświetlania wartości w wykresach dla pracownika.</li></ul>',
     publish_date: '2023-11-17',
     version: '4.11.0',

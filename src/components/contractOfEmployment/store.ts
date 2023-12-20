@@ -7,7 +7,7 @@ type Store = {
   monthlyInputFields: InputFields[] | undefined
 }
 
-export const useEmploymentContractStore = defineStore('mandateContractStore', {
+export const useEmploymentContractStore = defineStore('employmentContractStore', {
   state: ():Store => ({
     monthlyInputFields:  undefined,
   }),
