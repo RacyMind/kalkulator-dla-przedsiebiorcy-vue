@@ -1,9 +1,10 @@
+import {Ref, computed} from 'vue'
 import {useSettingStore} from 'stores/settingStore'
 import helpers from 'src/logic/helpers'
 
 type numericFunction = (num?: number) => number
 
-enum AmountTypes {
+export enum AmountTypes {
   Gross = 1,
   Net = 2,
 }
@@ -112,7 +113,7 @@ interface IncomeTaxConstants{
 }
 
 interface WageStats {
-  averageWageInLastQuarter: number,
+  averageWageInLastQuarter: (year?: number) => number,
   minimumWage: (year: number, monthIndex:number) => number,
   projectedAverageWage: number,
 }
@@ -120,26 +121,33 @@ interface WageStats {
 export const useConstants = () => {
   const settingStore = useSettingStore()
 
-  const wageStats:WageStats = {
-    // Q4 2022
-    averageWageInLastQuarter: 6965.94,
-    minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
-      if(year <= 2022) {
-        return 3010
-      }
-      if(year <= 2023) {
-        if(monthIndex <= 5) {
-          return 3490
+  const wageStats:Ref<WageStats> = computed(() => {
+    return {
+      // Q4 2022
+      averageWageInLastQuarter: (year = settingStore.dateOfLawRules.getFullYear() - 1) => {
+        if(year <= 2022) {
+          return 6965.94
         }
-        return 3600
-      }
-      if(monthIndex <= 5) {
-        return 4242
-      }
-      return 4300
-    },
-    projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
-  }
+        return 7400
+      } ,
+      minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
+        if(year <= 2022) {
+          return 3010
+        }
+        if(year <= 2023) {
+          if(monthIndex <= 5) {
+            return 3490
+          }
+          return 3600
+        }
+        if(monthIndex <= 5) {
+          return 4242
+        }
+        return 4300
+      },
+      projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
+    }
+  })
 
   const incomeTaxConstnts: IncomeTaxConstants = {
     taxReliefLimit: 85528,
@@ -168,71 +176,71 @@ export const useConstants = () => {
     },
   }
 
-  const employeeZusConstants:EmployeeZusConstants = {
-    rates: {
-      disabilityContribution: 0.015,
-      healthContribution: 0.09,
-      pensionContribution: 0.0976,
-      ppkContribution: {
-        default: 0.02,
-        min: 0.005,
-        max: 0.04,
-      },
-      sickContribution: 0.0245,
-    },
-  }
+  const zusConstants: Ref<zusConstants> = computed(() => {
 
-  const employerZusConstants:EmployerZusConstants = {
-    rates: {
-      accidentCContribution: {
-        default: 0.0167,
-        min: 0,
-        max: 0.0333,
+    const employeeZusConstants:EmployeeZusConstants = {
+      rates: {
+        disabilityContribution: 0.015,
+        healthContribution: 0.09,
+        pensionContribution: 0.0976,
+        ppkContribution: {
+          default: 0.02,
+          min: 0.005,
+          max: 0.04,
+        },
+        sickContribution: 0.0245,
       },
-      disabilityContribution: 0.065,
-      fgspContribution: 0.001,
-      fpContribution: 0.01,
-      fsContribution: 0.0145,
-      pensionContribution: 0.0976,
-      ppkContribution: {
-        default: 0.015,
-        min: 0.015,
-        max: 0.04,
-      },
-    },
-  }
+    }
 
-  const entrepreneurZusConstants:EntrepreneurZusConstants = {
-    basises: {
-      big: helpers.round(0.6 * wageStats.projectedAverageWage, 2),
-      small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => helpers.round(0.3 * wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), monthIndex), 2),
-      startRelief: 0,
-    },
-    rates: {
-      accidentCContribution: employerZusConstants.rates.accidentCContribution,
-      disabilityContribution: employeeZusConstants.rates.disabilityContribution + employerZusConstants.rates.disabilityContribution,
-      fgspContribution: employerZusConstants.rates.fgspContribution,
-      fpContribution: employerZusConstants.rates.fpContribution,
-      fsContribution: employerZusConstants.rates.fsContribution,
-      healthContribution: {
-        taxScales: employeeZusConstants.rates.healthContribution,
-        flatTax: 0.049,
+    const employerZusConstants:EmployerZusConstants = {
+      rates: {
+        accidentCContribution: {
+          default: 0.0167,
+          min: 0,
+          max: 0.0333,
+        },
+        disabilityContribution: 0.065,
+        fgspContribution: 0.001,
+        fpContribution: 0.01,
+        fsContribution: 0.0145,
+        pensionContribution: 0.0976,
+        ppkContribution: {
+          default: 0.015,
+          min: 0.015,
+          max: 0.04,
+        },
       },
-      pensionContribution: employeeZusConstants.rates.pensionContribution + employerZusConstants.rates.pensionContribution,
-      sickContribution: employeeZusConstants.rates.sickContribution,
-    },
-  }
+    }
 
-  const zusConstants: zusConstants = {
-    contributionBasisLimit: helpers.round(30 * wageStats.projectedAverageWage, 2),
-    employee: employeeZusConstants,
-    employer: employerZusConstants,
-    entrepreneur: entrepreneurZusConstants,
-  }
+    const entrepreneurZusConstants:EntrepreneurZusConstants = {
+      basises: {
+        big: helpers.round(0.6 * wageStats.value.projectedAverageWage, 2),
+        small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => helpers.round(0.3 * wageStats.value.minimumWage(settingStore.dateOfLawRules.getFullYear(), monthIndex), 2),
+        startRelief: 0,
+      },
+      rates: {
+        accidentCContribution: employerZusConstants.rates.accidentCContribution,
+        disabilityContribution: employeeZusConstants.rates.disabilityContribution + employerZusConstants.rates.disabilityContribution,
+        fgspContribution: employerZusConstants.rates.fgspContribution,
+        fpContribution: employerZusConstants.rates.fpContribution,
+        fsContribution: employerZusConstants.rates.fsContribution,
+        healthContribution: {
+          taxScales: employeeZusConstants.rates.healthContribution,
+          flatTax: 0.049,
+        },
+        pensionContribution: employeeZusConstants.rates.pensionContribution + employerZusConstants.rates.pensionContribution,
+        sickContribution: employeeZusConstants.rates.sickContribution,
+      },
+    }
+    return {
+      contributionBasisLimit: helpers.round(30 * wageStats.value.projectedAverageWage, 2),
+      employee: employeeZusConstants,
+      employer: employerZusConstants,
+      entrepreneur: entrepreneurZusConstants,
+    }
+  })
 
   return {
-    AmountTypes,
-    EntrepreneurTaxSystem,
     incomeTaxConstnts,
     wageStats,
     zusConstants,

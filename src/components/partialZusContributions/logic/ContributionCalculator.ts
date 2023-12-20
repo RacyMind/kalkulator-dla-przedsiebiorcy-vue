@@ -3,7 +3,6 @@ import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {InputFields} from 'components/partialZusContributions/interfaces/InputFields'
 import {Result} from 'components/partialZusContributions/interfaces/Result'
-import {n} from 'vitest/dist/reporters-5f784f42'
 import {useSettingStore} from 'stores/settingStore'
 import helpers from 'src/logic/helpers'
 
@@ -22,7 +21,7 @@ export class ContributionCalculator extends BasicCalculator<InputFields, Result>
     let fsContribution = 0
 
     let actualContributionBasis = this.getInputData().contributionBasis
-    actualContributionBasis = helpers.round(actualContributionBasis / this.getDaysInMonth(this.getInputData().monthIndex), 2)
+    actualContributionBasis = actualContributionBasis / this.getDaysInMonth(this.getInputData().monthIndex)
     actualContributionBasis = helpers.round(actualContributionBasis * this.getInputData().daysOfRunningBusiness, 2)
 
     const contributionBasisWithnLimit = this.zus.getContributionBasisWithinLimit(actualContributionBasis)

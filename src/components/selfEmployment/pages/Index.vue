@@ -48,7 +48,7 @@
             <MonthlyResultList
               :result="monthlyResult"
               :month="index" />
-            <Separator v-if="index < 12" />
+            <Separator v-if="index < 11" />
           </div>
         </tempplate>
         <div
@@ -64,7 +64,8 @@
 <script setup lang="ts">
 
 import {QTabs} from 'quasar'
-import {Ref, computed, ref} from 'vue'
+import {Ref, ref} from 'vue'
+import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
 import {useSelfemploymentStore} from 'components/selfEmployment/store'
@@ -94,6 +95,8 @@ breadcrumbStore.items = [
 
 const tab = ref(Tabs.AnnualSummary)
 const qtabs:Ref<QTabs|null> = ref(null)
+
+lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)

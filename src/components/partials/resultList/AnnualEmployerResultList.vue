@@ -12,7 +12,7 @@
         {{ constants.MONTH_NAMES[index] }}
       </ListHeader>
       <EmployerResultList :result="monthlyResult" />
-      <Separator v-if="index < 12" />
+      <Separator v-if="index < 11" />
     </div>
   </div>
 </template>

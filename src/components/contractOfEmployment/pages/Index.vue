@@ -70,6 +70,7 @@
 <script setup lang="ts">
 import {QTabs} from 'quasar'
 import {Ref, computed, ref} from 'vue'
+import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
@@ -102,6 +103,8 @@ const qtabs:Ref<QTabs|null> = ref(null)
 
 const employeeResult = computed(() => store.employeeResult)
 const employerResult = computed(() => store.employerResult)
+
+lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)

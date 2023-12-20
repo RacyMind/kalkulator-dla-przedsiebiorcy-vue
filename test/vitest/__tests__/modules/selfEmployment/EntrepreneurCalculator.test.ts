@@ -31,7 +31,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 
@@ -76,7 +76,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('the first half year', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          contributionBasis: zusConstants.entrepreneur.basises.small(0),
+          contributionBasis: zusConstants.value.entrepreneur.basises.small(0),
           isFpContribution: false,
         }).calculate().getResult()
 
@@ -96,7 +96,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('the second half year', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          contributionBasis: zusConstants.entrepreneur.basises.small(),
+          contributionBasis: zusConstants.value.entrepreneur.basises.small(),
           isFpContribution: false,
         }).calculate().getResult()
 
@@ -272,7 +272,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 
@@ -411,7 +411,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 

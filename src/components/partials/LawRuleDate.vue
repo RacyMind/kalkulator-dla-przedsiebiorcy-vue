@@ -1,6 +1,6 @@
 <template>
   <q-select
-    v-model="lawRuleDate"
+    v-model="store.dateOfLawRules"
     :options="availableDates"
     label="Data obowiązywania przepisów"
     color="brand"
@@ -13,6 +13,8 @@
 
 <script setup lang="ts">
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useSettingStore} from 'stores/settingStore'
 
-const { availableDates, lawRuleDate } = useLawRuleDate()
+const { availableDates } = useLawRuleDate()
+const store = useSettingStore()
 </script>

@@ -12,7 +12,7 @@ const annualInput = (monthlyInput:InputFields, isSMallZus = false):InputFields[]
   for(let i = 0; i < 12; i++) {
     input.push({
       ...monthlyInput,
-      contributionBasis: isSMallZus ? zusConstants.entrepreneur.basises.small(i) : monthlyInput.contributionBasis,
+      contributionBasis: isSMallZus ? zusConstants.value.entrepreneur.basises.small(i) : monthlyInput.contributionBasis,
       monthIndex: i,
     })
   }
@@ -46,7 +46,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 
@@ -87,7 +87,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
     it('The "small" zus contribution basis', () => {
       const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
         ...input,
-        contributionBasis: zusConstants.entrepreneur.basises.small(0),
+        contributionBasis: zusConstants.value.entrepreneur.basises.small(0),
         isFpContribution: false,
       }, true)).calculate().getResult().annualResult
 
@@ -147,7 +147,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 
@@ -188,7 +188,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
     it('The "small" zus contribution basis', () => {
       const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
         ...input,
-        contributionBasis: zusConstants.entrepreneur.basises.small(0),
+        contributionBasis: zusConstants.value.entrepreneur.basises.small(0),
         isFpContribution: false,
       }, true)).calculate().getResult().annualResult
 
@@ -241,7 +241,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
-      contributionBasis: zusConstants.entrepreneur.basises.big,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
       businessIsRuning: true,
     }
 
@@ -282,7 +282,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
     it('The "small" zus contribution basis', () => {
       const result = new AnnualEntrepreneurCalculator().setInputData(annualInput({
         ...input,
-        contributionBasis: zusConstants.entrepreneur.basises.small(0),
+        contributionBasis: zusConstants.value.entrepreneur.basises.small(0),
         isFpContribution: false,
       }, true)).calculate().getResult().annualResult
 

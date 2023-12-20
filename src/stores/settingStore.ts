@@ -4,10 +4,19 @@ export type Settings = {
   dateOfLawRules: Date
 }
 
+const getDefaultDate = () => {
+  const now = new Date()
+
+  if(now.getFullYear() <= 2023) {
+    return new Date(2023,  10, 1)
+  }
+  return new Date(2024,  0, 1)
+}
+
 export const useSettingStore = defineStore('settingStore', {
   state: ():Settings => (
     {
-    dateOfLawRules: new Date(2023,  10, 1),
+    dateOfLawRules: getDefaultDate(),
   }),
 })
 

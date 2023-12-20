@@ -1,6 +1,6 @@
 import {useConstants} from 'src/composables/constants'
 
-export class  ZusContribution{
+export class ZusContribution{
   protected readonly zusConstants
 
   constructor() {
@@ -16,12 +16,12 @@ export class  ZusContribution{
       return 0
     }
 
-    if(sumUpContributionBasis >= this.zusConstants.contributionBasisLimit) {
+    if(sumUpContributionBasis >= this.zusConstants.value.contributionBasisLimit) {
       return 0
     }
 
-    if(grossAmount + sumUpContributionBasis > this.zusConstants.contributionBasisLimit) {
-      return this.zusConstants.contributionBasisLimit - sumUpContributionBasis
+    if(grossAmount + sumUpContributionBasis > this.zusConstants.value.contributionBasisLimit) {
+      return this.zusConstants.value.contributionBasisLimit - sumUpContributionBasis
     }
 
     return grossAmount

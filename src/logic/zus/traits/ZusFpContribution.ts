@@ -13,7 +13,7 @@ export class ZusFpContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.employer.rates.fpContribution * grossAmount, 2)
+    return helpers.round(this.zusConstants.value.employer.rates.fpContribution * grossAmount, 2)
   }
 
   /**
@@ -26,7 +26,7 @@ export class ZusFpContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.employer.rates.fgspContribution * grossAmount, 2)
+    return helpers.round(this.zusConstants.value.employer.rates.fgspContribution * grossAmount, 2)
   }
 
   /**
@@ -39,18 +39,18 @@ export class ZusFpContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.employer.rates.fsContribution * grossAmount, 2)
+    return helpers.round(this.zusConstants.value.employer.rates.fsContribution * grossAmount, 2)
   }
 
   /**
    * Returns the PPK (Pracownicze Plany Kapitałowe) contribution of the employer
    */
-  public getPPKContribution(grossAmount: number, ppkRate = this.zusConstants.employer.rates.ppkContribution.default): number {
+  public getPPKContribution(grossAmount: number, ppkRate = this.zusConstants.value.employer.rates.ppkContribution.default): number {
     if(grossAmount < 0) {
       return 0
     }
 
-    if(ppkRate < this.zusConstants.employer.rates.ppkContribution.min || ppkRate > this.zusConstants.employer.rates.ppkContribution.max) {
+    if(ppkRate < this.zusConstants.value.employer.rates.ppkContribution.min || ppkRate > this.zusConstants.value.employer.rates.ppkContribution.max) {
       throw new Error('Invalid argument. The PPK rate has to be between 1.5% - 4%')
     }
 

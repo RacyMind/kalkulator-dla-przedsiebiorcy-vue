@@ -12,7 +12,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.employer.rates.disabilityContribution * basisForContribution, 2)
+    return helpers.round(this.zusConstants.value.employer.rates.disabilityContribution * basisForContribution, 2)
   }
 
   /**
@@ -23,7 +23,7 @@ export class EmployerZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.employer.rates.pensionContribution * basisForContribution, 2)
+    return helpers.round(this.zusConstants.value.employer.rates.pensionContribution * basisForContribution, 2)
   }
 }
 

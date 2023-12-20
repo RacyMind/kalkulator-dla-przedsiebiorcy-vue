@@ -306,13 +306,13 @@
   </q-form>
 </template>
 <script setup lang="ts">
+import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
-import {useConstants} from 'src/composables/constants'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -331,7 +331,7 @@ const emit = defineEmits(['submit'])
 const store = useMandateContractStore()
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
-const { AmountTypes, zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstnts } = useConstants()
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -385,9 +385,9 @@ const isDisabilityContribution = ref(true)
 const isPensionContribution = ref(true)
 const isFpContribution = ref(false)
 const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
+const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
+const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
+const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
 
 watch(isHourlyAmount, () => {
   if (isHourlyAmount.value) {
@@ -405,7 +405,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
-      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
+      accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractWithEmployer:
       isHealthContribution.value = true
@@ -413,7 +413,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
-      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
+      accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.Student:
       isHealthContribution.value = false
@@ -430,7 +430,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = false
-      accidentContributionRate.value = zusConstants.employer.rates.accidentCContribution.default * 100
+      accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractorWorksInAnotherCompany:
       isHealthContribution.value = true

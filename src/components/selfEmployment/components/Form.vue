@@ -135,16 +135,17 @@
           </Tooltip>
         </div>
         <div>
-          <q-toggle
-            v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale"
-            v-model="hasTaxFreeAmount"
-            label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
-          />
-          <Tooltip class="q-ml-sm">
-            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
-          </Tooltip>
+          <templarte v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale">
+            <q-toggle
+              v-model="hasTaxFreeAmount"
+              label="Kwota wolna od podatku"
+              checked-icon="check"
+              unchecked-icon="clear"
+            />
+            <Tooltip class="q-ml-sm">
+              Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
+            </Tooltip>
+          </templarte>
         </div>
       </div>
       <div
@@ -394,8 +395,8 @@ const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmou
 
 // the ZUS contribution section
 const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
-const customContributionBasis:Ref<number|null> = ref(zusConstants.entrepreneur.basises.big)
-const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
+const customContributionBasis:Ref<number|null> = ref(zusConstants.value.entrepreneur.basises.big)
+const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
 const isFpContribution = ref(true)
 const isSickContribution = ref(false)
 const hasEmploymentContract = ref(false)
@@ -429,10 +430,10 @@ const getContributionBasis = (currentMonth: number): number => {
     return customContributionBasis.value ?? 0
   }
   if(chosenContributionBasis.value === ContributionBasises.Small) {
-    return zusConstants.entrepreneur.basises.small(currentMonth)
+    return zusConstants.value.entrepreneur.basises.small(currentMonth)
   }
 
-  return zusConstants.entrepreneur.basises.big
+  return zusConstants.value.entrepreneur.basises.big
 }
 
 const handleFormSubmit = () => {

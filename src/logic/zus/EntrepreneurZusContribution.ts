@@ -30,30 +30,30 @@ export class EntrepreneurZusContribution extends ZusContribution {
     }
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
-    const minimumContribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * wageStats.minimumWage(year, 0), 2)
+    const minimumContribution = helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * wageStats.value.minimumWage(year, 0), 2)
 
     let contribution: number
 
     switch (taxSystem) {
       case EntrepreneurTaxSystem.TaxScale:
-        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * healthContributionBasis, 2)
+        contribution = helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * healthContributionBasis, 2)
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.FlatTax:
-        contribution = helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.flatTax * healthContributionBasis, 2)
+        contribution = helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.flatTax * healthContributionBasis, 2)
         return Math.max(contribution, minimumContribution)
 
       case EntrepreneurTaxSystem.LumpSumTax:
-        let contributionBasis = helpers.round(1.8 * wageStats.averageWageInLastQuarter, 2)
+        let contributionBasis = helpers.round(1.8 * wageStats.value.averageWageInLastQuarter(this.settingStore.dateOfLawRules.getFullYear() - 1), 2)
 
         if (yearlyIncome <= 300000) {
-          contributionBasis = helpers.round(wageStats.averageWageInLastQuarter, 2)
+          contributionBasis = helpers.round(wageStats.value.averageWageInLastQuarter(this.settingStore.dateOfLawRules.getFullYear() - 1), 2)
         }
         if (yearlyIncome <= 60000) {
-          contributionBasis = helpers.round(0.6 * wageStats.averageWageInLastQuarter, 2)
+          contributionBasis = helpers.round(0.6 * wageStats.value.averageWageInLastQuarter(this.settingStore.dateOfLawRules.getFullYear() - 1), 2)
         }
 
-        return helpers.round(this.zusConstants.entrepreneur.rates.healthContribution.taxScales * contributionBasis, 2)
+        return helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * contributionBasis, 2)
 
       default:
         throw Error('Invalid tax system')
@@ -95,7 +95,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.entrepreneur.rates.disabilityContribution * contributionBasis, 2)
+    return helpers.round(this.zusConstants.value.entrepreneur.rates.disabilityContribution * contributionBasis, 2)
   }
 
   /**
@@ -106,7 +106,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.entrepreneur.rates.pensionContribution * contributionBasis, 2)
+    return helpers.round(this.zusConstants.value.entrepreneur.rates.pensionContribution * contributionBasis, 2)
   }
 
   /**
@@ -120,7 +120,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
       return 0
     }
 
-    return helpers.round(this.zusConstants.entrepreneur.rates.sickContribution * contributionBasis, 2)
+    return helpers.round(this.zusConstants.value.entrepreneur.rates.sickContribution * contributionBasis, 2)
   }
 }
 

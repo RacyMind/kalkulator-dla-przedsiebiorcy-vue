@@ -13,41 +13,41 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
   it('the disability contibution', () => {
-    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.entrepreneur.basises.big)).toBe(332.88)
-    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.entrepreneur.basises.small())).toBe(86.40)
-    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.entrepreneur.basises.startRelief)).toBe(0)
+    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.value.entrepreneur.basises.big)).toBe(332.88)
+    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.value.entrepreneur.basises.small())).toBe(86.40)
+    expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
   it('the pension contibution', () => {
-    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.entrepreneur.basises.big)).toBe(812.23)
-    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.entrepreneur.basises.small())).toBe(210.82)
-    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.entrepreneur.basises.startRelief)).toBe(0)
+    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.value.entrepreneur.basises.big)).toBe(812.23)
+    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.value.entrepreneur.basises.small())).toBe(210.82)
+    expect(entrepreneurZusContribution.gePensionContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
   it('the sick contibution', () => {
-    expect(entrepreneurZusContribution.getSickContribution(zusConstants.entrepreneur.basises.big)).toBe(101.94)
-    expect(entrepreneurZusContribution.getSickContribution(zusConstants.entrepreneur.basises.small())).toBe(26.46)
-    expect(entrepreneurZusContribution.getSickContribution(zusConstants.entrepreneur.basises.startRelief)).toBe(0)
+    expect(entrepreneurZusContribution.getSickContribution(zusConstants.value.entrepreneur.basises.big)).toBe(101.94)
+    expect(entrepreneurZusContribution.getSickContribution(zusConstants.value.entrepreneur.basises.small())).toBe(26.46)
+    expect(entrepreneurZusContribution.getSickContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
   it('the accident contibution', () => {
-    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.entrepreneur.basises.big, 0.0167)).toBe(69.49)
-    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.entrepreneur.basises.small(), 0.0167)).toBe(18.04)
-    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.entrepreneur.basises.startRelief, 0.0167)).toBe(0)
+    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.value.entrepreneur.basises.big, 0.0167)).toBe(69.49)
+    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.value.entrepreneur.basises.small(), 0.0167)).toBe(18.04)
+    expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.value.entrepreneur.basises.startRelief, 0.0167)).toBe(0)
   })
 
   it('the FP contibution', () => {
-    expect(entrepreneurZusContribution.getFPContribution(zusConstants.entrepreneur.basises.big)).toBe(41.61)
+    expect(entrepreneurZusContribution.getFPContribution(zusConstants.value.entrepreneur.basises.big)).toBe(41.61)
     expect(entrepreneurZusContribution.getFPContribution(0)).toBe(0)
   })
 
   it('the FPGSP contibution', () => {
-    expect(entrepreneurZusContribution.getFGSPContribution(zusConstants.entrepreneur.basises.big)).toBe(4.16)
+    expect(entrepreneurZusContribution.getFGSPContribution(zusConstants.value.entrepreneur.basises.big)).toBe(4.16)
     expect(entrepreneurZusContribution.getFGSPContribution(0)).toBe(0)
   })
 
   it('the FS contibution', () => {
-    expect(entrepreneurZusContribution.getFSContribution(zusConstants.entrepreneur.basises.big)).toBe(60.33)
+    expect(entrepreneurZusContribution.getFSContribution(zusConstants.value.entrepreneur.basises.big)).toBe(60.33)
     expect(entrepreneurZusContribution.getFSContribution(0)).toBe(0)
   })
 
@@ -98,12 +98,12 @@ describe('ZUS contribution basises in 2023', () => {
   const { zusConstants} = useConstants()
 
   it('1.2023', () => {
-    expect(zusConstants.entrepreneur.basises.big).toBe(4161)
-    expect(zusConstants.entrepreneur.basises.small(0)).toBe(1047)
+    expect(zusConstants.value.entrepreneur.basises.big).toBe(4161)
+    expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1047)
   })
 
   it('7.2023', () => {
-    expect(zusConstants.entrepreneur.basises.small(6)).toBe(1080)
+    expect(zusConstants.value.entrepreneur.basises.small(6)).toBe(1080)
   })
 })
 
@@ -115,11 +115,11 @@ describe('ZUS contribution basises in 2024', () => {
   const { zusConstants} = useConstants()
 
   it('1.2024', () => {
-    expect(zusConstants.entrepreneur.basises.big).toBe(4694.40)
-    expect(zusConstants.entrepreneur.basises.small(0)).toBe(1272.60)
+    expect(zusConstants.value.entrepreneur.basises.big).toBe(4694.40)
+    expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1272.60)
   })
 
   it('7.2024', () => {
-    expect(zusConstants.entrepreneur.basises.small(6)).toBe(1290)
+    expect(zusConstants.value.entrepreneur.basises.small(6)).toBe(1290)
   })
 })

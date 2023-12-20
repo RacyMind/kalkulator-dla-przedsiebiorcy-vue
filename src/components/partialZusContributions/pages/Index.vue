@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import {Ref, ref} from 'vue'
+import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
 import Advert from 'components/partials/Advert.vue'
@@ -40,6 +41,8 @@ breadcrumbStore.items = [
 ]
 
 const summary:Ref<InstanceType<typeof SectionHeader>|null> = ref(null)
+
+lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(summary?.value.$el)

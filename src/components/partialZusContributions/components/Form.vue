@@ -113,6 +113,7 @@ import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonths} from 'src/composables/months'
 import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
+import {useSettingStore} from 'stores/settingStore'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
@@ -125,30 +126,43 @@ const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
 const { zusConstants } = useConstants()
 const store = usePartialZusContributionStore()
+const settingStore = useSettingStore()
 
 const daysOfRunningBusiness: Ref<number> = ref(new ContributionCalculator().getDaysInMonth(new Date().getMonth()))
 const monthIndex: Ref<number> = ref(new Date().getMonth())
 
 const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
-const contributionBasis = ref(zusConstants.entrepreneur.basises.big)
-const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
+const contributionBasis = ref(zusConstants.value.entrepreneur.basises.big)
+const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
 const isFpContribution = ref(true)
 const isSickContribution = ref(true)
 
 watch(chosenContributionBasis, () => {
   switch (chosenContributionBasis.value) {
     case ContributionBasises.Big:
-      contributionBasis.value = zusConstants.entrepreneur.basises.big
+      contributionBasis.value = zusConstants.value.entrepreneur.basises.big
       break
     case ContributionBasises.Small:
-      contributionBasis.value = zusConstants.entrepreneur.basises.small(monthIndex.value)
+      contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
       isFpContribution.value = false
       break
   }
 })
+
+watch(() => settingStore.dateOfLawRules, () => {
+  switch (chosenContributionBasis.value) {
+    case ContributionBasises.Big:
+      contributionBasis.value = zusConstants.value.entrepreneur.basises.big
+      break
+    case ContributionBasises.Small:
+      contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
+      break
+  }
+})
+
 watch(monthIndex, () => {
   if(chosenContributionBasis.value === ContributionBasises.Small) {
-    contributionBasis.value = zusConstants.entrepreneur.basises.small(monthIndex.value)
+    contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
   }
 })
 

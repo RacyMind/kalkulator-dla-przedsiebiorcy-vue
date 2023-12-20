@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import {EntrepreneurResult} from 'src/logic/interfaces/EntrepreneurResult'
 import {Result} from 'components/partialZusContributions/interfaces/Result'
 import {computed} from 'vue'
 import {pln} from '../../../use/currencyFormat'

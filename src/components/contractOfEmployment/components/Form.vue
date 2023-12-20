@@ -208,13 +208,13 @@
 </template>
 
 <script setup lang="ts">
+import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {Ref, ref} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from 'src/use/currencyFormat'
 import {useAmmmountType} from 'src/composables/amountType'
-import {useConstants} from 'src/composables/constants'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -232,7 +232,7 @@ const emit = defineEmits(['submit'])
 const store = useEmploymentContractStore()
 const { availableDates } = useLawRuleDate()
 const {handleValidationError} = useFormValidation()
-const { AmountTypes, zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstnts } = useConstants()
 
 // the salary section
 const amount:Ref<number|null> = ref(null)
@@ -249,9 +249,9 @@ const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmou
 // the ZUS contribution section
 const isFpContribution = ref(true)
 const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.employer.rates.accidentCContribution.default * 100)
+const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
+const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
+const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
 
 const handleFormSubmit = () => {
   if (!amount.value) {
