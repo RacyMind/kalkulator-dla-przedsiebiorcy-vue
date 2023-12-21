@@ -241,7 +241,7 @@
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
-            Zatrudniony na umowę o pracę płaci tylko składkę zdrowotną.
+            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnnego wynagrodzenia, płaci tylko składkę zdrowotną.
           </Tooltip>
         </div>
         <div>
@@ -319,7 +319,7 @@ enum ContributionBasises {
 
 const incomeTaxTypes = [
   {
-    label: 'Skala podatkowa (17% i 32%)',
+    label: 'Skala podatkowa (12% i 32%)',
     value: EntrepreneurTaxSystem.TaxScale,
   },
   {
