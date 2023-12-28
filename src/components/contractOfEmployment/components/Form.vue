@@ -27,18 +27,9 @@
             hide-bottom-space
           />
         </div>
-        <div class="col-shrink">
-          <q-radio
-            v-model="amountType"
-            :val="AmountTypes.Net"
-            label="netto"
-          />
-          <q-radio
-            v-model="amountType"
-            :val="AmountTypes.Gross"
-            label="brutto"
-          />
-        </div>
+        <AmountTypeSelect
+          v-model="amountType"
+          class="col-shrink" />
       </div>
       <div class="row">
         <div class="col">
@@ -50,7 +41,7 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasAmountForEachMonth"
         v-model="monthlyAmounts"
       />
@@ -77,60 +68,12 @@
           />
         </div>
       </div>
-      <div class="row q-col-gutter-md">
-        <div class="col">
-          <q-toggle
-            v-model="hasTaxFreeAmount"
-            label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
-          />
-          <Tooltip class="q-ml-sm">
-            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
-          </Tooltip>
-        </div>
-      </div>
-      <div
-        v-if="hasTaxFreeAmount"
-        class="row q-col-gutter-md q-mb-md">
-        <div class="col">
-          <q-select
-            v-model="employerCount"
-            :options="employerCountOptions"
-            emit-value
-            map-options
-            label="Kwota odliczana u" />
-        </div>
-      </div>
-      <div class="row q-col-gutter-md">
-        <div class="col">
-          <q-toggle
-            v-model="areAuthorExpenses"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Autorskie koszty uzyskania przychodu (50%)"
-          />
-        </div>
-      </div>
-      <div
-        v-if="areAuthorExpenses"
-        class="row q-col-gutter-md">
-        <div class="col">
-          <q-input
-            v-model.number="partOfWorkWithAuthorExpenses"
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-            label="Część pracy*"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-          />
-        </div>
-      </div>
+      <TaxFreeAmountFields
+        v-model:has-tax-free-amount="hasTaxFreeAmount"
+        v-model:employer-count="employerCount" />
+      <AuthorExpenseFields
+        v-model:are-author-expenses="areAuthorExpenses"
+        v-model:part-of-work-with-author-expenses="partOfWorkWithAuthorExpenses" />
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-mb-md">
@@ -220,10 +163,13 @@ import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
+import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
+import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import AuthorExpenseFields from 'components/partials/form/AuthorExpenseFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
 
@@ -244,7 +190,7 @@ const workInLivePlace = ref(true)
 const areAuthorExpenses = ref(false)
 const partOfWorkWithAuthorExpenses = ref(100)
 const hasTaxRelief = ref(false)
-const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
 
 // the ZUS contribution section
 const isFpContribution = ref(true)

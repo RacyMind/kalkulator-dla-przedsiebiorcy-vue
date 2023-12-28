@@ -59,7 +59,7 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
@@ -87,7 +87,7 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
@@ -134,32 +134,11 @@
             Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstnts.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
-        <div>
-          <templarte v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale">
-            <q-toggle
-              v-model="hasTaxFreeAmount"
-              label="Kwota wolna od podatku"
-              checked-icon="check"
-              unchecked-icon="clear"
-            />
-            <Tooltip class="q-ml-sm">
-              Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
-            </Tooltip>
-          </templarte>
-        </div>
       </div>
-      <div
-        v-if="hasTaxFreeAmount && incomeTaxType === EntrepreneurTaxSystem.TaxScale"
-        class="row q-col-gutter-md q-mb-md">
-        <div class="col">
-          <q-select
-            v-model="employerCount"
-            :options="employerCountOptions"
-            emit-value
-            map-options
-            label="Kwota odliczana u" />
-        </div>
-      </div>
+      <TaxFreeAmountFields
+        v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale"
+        v-model:has-tax-free-amount="hasTaxFreeAmount"
+        v-model:employer-count="employerCount" />
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-mb-md">
@@ -296,10 +275,11 @@ import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
 import {useSelfemploymentStore} from 'components/selfEmployment/store'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
+import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
 
@@ -391,7 +371,7 @@ const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEa
 
 // the income tax section
 const hasTaxRelief = ref(false)
-const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
 
 // the ZUS contribution section
 const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
