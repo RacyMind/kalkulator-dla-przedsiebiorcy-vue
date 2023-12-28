@@ -10,6 +10,11 @@
 @import "components/percentage";
 @import "components/work";
 
+a{
+  color: $primary;
+  text-decoration: none;
+}
+
 @media screen and (max-width:600px) {
   .q-dialog__inner--minimized{
     padding: 0;

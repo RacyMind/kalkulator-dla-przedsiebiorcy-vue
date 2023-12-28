@@ -46,6 +46,12 @@ function getDefaultYear ():AvailableYear {
   return <AvailableYear> constants.AVAILABLE_YEARS[constants.AVAILABLE_YEARS.length - 1]
 }
 
+function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeType) {
+  return monthlyResults.reduce((accumulator:number, result:EmployeType) => {
+    return round(<number>accumulator + <number>result[property], 2)
+  }, 0)
+}
+
 function  sumMonthlyResults(monthlyResults:ContractOfEmploymentEmployeeSingleResult[]|ContractOfMandateEmployeeSingleResult[]) {
   return {
     basisForRentAndPensionContributions: round(monthlyResults.map(result => result.basisForRentAndPensionContributions)
@@ -75,9 +81,25 @@ function  sumMonthlyResults(monthlyResults:ContractOfEmploymentEmployeeSingleRes
   }
 
 }
+
+function applyMixins(derivedCtor: any, constructors: any[]) {
+  constructors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+      Object.defineProperty(
+        derivedCtor.prototype,
+        name,
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
+        Object.create(null),
+      )
+    })
+  })
+}
+
 export default {
   getDefaultYear,
   round,
   scrollToElement,
+  sum,
   sumMonthlyResults,
+  applyMixins,
 }

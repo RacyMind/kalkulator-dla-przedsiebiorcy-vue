@@ -225,7 +225,7 @@ export default {
   },
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '4.11.0',
+    VERSION: '5.0.0',
   },
   AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
@@ -385,6 +385,21 @@ export default {
       SMALL_AMOUNT: 903,
     },
   },
+  MONTH_NAMES: [
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień',
+  ],
+  FULL_YEAR: 'Cały rok',
 }
 
 

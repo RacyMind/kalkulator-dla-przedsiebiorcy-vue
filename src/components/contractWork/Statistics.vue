@@ -12,7 +12,7 @@
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
 import {PropType, computed, defineComponent} from 'vue'
 import {usePieChart} from 'src/use/usePieChart'
-import PieChart from 'components/partials/PieChart.vue'
+import PieChart from 'components/partials/statistics/PieChart.vue'
 import contractWork from 'components/contractWork/contractWork'
 
 export default defineComponent({

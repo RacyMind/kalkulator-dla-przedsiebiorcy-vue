@@ -1,13 +1,10 @@
 {
   "@quasar/testing": {
     "harnesses": [
-      "unit-jest@beta"
+      "unit-vitest"
     ]
   },
-  "@quasar/testing-unit-jest": {
-    "options": [
-      "scripts",
-      "typescript"
-    ]
+  "@quasar/testing-unit-vitest": {
+    "options": []
   }
 }
