@@ -154,13 +154,12 @@
 import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import {Ref, ref} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from 'src/use/currencyFormat'
-import {useAmmmountType} from 'src/composables/amountType'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
@@ -178,26 +177,26 @@ const emit = defineEmits(['submit'])
 const store = useEmploymentContractStore()
 const { availableDates } = useLawRuleDate()
 const {handleValidationError} = useFormValidation()
-const { zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstnts, wageStats } = useConstants()
 
 // the salary section
-const amount:Ref<number|null> = ref(null)
-const amountType = useAmmmountType()
-const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount)
+const amount = useLocalStorage('contractOfEmployment/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
+const amountType =  useLocalStorage<AmountTypes>('contractOfEmployment/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
+const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'contractOfEmployment/form')
 
 // the income tax section
-const workInLivePlace = ref(true)
-const areAuthorExpenses = ref(false)
-const partOfWorkWithAuthorExpenses = ref(100)
-const hasTaxRelief = ref(false)
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const workInLivePlace = useLocalStorage('contractOfEmployment/form/workInLivePlace', true, { mergeDefaults: true })
+const areAuthorExpenses = useLocalStorage('contractOfEmployment/form/areAuthorExpenses', false, { mergeDefaults: true })
+const partOfWorkWithAuthorExpenses = useLocalStorage('contractOfEmployment/form/partOfWorkWithAuthorExpenses', 100, { mergeDefaults: true })
+const hasTaxRelief = useLocalStorage('contractOfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfEmployment/form')
 
 // the ZUS contribution section
-const isFpContribution = ref(true)
-const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
+const isFpContribution =  useLocalStorage('contractOfEmployment/form/isFpContribution', true, { mergeDefaults: true })
+const isPpkContribution =  useLocalStorage('contractOfEmployment/form/isPpkContribution', false, { mergeDefaults: true })
+const employerPpkContributionRate = useLocalStorage('contractOfEmployment/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const employeePpkContributionRate = useLocalStorage('contractOfEmployment/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('contractOfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
 
 const handleFormSubmit = () => {
   if (!amount.value) {

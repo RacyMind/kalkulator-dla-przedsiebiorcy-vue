@@ -1,10 +1,11 @@
-import {Ref, ref, watch} from 'vue'
+import {Ref, watch} from 'vue'
+import {useLocalStorage} from '@vueuse/core'
 import helpers from 'src/logic/helpers'
 
-export const useHourlyAmount = (amount: Ref<number|null>) => {
-  const isHourlyAmount = ref(false)
-  const hourlyAmount:Ref<number|null> = ref(null)
-  const hourCount:Ref<number|null> = ref(null)
+export const useHourlyAmount = (amount: Ref<number|null>, storagePrefix = '') => {
+  const isHourlyAmount = useLocalStorage(`${storagePrefix}/isHourlyAmount`, false, { mergeDefaults: true })
+  const hourlyAmount:Ref<number|null> = useLocalStorage(`${storagePrefix}/hourlyAmount`, null, { mergeDefaults: true })
+  const hourCount:Ref<number|null> = useLocalStorage(`${storagePrefix}/hourCount`, null, { mergeDefaults: true })
 
   watch(hourlyAmount, () => {
     if (!isHourlyAmount.value) {
