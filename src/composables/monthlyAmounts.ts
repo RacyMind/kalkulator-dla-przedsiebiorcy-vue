@@ -1,4 +1,4 @@
-import {Ref, ref, watch} from 'vue'
+import {Ref, watch} from 'vue'
 import {useLocalStorage} from '@vueuse/core'
 
 export const useMonthlyAmounts = (amount:Ref<number|null>, storagePrefix = '') => {

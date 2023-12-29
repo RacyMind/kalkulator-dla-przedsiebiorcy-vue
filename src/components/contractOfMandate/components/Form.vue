@@ -252,7 +252,6 @@
 import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
-import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
@@ -262,6 +261,7 @@ import {useLocalStorage} from '@vueuse/core'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
+import {watch} from 'vue'
 import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
 import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import AuthorExpenseFields from 'components/partials/form/AuthorExpenseFields.vue'
@@ -311,9 +311,9 @@ const contributionSchemeOptions = [
 ]
 
 // the salary section
-const amount:Ref<number|null> = useLocalStorage('contractOfMandate/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
+const amount = useLocalStorage('contractOfMandate/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
 const {hourCount, hourlyAmount, isHourlyAmount} = useHourlyAmount(amount, 'contractOfMandate/form')
-const amountType =  useLocalStorage('contractOfMandate/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
+const amountType =  useLocalStorage<AmountTypes>('contractOfMandate/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
 const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'contractOfMandate/form')
 
 // the income tax section
@@ -324,7 +324,7 @@ const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfMandate/
 const canLumpSumTaxBe = useLocalStorage('contractOfMandate/form/canLumpSumTaxBe', true, { mergeDefaults: true })
 
 // the ZUS contribution section
-const contributionScheme:Ref<ContributionSchemes> = useLocalStorage('contractOfMandate/form/contributionScheme', ContributionSchemes.Unemployed, { mergeDefaults: true })
+const contributionScheme = useLocalStorage<ContributionSchemes>('contractOfMandate/form/contributionScheme', ContributionSchemes.Unemployed, { mergeDefaults: true })
 const isHealthContribution = useLocalStorage('contractOfMandate/form/isHealthContribution', true, { mergeDefaults: true })
 const isSickContribution = useLocalStorage('contractOfMandate/form/isSickContribution', true, { mergeDefaults: true })
 const isDisabilityContribution = useLocalStorage('contractOfMandate/form/isDisabilityContribution', true, { mergeDefaults: true })

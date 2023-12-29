@@ -266,11 +266,12 @@
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
-import {Ref, computed, ref, watch} from 'vue'
+import {computed, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {useContributionBasis} from 'src/composables/contributionBasises'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
 import {useSelfemploymentStore} from 'components/selfEmployment/store'
@@ -356,34 +357,34 @@ const lumpSumTaxRateOptions:{label: string, value: LumpSumTaxRate}[] = [
   ]
 
 // the business run period section
-const businessHasStartedBeforeThisYear = ref(true)
-const businessStartedInMonth = ref(new Date().getMonth())
+const businessHasStartedBeforeThisYear = useLocalStorage('selfEmployment/form/businessHasStartedBeforeThisYear', true, { mergeDefaults: true })
+const businessStartedInMonth = useLocalStorage('selfEmployment/form/businessStartedInMonth', new Date().getMonth(), { mergeDefaults: true })
 
 // the income tax type section
-const incomeTaxType = ref(EntrepreneurTaxSystem.TaxScale)
-const lumpSumTaxRate:Ref<LumpSumTaxRate> = ref(0.17)
+const incomeTaxType = useLocalStorage('selfEmployment/form/incomeTaxType', EntrepreneurTaxSystem.TaxScale, { mergeDefaults: true })
+const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>('selfEmployment/form/lumpSumTaxRate', 0.17, { mergeDefaults: true })
 
 // the revenue and expenses section
-const revenue:Ref<number|null> = ref(null)
-const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue)
-const expenses:Ref<number|null> = ref(null)
-const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses)
+const revenue = useLocalStorage('selfEmployment/form/revenue', 10000, { mergeDefaults: true })
+const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'selfEmployment/form/revenue')
+const expenses = useLocalStorage('selfEmployment/form/expenses', 0, { mergeDefaults: true })
+const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses, 'selfEmployment/form/expenses')
 
 // the income tax section
-const hasTaxRelief = ref(false)
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const hasTaxRelief = useLocalStorage('selfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('selfEmployment/form')
 
 // the ZUS contribution section
-const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
-const customContributionBasis:Ref<number|null> = ref(zusConstants.value.entrepreneur.basises.big)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
-const isFpContribution = ref(true)
-const isSickContribution = ref(false)
-const hasEmploymentContract = ref(false)
+const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis('selfEmployment/form')
+const customContributionBasis = useLocalStorage('selfEmployment/form/customContributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('selfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
+const isFpContribution =  useLocalStorage('selfEmployment/form/isFpContribution', true, { mergeDefaults: true })
+const isSickContribution = useLocalStorage('selfEmployment/form/isSickContribution', false, { mergeDefaults: true })
+const hasEmploymentContract = useLocalStorage('selfEmployment/form/hasEmploymentContract', false, { mergeDefaults: true })
 const fpContributionIsDisabled = computed(() => chosenContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
-const zusRelief = ref(false)
-const zusReliefUntil = ref(5)
-const previousMonthHealthContributionBasis = ref(0)
+const zusRelief = useLocalStorage('selfEmployment/form/zusRelief', false, { mergeDefaults: true })
+const zusReliefUntil = useLocalStorage('selfEmployment/form/zusReliefUntil', 5, { mergeDefaults: true })
+const previousMonthHealthContributionBasis = useLocalStorage('selfEmployment/form/previousMonthHealthContributionBasis', 0, { mergeDefaults: true })
 
 watch(chosenContributionBasis, () => {
   if(chosenContributionBasis.value === ContributionBasises.Small) {

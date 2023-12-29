@@ -1,4 +1,4 @@
-import {ref} from 'vue'
+import {useLocalStorage} from '@vueuse/core'
 
 export enum ContributionBasises {
   Big = 1,
@@ -6,7 +6,7 @@ export enum ContributionBasises {
   Custom = 3,
 }
 
-export const useContributionBasis = () => {
+export const useContributionBasis = (storagePrefix = '') => {
   const contributionBasisOptions = [
     {
       label: 'Duży ZUS',
@@ -22,7 +22,7 @@ export const useContributionBasis = () => {
     },
   ]
 
-  const chosenContributionBasis = ref(ContributionBasises.Big)
+  const chosenContributionBasis = useLocalStorage<ContributionBasises>(`${storagePrefix}/chosenContributionBasis`, ContributionBasises.Big, { mergeDefaults: true })
 
   return {
     contributionBasisOptions,
