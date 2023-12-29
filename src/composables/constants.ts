@@ -114,7 +114,7 @@ interface IncomeTaxConstants{
 
 interface WageStats {
   averageWageInLastQuarter: (year?: number) => number,
-  minimumWage: (year: number, monthIndex:number) => number,
+  minimumWage: (year?: number, monthIndex?:number) => number,
   projectedAverageWage: number,
 }
 

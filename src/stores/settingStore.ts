@@ -1,7 +1,9 @@
+import {Ref} from 'vue'
 import {acceptHMRUpdate, defineStore} from 'pinia'
+import {useLocalStorage} from '@vueuse/core'
 
 export type Settings = {
-  dateOfLawRules: Date
+  dateOfLawRules: Ref<Date>
 }
 
 const getDefaultDate = () => {
@@ -16,7 +18,7 @@ const getDefaultDate = () => {
 export const useSettingStore = defineStore('settingStore', {
   state: ():Settings => (
     {
-    dateOfLawRules: getDefaultDate(),
+    dateOfLawRules: useLocalStorage('dateOfLawRules', getDefaultDate(), { mergeDefaults: true }),
   }),
 })
 

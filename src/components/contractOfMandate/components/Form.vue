@@ -255,10 +255,10 @@ import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import {Ref, ref, watch} from 'vue'
 import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
-import {useAmmmountType} from 'src/composables/amountType'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
@@ -277,7 +277,7 @@ const emit = defineEmits(['submit'])
 const store = useMandateContractStore()
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
-const { zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstnts, wageStats } = useConstants()
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -311,29 +311,29 @@ const contributionSchemeOptions = [
 ]
 
 // the salary section
-const amount:Ref<number|null> = ref(null)
-const {hourCount, hourlyAmount, isHourlyAmount} = useHourlyAmount(amount)
-const amountType = useAmmmountType()
-const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount)
+const amount:Ref<number|null> = useLocalStorage('contractOfMandate/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
+const {hourCount, hourlyAmount, isHourlyAmount} = useHourlyAmount(amount, 'contractOfMandate/form')
+const amountType =  useLocalStorage('contractOfMandate/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
+const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'contractOfMandate/form')
 
 // the income tax section
-const areAuthorExpenses = ref(false)
-const partOfWorkWithAuthorExpenses = ref(100)
-const hasTaxRelief = ref(false)
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
-const canLumpSumTaxBe = ref(true)
+const areAuthorExpenses = useLocalStorage('contractOfMandate/form/areAuthorExpenses', false, { mergeDefaults: true })
+const partOfWorkWithAuthorExpenses = useLocalStorage('contractOfMandate/form/partOfWorkWithAuthorExpenses', 100, { mergeDefaults: true })
+const hasTaxRelief = useLocalStorage('contractOfMandate/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfMandate/form')
+const canLumpSumTaxBe = useLocalStorage('contractOfMandate/form/canLumpSumTaxBe', true, { mergeDefaults: true })
 
 // the ZUS contribution section
-const contributionScheme:Ref<ContributionSchemes> = ref(ContributionSchemes.Unemployed)
-const isHealthContribution = ref(true)
-const isSickContribution = ref(true)
-const isDisabilityContribution = ref(true)
-const isPensionContribution = ref(true)
-const isFpContribution = ref(false)
-const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
+const contributionScheme:Ref<ContributionSchemes> = useLocalStorage('contractOfMandate/form/contributionScheme', ContributionSchemes.Unemployed, { mergeDefaults: true })
+const isHealthContribution = useLocalStorage('contractOfMandate/form/isHealthContribution', true, { mergeDefaults: true })
+const isSickContribution = useLocalStorage('contractOfMandate/form/isSickContribution', true, { mergeDefaults: true })
+const isDisabilityContribution = useLocalStorage('contractOfMandate/form/isDisabilityContribution', true, { mergeDefaults: true })
+const isPensionContribution = useLocalStorage('contractOfMandate/form/isPensionContribution', true, { mergeDefaults: true })
+const isFpContribution =  useLocalStorage('contractOfMandate/form/isFpContribution', false, { mergeDefaults: true })
+const isPpkContribution =  useLocalStorage('contractOfMandate/form/isPpkContribution', false, { mergeDefaults: true })
+const employerPpkContributionRate = useLocalStorage('contractOfMandate/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const employeePpkContributionRate = useLocalStorage('contractOfMandate/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('contractOfMandate/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
 
 watch(isHourlyAmount, () => {
   if (isHourlyAmount.value) {

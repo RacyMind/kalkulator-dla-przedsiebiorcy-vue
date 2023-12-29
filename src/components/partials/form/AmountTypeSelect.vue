@@ -15,13 +15,16 @@
 
 <script setup lang="ts">
 import {AmountTypes} from 'src/composables/constants'
-import {computed} from 'vue'
+import {computed, watch} from 'vue'
+import {useQuasar} from 'quasar'
 
 interface Props {
   modelValue: AmountTypes
 }
 const props = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
+
+const $q = useQuasar()
 
 const amountType = computed({
   get() {
@@ -30,5 +33,13 @@ const amountType = computed({
   set(value) {
     emit('update:modelValue', value)
   },
+})
+
+watch(amountType, () => {
+  if (amountType.value === AmountTypes.Net) {
+    $q.notify({
+      message: 'Przy wynagrodzeniu netto obliczenia są szacunkowe. Zalecane jest korzystanie z wynagroodzenia brutto, by poznać dokładne obliczenia.',
+    })
+  }
 })
 </script>

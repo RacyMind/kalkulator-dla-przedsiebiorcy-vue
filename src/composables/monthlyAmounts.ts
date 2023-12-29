@@ -1,8 +1,9 @@
 import {Ref, ref, watch} from 'vue'
+import {useLocalStorage} from '@vueuse/core'
 
-export const useMonthlyAmounts = (amount:Ref<number|null>) => {
-  const hasAmountForEachMonth = ref(false)
-  const monthlyAmounts: Ref<number[]> = ref([])
+export const useMonthlyAmounts = (amount:Ref<number|null>, storagePrefix = '') => {
+  const hasAmountForEachMonth = useLocalStorage(`${storagePrefix}/hasAmountForEachMonth`, false, { mergeDefaults: true })
+  const monthlyAmounts: Ref<number[]> = useLocalStorage(`${storagePrefix}/monthlyAmounts`, [], { mergeDefaults: true })
 
   watch(hasAmountForEachMonth, () => {
     if (!hasAmountForEachMonth.value) {
