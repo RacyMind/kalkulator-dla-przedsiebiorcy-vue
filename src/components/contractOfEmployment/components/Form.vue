@@ -192,7 +192,7 @@ const hasTaxRelief = useLocalStorage('contractOfEmployment/form/hasTaxRelief', f
 const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfEmployment/form')
 
 // the ZUS contribution section
-const isFpContribution =  useLocalStorage('contractOfEmployment/form/isFpContribution', false, { mergeDefaults: true })
+const isFpContribution =  useLocalStorage('contractOfEmployment/form/isFpContribution', true, { mergeDefaults: true })
 const isPpkContribution =  useLocalStorage('contractOfEmployment/form/isPpkContribution', false, { mergeDefaults: true })
 const employerPpkContributionRate = useLocalStorage('contractOfEmployment/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
 const employeePpkContributionRate = useLocalStorage('contractOfEmployment/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
