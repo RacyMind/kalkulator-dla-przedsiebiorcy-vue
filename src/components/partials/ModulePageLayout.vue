@@ -13,7 +13,7 @@
         Korzystając z aplikacji akceptujesz <router-link class="text-grey "
                                                          style="text-decoration: underline;"
                                                          to="/polityka-prywatnosci">
-          politykę prywatnosci
+          politykę prywatności
         </router-link>.
       </p>
     </div>
