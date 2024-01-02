@@ -21,6 +21,12 @@ export default {
       title: 'O aplikacji',
     } as MenuItem,
     {
+      caption: '',
+      className: 'c-app',
+      link: '/polityka-prywatnosci',
+      title: 'Polityka prywatności',
+    } as MenuItem,
+    {
       caption: '@kalkulator.finansowy',
       className: 'c-app',
       link: 'https://www.facebook.com/kalkulator.finansowy',

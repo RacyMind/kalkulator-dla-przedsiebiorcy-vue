@@ -28,6 +28,7 @@ const routes: RouteRecordRaw[] = [
       { component: () => import('pages/PurchasingPowerOfMoney.vue'), path: 'sila-nabywcza-pieniadza' },
       { component: () => import('pages/SalaryStats.vue'), path: 'informacje-o-wynagrodzeniu' },
       { component: () => import('pages/Terms.vue'), path: 'terminy-w-us-zus-pfron' },
+      { component: () => import('components/privacyPolicy/Index.vue'), path: 'polityka-prywatnosci' },
     ],
     component: () => import('layouts/MainLayout.vue'),
     path: '/',
