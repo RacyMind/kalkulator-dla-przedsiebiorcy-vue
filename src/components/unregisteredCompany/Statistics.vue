@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
+import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {PropType, computed, defineComponent} from 'vue'
-import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 import {usePieChart} from 'src/use/usePieChart'
 import PieChart from 'components/partials/statistics/PieChart.vue'
 import unregisteredCompany from 'components/unregisteredCompany/unregisteredCompany'
@@ -22,7 +22,7 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<UnregisteredCompanyInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {

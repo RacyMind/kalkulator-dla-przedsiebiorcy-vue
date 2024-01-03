@@ -1,5 +1,5 @@
-import { UnregisteredCompanyInputFields } from './interfaces/UnregisteredCompanyInputFields'
-import {UnregisteredCompanyResult} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyResult'
+import { InputFields } from './interfaces/InputFields'
+import {Result} from 'components/unregisteredCompany/interfaces/Result'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
@@ -9,9 +9,9 @@ const taxRate = constants.TAX_RATES.FIRST_RATE / 100
  * Returns the result
  *
  * @param input
- * @returns {UnregisteredCompanyResult}
+ * @returns {Result}
  */
-function getResult (input:UnregisteredCompanyInputFields):UnregisteredCompanyResult {
+function getResult (input:InputFields):Result {
   const basisForTax = input.incomeAmount - input.expenses
   const taxAmount = helpers.round(basisForTax * taxRate)
   const netAmount = input.incomeAmount - taxAmount

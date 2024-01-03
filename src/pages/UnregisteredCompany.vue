@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
+import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
@@ -51,14 +51,14 @@ breadcrumbStore.items = [
   },
 ]
 
-const unregisteredCompanyInputFields = ref(<UnregisteredCompanyInputFields>{
+const unregisteredCompanyInputFields = ref(<InputFields>{
   expenses: 0,
   incomeAmount: 0,
 })
 
 const scrollTarget = ref(null) as any
 
-const save = (input: UnregisteredCompanyInputFields) => {
+const save = (input: InputFields) => {
   unregisteredCompanyInputFields.value = input
   helpers.scrollToElement(scrollTarget?.value?.$el)
 }

@@ -26,8 +26,8 @@
   </div>
 </template>
 <script lang="ts">
+import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {PropType, computed, defineComponent, watch} from 'vue'
-import {UnregisteredCompanyInputFields} from 'components/unregisteredCompany/interfaces/UnregisteredCompanyInputFields'
 import { pln } from 'src/use/currencyFormat'
 import {useQuasar} from 'quasar'
 import ListRow from 'components/partials/ListRow.vue'
@@ -42,7 +42,7 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<UnregisteredCompanyInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {
