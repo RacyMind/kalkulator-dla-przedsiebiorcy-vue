@@ -123,3 +123,28 @@ describe('ZUS contribution basises in 2024', () => {
     expect(zusConstants.value.entrepreneur.basises.small(6)).toBe(1290)
   })
 })
+
+describe('the helth contibutions in 2024', () => {
+  setActivePinia(createPinia())
+  const settingStore = useSettingStore()
+  settingStore.dateOfLawRules = new Date(2024,0,1)
+
+  const { zusConstants, incomeTaxConstnts} = useConstants()
+  const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+  it('the tax scales', () => {
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(381.78)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(314.1)
+  })
+
+  it('the flat tax', () => {
+    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(381.78)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(314.1)
+  })
+
+  it('the lump sum tax', () => {
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(399.60)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60001)).toBe(666)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1198.80)
+  })
+})
