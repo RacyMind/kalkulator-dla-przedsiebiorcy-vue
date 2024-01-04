@@ -32,7 +32,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
     let expenses = 0
 
     if(this.getInputData().partOfWorkWithAuthorExpenses < 1) {
-      expenses = this.getInputData().workInLivePlace ? incomeTaxConstnts.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstnts.taxScale.expenses.amounts.workOutsideLivingPlace
+      expenses = this.getInputData().workInLivePlace ? incomeTaxConstnts.value.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstnts.value.taxScale.expenses.amounts.workOutsideLivingPlace
     }
 
     const authorExpenses = this.incomeTax.getAuthorExpenses(basisForExpenses, this.getInputData().partOfWorkWithAuthorExpenses, this.getInputData().hasTaxRelief, this.sumUpAuthorExpenses)
