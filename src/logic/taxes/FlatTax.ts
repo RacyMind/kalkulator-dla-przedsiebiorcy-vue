@@ -10,7 +10,7 @@ export class FlatTax{
     this.incomeTaxConstants = incomeTaxConstnts
   }
   public getIncomeTax(taxBasis:number):number {
-    return helpers.round(this.incomeTaxConstants.flatTax.taxRate * taxBasis)
+    return helpers.round(this.incomeTaxConstants.value.flatTax.taxRate * taxBasis)
   }
 }
 

@@ -10,7 +10,7 @@ export class TaxScale {
     const { incomeTaxConstnts} = useConstants()
 
     this.incomeTaxConstants = incomeTaxConstnts
-    this.annualTaxReducingAmount = this.incomeTaxConstants.taxScale.taxFreeAmount * this.incomeTaxConstants.taxScale.taxRates.first
+    this.annualTaxReducingAmount = this.incomeTaxConstants.value.taxScale.taxFreeAmount * this.incomeTaxConstants.value.taxScale.taxRates.first
   }
 
   public getAuthorExpenses(basisForAuthorExpenses:number, partOfWorkWithAuthorExpenses: number, hasTaxRelief: boolean, sumUpAuthorExpenses:number):number {
@@ -21,18 +21,18 @@ export class TaxScale {
       return 0
     }
 
-    let realThreshold = this.incomeTaxConstants.taxScale.taxThreshold
+    let realThreshold = this.incomeTaxConstants.value.taxScale.taxThreshold
 
     if(hasTaxRelief) {
       // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
-      realThreshold = this.incomeTaxConstants.taxScale.taxThreshold - this.incomeTaxConstants.taxReliefLimit
+      realThreshold = this.incomeTaxConstants.value.taxScale.taxThreshold - this.incomeTaxConstants.value.taxReliefLimit
     }
 
     if(sumUpAuthorExpenses >= realThreshold) {
       return 0
     }
 
-    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * this.incomeTaxConstants.taxScale.expenses.rates.author, 2)
+    const expenses = helpers.round(basisForAuthorExpenses * partOfWorkWithAuthorExpenses * this.incomeTaxConstants.value.taxScale.expenses.rates.author, 2)
 
     if(expenses + sumUpAuthorExpenses > realThreshold) {
       return realThreshold - sumUpAuthorExpenses
@@ -49,15 +49,15 @@ export class TaxScale {
     let taxAmount:number
 
     // If the total basis for the tax is grater than the amount of the tax threshold, there is the second tax rate
-    if (sumUpTaxBasis > this.incomeTaxConstants.taxScale.taxThreshold) {
-      taxAmount = taxBasis * this.incomeTaxConstants.taxScale.taxRates.second
-    } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.taxScale.taxThreshold) {
+    if (sumUpTaxBasis > this.incomeTaxConstants.value.taxScale.taxThreshold) {
+      taxAmount = taxBasis * this.incomeTaxConstants.value.taxScale.taxRates.second
+    } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.value.taxScale.taxThreshold) {
       // first rate
-      taxAmount = (this.incomeTaxConstants.taxScale.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.taxScale.taxRates.first
+      taxAmount = (this.incomeTaxConstants.value.taxScale.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.value.taxScale.taxRates.first
       // second rate
-      taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.taxScale.taxThreshold) * this.incomeTaxConstants.taxScale.taxRates.second
+      taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.value.taxScale.taxThreshold) * this.incomeTaxConstants.value.taxScale.taxRates.second
     } else {
-      taxAmount = taxBasis * this.incomeTaxConstants.taxScale.taxRates.first
+      taxAmount = taxBasis * this.incomeTaxConstants.value.taxScale.taxRates.first
     }
 
     if(partTaxReducingAmount) {
@@ -73,5 +73,5 @@ export class TaxScale {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface GeneraLRule extends HasTaxReliefLimit {}
+export interface TaxScale extends HasTaxReliefLimit {}
 helpers.applyMixins(TaxScale, [HasTaxReliefLimit])

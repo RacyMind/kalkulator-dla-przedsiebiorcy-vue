@@ -1,4 +1,4 @@
-import {Ref, computed} from 'vue'
+import {computed} from 'vue'
 import {useSettingStore} from 'stores/settingStore'
 import helpers from 'src/logic/helpers'
 
@@ -121,7 +121,7 @@ interface WageStats {
 export const useConstants = () => {
   const settingStore = useSettingStore()
 
-  const wageStats:Ref<WageStats> = computed(() => {
+  const wageStats = computed<WageStats>(() => {
     return {
       // Q4 2022
       averageWageInLastQuarter: (year = settingStore.dateOfLawRules.getFullYear() - 1) => {
@@ -149,34 +149,36 @@ export const useConstants = () => {
     }
   })
 
-  const incomeTaxConstnts: IncomeTaxConstants = {
-    taxReliefLimit: 85528,
-    taxScale: {
-      expenses: {
-        amounts: {
-          workInLivingPlace: 250,
-          workOutsideLivingPlace: 300,
+  const incomeTaxConstnts = computed<IncomeTaxConstants>(() => {
+    return {
+      taxReliefLimit: 85528,
+      taxScale: {
+        expenses: {
+          amounts: {
+            workInLivingPlace: 250,
+            workOutsideLivingPlace: 300,
+          },
+          rates: {
+            default: 0.2,
+            author: 0.5,
+          },
+          withoutExpensesUpTo: 200,
         },
-        rates: {
-          default: 0.2,
-          author: 0.5,
+        taxFreeAmount: 30000,
+        taxThreshold: 120000,
+        taxRates: {
+          first: 0.12,
+          second: 0.32,
         },
-        withoutExpensesUpTo: 200,
       },
-      taxFreeAmount: 30000,
-      taxThreshold: 120000,
-      taxRates: {
-        first: 0.12,
-        second: 0.32,
+      flatTax: {
+        deductibleHealthContributionLimit: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 10200 : 11600,
+        taxRate: 0.19,
       },
-    },
-    flatTax: {
-      deductibleHealthContributionLimit: 10200,
-      taxRate: 0.19,
-    },
-  }
+    }
+  })
 
-  const zusConstants: Ref<zusConstants> = computed(() => {
+  const zusConstants = computed<zusConstants>(() => {
 
     const employeeZusConstants:EmployeeZusConstants = {
       rates: {

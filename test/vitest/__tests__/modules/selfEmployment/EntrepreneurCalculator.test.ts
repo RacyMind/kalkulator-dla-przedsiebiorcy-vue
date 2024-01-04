@@ -1,12 +1,13 @@
 import {EntrepreneurCalculator} from 'components/selfEmployment/logic/EntrepreneurCalculator'
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
+import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
-import {describe, expect, it} from 'vitest'
 import {useSettingStore} from 'stores/settingStore'
 
+setActivePinia(createPinia())
+
 describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
-  setActivePinia(createPinia())
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
@@ -178,7 +179,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxReliefLimit + 10000,
+          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.healthContributionBasis).toBe(94109.52)
@@ -189,7 +190,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit and expenses', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxReliefLimit + 20000,
+          revenue: incomeTaxConstnts.value.taxReliefLimit + 20000,
           expenses: 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
@@ -203,7 +204,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('the standard case', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
         expect(result.taxAmount).toBe(17146)
@@ -212,7 +213,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax free amount', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
           partTaxReducingAmount: 12,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
@@ -222,7 +223,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax relief', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(43054)
@@ -359,7 +360,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxReliefLimit + 10000,
+          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.healthContributionBasis).toBe(94109.52)
@@ -481,7 +482,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.taxReliefLimit + 10000,
+          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(8495)
@@ -501,6 +502,47 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
         expect(result.taxAmount).toBe(1050)
         expect(result.income).toBe(7155.36)
       })
+    })
+  })
+})
+
+describe('Entrepreneur Calculator of Selfemployment on 1.01.2024', () => {
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2024,1,1)
+  })
+
+  const getDefaultInput = ():InputFields => {
+    const { zusConstants} = useConstants()
+    return {
+      revenue: 10000,
+      expenses:0,
+      taxSystem: EntrepreneurTaxSystem.TaxScale,
+      monthIndex: 10,
+      previousMonthHealthContributionBasis: 10000,
+      accidentContributionRate: 0.0167,
+      isFpContribution: true,
+      isSickContribution: true,
+      partTaxReducingAmount: 0,
+      hasTaxRelief: false,
+      yearlyIncome: 0,
+      hasEmploymentContract: false,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
+      businessIsRuning: true,
+    }
+  }
+
+  describe('ZUS contributions', () => {
+    it('the "big" zus basis', () => {
+      const result = new EntrepreneurCalculator().setInputData(getDefaultInput()).calculate().getResult()
+
+      expect(result.healthContribution).toBe(900)
+      expect(result.disabilityContribution).toBe(375.55)
+      expect(result.pensionContribution).toBe(916.35)
+      expect(result.accidentContribution).toBe(78.4)
+      expect(result.sickContribution).toBe(115.01)
+      expect(result.fpContribution).toBe(46.94)
+      expect(result.fsContribution).toBe(68.07)
     })
   })
 })

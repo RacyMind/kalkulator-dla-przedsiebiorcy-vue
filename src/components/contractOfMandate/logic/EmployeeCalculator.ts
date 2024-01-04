@@ -32,7 +32,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const expenseRate = this.getInputData().canLumpSumTaxBe && this.getInputData().grossAmount <= this.incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo ? 0 : this.incomeTaxConstants.taxScale.expenses.rates.default
+    const expenseRate = this.getInputData().canLumpSumTaxBe && this.getInputData().grossAmount <= this.incomeTaxConstants.value.taxScale.expenses.withoutExpensesUpTo ? 0 : this.incomeTaxConstants.value.taxScale.expenses.rates.default
 
     const partOfWorkWithoutAuthorExpenses = 1 - this.getInputData().partOfWorkWithAuthorExpenses
 
