@@ -21,7 +21,7 @@
           type="number"
           min="1"
           step="1"
-          label="Liczba godzin ulopu*"
+          label="Liczba godzin urlopu*"
           color="brand"
           :rules="[validationRules.required]"
           lazy-rules
