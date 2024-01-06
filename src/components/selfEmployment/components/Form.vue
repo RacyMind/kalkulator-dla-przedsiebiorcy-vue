@@ -440,7 +440,7 @@ const handleFormSubmit = () => {
     monthIndex: 0,
   }
 
-  const monhtlyInputFields: InputFields[] = []
+  const monthlyInputFields: InputFields[] = []
 
   for (let i = 0; i < 12; i++) {
     const inputFields: InputFields = {
@@ -463,10 +463,10 @@ const handleFormSubmit = () => {
       inputFields.businessIsRuning = false
     }
 
-    monhtlyInputFields.push(inputFields)
+    monthlyInputFields.push(inputFields)
   }
 
-  store.monthlyInputFields = monhtlyInputFields
+  store.monthlyInputFields = monthlyInputFields
 
   emit('submit')
 }

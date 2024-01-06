@@ -24,6 +24,7 @@ export const useMonths = () => {
   })
 
   return {
+    fullYear: 'Cały rok',
     monthNames,
     monthOptions,
   }

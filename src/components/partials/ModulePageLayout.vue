@@ -14,7 +14,7 @@
                                                          style="text-decoration: underline;"
                                                          to="/polityka-prywatnosci">
           politykę prywatności
-        </router-link>.
+        </router-link>
       </p>
     </div>
     <Footer/>

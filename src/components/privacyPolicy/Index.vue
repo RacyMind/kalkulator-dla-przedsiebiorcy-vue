@@ -43,7 +43,6 @@
 
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
-import SectionHeader from 'components/partials/SectionHeader.vue'
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
