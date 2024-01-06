@@ -4,6 +4,7 @@ import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 export interface InputFields{
   revenue: number
   expenses: number
+  lossFromLastMonth: number
   taxSystem: EntrepreneurTaxSystem
   contributionBasis: number
   isFpContribution: boolean

@@ -20,7 +20,7 @@ export class AnnualEntrepreneurCalculator extends BasicCalculator<InputFields[],
     this.getInputData().forEach((monthlyInput, monthIndex) => {
       if(monthIndex > 0) {
         monthlyInput.previousMonthHealthContributionBasis = monthlyResults[monthIndex - 1].healthContributionBasis
-        monthlyInput.expenses = helpers.round(monthlyInput.expenses + monthlyResults[monthIndex - 1].deductibleExpenses)
+        monthlyInput.lossFromLastMonth = monthlyResults[monthIndex - 1].deductibleExpenses
       }
       monthlyInput.yearlyIncome = yearlyIncome
       monthlyResults.push(calculator.setInputData(monthlyInput).calculate().getResult())
