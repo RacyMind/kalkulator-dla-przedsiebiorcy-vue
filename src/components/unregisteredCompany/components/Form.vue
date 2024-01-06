@@ -39,8 +39,20 @@
       <AnnualAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
-        :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
+      <div class="row text-grey">
+        <div class="col">
+          <template v-if="settingStore.dateOfLawRules.getFullYear() <= 2023">
+            <ul class="q-px-md q-my-none">
+              <li>Przed 1. lipca uzyskany przychód nie może przekroczyć w okresie miesiąca 50% minimalnej kwoty wynagrodzenia.</li>
+              <li>Od 1. lipca uzyskany przychód nie może przekroczyć w okresie miesiąca 75% minimalnej kwoty wynagrodzenia.</li>
+            </ul>
+          </template>
+          <template v-else>
+            Uzyskany przychód nie może przekroczyć w okresie miesiąca 75% minimalnej kwoty wynagrodzenia.
+          </template>
+        </div>
+      </div>
     </FormSection>
     <FormSection title="Koszty">
       <div class="row q-mb-md">
@@ -69,7 +81,6 @@
       <AnnualAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
-        :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
     </FormSection>
     <FormSection title="Podatek dochodowy">
@@ -83,23 +94,31 @@
 
 <script setup lang="ts">
 
-import FormSection from "components/partials/form/FormSection.vue";
-import LawRuleDate from "components/partials/LawRuleDate.vue";
-import AnnualAmountFields from "components/partials/form/AnnualAmountFields.vue";
-import TaxFreeAmountFields from "components/partials/form/TaxFreeAmountFields.vue";
-import SubmitButton from "components/partials/form/SubmitButton.vue";
-import {useFormValidation} from "src/composables/formValidation";
-import {useLocalStorage} from "@vueuse/core";
-import {useMonthlyAmounts} from "src/composables/monthlyAmounts";
-import {useTaxFreeAmount} from "src/composables/taxFreeAmount";
-import {InputFields} from "components/unregisteredCompany/interfaces/InputFields";
-import helpers from "src/logic/helpers";
+import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
+import {useConstants} from 'src/composables/constants'
+import {useFormValidation} from 'src/composables/formValidation'
+import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
+import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
+import {useSettingStore} from 'stores/settingStore'
+import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
+import {useUnregisteredCompanyStore} from 'components/unregisteredCompany/store'
+import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
+import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
+const { availableDates } = useLawRuleDate()
+const settingStore = useSettingStore()
+const store = useUnregisteredCompanyStore()
+const { wageStats } = useConstants()
 
-const revenue = useLocalStorage('unregisteredCompany/form/revenue', 10000, { mergeDefaults: true })
+const revenue = useLocalStorage('unregisteredCompany/form/revenue', helpers.round(0.75 * wageStats.value.minimumWage()), { mergeDefaults: true })
 const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'unregisteredCompany/form/revenue')
 const expenses = useLocalStorage('unregisteredCompany/form/expenses', 0, { mergeDefaults: true })
 const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses, 'unregisteredCompany/form/expenses')
@@ -116,10 +135,25 @@ const handleFormSubmit = () => {
     partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
   }
 
-  const monhtlyInputFields: InputFields[] = []
+  const monthlyInputFields: InputFields[] = []
 
   for (let i = 0; i < 12; i++) {
-    monhtlyInputFields.push(basicInputFields)
+    const inputFields: InputFields = {
+      ...basicInputFields,
+    }
+
+    if(hasRevenueForEachMonth.value) {
+      inputFields.revenue = monthlyRevenues.value[i]
+    }
+    if(hasExpensesForEachMonth.value) {
+      inputFields.expenses = monthlyExpenses.value[i]
+    }
+
+    monthlyInputFields.push(inputFields)
   }
+
+  store.monthlyInputFields = monthlyInputFields
+
+  emit('submit')
 }
 </script>

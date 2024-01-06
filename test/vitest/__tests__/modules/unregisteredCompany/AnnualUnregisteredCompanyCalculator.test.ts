@@ -1,11 +1,10 @@
+import {
+  AnnuaUnregisteredCompanyCalculator,
+} from 'components/unregisteredCompany/logic/AnnuaUnregisteredCompanyCalculator'
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
-import {UnregisteredCompanyCalculator} from "components/unregisteredCompany/logic/UnregisteredCompanyCalculator"
-import {
-  AnnuaUnregisteredCompanyCalculator
-} from "components/unregisteredCompany/logic/AnnuaUnregisteredCompanyCalculator";
 
 setActivePinia(createPinia())
 

@@ -1,8 +1,8 @@
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
+import {UnregisteredCompanyCalculator} from 'components/unregisteredCompany/logic/UnregisteredCompanyCalculator'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
-import {UnregisteredCompanyCalculator} from "components/unregisteredCompany/logic/UnregisteredCompanyCalculator"
 
 setActivePinia(createPinia())
 

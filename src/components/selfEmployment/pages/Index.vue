@@ -16,7 +16,7 @@
         :name="Tabs.AnnualSummary"
         label="Cały rok" />
       <q-tab
-        :name="Tabs.EachMonnth"
+        :name="Tabs.EachMonth"
         label="Poszczególne miesiące" />
     </q-tabs>
     <q-tab-panels
@@ -36,9 +36,9 @@
         </div>
       </q-tab-panel>
       <q-tab-panel
-        :name="Tabs.EachMonnth"
+        :name="Tabs.EachMonth"
         class="q-pa-none">
-        <tempplate v-if="store.result">
+        <template v-if="store.result">
           <div
             v-for="(monthlyResult, index) in store.result.monthlyResults"
             :key="index">
@@ -50,7 +50,7 @@
               :month="index" />
             <Separator v-if="index < 11" />
           </div>
-        </tempplate>
+        </template>
         <div
           v-else
           class="q-pa-md">
@@ -81,7 +81,7 @@ import helpers from 'src/logic/helpers'
 
 enum Tabs {
   AnnualSummary = 1,
-  EachMonnth = 2,
+  EachMonth = 2,
 }
 
 const {monthNames} = useMonths()
