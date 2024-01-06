@@ -6,7 +6,7 @@ import {Result} from 'components/unregisteredCompany/interfaces/Result'
 import {UnregisteredCompanyCalculator} from 'components/unregisteredCompany/logic/UnregisteredCompanyCalculator'
 import helpers from 'src/logic/helpers'
 
-export class AnnuaUnregisteredCompanyCalculator extends BasicCalculator<InputFields[], AnnualResult> implements Calculator<InputFields[], AnnualResult>{
+export class AnnualUnregisteredCompanyCalculator extends BasicCalculator<InputFields[], AnnualResult> implements Calculator<InputFields[], AnnualResult>{
   protected readonly calculator:UnregisteredCompanyCalculator
 
   constructor() {

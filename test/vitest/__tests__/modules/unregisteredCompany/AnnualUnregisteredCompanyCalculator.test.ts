@@ -1,6 +1,6 @@
 import {
-  AnnuaUnregisteredCompanyCalculator,
-} from 'components/unregisteredCompany/logic/AnnuaUnregisteredCompanyCalculator'
+  AnnualUnregisteredCompanyCalculator,
+} from 'components/unregisteredCompany/logic/AnnualUnregisteredCompanyCalculator'
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
@@ -33,12 +33,12 @@ describe('Annual Calculator for UnregisteredCompany on 1.01.2024', () => {
   }
 
   it('The invalid data', () => {
-    expect(() => new AnnuaUnregisteredCompanyCalculator().getResult()).toThrowError('undefined')
-    expect(() => new AnnuaUnregisteredCompanyCalculator().calculate().getResult()).toThrowError('undefined')
+    expect(() => new AnnualUnregisteredCompanyCalculator().getResult()).toThrowError('undefined')
+    expect(() => new AnnualUnregisteredCompanyCalculator().calculate().getResult()).toThrowError('undefined')
   })
 
   it('without the tax free amount', () => {
-    const result = new AnnuaUnregisteredCompanyCalculator().setInputData(annualInput(getDefaultInput())).calculate().getResult().annualResult
+    const result = new AnnualUnregisteredCompanyCalculator().setInputData(annualInput(getDefaultInput())).calculate().getResult().annualResult
 
     expect(result.revenue).toBe(12000)
     expect(result.expenses).toBe(2400)
@@ -48,7 +48,7 @@ describe('Annual Calculator for UnregisteredCompany on 1.01.2024', () => {
   })
 
   it('with the tax free amount', () => {
-    const result = new AnnuaUnregisteredCompanyCalculator().setInputData(annualInput({
+    const result = new AnnualUnregisteredCompanyCalculator().setInputData(annualInput({
       ...getDefaultInput(),
       partTaxReducingAmount: 12,
     })).calculate().getResult().annualResult

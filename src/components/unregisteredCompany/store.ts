@@ -1,6 +1,6 @@
 import {
-  AnnuaUnregisteredCompanyCalculator,
-} from 'components/unregisteredCompany/logic/AnnuaUnregisteredCompanyCalculator'
+  AnnualUnregisteredCompanyCalculator,
+} from 'components/unregisteredCompany/logic/AnnualUnregisteredCompanyCalculator'
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
 import {acceptHMRUpdate, defineStore} from 'pinia'
 
@@ -17,7 +17,7 @@ export const useUnregisteredCompanyStore = defineStore('unregisteredCompany', {
       if(state.monthlyInputFields === undefined) {
         return undefined
       }
-      return new AnnuaUnregisteredCompanyCalculator().setInputData(state.monthlyInputFields).calculate().getResult()
+      return new AnnualUnregisteredCompanyCalculator().setInputData(state.monthlyInputFields).calculate().getResult()
     },
   },
 })
