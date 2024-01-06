@@ -6,8 +6,8 @@ export class FlatTax{
   protected readonly incomeTaxConstants
 
   public constructor() {
-    const { incomeTaxConstnts} = useConstants()
-    this.incomeTaxConstants = incomeTaxConstnts
+    const { incomeTaxConstants} = useConstants()
+    this.incomeTaxConstants = incomeTaxConstants
   }
   public getIncomeTax(taxBasis:number):number {
     return helpers.round(this.incomeTaxConstants.value.flatTax.taxRate * taxBasis)
