@@ -36,7 +36,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.TaxScale,
       monthIndex: 0,
       previousMonthHealthContributionBasis: 0,
@@ -138,7 +138,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.FlatTax,
       monthIndex: 0,
       previousMonthHealthContributionBasis: 0,
@@ -232,7 +232,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.LumpSumTax,
       lumpSumTaxRate: 0.02,
       monthIndex: 0,

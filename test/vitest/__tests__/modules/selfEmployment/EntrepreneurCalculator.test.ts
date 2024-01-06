@@ -22,7 +22,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses:0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.TaxScale,
       monthIndex: 10,
       previousMonthHealthContributionBasis: 10000,
@@ -264,7 +264,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses: 0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.FlatTax,
       monthIndex: 10,
       previousMonthHealthContributionBasis: 10000,
@@ -403,7 +403,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
     const input: InputFields = {
       revenue: 10000,
       expenses: 0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.LumpSumTax,
       lumpSumTaxRate: 0.1,
       monthIndex: 10,
@@ -520,7 +520,7 @@ describe('Entrepreneur Calculator of Self employment on 1.01.2024', () => {
     return {
       revenue: 10000,
       expenses:0,
-      lossFromLastMonth: 0,
+      lossFromPreviousMonth: 0,
       taxSystem: EntrepreneurTaxSystem.TaxScale,
       monthIndex: 10,
       previousMonthHealthContributionBasis: 10000,
