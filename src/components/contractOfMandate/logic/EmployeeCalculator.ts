@@ -23,9 +23,9 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
    */
   constructor(isPartOfAnnualResult = false) {
     super()
-    const { incomeTaxConstnts} = useConstants()
+    const { incomeTaxConstants} = useConstants()
 
-    this.incomeTaxConstants = incomeTaxConstnts
+    this.incomeTaxConstants = incomeTaxConstants
     this.isPartOfAnnualResult = isPartOfAnnualResult
     this.employeeZus = new EmployeeZusContribution()
     this.incomeTax = new TaxScale()

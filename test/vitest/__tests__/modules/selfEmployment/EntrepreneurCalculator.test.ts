@@ -7,11 +7,11 @@ import {useSettingStore} from 'stores/settingStore'
 
 setActivePinia(createPinia())
 
-describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
+describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { incomeTaxConstnts, zusConstants} = useConstants()
+  const { incomeTaxConstants, zusConstants} = useConstants()
 
   it('The invalid data', () => {
     expect(() => new EntrepreneurCalculator().getResult()).toThrowError('undefined')
@@ -33,7 +33,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -136,7 +136,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       })
     })
 
-    describe('with the tax free amoount', () => {
+    describe('with the tax free amount', () => {
       it('with the 1/12 amount', () => {
       const result = new EntrepreneurCalculator().setInputData({
         ...input,
@@ -179,7 +179,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
+          revenue: incomeTaxConstants.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.healthContributionBasis).toBe(94109.52)
@@ -190,7 +190,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit and expenses', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxReliefLimit + 20000,
+          revenue: incomeTaxConstants.value.taxReliefLimit + 20000,
           expenses: 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
@@ -204,7 +204,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('the standard case', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstants.value.taxScale.taxThreshold + 10000,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
         expect(result.taxAmount).toBe(17146)
@@ -213,7 +213,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax free amount', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstants.value.taxScale.taxThreshold + 10000,
           partTaxReducingAmount: 12,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
@@ -223,7 +223,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the tax relief', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxScale.taxThreshold + 10000,
+          revenue: incomeTaxConstants.value.taxScale.taxThreshold + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(43054)
@@ -274,7 +274,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -360,7 +360,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
+          revenue: incomeTaxConstants.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.healthContributionBasis).toBe(94109.52)
@@ -413,7 +413,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -482,7 +482,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
       it('with the revenue over the tax relief limit', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
-          revenue: incomeTaxConstnts.value.taxReliefLimit + 10000,
+          revenue: incomeTaxConstants.value.taxReliefLimit + 10000,
           hasTaxRelief: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(8495)
@@ -506,7 +506,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.11.2023', () => {
   })
 })
 
-describe('Entrepreneur Calculator of Selfemployment on 1.01.2024', () => {
+describe('Entrepreneur Calculator of Self employment on 1.01.2024', () => {
   beforeEach(() => {
     const settingStore = useSettingStore()
     settingStore.dateOfLawRules = new Date(2024,1,1)
@@ -528,7 +528,7 @@ describe('Entrepreneur Calculator of Selfemployment on 1.01.2024', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
   }
 

@@ -19,8 +19,8 @@ export const useLawRuleDate = () => {
   }
 }
 export const lawRuleDateWatcher = (store:Store) => {
-  const setttingStore = useSettingStore()
-  watch(() => setttingStore.dateOfLawRules, () => {
+  const settingStore = useSettingStore()
+  watch(() => settingStore.dateOfLawRules, () => {
     store.$reset()
   })
 }

@@ -15,48 +15,48 @@ describe('ZUS contributions for an employer in 2023', () => {
     employerZusContribution = new EmployerZusContribution()
   })
 
-  it('the disability contibution', () => {
+  it('the disability contribution', () => {
     expect(employerZusContribution.geDisabilityContribution(100)).toBe(6.5)
     expect(employerZusContribution.geDisabilityContribution(0)).toBe(0)
     expect(employerZusContribution.geDisabilityContribution(-1)).toBe(0)
   })
 
-  it('the pension contibution', () => {
+  it('the pension contribution', () => {
     expect(employerZusContribution.gePensionContribution(100)).toBe(9.76)
     expect(employerZusContribution.gePensionContribution(100.1)).toBe(9.77)
     expect(employerZusContribution.gePensionContribution(0)).toBe(0)
     expect(employerZusContribution.gePensionContribution(-1)).toBe(0)
   })
 
-  it('the accident contibution', () => {
+  it('the accident contribution', () => {
     expect(employerZusContribution.getAccidentContribution(100, 0.0167)).toBe(1.67)
     expect(employerZusContribution.getAccidentContribution(100.1, 0.0167)).toBe(1.67)
     expect(employerZusContribution.getAccidentContribution(0, 0.0167)).toBe(0)
     expect(employerZusContribution.getAccidentContribution(-1, 0.0167)).toBe(0)
   })
 
-  it('the FP contibution', () => {
+  it('the FP contribution', () => {
     expect(employerZusContribution.getFPContribution(100)).toBe(1)
     expect(employerZusContribution.getFPContribution(100.1)).toBe(1)
     expect(employerZusContribution.getFPContribution(0)).toBe(0)
     expect(employerZusContribution.getFPContribution(-1)).toBe(0)
   })
 
-  it('the FPGSP contibution', () => {
+  it('the FPGSP contribution', () => {
     expect(employerZusContribution.getFGSPContribution(100)).toBe(0.1)
     expect(employerZusContribution.getFGSPContribution(100.1)).toBe(0.1)
     expect(employerZusContribution.getFGSPContribution(0)).toBe(0)
     expect(employerZusContribution.getFGSPContribution(-1)).toBe(0)
   })
 
-  it('the FS contibution', () => {
+  it('the FS contribution', () => {
     expect(employerZusContribution.getFSContribution(100)).toBe(1.45)
     expect(employerZusContribution.getFSContribution(100.1)).toBe(1.45)
     expect(employerZusContribution.getFSContribution(0)).toBe(0)
     expect(employerZusContribution.getFSContribution(-1)).toBe(0)
   })
 
-  it('the PPK contibution', () => {
+  it('the PPK contribution', () => {
     expect(employerZusContribution.getPPKContribution(100)).toBe(1.5)
     expect(employerZusContribution.getPPKContribution(100, 0.04)).toBe(4)
     expect(employerZusContribution.getPPKContribution(0)).toBe(0)

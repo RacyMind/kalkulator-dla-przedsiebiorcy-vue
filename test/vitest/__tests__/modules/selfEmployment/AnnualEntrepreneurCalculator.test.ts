@@ -20,7 +20,7 @@ const annualInput = (monthlyInput:InputFields, isSMallZus = false):InputFields[]
   return input
 }
 
-describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
+describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
   setActivePinia(createPinia())
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
@@ -47,7 +47,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -148,7 +148,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {
@@ -242,7 +242,7 @@ describe(' AnnualEntrepreneur Calculator of Selfemployment in 2023', () => {
       yearlyIncome: 0,
       hasEmploymentContract: false,
       contributionBasis: zusConstants.value.entrepreneur.basises.big,
-      businessIsRuning: true,
+      businessIsRunning: true,
     }
 
     describe('The "big" zus contribution basis', () => {

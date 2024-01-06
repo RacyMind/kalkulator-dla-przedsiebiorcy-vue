@@ -64,18 +64,18 @@ export class EntrepreneurZusContribution extends ZusContribution {
      * Returns the deductible health contribution of the entrepreneur
      */
   public getDeductibleHealthContribution(healthContribution: number, taxSystem: EntrepreneurTaxSystem, sumUpDeductibleHealthContribution = 0): number {
-    const { incomeTaxConstnts } = useConstants()
+    const { incomeTaxConstants } = useConstants()
 
       switch (taxSystem) {
         case EntrepreneurTaxSystem.TaxScale:
           return 0
 
         case EntrepreneurTaxSystem.FlatTax:
-          if(sumUpDeductibleHealthContribution >= incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit) {
+          if(sumUpDeductibleHealthContribution >= incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit) {
             return 0
           }
-          if(healthContribution + sumUpDeductibleHealthContribution >= incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit) {
-            return helpers.round(incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit - sumUpDeductibleHealthContribution, 2)
+          if(healthContribution + sumUpDeductibleHealthContribution >= incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit) {
+            return helpers.round(incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit - sumUpDeductibleHealthContribution, 2)
           }
           return healthContribution
 

@@ -131,7 +131,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstnts.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstants.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
       </div>
@@ -220,7 +220,7 @@
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
-            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnnego wynagrodzenia, płaci tylko składkę zdrowotną.
+            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnego wynagrodzenia, płaci tylko składkę zdrowotną.
           </Tooltip>
         </div>
         <div>
@@ -274,7 +274,7 @@ import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
-import {useSelfemploymentStore} from 'components/selfEmployment/store'
+import {useSelfEmploymentStore} from 'components/selfEmployment/store'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
@@ -289,8 +289,8 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants, incomeTaxConstnts } = useConstants()
-const store = useSelfemploymentStore()
+const { zusConstants, incomeTaxConstants } = useConstants()
+const store = useSelfEmploymentStore()
 
 enum ContributionBasises {
   Big = 1,
@@ -436,7 +436,7 @@ const handleFormSubmit = () => {
     contributionBasis: 0,
     yearlyIncome: 0,
     previousMonthHealthContributionBasis: businessHasStartedBeforeThisYear.value ? previousMonthHealthContributionBasis.value : 0,
-    businessIsRuning: true,
+    businessIsRunning: true,
     monthIndex: 0,
   }
 
@@ -460,7 +460,7 @@ const handleFormSubmit = () => {
       inputFields.revenue = 0
       inputFields.expenses = 0
       inputFields.contributionBasis = 0
-      inputFields.businessIsRuning = false
+      inputFields.businessIsRunning = false
     }
 
     monthlyInputFields.push(inputFields)

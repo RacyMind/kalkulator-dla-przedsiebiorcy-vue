@@ -68,7 +68,7 @@ import {Ref, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
-import {useSelfemploymentStore} from 'components/selfEmployment/store'
+import {useSelfEmploymentStore} from 'components/selfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
 import AnnualResultList from 'components/selfEmployment/components/AnnualResultList.vue'
 import Form from 'components/selfEmployment/components/Form.vue'
@@ -85,7 +85,7 @@ enum Tabs {
 }
 
 const {monthNames} = useMonths()
-const store = useSelfemploymentStore()
+const store = useSelfEmploymentStore()
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
   {

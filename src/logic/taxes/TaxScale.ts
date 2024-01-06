@@ -7,9 +7,9 @@ export class TaxScale {
   protected annualTaxReducingAmount:number
 
   public constructor() {
-    const { incomeTaxConstnts} = useConstants()
+    const { incomeTaxConstants} = useConstants()
 
-    this.incomeTaxConstants = incomeTaxConstnts
+    this.incomeTaxConstants = incomeTaxConstants
     this.annualTaxReducingAmount = this.incomeTaxConstants.value.taxScale.taxFreeAmount * this.incomeTaxConstants.value.taxScale.taxRates.first
   }
 
@@ -24,7 +24,7 @@ export class TaxScale {
     let realThreshold = this.incomeTaxConstants.value.taxScale.taxThreshold
 
     if(hasTaxRelief) {
-      // it's reduced because the sum of the tax relief and the expense limit can't be more than the the tax threshold
+      // it's reduced because the sum of the tax relief and the expense limit can't be more than the tax threshold
       realThreshold = this.incomeTaxConstants.value.taxScale.taxThreshold - this.incomeTaxConstants.value.taxReliefLimit
     }
 
@@ -43,6 +43,8 @@ export class TaxScale {
 
   /**
    *
+   * @param taxBasis
+   * @param sumUpTaxBasis
    * @param partTaxReducingAmount 0 - no tax reducing amount, 1 - the annual tax reducing amount, 12 - the monthly tax reducing amount
    */
   public getIncomeTax(taxBasis:number, sumUpTaxBasis:number, partTaxReducingAmount: number):number {
@@ -52,9 +54,9 @@ export class TaxScale {
     if (sumUpTaxBasis > this.incomeTaxConstants.value.taxScale.taxThreshold) {
       taxAmount = taxBasis * this.incomeTaxConstants.value.taxScale.taxRates.second
     } else if (taxBasis + sumUpTaxBasis > this.incomeTaxConstants.value.taxScale.taxThreshold) {
-      // first rate
+      // the first rate
       taxAmount = (this.incomeTaxConstants.value.taxScale.taxThreshold - sumUpTaxBasis) * this.incomeTaxConstants.value.taxScale.taxRates.first
-      // second rate
+      // the second rate
       taxAmount += (taxBasis + sumUpTaxBasis - this.incomeTaxConstants.value.taxScale.taxThreshold) * this.incomeTaxConstants.value.taxScale.taxRates.second
     } else {
       taxAmount = taxBasis * this.incomeTaxConstants.value.taxScale.taxRates.first
