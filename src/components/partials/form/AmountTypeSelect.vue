@@ -38,7 +38,7 @@ const amountType = computed({
 watch(amountType, () => {
   if (amountType.value === AmountTypes.Net) {
     $q.notify({
-      message: 'Przy wynagrodzeniu netto obliczenia są szacunkowe. Zalecane jest korzystanie z wynagroodzenia brutto, by poznać dokładne obliczenia.',
+      message: 'Przy wynagrodzeniu netto obliczenia są szacunkowe. Zalecane jest korzystanie z wynagrodzenia brutto, by poznać dokładne obliczenia.',
     })
   }
 })

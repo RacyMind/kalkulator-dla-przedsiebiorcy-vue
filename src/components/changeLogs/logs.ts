@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Aktualizacja limitu odliczenia składki zdrowotnej przy podatku liniowym na 2024 rok.</li></ul>',
+    publish_date: '2024-01-04',
+    version: '5.0.1',
+  },
+  {
     content: '<ul><li>Przebudowa modułu Samozatrudnienie (B2B).</li><li>Przebudowa modułu Umowa o pracę.</li><li>Przebudowa modułu Umowa zlecenie.</li><li>Przebudowa modułu Składki ZUS za część miesiąca.</li><li>Napisanie testów sprawdzających poprawność obliczeń.</li><li>Aktualizacja bibliotek.</li></ul>',
     publish_date: '2023-12-20',
     version: '5.0.0',

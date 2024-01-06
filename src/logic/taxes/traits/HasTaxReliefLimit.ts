@@ -13,11 +13,11 @@ export class HasTaxReliefLimit{
       return revenue
     }
 
-    if(sumUpRevenue > incomeTaxConstnts.taxReliefLimit) {
+    if(sumUpRevenue > incomeTaxConstnts.value.taxReliefLimit) {
       return revenue
     }
-    if(sumUpRevenue + revenue > incomeTaxConstnts.taxReliefLimit) {
-      return helpers.round(sumUpRevenue + revenue -  incomeTaxConstnts.taxReliefLimit, 2)
+    if(sumUpRevenue + revenue > incomeTaxConstnts.value.taxReliefLimit) {
+      return helpers.round(sumUpRevenue + revenue -  incomeTaxConstnts.value.taxReliefLimit, 2)
     }
 
     return 0
