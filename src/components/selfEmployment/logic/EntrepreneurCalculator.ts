@@ -33,7 +33,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     if(this.getInputData().taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
       // for the lump sum tax, the expenses can't reduce the tax basis
-      expensesToReduceTaxBasis = this.getInputData().expenses
+      expensesToReduceTaxBasis = helpers.round(this.getInputData().expenses + this.getInputData().lossFromPreviousMonth, 2)
     }
 
     const {

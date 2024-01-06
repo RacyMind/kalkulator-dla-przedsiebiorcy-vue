@@ -425,6 +425,7 @@ const handleFormSubmit = () => {
   const basicInputFields: InputFields = {
     revenue: revenue.value,
     expenses: expenses.value ?? 0,
+    lossFromPreviousMonth: 0,
     taxSystem: incomeTaxType.value,
     lumpSumTaxRate: lumpSumTaxRate.value,
     hasTaxRelief: hasTaxRelief.value,
