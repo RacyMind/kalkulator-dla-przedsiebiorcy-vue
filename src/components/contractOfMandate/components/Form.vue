@@ -56,7 +56,7 @@
           />
         </div>
       </div>
-      <div class="row items-center q-col-gutter-sm q-mb-sm">
+      <div class="row items-end q-col-gutter-sm q-mb-sm">
         <div class="col-grow">
           <q-input
             v-model.number="amount"
@@ -252,7 +252,7 @@
 import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
-import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
+import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
 import {pln} from '../../../use/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
@@ -411,23 +411,31 @@ const handleFormSubmit = () => {
     employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,
   }
 
-  if(amountType.value === AmountTypes.Net) {
-    basicInputFields.grossAmount = findGrossAmountUsingNetAmount<InputFields>(new EmployeeCalculator(), 0.5 * amount.value, 2 * amount.value, amount.value, basicInputFields)
-  }
-
   const monhtlyInputFields: InputFields[] = []
+
+  let sumUpAmounts = {
+    sumUpTaxBasis: 0,
+    sumUpContributionBasis: 0,
+    sumUpAuthorExpenses: 0,
+    sumUpGrossAmount: 0,
+  }
 
   for (let i = 0; i < 12; i++) {
     const inputFields:InputFields = {...basicInputFields}
 
-    if(hasAmountForEachMonth.value) {
-      const monthlyAmount = Number(monthlyAmounts.value[i])
+    if(amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
+      inputFields.grossAmount = Number(monthlyAmounts.value[i])
+    }
 
-      if(amountType.value === AmountTypes.Net) {
-        inputFields.grossAmount = findGrossAmountUsingNetAmount<InputFields>(new EmployeeCalculator(), 0.5 * monthlyAmount, 2 * monthlyAmount, monthlyAmount, basicInputFields)
-      } else {
-        inputFields.grossAmount = monthlyAmount
+    if(amountType.value === AmountTypes.Net) {
+      let netAmount = amount.value
+
+      if(hasAmountForEachMonth.value) {
+        netAmount = Number(monthlyAmounts.value[i])
       }
+
+      inputFields.grossAmount = findGrossAmountUsingNetAmount(new EmployeeCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, basicInputFields, sumUpAmounts)
+      sumUpAmounts = new EmployeeCalculator(true).setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getSumUpAmounts()
     }
 
     monhtlyInputFields.push(inputFields)
