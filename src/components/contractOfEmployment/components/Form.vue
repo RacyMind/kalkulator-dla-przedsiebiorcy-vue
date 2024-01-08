@@ -154,7 +154,6 @@
 import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import {SumUpAmounts} from 'components/contractOfEmployment/interfaces/SumUpAmounts'
 import {findGrossAmountUsingNetAmount} from 'components/contractOfEmployment/logic/findGrossAmountUsingNetAmount'
 import {pln} from 'src/use/currencyFormat'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
