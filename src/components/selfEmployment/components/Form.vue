@@ -30,7 +30,7 @@
         </div>
       </div>
     </FormSection>
-    <FormSection title="Przychód i koszty">
+    <FormSection title="Przychód">
       <div class="row">
         <div class="col">
           <q-input
@@ -64,6 +64,8 @@
         v-model="monthlyRevenues"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
+    </FormSection>
+    <FormSection title="Koszty">
       <div class="row q-mb-md">
         <div class="col">
           <q-input
@@ -141,10 +143,24 @@
         v-model:employer-count="employerCount" />
     </FormSection>
     <FormSection title="Składki ZUS">
+      <div class="row">
+        <div class="col">
+          <q-toggle
+            v-model="hasEmploymentContract"
+            checked-icon="check"
+            unchecked-icon="clear"
+            label="Zatrudniony na umowę o pracę"
+          />
+          <Tooltip class="q-ml-sm">
+            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnego wynagrodzenia, płaci tylko składkę zdrowotną.
+          </Tooltip>
+        </div>
+      </div>
       <div class="row q-mb-md">
         <div class="col">
           <q-select
             v-model.number="chosenContributionBasis"
+            :disable="hasEmploymentContract"
             :options="contributionBasisOptions"
             label="Podstawa składek ZUS"
             color="brand"
@@ -194,6 +210,7 @@
         <div class="col">
           <q-input
             v-model.number="accidentContributionRate"
+            :disable="hasEmploymentContract"
             type="number"
             min="0"
             step="0.01"
@@ -207,21 +224,11 @@
         <div>
           <q-toggle
             v-model="isSickContribution"
+            :disable="hasEmploymentContract"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka chorobowa"
           />
-        </div>
-        <div>
-          <q-toggle
-            v-model="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Zatrudniony na umowę o pracę"
-          />
-          <Tooltip class="q-ml-sm">
-            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnego wynagrodzenia, płaci tylko składkę zdrowotną.
-          </Tooltip>
         </div>
         <div>
           <q-toggle
@@ -235,6 +242,7 @@
         <div>
           <q-toggle
             v-model="zusRelief"
+            :disable="hasEmploymentContract"
             checked-icon="check"
             unchecked-icon="clear"
             label="Ulga na start"
@@ -394,6 +402,8 @@ watch(chosenContributionBasis, () => {
 watch(hasEmploymentContract, () => {
   if(hasEmploymentContract.value) {
     isFpContribution.value = false
+    isSickContribution.value = false
+    zusRelief.value = false
   }
 })
 watch(businessStartedInMonth, () => {

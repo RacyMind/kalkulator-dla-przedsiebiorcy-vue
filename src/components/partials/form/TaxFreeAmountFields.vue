@@ -41,15 +41,15 @@ const emit = defineEmits(['update:hasTaxFreeAmount', 'update:employerCount'])
 
 const options = [
   {
-    label: '1 pracodawcy',
+    label: '1 płatnika',
     value: 1,
   },
   {
-    label: '2 pracodawców',
+    label: '2 płatników',
     value: 2,
   },
   {
-    label: '3 pracodawców',
+    label: '3 płatników',
     value: 3,
   },
 ]

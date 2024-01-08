@@ -59,6 +59,9 @@
     <list-row nested>
       <template #name>
         Składka na Fundusz Solidarnościowy
+        <tooltip>
+          Do składek na Fundusz Solidarnościowy stosuje się zasady dotyczące obowiązkowych składek na Fundusz Pracy. Do 21 grudnia 2019 r. fundusz ten nosił nazwę Solidarnościowy Fundusz Wsparcia Osób Niepełnosprawnych.
+        </tooltip>
       </template>
       <template #value>
         {{ pln(result.fsContribution)}}
@@ -88,6 +91,7 @@ import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {computed} from 'vue'
 import {pln} from '../../../use/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   result: EmployerResult
