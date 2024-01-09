@@ -8,7 +8,7 @@
       <LawRuleDate />
     </FormSection>
     <FormSection title="Wynagrodzenie">
-      <div class="row items-center q-col-gutter-sm q-mb-sm">
+      <div class="row items-end q-col-gutter-sm q-mb-sm">
         <div class="col-grow">
           <q-input
             v-model.number="amount"
@@ -27,18 +27,9 @@
             hide-bottom-space
           />
         </div>
-        <div class="col-shrink">
-          <q-radio
-            v-model="amountType"
-            :val="AmountTypes.Net"
-            label="netto"
-          />
-          <q-radio
-            v-model="amountType"
-            :val="AmountTypes.Gross"
-            label="brutto"
-          />
-        </div>
+        <AmountTypeSelect
+          v-model="amountType"
+          class="col-shrink" />
       </div>
       <div class="row">
         <div class="col">
@@ -50,7 +41,7 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasAmountForEachMonth"
         v-model="monthlyAmounts"
       />
@@ -65,7 +56,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstnts.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -77,60 +68,12 @@
           />
         </div>
       </div>
-      <div class="row q-col-gutter-md">
-        <div class="col">
-          <q-toggle
-            v-model="hasTaxFreeAmount"
-            label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
-          />
-          <Tooltip class="q-ml-sm">
-            Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
-          </Tooltip>
-        </div>
-      </div>
-      <div
-        v-if="hasTaxFreeAmount"
-        class="row q-col-gutter-md q-mb-md">
-        <div class="col">
-          <q-select
-            v-model="employerCount"
-            :options="employerCountOptions"
-            emit-value
-            map-options
-            label="Kwota odliczana u" />
-        </div>
-      </div>
-      <div class="row q-col-gutter-md">
-        <div class="col">
-          <q-toggle
-            v-model="areAuthorExpenses"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Autorskie koszty uzyskania przychodu (50%)"
-          />
-        </div>
-      </div>
-      <div
-        v-if="areAuthorExpenses"
-        class="row q-col-gutter-md">
-        <div class="col">
-          <q-input
-            v-model.number="partOfWorkWithAuthorExpenses"
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-            label="Część pracy*"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-          />
-        </div>
-      </div>
+      <TaxFreeAmountFields
+        v-model:has-tax-free-amount="hasTaxFreeAmount"
+        v-model:employer-count="employerCount" />
+      <AuthorExpenseFields
+        v-model:are-author-expenses="areAuthorExpenses"
+        v-model:part-of-work-with-author-expenses="partOfWorkWithAuthorExpenses" />
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-mb-md">
@@ -211,19 +154,21 @@
 import {AmountTypes, useConstants} from 'src/composables/constants'
 import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import {Ref, ref} from 'vue'
-import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
+import {findGrossAmountUsingNetAmount} from 'components/contractOfEmployment/logic/findGrossAmountUsingNetAmount'
 import {pln} from 'src/use/currencyFormat'
-import {useAmmmountType} from 'src/composables/amountType'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
+import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
+import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import AuthorExpenseFields from 'components/partials/form/AuthorExpenseFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
 
@@ -232,26 +177,26 @@ const emit = defineEmits(['submit'])
 const store = useEmploymentContractStore()
 const { availableDates } = useLawRuleDate()
 const {handleValidationError} = useFormValidation()
-const { zusConstants, incomeTaxConstnts } = useConstants()
+const { zusConstants, incomeTaxConstants, wageStats } = useConstants()
 
 // the salary section
-const amount:Ref<number|null> = ref(null)
-const amountType = useAmmmountType()
-const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount)
+const amount = useLocalStorage('contractOfEmployment/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
+const amountType =  useLocalStorage<AmountTypes>('contractOfEmployment/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
+const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'contractOfEmployment/form')
 
 // the income tax section
-const workInLivePlace = ref(true)
-const areAuthorExpenses = ref(false)
-const partOfWorkWithAuthorExpenses = ref(100)
-const hasTaxRelief = ref(false)
-const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const workInLivePlace = useLocalStorage('contractOfEmployment/form/workInLivePlace', true, { mergeDefaults: true })
+const areAuthorExpenses = useLocalStorage('contractOfEmployment/form/areAuthorExpenses', false, { mergeDefaults: true })
+const partOfWorkWithAuthorExpenses = useLocalStorage('contractOfEmployment/form/partOfWorkWithAuthorExpenses', 100, { mergeDefaults: true })
+const hasTaxRelief = useLocalStorage('contractOfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfEmployment/form')
 
 // the ZUS contribution section
-const isFpContribution = ref(true)
-const isPpkContribution = ref(false)
-const employerPpkContributionRate = ref(zusConstants.value.employer.rates.ppkContribution.default * 100)
-const employeePpkContributionRate = ref(zusConstants.value.employee.rates.ppkContribution.default * 100)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
+const isFpContribution =  useLocalStorage('contractOfEmployment/form/isFpContribution', true, { mergeDefaults: true })
+const isPpkContribution =  useLocalStorage('contractOfEmployment/form/isPpkContribution', false, { mergeDefaults: true })
+const employerPpkContributionRate = useLocalStorage('contractOfEmployment/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const employeePpkContributionRate = useLocalStorage('contractOfEmployment/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('contractOfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
 
 const handleFormSubmit = () => {
   if (!amount.value) {
@@ -259,7 +204,7 @@ const handleFormSubmit = () => {
   }
 
   const basicInputFields: InputFields = {
-    grossAmount: amount.value ,
+    grossAmount: amount.value,
     hasTaxRelief: hasTaxRelief.value,
     partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
     partOfWorkWithAuthorExpenses: areAuthorExpenses.value ? helpers.round(partOfWorkWithAuthorExpenses.value / 100, 2) : 0,
@@ -270,23 +215,31 @@ const handleFormSubmit = () => {
     employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,
   }
 
-  if(amountType.value === AmountTypes.Net) {
-    basicInputFields.grossAmount = findGrossAmountUsingNetAmount<InputFields>(new EmployeeCalculator(), 0.5 * amount.value, 2 * amount.value, amount.value, basicInputFields)
-  }
-
   const monhtlyInputFields: InputFields[] = []
+
+  let sumUpAmounts = {
+    sumUpTaxBasis: 0,
+    sumUpContributionBasis: 0,
+    sumUpAuthorExpenses: 0,
+    sumUpGrossAmount: 0,
+  }
 
   for (let i = 0; i < 12; i++) {
     const inputFields:InputFields = {...basicInputFields}
 
-    if(hasAmountForEachMonth.value) {
-      const monthlyAmount = Number(monthlyAmounts.value[i])
+    if(amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
+      inputFields.grossAmount = Number(monthlyAmounts.value[i])
+    }
 
-      if(amountType.value === AmountTypes.Net) {
-        inputFields.grossAmount = findGrossAmountUsingNetAmount<InputFields>(new EmployeeCalculator(), 0.5 * monthlyAmount, 2 * monthlyAmount, monthlyAmount, basicInputFields)
-      } else {
-        inputFields.grossAmount = monthlyAmount
+    if(amountType.value === AmountTypes.Net) {
+      let netAmount = amount.value
+
+      if(hasAmountForEachMonth.value) {
+        netAmount = Number(monthlyAmounts.value[i])
       }
+
+      inputFields.grossAmount = findGrossAmountUsingNetAmount(new EmployeeCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, basicInputFields, sumUpAmounts)
+      sumUpAmounts = new EmployeeCalculator(true).setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getSumUpAmounts()
     }
 
     monhtlyInputFields.push(inputFields)

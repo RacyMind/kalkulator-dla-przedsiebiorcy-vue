@@ -83,7 +83,7 @@ interface zusConstants {
 }
 
 interface IncomeTaxConstants{
-  // Over the amount, the tax relief is end
+  // Over the amount, the tax relief is ended
   taxReliefLimit: number,
   taxScale: {
     expenses: {
@@ -95,7 +95,7 @@ interface IncomeTaxConstants{
         default: number,
         author: number
       },
-      // It uses by civil agrreements - contract of mandate and work contract
+      // It uses by civil agreements - contract of mandate and work contract
       withoutExpensesUpTo: number,
     },
     taxFreeAmount: number,
@@ -114,7 +114,7 @@ interface IncomeTaxConstants{
 
 interface WageStats {
   averageWageInLastQuarter: (year?: number) => number,
-  minimumWage: (year: number, monthIndex:number) => number,
+  minimumWage: (year?: number, monthIndex?:number) => number,
   projectedAverageWage: number,
 }
 
@@ -149,7 +149,7 @@ export const useConstants = () => {
     }
   })
 
-  const incomeTaxConstnts = computed<IncomeTaxConstants>(() => {
+  const incomeTaxConstants = computed<IncomeTaxConstants>(() => {
     return {
       taxReliefLimit: 85528,
       taxScale: {
@@ -243,7 +243,7 @@ export const useConstants = () => {
   })
 
   return {
-    incomeTaxConstnts,
+    incomeTaxConstants,
     wageStats,
     zusConstants,
   }

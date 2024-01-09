@@ -12,7 +12,7 @@ describe('ZUS contributions in 2023', () => {
     settingStore.dateOfLawRules = new Date(2023,11,1)
 
   })
-  it('the basis for contibutions', () => {
+  it('the basis for contributions', () => {
     const zusContribution = new ZusContribution()
     const { zusConstants} = useConstants()
 

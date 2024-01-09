@@ -9,6 +9,7 @@
     <q-tooltip
       anchor="top middle"
       self="bottom middle"
+      max-width="400px"
       :offset="[0, 10]">
       <slot />
     </q-tooltip>
@@ -19,7 +20,7 @@
 const props = defineProps({
   color: {
     type: String,
-    reqired: false,
+    required: false,
     default: 'primary',
   },
 })

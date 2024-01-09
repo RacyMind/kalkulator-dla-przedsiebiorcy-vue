@@ -10,7 +10,7 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { incomeTaxConstnts} = useConstants()
+  const { incomeTaxConstants} = useConstants()
 
   it('The invalid data', () => {
     expect(() => new EmployeeCalculator().getResult()).toThrowError('undefined')
@@ -133,19 +133,19 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
     it('The expenses are over limit of author expenses', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 2 + 1,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.value.taxScale.taxThreshold)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstants.value.taxScale.taxThreshold)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 5 + 1,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 5 + 1,
         partOfWorkWithAuthorExpenses: 0,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.value.taxScale.taxThreshold + 0.2)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstants.value.taxScale.taxThreshold + 0.2)
 
       const simulateMultipleMonthsWithAuthorExpenses = new EmployeeCalculator(true).setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
       })
 
@@ -156,51 +156,51 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
 
       const simulateMultipleMonthsWithoutAuthorExpenses = new EmployeeCalculator(true).setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 5,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 5,
         partOfWorkWithAuthorExpenses: 0,
       })
 
       simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult()
       simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult()
 
-      expect(simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult().expenses).toBe(incomeTaxConstnts.value.taxScale.taxThreshold)
+      expect(simulateMultipleMonthsWithoutAuthorExpenses.calculate().getResult().expenses).toBe(incomeTaxConstants.value.taxScale.taxThreshold)
     })
 
     it('The expenses with the tax relief and the author expenses', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
       }).calculate().getResult().expenses).toBe(0)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit + 1,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit + 1,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
       }).calculate().getResult().expenses).toBe(0.5)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).calculate().getResult().expenses).toBe((incomeTaxConstnts.value.taxScale.taxThreshold - incomeTaxConstnts.value.taxReliefLimit) / 2)
+      }).calculate().getResult().expenses).toBe((incomeTaxConstants.value.taxScale.taxThreshold - incomeTaxConstants.value.taxReliefLimit) / 2)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: 2 * incomeTaxConstnts.value.taxScale.taxThreshold + 1,
+        grossAmount: 2 * incomeTaxConstants.value.taxScale.taxThreshold + 1,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.value.taxScale.taxThreshold - incomeTaxConstnts.value.taxReliefLimit)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstants.value.taxScale.taxThreshold - incomeTaxConstants.value.taxReliefLimit)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 10,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 10,
         partOfWorkWithAuthorExpenses: 1,
         hasTaxRelief: true,
-      }).calculate().getResult().expenses).toBe(incomeTaxConstnts.value.taxScale.taxThreshold - incomeTaxConstnts.value.taxReliefLimit)
+      }).calculate().getResult().expenses).toBe(incomeTaxConstants.value.taxScale.taxThreshold - incomeTaxConstants.value.taxReliefLimit)
     })
   })
 
@@ -255,21 +255,21 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
     it('The expenses are over limit of author expenses', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 2,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 2,
         partOfWorkWithAuthorExpenses: 1,
-      }).calculate().getResult().taxBasis).toBe(incomeTaxConstnts.value.taxScale.taxThreshold)
+      }).calculate().getResult().taxBasis).toBe(incomeTaxConstants.value.taxScale.taxThreshold)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 2 + 1,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 2 + 1,
         partOfWorkWithAuthorExpenses: 1,
-      }).calculate().getResult().taxBasis).toBe(incomeTaxConstnts.value.taxScale.taxThreshold + 1)
+      }).calculate().getResult().taxBasis).toBe(incomeTaxConstants.value.taxScale.taxThreshold + 1)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxScale.taxThreshold * 2 + 10,
+        grossAmount: incomeTaxConstants.value.taxScale.taxThreshold * 2 + 10,
         partOfWorkWithAuthorExpenses: 1,
-      }).calculate().getResult().taxBasis).toBe(incomeTaxConstnts.value.taxScale.taxThreshold + 10)
+      }).calculate().getResult().taxBasis).toBe(incomeTaxConstants.value.taxScale.taxThreshold + 10)
     })
 
     it('The tax relief is active', () => {
@@ -280,25 +280,25 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit,
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(0)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit + 100,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit + 100,
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(80)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit + 100.1,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit + 100.1,
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(80)
 
       expect(new EmployeeCalculator().setInputData({
         ...input,
-        grossAmount: incomeTaxConstnts.value.taxReliefLimit + 100,
+        grossAmount: incomeTaxConstants.value.taxReliefLimit + 100,
         hasTaxRelief: true,
         partOfWorkWithAuthorExpenses: 1,
       }).calculate().getResult().taxBasis).toBe(50)

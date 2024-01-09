@@ -30,7 +30,7 @@
         </div>
       </div>
     </FormSection>
-    <FormSection title="Przychód i koszty">
+    <FormSection title="Przychód">
       <div class="row">
         <div class="col">
           <q-input
@@ -59,11 +59,13 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
+    </FormSection>
+    <FormSection title="Koszty">
       <div class="row q-mb-md">
         <div class="col">
           <q-input
@@ -87,7 +89,7 @@
           />
         </div>
       </div>
-      <AnnualAmountInput
+      <AnnualAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
@@ -131,41 +133,34 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstnts.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstants.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
-        <div>
-          <templarte v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale">
-            <q-toggle
-              v-model="hasTaxFreeAmount"
-              label="Kwota wolna od podatku"
-              checked-icon="check"
-              unchecked-icon="clear"
-            />
-            <Tooltip class="q-ml-sm">
-              Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
-            </Tooltip>
-          </templarte>
-        </div>
       </div>
-      <div
-        v-if="hasTaxFreeAmount && incomeTaxType === EntrepreneurTaxSystem.TaxScale"
-        class="row q-col-gutter-md q-mb-md">
-        <div class="col">
-          <q-select
-            v-model="employerCount"
-            :options="employerCountOptions"
-            emit-value
-            map-options
-            label="Kwota odliczana u" />
-        </div>
-      </div>
+      <TaxFreeAmountFields
+        v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale"
+        v-model:has-tax-free-amount="hasTaxFreeAmount"
+        v-model:employer-count="employerCount" />
     </FormSection>
     <FormSection title="Składki ZUS">
+      <div class="row">
+        <div class="col">
+          <q-toggle
+            v-model="hasEmploymentContract"
+            checked-icon="check"
+            unchecked-icon="clear"
+            label="Zatrudniony na umowę o pracę"
+          />
+          <Tooltip class="q-ml-sm">
+            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnego wynagrodzenia, płaci tylko składkę zdrowotną.
+          </Tooltip>
+        </div>
+      </div>
       <div class="row q-mb-md">
         <div class="col">
           <q-select
             v-model.number="chosenContributionBasis"
+            :disable="hasEmploymentContract"
             :options="contributionBasisOptions"
             label="Podstawa składek ZUS"
             color="brand"
@@ -215,6 +210,7 @@
         <div class="col">
           <q-input
             v-model.number="accidentContributionRate"
+            :disable="hasEmploymentContract"
             type="number"
             min="0"
             step="0.01"
@@ -228,21 +224,11 @@
         <div>
           <q-toggle
             v-model="isSickContribution"
+            :disable="hasEmploymentContract"
             checked-icon="check"
             unchecked-icon="clear"
             label="Składka chorobowa"
           />
-        </div>
-        <div>
-          <q-toggle
-            v-model="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Zatrudniony na umowę o pracę"
-          />
-          <Tooltip class="q-ml-sm">
-            Zatrudniony na umowę o pracę, zarabiający co najmniej równowartość minimalnnego wynagrodzenia, płaci tylko składkę zdrowotną.
-          </Tooltip>
         </div>
         <div>
           <q-toggle
@@ -256,6 +242,7 @@
         <div>
           <q-toggle
             v-model="zusRelief"
+            :disable="hasEmploymentContract"
             checked-icon="check"
             unchecked-icon="clear"
             label="Ulga na start"
@@ -287,19 +274,21 @@
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
-import {Ref, computed, ref, watch} from 'vue'
+import {computed, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {useContributionBasis} from 'src/composables/contributionBasises'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
-import {useSelfemploymentStore} from 'components/selfEmployment/store'
+import {useSelfEmploymentStore} from 'components/selfEmployment/store'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountInput from 'components/partials/form/AnnualAmountInput.vue'
+import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import helpers from 'src/logic/helpers'
 
@@ -308,8 +297,8 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants, incomeTaxConstnts } = useConstants()
-const store = useSelfemploymentStore()
+const { zusConstants, incomeTaxConstants } = useConstants()
+const store = useSelfEmploymentStore()
 
 enum ContributionBasises {
   Big = 1,
@@ -376,34 +365,34 @@ const lumpSumTaxRateOptions:{label: string, value: LumpSumTaxRate}[] = [
   ]
 
 // the business run period section
-const businessHasStartedBeforeThisYear = ref(true)
-const businessStartedInMonth = ref(new Date().getMonth())
+const businessHasStartedBeforeThisYear = useLocalStorage('selfEmployment/form/businessHasStartedBeforeThisYear', true, { mergeDefaults: true })
+const businessStartedInMonth = useLocalStorage('selfEmployment/form/businessStartedInMonth', new Date().getMonth(), { mergeDefaults: true })
 
 // the income tax type section
-const incomeTaxType = ref(EntrepreneurTaxSystem.TaxScale)
-const lumpSumTaxRate:Ref<LumpSumTaxRate> = ref(0.17)
+const incomeTaxType = useLocalStorage('selfEmployment/form/incomeTaxType', EntrepreneurTaxSystem.TaxScale, { mergeDefaults: true })
+const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>('selfEmployment/form/lumpSumTaxRate', 0.17, { mergeDefaults: true })
 
 // the revenue and expenses section
-const revenue:Ref<number|null> = ref(null)
-const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue)
-const expenses:Ref<number|null> = ref(null)
-const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses)
+const revenue = useLocalStorage('selfEmployment/form/revenue', 10000, { mergeDefaults: true })
+const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'selfEmployment/form/revenue')
+const expenses = useLocalStorage('selfEmployment/form/expenses', 0, { mergeDefaults: true })
+const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses, 'selfEmployment/form/expenses')
 
 // the income tax section
-const hasTaxRelief = ref(false)
-const { employerCountOptions, employerCount, hasTaxFreeAmount } = useTaxFreeAmount()
+const hasTaxRelief = useLocalStorage('selfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('selfEmployment/form')
 
 // the ZUS contribution section
-const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
-const customContributionBasis:Ref<number|null> = ref(zusConstants.value.entrepreneur.basises.big)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
-const isFpContribution = ref(true)
-const isSickContribution = ref(false)
-const hasEmploymentContract = ref(false)
+const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis('selfEmployment/form')
+const customContributionBasis = useLocalStorage('selfEmployment/form/customContributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('selfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
+const isFpContribution =  useLocalStorage('selfEmployment/form/isFpContribution', true, { mergeDefaults: true })
+const isSickContribution = useLocalStorage('selfEmployment/form/isSickContribution', false, { mergeDefaults: true })
+const hasEmploymentContract = useLocalStorage('selfEmployment/form/hasEmploymentContract', false, { mergeDefaults: true })
 const fpContributionIsDisabled = computed(() => chosenContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
-const zusRelief = ref(false)
-const zusReliefUntil = ref(5)
-const previousMonthHealthContributionBasis = ref(0)
+const zusRelief = useLocalStorage('selfEmployment/form/zusRelief', false, { mergeDefaults: true })
+const zusReliefUntil = useLocalStorage('selfEmployment/form/zusReliefUntil', 5, { mergeDefaults: true })
+const previousMonthHealthContributionBasis = useLocalStorage('selfEmployment/form/previousMonthHealthContributionBasis', 0, { mergeDefaults: true })
 
 watch(chosenContributionBasis, () => {
   if(chosenContributionBasis.value === ContributionBasises.Small) {
@@ -413,6 +402,8 @@ watch(chosenContributionBasis, () => {
 watch(hasEmploymentContract, () => {
   if(hasEmploymentContract.value) {
     isFpContribution.value = false
+    isSickContribution.value = false
+    zusRelief.value = false
   }
 })
 watch(businessStartedInMonth, () => {
@@ -444,6 +435,7 @@ const handleFormSubmit = () => {
   const basicInputFields: InputFields = {
     revenue: revenue.value,
     expenses: expenses.value ?? 0,
+    lossFromPreviousMonth: 0,
     taxSystem: incomeTaxType.value,
     lumpSumTaxRate: lumpSumTaxRate.value,
     hasTaxRelief: hasTaxRelief.value,
@@ -455,11 +447,11 @@ const handleFormSubmit = () => {
     contributionBasis: 0,
     yearlyIncome: 0,
     previousMonthHealthContributionBasis: businessHasStartedBeforeThisYear.value ? previousMonthHealthContributionBasis.value : 0,
-    businessIsRuning: true,
+    businessIsRunning: true,
     monthIndex: 0,
   }
 
-  const monhtlyInputFields: InputFields[] = []
+  const monthlyInputFields: InputFields[] = []
 
   for (let i = 0; i < 12; i++) {
     const inputFields: InputFields = {
@@ -479,13 +471,13 @@ const handleFormSubmit = () => {
       inputFields.revenue = 0
       inputFields.expenses = 0
       inputFields.contributionBasis = 0
-      inputFields.businessIsRuning = false
+      inputFields.businessIsRunning = false
     }
 
-    monhtlyInputFields.push(inputFields)
+    monthlyInputFields.push(inputFields)
   }
 
-  store.monthlyInputFields = monhtlyInputFields
+  store.monthlyInputFields = monthlyInputFields
 
   emit('submit')
 }

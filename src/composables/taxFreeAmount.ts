@@ -1,26 +1,10 @@
-import {ref} from 'vue'
+import {useLocalStorage} from '@vueuse/core'
 
-export const useTaxFreeAmount = () => {
-  const employerCountOptions = [
-    {
-      label: '1 pracodawcy',
-      value: 1,
-    },
-    {
-      label: '2 pracodawców',
-      value: 2,
-    },
-    {
-      label: '3 pracodawców',
-      value: 3,
-    },
-  ]
-
-  const hasTaxFreeAmount = ref(true)
-  const employerCount = ref(1)
+export const useTaxFreeAmount = (storagePrefix = '') => {
+  const hasTaxFreeAmount = useLocalStorage(`${storagePrefix}/hasTaxFreeAmount`, true, { mergeDefaults: true })
+  const employerCount = useLocalStorage(`${storagePrefix}/employerCount`, 1, { mergeDefaults: true })
 
   return {
-    employerCountOptions,
     employerCount,
     hasTaxFreeAmount,
   }

@@ -12,27 +12,27 @@ describe('Income tax using General Rules in 2023', () => {
 
   const taxScale = new TaxScale()
 
-  const { incomeTaxConstnts} = useConstants()
+  const { incomeTaxConstants} = useConstants()
 
   it('the tax relief limit', () => {
-    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstnts.value.taxReliefLimit, 0, true)).toBe(0)
-    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstnts.value.taxReliefLimit + 0.01, 0, true)).toBe(0.01)
+    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstants.value.taxReliefLimit, 0, true)).toBe(0)
+    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstants.value.taxReliefLimit + 0.01, 0, true)).toBe(0.01)
 
-    expect(taxScale.geRevenueOverTaxReliefLimit(0, incomeTaxConstnts.value.taxReliefLimit, true)).toBe(0)
-    expect(taxScale.geRevenueOverTaxReliefLimit(0.01, incomeTaxConstnts.value.taxReliefLimit + 0.01, true)).toBe(0.01)
-    expect(taxScale.geRevenueOverTaxReliefLimit(0.01, incomeTaxConstnts.value.taxReliefLimit + 100, true)).toBe(0.01)
-    expect(taxScale.geRevenueOverTaxReliefLimit(0, incomeTaxConstnts.value.taxReliefLimit + 0.01, true)).toBe(0)
+    expect(taxScale.geRevenueOverTaxReliefLimit(0, incomeTaxConstants.value.taxReliefLimit, true)).toBe(0)
+    expect(taxScale.geRevenueOverTaxReliefLimit(0.01, incomeTaxConstants.value.taxReliefLimit + 0.01, true)).toBe(0.01)
+    expect(taxScale.geRevenueOverTaxReliefLimit(0.01, incomeTaxConstants.value.taxReliefLimit + 100, true)).toBe(0.01)
+    expect(taxScale.geRevenueOverTaxReliefLimit(0, incomeTaxConstants.value.taxReliefLimit + 0.01, true)).toBe(0)
 
-    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstnts.value.taxReliefLimit, 0, false)).toBe(incomeTaxConstnts.value.taxReliefLimit)
+    expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstants.value.taxReliefLimit, 0, false)).toBe(incomeTaxConstants.value.taxReliefLimit)
   })
 
   it('The income tax without the tax free amount', () => {
     expect(taxScale.getIncomeTax(100, 0, 0)).toBe(12)
     expect(taxScale.getIncomeTax(100.1, 0, 0)).toBe(12)
-    expect(taxScale.getIncomeTax(100, incomeTaxConstnts.value.taxScale.taxThreshold - 100, 0)).toBe(12)
+    expect(taxScale.getIncomeTax(100, incomeTaxConstants.value.taxScale.taxThreshold - 100, 0)).toBe(12)
 
-    expect(taxScale.getIncomeTax(100, incomeTaxConstnts.value.taxScale.taxThreshold, 0)).toBe(32)
-    expect(taxScale.getIncomeTax(200, incomeTaxConstnts.value.taxScale.taxThreshold - 100, 0)).toBe(44)
+    expect(taxScale.getIncomeTax(100, incomeTaxConstants.value.taxScale.taxThreshold, 0)).toBe(32)
+    expect(taxScale.getIncomeTax(200, incomeTaxConstants.value.taxScale.taxThreshold - 100, 0)).toBe(44)
   })
 
   it('The income tax with the tax free amount', () => {

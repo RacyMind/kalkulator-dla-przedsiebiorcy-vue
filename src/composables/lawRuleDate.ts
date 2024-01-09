@@ -5,11 +5,11 @@ import {watch} from 'vue'
 export const useLawRuleDate = () => {
   const availableDates = [
     {
-      label: 'Listopad 2023',
+      label: '2023',
       value: new Date(2023,  10, 1),
     },
     {
-      label: 'Styczeń 2024',
+      label: '2024',
       value: new Date(2024,  0, 1),
     },
   ]
@@ -19,8 +19,8 @@ export const useLawRuleDate = () => {
   }
 }
 export const lawRuleDateWatcher = (store:Store) => {
-  const setttingStore = useSettingStore()
-  watch(() => setttingStore.dateOfLawRules, () => {
+  const settingStore = useSettingStore()
+  watch(() => settingStore.dateOfLawRules, () => {
     store.$reset()
   })
 }

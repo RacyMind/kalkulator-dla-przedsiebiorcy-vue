@@ -107,13 +107,14 @@
 <script setup lang="ts">
 import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
 import {ContributionCalculator} from 'components/partialZusContributions/logic/ContributionCalculator'
-import {Ref, ref, watch} from 'vue'
 import {useConstants} from 'src/composables/constants'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
 import {useMonths} from 'src/composables/months'
 import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
 import {useSettingStore} from 'stores/settingStore'
+import {watch} from 'vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
@@ -128,14 +129,14 @@ const { zusConstants } = useConstants()
 const store = usePartialZusContributionStore()
 const settingStore = useSettingStore()
 
-const daysOfRunningBusiness: Ref<number> = ref(new ContributionCalculator().getDaysInMonth(new Date().getMonth()))
-const monthIndex: Ref<number> = ref(new Date().getMonth())
+const daysOfRunningBusiness = useLocalStorage('partialZusContributions/form/daysOfRunningBusiness', new ContributionCalculator().getDaysInMonth(new Date().getMonth()), { mergeDefaults: true })
+const monthIndex = useLocalStorage('partialZusContributions/form/monthIndex', new Date().getMonth(), { mergeDefaults: true })
 
-const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis()
-const contributionBasis = ref(zusConstants.value.entrepreneur.basises.big)
-const accidentContributionRate = ref(zusConstants.value.employer.rates.accidentCContribution.default * 100)
-const isFpContribution = ref(true)
-const isSickContribution = ref(true)
+const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis('partialZusContributions/form')
+const contributionBasis = useLocalStorage('partialZusContributions/form/contributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('partialZusContributions/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
+const isFpContribution = useLocalStorage('partialZusContributions/form/isFpContribution', true, { mergeDefaults: true })
+const isSickContribution = useLocalStorage('partialZusContributions/form/isSickContribution', false, { mergeDefaults: true })
 
 watch(chosenContributionBasis, () => {
   switch (chosenContributionBasis.value) {

@@ -6,7 +6,7 @@ type Store = {
   monthlyInputFields: InputFields[] | undefined
 }
 
-export const useSelfemploymentStore = defineStore('selfemployment', {
+export const useSelfEmploymentStore = defineStore('selfemployment', {
   state: ():Store => ({
     monthlyInputFields:  undefined,
   }),
@@ -21,5 +21,5 @@ export const useSelfemploymentStore = defineStore('selfemployment', {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useSelfemploymentStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useSelfEmploymentStore, import.meta.hot))
 }

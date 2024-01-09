@@ -13,7 +13,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
 
-  it('the disability contibution', () => {
+  it('the disability contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -22,7 +22,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
-  it('the pension contibution', () => {
+  it('the pension contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -31,7 +31,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.gePensionContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
-  it('the sick contibution', () => {
+  it('the sick contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -40,7 +40,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.getSickContribution(zusConstants.value.entrepreneur.basises.startRelief)).toBe(0)
   })
 
-  it('the accident contibution', () => {
+  it('the accident contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -49,7 +49,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.value.entrepreneur.basises.startRelief, 0.0167)).toBe(0)
   })
 
-  it('the FP contibution', () => {
+  it('the FP contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -57,7 +57,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.getFPContribution(0)).toBe(0)
   })
 
-  it('the FPGSP contibution', () => {
+  it('the FPGSP contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -65,7 +65,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.getFGSPContribution(0)).toBe(0)
   })
 
-  it('the FS contibution', () => {
+  it('the FS contribution', () => {
     const { zusConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -73,7 +73,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     expect(entrepreneurZusContribution.getFSContribution(0)).toBe(0)
   })
 
-  describe('the helth contibution', () => {
+  describe('the health contribution', () => {
     it('the tax scales', () => {
       const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -101,7 +101,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     })
   })
 
-  describe('the deductible helth contibution', () => {
+  describe('the deductible health contribution', () => {
     it('the tax scales', () => {
       const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
@@ -109,13 +109,13 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     })
 
     it('the flat tax', () => {
-      const { incomeTaxConstnts} = useConstants()
+      const { incomeTaxConstants} = useConstants()
       const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
-      expect(incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit).toBe(10200)
+      expect(incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit).toBe(10200)
       expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax)).toBe(100)
-      expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit)).toBe(0)
-      expect(entrepreneurZusContribution.getDeductibleHealthContribution(200, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit - 100)).toBe(100)
+      expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax, incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit)).toBe(0)
+      expect(entrepreneurZusContribution.getDeductibleHealthContribution(200, EntrepreneurTaxSystem.FlatTax, incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit - 100)).toBe(100)
     })
 
     it('the lump sum tax', () => {
@@ -164,19 +164,48 @@ describe('ZUS contribution basises in 2024', () => {
   })
 })
 
-describe('the deductible helth contibution in 2024', () => {
+describe('the deductible health contribution in 2024', () => {
   beforeEach(() => {
     const settingStore = useSettingStore()
     settingStore.dateOfLawRules = new Date(2024,1,1)
   })
 
   it('the flat tax', () => {
-    const { incomeTaxConstnts} = useConstants()
+    const { incomeTaxConstants} = useConstants()
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
-    expect(incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit).toBe(11600)
+    expect(incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit).toBe(11600)
     expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax)).toBe(100)
-    expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit)).toBe(0)
-    expect(entrepreneurZusContribution.getDeductibleHealthContribution(200, EntrepreneurTaxSystem.FlatTax, incomeTaxConstnts.value.flatTax.deductibleHealthContributionLimit - 100)).toBe(100)
+    expect(entrepreneurZusContribution.getDeductibleHealthContribution(100, EntrepreneurTaxSystem.FlatTax, incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit)).toBe(0)
+    expect(entrepreneurZusContribution.getDeductibleHealthContribution(200, EntrepreneurTaxSystem.FlatTax, incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit - 100)).toBe(100)
+  })
+})
+
+describe('the health contributions in 2024', () => {
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2024,1,1)
+  })
+
+  it('the tax scales', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(381.78)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(314.1)
+  })
+
+  it('the flat tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(381.78)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(314.1)
+  })
+
+  it('the lump sum tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(399.60)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60001)).toBe(666)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1198.80)
   })
 })
