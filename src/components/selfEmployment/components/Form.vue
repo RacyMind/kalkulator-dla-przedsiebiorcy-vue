@@ -113,15 +113,7 @@
         v-if="incomeTaxType === EntrepreneurTaxSystem.LumpSumTax"
         class="row q-mb-md">
         <div class="col">
-          <q-select
-            v-model.number="lumpSumTaxRate"
-            :options="lumpSumTaxRateOptions"
-            label="Stawka ryczałtu ewidencjonowanego"
-            color="brand"
-            required
-            emit-value
-            map-options
-          />
+          <LumpSumTaxRateSelect v-model.number="lumpSumTaxRate"/>
         </div>
       </div>
       <div class="row q-col-gutter-x-md">
@@ -158,16 +150,9 @@
       </div>
       <div class="row q-mb-md">
         <div class="col">
-          <q-select
-            v-model.number="chosenContributionBasis"
-            :disable="hasEmploymentContract"
-            :options="contributionBasisOptions"
-            label="Podstawa składek ZUS"
-            color="brand"
-            required
-            emit-value
-            map-options
-          />
+          <ZusContributionBasisSelect
+            v-model="chosenContributionBasis"
+            :disabled="hasEmploymentContract" />
         </div>
       </div>
       <div
@@ -287,9 +272,11 @@ import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
@@ -321,49 +308,6 @@ const incomeTaxTypes = [
   },
 ]
 
-const lumpSumTaxRateOptions:{label: string, value: LumpSumTaxRate}[] = [
-    {
-      label: '2%',
-      value: 0.02,
-    },
-    {
-      label: '3%',
-      value: 0.03,
-    },
-    {
-      label: '5,5%',
-      value: 0.055,
-    },
-    {
-      label: '8,5%',
-      value: 0.085,
-    },
-    {
-      label: '10%',
-      value: 0.1,
-    },
-    {
-      label: '12%',
-      value: 0.12,
-    },
-    {
-      label: '12,5%',
-      value: 0.125,
-    },
-    {
-      label: '14%',
-      value: 0.14,
-    },
-    {
-      label: '15%',
-      value: 0.15,
-    },
-    {
-      label: '17%',
-      value: 0.17,
-    },
-  ]
-
 // the business run period section
 const businessHasStartedBeforeThisYear = useLocalStorage('selfEmployment/form/businessHasStartedBeforeThisYear', true, { mergeDefaults: true })
 const businessStartedInMonth = useLocalStorage('selfEmployment/form/businessStartedInMonth', new Date().getMonth(), { mergeDefaults: true })
@@ -383,7 +327,7 @@ const hasTaxRelief = useLocalStorage('selfEmployment/form/hasTaxRelief', false, 
 const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('selfEmployment/form')
 
 // the ZUS contribution section
-const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis('selfEmployment/form')
+const { chosenContributionBasis } = useContributionBasis('selfEmployment/form')
 const customContributionBasis = useLocalStorage('selfEmployment/form/customContributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
 const accidentContributionRate = useLocalStorage('selfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
 const isFpContribution =  useLocalStorage('selfEmployment/form/isFpContribution', true, { mergeDefaults: true })
