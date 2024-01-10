@@ -8,7 +8,6 @@ type Store = {
   monthlyInputFields: InputFields[] | undefined
 }
 
-
 function defaultInputFields(store: Store, taxSystem: EntrepreneurTaxSystem) {
   const monthlyInputFields: EntrepreneurInputFields[] = []
 
@@ -36,10 +35,21 @@ export const useB2BComparatorStore = defineStore('b2bComparator', {
   }),
   getters: {
     taxScaleResult(state) {
-      if(state.monthlyInputFields === undefined) {
+      const inputData = defaultInputFields(state, EntrepreneurTaxSystem.TaxScale)
+      if(inputData === undefined) {
         return undefined
       }
-      const inputData = defaultInputFields(state, EntrepreneurTaxSystem.TaxScale)
+      return new AnnualEntrepreneurCalculator().setInputData(inputData).calculate().getResult()
+    },
+    flatTaxResult(state) {
+      const inputData = defaultInputFields(state, EntrepreneurTaxSystem.FlatTax)
+      if(inputData === undefined) {
+        return undefined
+      }
+      return new AnnualEntrepreneurCalculator().setInputData(inputData).calculate().getResult()
+    },
+    lumpSUmTaxResult(state) {
+      const inputData = defaultInputFields(state, EntrepreneurTaxSystem.LumpSumTax)
       if(inputData === undefined) {
         return undefined
       }

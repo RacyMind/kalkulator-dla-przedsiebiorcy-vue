@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodano moduł "Porównywarka B2B.</li></ul>',
+    publish_date: '2024-01-10',
+    version: '5.2.0',
+  },
+  {
     content: '<ul><li>Przebudowa modułu "Działalność niezarejestrowana".</li><li>Zapamiętywanie danych w formularzach - dotyczy modułów przepisanych od wersji 5.0.0.</li><li>Poprawa obliczeń przy niskim przychodzie w formularzu dla B2B.</li><li>Poprawa obliczeń dla wynagrodzenia netto, gdy obowiązuje 2. próg dochodowy.</li><li>Drobne zmiany w formularzu dla B2B.</li></ul>',
     publish_date: '2024-01-08',
     version: '5.1.0',
