@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodano moduł "Porównywarka B2B.</li></ul>',
+    content: '<ul><li>Dodano moduł "Porównywarka B2B".</li></ul>',
     publish_date: '2024-01-10',
     version: '5.2.0',
   },
