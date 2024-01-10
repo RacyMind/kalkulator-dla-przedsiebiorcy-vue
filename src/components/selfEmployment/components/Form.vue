@@ -256,12 +256,12 @@
 </template>
 
 <script setup lang="ts">
+import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
-import {useContributionBasis} from 'src/composables/contributionBasises'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -286,12 +286,6 @@ const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
 const { zusConstants, incomeTaxConstants } = useConstants()
 const store = useSelfEmploymentStore()
-
-enum ContributionBasises {
-  Big = 1,
-  Small = 2,
-  Custom = 3,
-}
 
 const incomeTaxTypes = [
   {

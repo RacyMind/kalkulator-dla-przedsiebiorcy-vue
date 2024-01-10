@@ -39,7 +39,6 @@
       <AnnualAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
-        :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
     </FormSection>
     <FormSection title="Koszty">
@@ -91,7 +90,6 @@
         </div>
       </div>
       <TaxFreeAmountFields
-        v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale"
         v-model:has-tax-free-amount="hasTaxFreeAmount"
         v-model:employer-count="employerCount" />
     </FormSection>
@@ -137,7 +135,6 @@
         </div>
       </div>
       <div
-        v-if="businessHasStartedBeforeThisYear && incomeTaxType !== EntrepreneurTaxSystem.LumpSumTax"
         class="row q-mb-md">
         <div class="col">
           <q-input
@@ -148,7 +145,7 @@
             label="Dochód z grudnia poprzedniego roku"
             suffix="zł"
             color="brand"
-            hint="Przychód minus koszty i składki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu."
+            hint="Przychód minus koszty i składki społeczne. Potrzebny do obliczenia składki zdrowotnej w styczniu. Kwota będzie zignorowana dla ryczałtu."
           />
         </div>
       </div>
@@ -193,8 +190,18 @@
 
 <script setup lang="ts">
 
-import {EntrepreneurTaxSystem} from 'src/composables/constants'
+import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
+import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
+import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
+import {computed, watch} from 'vue'
 import {pln} from 'src/use/currencyFormat'
+import {useB2BComparatorStore} from 'components/b2bComparator/store'
+import {useConstants} from 'src/composables/constants'
+import {useFormValidation} from 'src/composables/formValidation'
+import {useLawRuleDate} from 'src/composables/lawRuleDate'
+import {useLocalStorage} from '@vueuse/core'
+import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
+import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
@@ -203,4 +210,98 @@ import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
+import helpers from 'src/logic/helpers'
+
+const emit = defineEmits(['submit'])
+
+const {handleValidationError} = useFormValidation()
+const { availableDates } = useLawRuleDate()
+const { zusConstants, incomeTaxConstants } = useConstants()
+const store = useB2BComparatorStore()
+
+// the revenue and expenses section
+const revenue = useLocalStorage('b2bComparator/form/revenue', 10000, { mergeDefaults: true })
+const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'b2bComparator/form/revenue')
+const expenses = useLocalStorage('b2bComparator/form/expenses', 0, { mergeDefaults: true })
+const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses, 'b2bComparator/form/expenses')
+
+// the income tax section
+const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>('b2bComparator/form/lumpSumTaxRate', 0.17, { mergeDefaults: true })
+const hasTaxRelief = useLocalStorage('b2bComparator/form/hasTaxRelief', false, { mergeDefaults: true })
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('b2bComparator/form')
+
+// the ZUS contribution section
+const { chosenContributionBasis } = useContributionBasis('b2bComparator/form')
+const customContributionBasis = useLocalStorage('b2bComparator/form/customContributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
+const accidentContributionRate = useLocalStorage('b2bComparator/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
+const isFpContribution =  useLocalStorage('b2bComparator/form/isFpContribution', true, { mergeDefaults: true })
+const isSickContribution = useLocalStorage('b2bComparator/form/isSickContribution', false, { mergeDefaults: true })
+const hasEmploymentContract = useLocalStorage('b2bComparator/form/hasEmploymentContract', false, { mergeDefaults: true })
+const fpContributionIsDisabled = computed(() => chosenContributionBasis.value === ContributionBasises.Small || hasEmploymentContract.value)
+const previousMonthHealthContributionBasis = useLocalStorage('b2bComparator/form/previousMonthHealthContributionBasis', 0, { mergeDefaults: true })
+
+watch(chosenContributionBasis, () => {
+  if(chosenContributionBasis.value === ContributionBasises.Small) {
+    isFpContribution.value = false
+  }
+})
+watch(hasEmploymentContract, () => {
+  if(hasEmploymentContract.value) {
+    isFpContribution.value = false
+    isSickContribution.value = false
+  }
+})
+
+const getContributionBasis = (currentMonth: number): number => {
+  if(chosenContributionBasis.value === ContributionBasises.Custom) {
+    return customContributionBasis.value ?? 0
+  }
+  if(chosenContributionBasis.value === ContributionBasises.Small) {
+    return zusConstants.value.entrepreneur.basises.small(currentMonth)
+  }
+
+  return zusConstants.value.entrepreneur.basises.big
+}
+
+const handleFormSubmit = () => {
+  if (!revenue.value) {
+    return
+  }
+
+  const basicInputFields: InputFields = {
+    revenue: revenue.value,
+    expenses: expenses.value ?? 0,
+    lumpSumTaxRate: lumpSumTaxRate.value,
+    hasTaxRelief: hasTaxRelief.value,
+    partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
+    hasEmploymentContract: hasEmploymentContract.value,
+    isFpContribution: isFpContribution.value,
+    isSickContribution: isSickContribution.value,
+    accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
+    contributionBasis: 0,
+    previousMonthHealthContributionBasis: previousMonthHealthContributionBasis.value,
+  }
+
+  const monthlyInputFields: InputFields[] = []
+
+  for (let i = 0; i < 12; i++) {
+    const inputFields: InputFields = {
+      ...basicInputFields,
+      contributionBasis: getContributionBasis(i),
+    }
+
+    if(hasRevenueForEachMonth.value) {
+      inputFields.revenue = monthlyRevenues.value[i]
+    }
+    if(hasExpensesForEachMonth.value) {
+      inputFields.expenses = monthlyExpenses.value[i]
+    }
+
+    monthlyInputFields.push(inputFields)
+  }
+
+  store.monthlyInputFields = monthlyInputFields
+
+  emit('submit')
+}
 </script>

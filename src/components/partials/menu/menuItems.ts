@@ -47,6 +47,12 @@ export default {
       title: 'Samozatrudnienie (B2B)',
     } as MenuItem,
     {
+      caption: 'Moduł pokazuje różnice pomiędzy skalą podatkową, podatkiem liniowym, a podatkiem zryczałtowanym',
+      className: 'c-business',
+      link: '/porownywarka-b2b',
+      title: 'Porównywarka B2B',
+    } as MenuItem,
+    {
       caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',
       className: 'c-business',
       link: '/dzialalnosc-niezarejestrowana',

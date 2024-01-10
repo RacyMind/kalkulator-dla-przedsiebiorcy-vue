@@ -10,35 +10,27 @@
       class="bg-primary">
       Podsumowanie
     </SectionHeader>
-    <ResultList
-      v-if="store.result"
-      :result="store.result" />
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
   </ModulePageLayout>
 </template>
 
 <script setup lang="ts">
+
 import {Ref, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
+import {useB2BComparatorStore} from 'components/b2bComparator/store'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
-import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
 import Advert from 'components/partials/Advert.vue'
-import Form from 'components/partialZusContributions/components/Form.vue'
+import Form from 'components/b2bComparator/components/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
-import ResultList from 'components/partialZusContributions/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import helpers from 'src/logic/helpers'
 
 const breadcrumbStore = useBreadcrumbStore()
-const store = usePartialZusContributionStore()
+const store = useB2BComparatorStore()
 
 breadcrumbStore.items = [
   {
-    name: 'Składki ZUS za część miesiąca',
+    name: 'Porównywarka B2B',
   },
 ]
 

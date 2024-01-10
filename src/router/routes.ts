@@ -29,6 +29,7 @@ const routes: RouteRecordRaw[] = [
       { component: () => import('pages/SalaryStats.vue'), path: 'informacje-o-wynagrodzeniu' },
       { component: () => import('pages/Terms.vue'), path: 'terminy-w-us-zus-pfron' },
       { component: () => import('components/privacyPolicy/Index.vue'), path: 'polityka-prywatnosci' },
+      { component: () => import('components/b2bComparator/pages/Index.vue'), path: 'porownywarka-b2b' },
     ],
     component: () => import('layouts/MainLayout.vue'),
     path: '/',
