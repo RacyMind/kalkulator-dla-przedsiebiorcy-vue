@@ -6,9 +6,6 @@
       :chart-data="chartData"
       :chart-options="{
         indexAxis: 'y',
-        legend: {
-          display: false
-        },
       }"
     />
     <span v-else>Brak danych</span>
