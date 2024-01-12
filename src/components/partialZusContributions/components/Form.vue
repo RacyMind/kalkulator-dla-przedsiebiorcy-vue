@@ -39,15 +39,7 @@
     <FormSection title="Składki ZUS">
       <div class="row q-col-gutter-x-md">
         <div class="col">
-          <q-select
-            v-model.number="chosenContributionBasis"
-            :options="contributionBasisOptions"
-            label="Podstawa składek ZUS"
-            color="brand"
-            required
-            emit-value
-            map-options
-          />
+          <ZusContributionBasisSelect v-model="chosenContributionBasis"/>
         </div>
         <div class="col">
           <q-input
@@ -118,6 +110,7 @@ import {watch} from 'vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
@@ -132,7 +125,7 @@ const settingStore = useSettingStore()
 const daysOfRunningBusiness = useLocalStorage('partialZusContributions/form/daysOfRunningBusiness', new ContributionCalculator().getDaysInMonth(new Date().getMonth()), { mergeDefaults: true })
 const monthIndex = useLocalStorage('partialZusContributions/form/monthIndex', new Date().getMonth(), { mergeDefaults: true })
 
-const { contributionBasisOptions, chosenContributionBasis } = useContributionBasis('partialZusContributions/form')
+const { chosenContributionBasis } = useContributionBasis('partialZusContributions/form')
 const contributionBasis = useLocalStorage('partialZusContributions/form/contributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
 const accidentContributionRate = useLocalStorage('partialZusContributions/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
 const isFpContribution = useLocalStorage('partialZusContributions/form/isFpContribution', true, { mergeDefaults: true })

@@ -1,6 +1,6 @@
 <template>
   <Chart
-    type="pie"
+    type="bar"
     :chart-options="props.chartOptions"
     :chart-data="props.chartData"
   />
