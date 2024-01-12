@@ -36,7 +36,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
       />
@@ -78,7 +78,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
       />
@@ -103,7 +103,7 @@ import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useSettingStore} from 'stores/settingStore'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import {useUnregisteredCompanyStore} from 'components/unregisteredCompany/store'
-import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'

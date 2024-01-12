@@ -89,7 +89,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasAmountForEachMonth"
         v-model="monthlyAmounts"
       />
@@ -128,7 +128,10 @@
         v-model:employer-count="employerCount" />
       <AuthorExpenseFields
         v-model:are-author-expenses="areAuthorExpenses"
-        v-model:part-of-work-with-author-expenses="partOfWorkWithAuthorExpenses" />
+        v-model:part-of-work-with-author-expenses="partOfWorkWithAuthorExpenses"
+        v-model:has-percentage-for-each-month="hasAuthhorExpensesForEachMonth"
+        v-model:monthly-values="expensesMonthlyValues"
+      />
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-mb-md">
@@ -260,11 +263,12 @@ import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
 import {useMandateContractStore} from 'components/contractOfMandate/store'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
+import {useMonthlyPercentages} from 'src/composables/monthlyPercentages'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import {watch} from 'vue'
 import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
-import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
-import AuthorExpenseFields from 'components/partials/form/AuthorExpenseFields.vue'
+import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
@@ -319,6 +323,8 @@ const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'con
 // the income tax section
 const areAuthorExpenses = useLocalStorage('contractOfMandate/form/areAuthorExpenses', false, { mergeDefaults: true })
 const partOfWorkWithAuthorExpenses = useLocalStorage('contractOfMandate/form/partOfWorkWithAuthorExpenses', 100, { mergeDefaults: true })
+const { hasPercentageForEachMonth: hasAuthhorExpensesForEachMonth, monthlyValues: expensesMonthlyValues } = useMonthlyPercentages(partOfWorkWithAuthorExpenses, 'contractOfMandate/form/authorExpenses')
+
 const hasTaxRelief = useLocalStorage('contractOfMandate/form/hasTaxRelief', false, { mergeDefaults: true })
 const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfMandate/form')
 const canLumpSumTaxBe = useLocalStorage('contractOfMandate/form/canLumpSumTaxBe', true, { mergeDefaults: true })
@@ -423,6 +429,10 @@ const handleFormSubmit = () => {
   for (let i = 0; i < 12; i++) {
     const inputFields:InputFields = {...basicInputFields}
 
+    if(areAuthorExpenses.value && hasAuthhorExpensesForEachMonth.value) {
+      inputFields.partOfWorkWithAuthorExpenses = helpers.round(expensesMonthlyValues.value[i] / 100, 2)
+    }
+
     if(amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
       inputFields.grossAmount = Number(monthlyAmounts.value[i])
     }
@@ -434,7 +444,7 @@ const handleFormSubmit = () => {
         netAmount = Number(monthlyAmounts.value[i])
       }
 
-      inputFields.grossAmount = findGrossAmountUsingNetAmount(new EmployeeCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, basicInputFields, sumUpAmounts)
+      inputFields.grossAmount = findGrossAmountUsingNetAmount(new EmployeeCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, inputFields, sumUpAmounts)
       sumUpAmounts = new EmployeeCalculator(true).setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getSumUpAmounts()
     }
 

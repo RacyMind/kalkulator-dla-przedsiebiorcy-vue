@@ -36,7 +36,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
       />
@@ -65,7 +65,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
       />
@@ -202,7 +202,7 @@ import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
