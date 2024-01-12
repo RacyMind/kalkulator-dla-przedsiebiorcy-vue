@@ -144,63 +144,16 @@
             label="Schemat składek ZUS" />
         </div>
       </div>
-      <div class="row items-center q-col-gutter-sm">
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isHealthContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka zdrowotna"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isDisabilityContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka rentowa"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isPensionContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka emerytalna"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isSickContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka chorobowa"
-          />
-        </div>
-      </div>
-      <div class="row q-mb-md">
+      <ZusContributionFields
+        v-model:accident-contribution-rate="accidentContributionRate"
+        v-model:is-pension-contribution="isPensionContribution"
+        v-model:is-health-contribution="isHealthContribution"
+        v-model:is-sick-contribution="isSickContribution"
+        v-model:is-disability-contribution="isDisabilityContribution"
+        v-model:is-fp-contribution="isFpContribution"
+      />
+      <div class="row">
         <div class="col">
-          <q-input
-            v-model.number="accidentContributionRate"
-            type="number"
-            min="0"
-            step="0.01"
-            label="Składka wypadkowa*"
-            color="brand"
-            suffix="%"
-          />
-        </div>
-      </div>
-      <div class="row q-col-gutter-sm">
-        <div>
-          <q-toggle
-            v-model="isFpContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka na Fundusz Pracy"
-          />
-        </div>
-        <div>
           <q-toggle
             v-model="isPpkContribution"
             checked-icon="check"
@@ -274,6 +227,7 @@ import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
