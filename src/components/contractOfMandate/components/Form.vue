@@ -104,7 +104,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -115,7 +115,7 @@
             label="Możliwy podatek zryczałtowany"
           />
           <Tooltip class="q-ml-sm">
-            Podatek zryczałtowany obowiązuje dla wynagrrodzenia do {{ pln(incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
+            Podatek zryczałtowany obowiązuje dla wynagrodzenia do {{ pln(incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
             <ul>
               <li>gdy zleceniobiorca jest pracownikiem firmy,</li>
               <li>umowa ze stawką za wykonaną jednostkę - np. stawka za godzinę pracy lub na "akord".</li>
