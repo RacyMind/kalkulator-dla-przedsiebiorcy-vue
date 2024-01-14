@@ -41,6 +41,14 @@
           label="Składka na Fundusz Pracy"
         />
       </div>
+      <div class="col-6 col-sm-auto">
+        <q-toggle
+          v-model="isFgspContribution"
+          checked-icon="check"
+          unchecked-icon="clear"
+          label="Składka na FGŚP"
+        />
+      </div>
     </div>
     <div class="row q-mb-md">
       <div class="col">
@@ -68,6 +76,7 @@ interface Props {
   isPensionContribution: boolean
   isSickContribution: boolean
   isFpContribution: boolean
+  isFgspContribution: boolean
   accidentContributionRate: boolean
 }
 const props = defineProps<Props>()
@@ -77,6 +86,7 @@ const emit = defineEmits([
   'update:isPensionContribution',
   'update:isSickContribution',
   'update:isFpContribution',
+  'update:isFgspContribution',
   'update:accidentContributionRate',
 ])
 
@@ -122,6 +132,15 @@ const isFpContribution = computed({
   },
   set(value) {
     emit('update:isFpContribution', value)
+  },
+})
+
+const isFgspContribution = computed({
+  get() {
+    return props.isFgspContribution
+  },
+  set(value) {
+    emit('update:isFgspContribution', value)
   },
 })
 

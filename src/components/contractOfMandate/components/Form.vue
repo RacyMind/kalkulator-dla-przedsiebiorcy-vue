@@ -151,6 +151,7 @@
         v-model:is-sick-contribution="isSickContribution"
         v-model:is-disability-contribution="isDisabilityContribution"
         v-model:is-fp-contribution="isFpContribution"
+        v-model:is-fgsp-contribution="isFgspContribution"
       />
       <div class="row">
         <div class="col">
@@ -290,6 +291,7 @@ const isSickContribution = useLocalStorage('contractOfMandate/form/isSickContrib
 const isDisabilityContribution = useLocalStorage('contractOfMandate/form/isDisabilityContribution', true, { mergeDefaults: true })
 const isPensionContribution = useLocalStorage('contractOfMandate/form/isPensionContribution', true, { mergeDefaults: true })
 const isFpContribution =  useLocalStorage('contractOfMandate/form/isFpContribution', false, { mergeDefaults: true })
+const isFgspContribution =  useLocalStorage('contractOfMandate/form/isFgspContribution', false, { mergeDefaults: true })
 const isPpkContribution =  useLocalStorage('contractOfMandate/form/isPpkContribution', false, { mergeDefaults: true })
 const employerPpkContributionRate = useLocalStorage('contractOfMandate/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
 const employeePpkContributionRate = useLocalStorage('contractOfMandate/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
@@ -311,6 +313,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
+      isFgspContribution.value = true
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractWithEmployer:
@@ -319,6 +322,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
+      isFgspContribution.value = true
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.Student:
@@ -327,6 +331,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = false
       isPensionContribution.value = false
       isFpContribution.value = false
+      isFgspContribution.value = false
       isPpkContribution.value = false
       accidentContributionRate.value = 0
       break
@@ -336,6 +341,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = false
+      isFgspContribution.value = false
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractorWorksInAnotherCompany:
@@ -344,6 +350,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = false
       isPensionContribution.value = false
       isFpContribution.value = false
+      isFgspContribution.value = false
       isPpkContribution.value = false
       accidentContributionRate.value = 0
       break
@@ -366,6 +373,7 @@ const handleFormSubmit = () => {
     isPensionContribution: isPensionContribution.value,
     isSickContribution: isSickContribution.value,
     isFpContribution: isFpContribution.value,
+    isFgspContribution: isFgspContribution.value,
     accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
     employeePpkContributionRate: isPpkContribution.value ? helpers.round(employeePpkContributionRate.value / 100, 4) : 0,
     employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,
