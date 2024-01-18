@@ -42,8 +42,10 @@ export class EmployerCalculator extends BasicCalculator<InputFields, EmployerRes
     }
     if(this.getInputData().isFpContribution) {
       fpContribution = this.zusContribution.getFPContribution(this.getInputData().grossAmount)
-      fgspContribution = this.zusContribution.getFGSPContribution(this.getInputData().grossAmount)
       fsContribution = this.zusContribution.getFSContribution(this.getInputData().grossAmount)
+    }
+    if(this.getInputData().isFgspContribution) {
+      fgspContribution = this.zusContribution.getFGSPContribution(this.getInputData().grossAmount)
     }
 
     const totalAmount = helpers.round(this.getInputData().grossAmount + accidentContribution + fsContribution + fgspContribution + ppkContribution + fpContribution

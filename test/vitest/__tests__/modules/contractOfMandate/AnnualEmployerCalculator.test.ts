@@ -34,6 +34,7 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
       grossAmount: 1000,
       isDisabilityContribution: true,
       isFpContribution: true,
+      isFgspContribution: true,
       partTaxReducingAmount: 0,
       isHealthContribution: true,
       isPensionContribution: true,
@@ -79,10 +80,9 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
       })).calculate().getResult().annualResult.ppkContribution).toBe(0)
     })
 
-    it('The FP (+ all related)  contributions', () => {
+    it('The FP and FS contributions', () => {
       const result = new AnnualEmployerCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult
       expect(result.fpContribution).toBe(120)
-      expect(result.fgspContribution).toBe(12)
       expect(result.fsContribution).toBe(174)
 
       const resultWithoutContributions = new AnnualEmployerCalculator().setInputData(annualInput({
@@ -90,8 +90,18 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
         isFpContribution: false,
       })).calculate().getResult().annualResult
       expect(resultWithoutContributions.fpContribution).toBe(0)
-      expect(resultWithoutContributions.fgspContribution).toBe(0)
       expect(resultWithoutContributions.fsContribution).toBe(0)
+    })
+
+    it('The FGSP contribution', () => {
+      const result = new AnnualEmployerCalculator().setInputData(annualInput(input)).calculate().getResult().annualResult
+      expect(result.fgspContribution).toBe(12)
+
+      const resultWithoutContributions = new AnnualEmployerCalculator().setInputData(annualInput({
+        ...input,
+        isFgspContribution: false,
+      })).calculate().getResult().annualResult
+      expect(resultWithoutContributions.fgspContribution).toBe(0)
     })
 
     it('Over the zus contribution limit', () => {
@@ -118,6 +128,7 @@ describe('Annual Employer Calculator of Contract of Mandate on 1.11.2023', () =>
       grossAmount: 1000,
       isDisabilityContribution: true,
       isFpContribution: true,
+      isFgspContribution: true,
       partTaxReducingAmount: 0,
       isHealthContribution: true,
       isPensionContribution: true,

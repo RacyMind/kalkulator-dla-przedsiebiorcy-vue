@@ -104,7 +104,7 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -115,7 +115,7 @@
             label="Możliwy podatek zryczałtowany"
           />
           <Tooltip class="q-ml-sm">
-            Podatek zryczałtowany obowiązuje dla wynagrrodzenia do {{ pln(incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
+            Podatek zryczałtowany obowiązuje dla wynagrodzenia do {{ pln(incomeTaxConstants.taxScale.expenses.withoutExpensesUpTo) }} brutto. Podatek zryczałtowany <b>nie obowiązuje</b> w 2 sytuacjach:
             <ul>
               <li>gdy zleceniobiorca jest pracownikiem firmy,</li>
               <li>umowa ze stawką za wykonaną jednostkę - np. stawka za godzinę pracy lub na "akord".</li>
@@ -144,109 +144,20 @@
             label="Schemat składek ZUS" />
         </div>
       </div>
-      <div class="row items-center q-col-gutter-sm">
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isHealthContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka zdrowotna"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isDisabilityContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka rentowa"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isPensionContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka emerytalna"
-          />
-        </div>
-        <div class="col-6 col-sm-3">
-          <q-toggle
-            v-model="isSickContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka chorobowa"
-          />
-        </div>
-      </div>
-      <div class="row q-mb-md">
-        <div class="col">
-          <q-input
-            v-model.number="accidentContributionRate"
-            type="number"
-            min="0"
-            step="0.01"
-            label="Składka wypadkowa*"
-            color="brand"
-            suffix="%"
-          />
-        </div>
-      </div>
-      <div class="row q-col-gutter-sm">
-        <div>
-          <q-toggle
-            v-model="isFpContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka na Fundusz Pracy"
-          />
-        </div>
-        <div>
-          <q-toggle
-            v-model="isPpkContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka na Pracownicze Plany Kapitałowe"
-          />
-        </div>
-      </div>
-      <div
-        v-if="isPpkContribution"
-        class="row q-col-gutter-sm">
-        <div class="col">
-          <q-input
-            v-model.number="employerPpkContributionRate"
-            type="number"
-            class="full-width"
-            :min="zusConstants.employer.rates.ppkContribution.min * 100"
-            :max="zusConstants.employer.rates.ppkContribution.max * 100"
-            step="0.01"
-            label="Pracodawca"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-            lazy-rules="ondemand"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model.number="employeePpkContributionRate"
-            type="number"
-            class="full-width"
-            :min="zusConstants.employee.rates.ppkContribution.min * 100"
-            :max="zusConstants.employee.rates.ppkContribution.max * 100"
-            step="0.01"
-            label="Pracownik"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-            lazy-rules="ondemand"
-          />
-        </div>
-      </div>
+      <ZusContributionFields
+        v-model:accident-contribution-rate="accidentContributionRate"
+        v-model:is-pension-contribution="isPensionContribution"
+        v-model:is-health-contribution="isHealthContribution"
+        v-model:is-sick-contribution="isSickContribution"
+        v-model:is-disability-contribution="isDisabilityContribution"
+        v-model:is-fp-contribution="isFpContribution"
+        v-model:is-fgsp-contribution="isFgspContribution"
+      />
+      <PpkContributionFields
+        v-model:employee-ppk-contribution-rate="employeePpkContributionRate"
+        v-model:employer-ppk-contribution-rate="employerPpkContributionRate"
+        v-model:is-ppk-contribution="isPpkContribution"
+      />
     </FormSection>
     <SubmitButton />
   </q-form>
@@ -271,9 +182,11 @@ import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpense
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 import helpers from 'src/logic/helpers'
 
 const emit = defineEmits(['submit'])
@@ -336,6 +249,7 @@ const isSickContribution = useLocalStorage('contractOfMandate/form/isSickContrib
 const isDisabilityContribution = useLocalStorage('contractOfMandate/form/isDisabilityContribution', true, { mergeDefaults: true })
 const isPensionContribution = useLocalStorage('contractOfMandate/form/isPensionContribution', true, { mergeDefaults: true })
 const isFpContribution =  useLocalStorage('contractOfMandate/form/isFpContribution', false, { mergeDefaults: true })
+const isFgspContribution =  useLocalStorage('contractOfMandate/form/isFgspContribution', false, { mergeDefaults: true })
 const isPpkContribution =  useLocalStorage('contractOfMandate/form/isPpkContribution', false, { mergeDefaults: true })
 const employerPpkContributionRate = useLocalStorage('contractOfMandate/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
 const employeePpkContributionRate = useLocalStorage('contractOfMandate/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
@@ -357,6 +271,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
+      isFgspContribution.value = true
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractWithEmployer:
@@ -365,6 +280,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = true
+      isFgspContribution.value = true
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.Student:
@@ -373,6 +289,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = false
       isPensionContribution.value = false
       isFpContribution.value = false
+      isFgspContribution.value = false
       isPpkContribution.value = false
       accidentContributionRate.value = 0
       break
@@ -382,6 +299,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = true
       isPensionContribution.value = true
       isFpContribution.value = false
+      isFgspContribution.value = false
       accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.ContractorWorksInAnotherCompany:
@@ -390,6 +308,7 @@ watch(contributionScheme, () => {
       isDisabilityContribution.value = false
       isPensionContribution.value = false
       isFpContribution.value = false
+      isFgspContribution.value = false
       isPpkContribution.value = false
       accidentContributionRate.value = 0
       break
@@ -412,6 +331,7 @@ const handleFormSubmit = () => {
     isPensionContribution: isPensionContribution.value,
     isSickContribution: isSickContribution.value,
     isFpContribution: isFpContribution.value,
+    isFgspContribution: isFgspContribution.value,
     accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
     employeePpkContributionRate: isPpkContribution.value ? helpers.round(employeePpkContributionRate.value / 100, 4) : 0,
     employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,

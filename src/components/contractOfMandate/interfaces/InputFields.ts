@@ -8,6 +8,7 @@ export interface InputFields extends HasGrossAmount{
   hasTaxRelief: boolean,
   isDisabilityContribution: boolean,
   isFpContribution: boolean,
+  isFgspContribution: boolean,
   isHealthContribution: boolean,
   isPensionContribution: boolean,
   isSickContribution: boolean,

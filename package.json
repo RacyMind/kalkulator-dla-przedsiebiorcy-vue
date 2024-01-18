@@ -1,8 +1,8 @@
 {
   "name": "kalkulator-finansowy",
-  "version": "0.0.1",
-  "description": "Kalkulator finansowy jest bezpłatnym programem umożliwiającym łatwe obliczenie wynagrodzeń.",
-  "productName": "Kalkulator finansowy",
+  "version": "5.3.0",
+  "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
+  "productName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2024",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
   "scripts": {
