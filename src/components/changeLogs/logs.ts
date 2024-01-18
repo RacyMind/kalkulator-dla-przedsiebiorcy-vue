@@ -4,6 +4,7 @@ export default [
     publish_date: '2024-01-18',
     version: '5.3.0',
   },
+  
   {
     content: '<ul><li>Dodano moduł "Porównywarka B2B".</li></ul>',
     publish_date: '2024-01-10',
