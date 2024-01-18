@@ -24,6 +24,7 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
       grossAmount: 1000,
       isDisabilityContribution: true,
       isFpContribution: true,
+      isFgspContribution: true,
       partTaxReducingAmount: 0,
       isHealthContribution: true,
       isPensionContribution: true,
@@ -69,10 +70,9 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
       }).calculate().getResult().ppkContribution).toBe(0)
     })
 
-    it('The FP (+ all related)  contributions', () => {
+    it('The FP and FS contributions', () => {
       const result = new EmployerCalculator().setInputData(input).calculate().getResult()
       expect(result.fpContribution).toBe(10)
-      expect(result.fgspContribution).toBe(1)
       expect(result.fsContribution).toBe(14.5)
 
       const resultWithoutContributions = new EmployerCalculator().setInputData({
@@ -80,8 +80,18 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
         isFpContribution: false,
       }).calculate().getResult()
       expect(resultWithoutContributions.fpContribution).toBe(0)
-      expect(resultWithoutContributions.fgspContribution).toBe(0)
       expect(resultWithoutContributions.fsContribution).toBe(0)
+    })
+
+    it('The FGSP contribution', () => {
+      const result = new EmployerCalculator().setInputData(input).calculate().getResult()
+      expect(result.fgspContribution).toBe(1)
+
+      const resultWithoutContributions = new EmployerCalculator().setInputData({
+        ...input,
+        isFgspContribution: false,
+      }).calculate().getResult()
+      expect(resultWithoutContributions.fgspContribution).toBe(0)
     })
   })
 
@@ -93,6 +103,7 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
       grossAmount: 5000,
       isDisabilityContribution: true,
       isFpContribution: true,
+      isFgspContribution: true,
       partTaxReducingAmount: 0,
       isHealthContribution: true,
       isPensionContribution: true,
@@ -116,6 +127,7 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
         accidentContributionRate: 0,
         isDisabilityContribution: false,
         isFpContribution: false,
+        isFgspContribution: false,
         partTaxReducingAmount: 12,
         isPensionContribution: false,
       }).calculate().getResult()

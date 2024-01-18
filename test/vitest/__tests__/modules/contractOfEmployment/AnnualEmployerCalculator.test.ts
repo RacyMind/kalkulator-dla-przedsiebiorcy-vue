@@ -33,6 +33,11 @@ describe('Annual Employer Calculator of Contract of Employment on 1.11.2023', ()
       employerPpkContributionRate: 0.015,
       grossAmount: 1000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
@@ -69,6 +74,7 @@ describe('Annual Employer Calculator of Contract of Employment on 1.11.2023', ()
       const resultWithoutContributions = new AnnualEmployerCalculator().setInputData(annualInput({
         ...input,
         isFpContribution: false,
+        isFgspContribution: false,
       })).calculate().getResult().annualResult
       expect(resultWithoutContributions.fpContribution).toBe(0)
       expect(resultWithoutContributions.fgspContribution).toBe(0)
@@ -98,6 +104,11 @@ describe('Annual Employer Calculator of Contract of Employment on 1.11.2023', ()
       employerPpkContributionRate: 0.015,
       grossAmount: 1000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
