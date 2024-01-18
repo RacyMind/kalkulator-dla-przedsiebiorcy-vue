@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodano możliwość wyłączenia składek FGŚP.</li><li>Dodano możliwość wyłączenia składek ZUS na Umowę o Pracę.</li></ul>',
+    content: '<ul><li>Dodano możliwość wyłączenia składek FGŚP.</li><li>Dodano możliwość wyłączenia składek ZUS na Umowę o Pracę.</li><li>Dodano możliwość dodania różnych wartości kosztów autorskich dla poszczególnych miesięcy.</li></ul>',
     publish_date: '2024-01-18',
     version: '5.3.0',
   },
