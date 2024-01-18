@@ -153,54 +153,11 @@
         v-model:is-fp-contribution="isFpContribution"
         v-model:is-fgsp-contribution="isFgspContribution"
       />
-      <div class="row">
-        <div class="col">
-          <q-toggle
-            v-model="isPpkContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Składka na Pracownicze Plany Kapitałowe"
-          />
-        </div>
-      </div>
-      <div
-        v-if="isPpkContribution"
-        class="row q-col-gutter-sm">
-        <div class="col">
-          <q-input
-            v-model.number="employerPpkContributionRate"
-            type="number"
-            class="full-width"
-            :min="zusConstants.employer.rates.ppkContribution.min * 100"
-            :max="zusConstants.employer.rates.ppkContribution.max * 100"
-            step="0.01"
-            label="Pracodawca"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-            lazy-rules="ondemand"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model.number="employeePpkContributionRate"
-            type="number"
-            class="full-width"
-            :min="zusConstants.employee.rates.ppkContribution.min * 100"
-            :max="zusConstants.employee.rates.ppkContribution.max * 100"
-            step="0.01"
-            label="Pracownik"
-            color="brand"
-            suffix="%"
-            :rules="[
-              val => !!val || '* Wpisz wartość',
-            ]"
-            lazy-rules="ondemand"
-          />
-        </div>
-      </div>
+      <PpkContributionFields
+        v-model:employee-ppk-contribution-rate="employeePpkContributionRate"
+        v-model:employer-ppk-contribution-rate="employerPpkContributionRate"
+        v-model:is-ppk-contribution="isPpkContribution"
+      />
     </FormSection>
     <SubmitButton />
   </q-form>
@@ -225,6 +182,7 @@ import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpense
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'

@@ -24,6 +24,11 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0,
       grossAmount: 1000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
@@ -32,18 +37,38 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
 
     it('The health contribution', () => {
       expect(new EmployeeCalculator().setInputData(input).calculate().getResult().healthContribution).toBe(77.66)
+
+      expect(new EmployeeCalculator().setInputData({
+        ...input,
+        isHealthContribution: false,
+      }).calculate().getResult().healthContribution).toBe(0)
     })
 
     it('The sick contribution', () => {
       expect(new EmployeeCalculator().setInputData(input).calculate().getResult().sickContribution).toBe(24.50)
+
+      expect(new EmployeeCalculator().setInputData({
+        ...input,
+        isSickContribution: false,
+      }).calculate().getResult().sickContribution).toBe(0)
     })
 
     it('The disability contribution', () => {
       expect(new EmployeeCalculator().setInputData(input).calculate().getResult().disabilityContribution).toBe(15)
+
+      expect(new EmployeeCalculator().setInputData({
+        ...input,
+        isDisabilityContribution: false,
+      }).calculate().getResult().disabilityContribution).toBe(0)
     })
 
     it('The pension contribution', () => {
       expect(new EmployeeCalculator().setInputData(input).calculate().getResult().pensionContribution).toBe(97.6)
+
+      expect(new EmployeeCalculator().setInputData({
+        ...input,
+        isPensionContribution: false,
+      }).calculate().getResult().pensionContribution).toBe(0)
     })
 
     it('The PPK contribution', () => {
@@ -63,6 +88,11 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0,
       grossAmount: 1000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
@@ -134,6 +164,11 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0,
       grossAmount: 1000,
       isFpContribution: false,
+      isFgspContribution: false,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
@@ -172,6 +207,11 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0,
       grossAmount: 5000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 12,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
