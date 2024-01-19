@@ -28,17 +28,25 @@ export class EmployerCalculator extends BasicCalculator<InputFields, EmployerRes
 
     const contributionBasis = this.zusContribution.getContributionBasisWithinLimit(this.getInputData().grossAmount, this.sumUpContributionBasis)
 
-    pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
-    disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
-    accidentContribution = this.zusContribution.getAccidentContribution(this.getInputData().grossAmount, this.getInputData().accidentContributionRate)
+    if (this.getInputData().isPensionContribution) {
+      pensionContribution = this.zusContribution.gePensionContribution(contributionBasis)
+    }
+    if (this.getInputData().isDisabilityContribution) {
+      disabilityContribution = this.zusContribution.geDisabilityContribution(contributionBasis)
+    }
+    if (this.getInputData().accidentContributionRate) {
+      accidentContribution = this.zusContribution.getAccidentContribution(this.getInputData().grossAmount, this.getInputData().accidentContributionRate)
+    }
 
     if (this.getInputData().employerPpkContributionRate) {
       ppkContribution = this.zusContribution.getPPKContribution(this.getInputData().grossAmount, this.getInputData().employerPpkContributionRate)
     }
     if(this.getInputData().isFpContribution) {
       fpContribution = this.zusContribution.getFPContribution(this.getInputData().grossAmount)
-      fgspContribution = this.zusContribution.getFGSPContribution(this.getInputData().grossAmount)
       fsContribution = this.zusContribution.getFSContribution(this.getInputData().grossAmount)
+    }
+    if(this.getInputData().isFgspContribution) {
+      fgspContribution = this.zusContribution.getFGSPContribution(this.getInputData().grossAmount)
     }
 
     const totalAmount = helpers.round(this.getInputData().grossAmount + accidentContribution + fsContribution + fgspContribution + ppkContribution + fpContribution

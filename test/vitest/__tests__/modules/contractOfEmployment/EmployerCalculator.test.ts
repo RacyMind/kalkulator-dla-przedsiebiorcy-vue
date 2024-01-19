@@ -23,6 +23,11 @@ describe('Employer Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0.015,
       grossAmount: 1000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,
@@ -40,10 +45,20 @@ describe('Employer Calculator of Contract of Employment on 1.11.2023', () => {
 
     it('The disability contribution', () => {
       expect(new EmployerCalculator().setInputData(input).calculate().getResult().disabilityContribution).toBe(65)
+
+      expect(new EmployerCalculator().setInputData({
+        ...input,
+        isDisabilityContribution: false,
+      }).calculate().getResult().disabilityContribution).toBe(0)
     })
 
     it('The pension contribution', () => {
       expect(new EmployerCalculator().setInputData(input).calculate().getResult().pensionContribution).toBe(97.6)
+
+      expect(new EmployerCalculator().setInputData({
+        ...input,
+        isPensionContribution: false,
+      }).calculate().getResult().pensionContribution).toBe(0)
     })
 
     it('The PPK contribution', () => {
@@ -64,6 +79,7 @@ describe('Employer Calculator of Contract of Employment on 1.11.2023', () => {
       const resultWithoutContributions = new EmployerCalculator().setInputData({
         ...input,
         isFpContribution: false,
+        isFgspContribution: false,
       }).calculate().getResult()
       expect(resultWithoutContributions.fpContribution).toBe(0)
       expect(resultWithoutContributions.fgspContribution).toBe(0)
@@ -78,6 +94,11 @@ describe('Employer Calculator of Contract of Employment on 1.11.2023', () => {
       employerPpkContributionRate: 0.015,
       grossAmount: 5000,
       isFpContribution: true,
+      isFgspContribution: true,
+      isDisabilityContribution: true,
+      isSickContribution: true,
+      isHealthContribution: true,
+      isPensionContribution: true,
       partTaxReducingAmount: 0,
       hasTaxRelief: false,
       partOfWorkWithAuthorExpenses: 0,

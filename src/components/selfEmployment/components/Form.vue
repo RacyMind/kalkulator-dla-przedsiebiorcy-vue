@@ -59,7 +59,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasRevenueForEachMonth"
         v-model="monthlyRevenues"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
@@ -89,7 +89,7 @@
           />
         </div>
       </div>
-      <AnnualAmountFields
+      <EachMonthAmountFields
         v-if="hasExpensesForEachMonth"
         v-model="monthlyExpenses"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
@@ -269,7 +269,7 @@ import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
 import {useSelfEmploymentStore} from 'components/selfEmployment/store'
 import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import AnnualAmountFields from 'components/partials/form/AnnualAmountFields.vue'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
