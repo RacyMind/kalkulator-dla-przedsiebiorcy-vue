@@ -1,7 +1,7 @@
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EmployeeInputFields} from 'components/accountingWithSpouse/interfaces/EmployeeInputFields'
-import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/components/accountingWithSpouse/interfaces/EmployeeInputFields'
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {TaxScale} from 'src/logic/taxes/TaxScale'
@@ -71,6 +71,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
     const salaryAmountOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(totalGrossAmount + employerPpkContribution, 0, this.getInputData().hasTaxRelief)
     const expenses = this.getExpenses()
     const taxBasis =  Math.max(helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0), 0)
+    const taxBasisForJointAccounting =  Math.max(helpers.round(totalGrossAmount - socialContributions - expenses, 0), 2)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis,0, partTaxReducingAmount)
     const netAmount = helpers.round(totalGrossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)
 
@@ -84,6 +85,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
       disabilityContribution,
       expenses,
       taxBasis,
+      taxBasisForJointAccounting,
       taxAmount,
       netAmount,
     }
