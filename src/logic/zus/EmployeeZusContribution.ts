@@ -64,4 +64,32 @@ export class EmployeeZusContribution extends ZusContribution {
 
     return helpers.round(ppkRate * grossAmount, 2)
   }
+
+  public getZusContributions(
+    grossAmount: number,
+    contributionBasis: number,
+    isPensionContribution: boolean,
+    isDisabilityContribution: boolean,
+    isSickContribution: boolean,
+    isHealthContribution: boolean,
+    ppkContributionRate: number,
+  ) {
+    const pensionContribution = isPensionContribution ? this.gePensionContribution(contributionBasis) : 0
+    const disabilityContribution = isDisabilityContribution ? this.geDisabilityContribution(contributionBasis) : 0
+    const sickContribution = isSickContribution ? this.getSickContribution(grossAmount) : 0
+    const ppkContribution = ppkContributionRate ? this.getPPKContribution(grossAmount, ppkContributionRate) : 0
+
+    const socialContributions = helpers.round(pensionContribution + disabilityContribution + sickContribution, 2)
+
+    const healthContribution = isHealthContribution ? this.getHealthContribution(grossAmount - socialContributions) : 0
+
+    return {
+      pensionContribution,
+      disabilityContribution,
+      sickContribution,
+      ppkContribution,
+      healthContribution,
+      socialContributions,
+    }
+  }
 }
