@@ -22,7 +22,6 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
       isHealthContribution: true,
       isPensionContribution: true,
       hasTaxRelief: false,
-      hasTaxFreeAmount: true,
       workInLivePlace: true,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
@@ -179,22 +178,6 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(0)
       expect(result.netAmount).toBe(94228.68)
-    })
-
-    it('with the tax relief and without the tax free amount', () => {
-      const result  = new EmployeeCalculator().setInputData({
-        ...getDefaultInput(10000),
-        hasTaxRelief: true,
-        hasTaxFreeAmount: false,
-      }).calculate().getResult()
-
-      expect(result.healthContribution).toBe(9319.32)
-      expect(result.ppkContribution).toBe(0)
-      expect(result.disabilityContribution).toBe(1800)
-      expect(result.pensionContribution).toBe(11712)
-      expect(result.sickContribution).toBe(2940)
-      expect(result.taxAmount).toBe(1802)
-      expect(result.netAmount).toBe(92426.68)
     })
   })
 })
