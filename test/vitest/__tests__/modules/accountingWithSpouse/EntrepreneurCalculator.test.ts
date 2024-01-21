@@ -102,111 +102,94 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
     })
   })
 
-
-  describe('Test expenses', () => {
-    it('Standard cases', () => {
-      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000)).calculate().getResult().expenses).toBe(3000)
-
-      expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
-        workInLivePlace: false,
-      }).calculate().getResult().expenses).toBe(3600)
-    })
-
-    it('without salary in 1 month', () => {
-      const grossAmounts:number[] = []
-
-      for(let i = 0; i < 12; i++) {
-        grossAmounts.push(10000)
-      }
-      grossAmounts[1] = 0
-
-      expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
-        grossAmounts,
-      }).calculate().getResult().expenses).toBe(2750)
-
-      expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
-        grossAmounts,
-        workInLivePlace: false,
-      }).calculate().getResult().expenses).toBe(3300)
-    })
-  })
-
   describe('Test basis for tax', () => {
     it('Standard cases', () => {
-      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000)).calculate().getResult().taxBasis).toBe(100548)
+      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult().taxBasis).toBe(88796)
     })
 
     it('The tax relief is active', () => {
       expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(3000),
+        ...getDefaultInput(3000, 0),
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(0)
 
       expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
+        ...getDefaultInput(10000, 0),
         hasTaxRelief: true,
-      }).calculate().getResult().taxBasis).toBe(15020)
+      }).calculate().getResult().taxBasis).toBe(15268)
 
     })
   })
 
   describe('Test the full result', () => {
+    it('Within the first tax rate', () => {
+      const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult()
 
-    it('The standard cases', () => {
-      const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(10000)).calculate().getResult()
-
-      expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
-      expect(result.healthContribution).toBe(9319.32)
-      expect(result.ppkContribution).toBe(0)
-      expect(result.ppkIncomeFromEmployer).toBe(0)
-      expect(result.disabilityContribution).toBe(1800)
-      expect(result.pensionContribution).toBe(11712)
-      expect(result.sickContribution).toBe(2940)
-      expect(result.taxAmount).toBe(8466)
-      expect(result.netAmount).toBe(85762.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
+      expect(result.healthContribution).toBe(7639.77)
+      expect(result.disabilityContribution).toBe(4506.6)
+      expect(result.pensionContribution).toBe(10996.2)
+      expect(result.sickContribution).toBe(1380.12)
+      expect(result.accidentContribution).toBe(940.8)
+      expect(result.fpContribution).toBe(563.28)
+      expect(result.fsContribution).toBe(816.84)
+      expect(result.taxAmount).toBe(7056)
+      expect(result.income).toBe(74100.39)
+      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
     })
 
-    it('With PPK', () => {
+    it('Within the second tax rate', () => {
+      const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(20000, 1000)).calculate().getResult()
+
+      expect(result.revenue).toBe(240000)
+      expect(result.healthContribution).toBe(17539.77)
+      expect(result.disabilityContribution).toBe(4506.6)
+      expect(result.pensionContribution).toBe(10996.2)
+      expect(result.sickContribution).toBe(1380.12)
+      expect(result.accidentContribution).toBe(940.8)
+      expect(result.fpContribution).toBe(563.28)
+      expect(result.fsContribution).toBe(816.84)
+      expect(result.taxAmount).toBe(39215)
+      expect(result.income).toBe(152041.39)
+      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
+    })
+
+    it('With the employment contract', () => {
       const result  = new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
-        employeePpkContributionRate: 0.02,
-        employerPpkContributionRate: 0.015,
+        ...getDefaultInput(10000, 1000),
+        hasEmploymentContract: true,
       }).calculate().getResult()
 
-      expect(result.grossAmount).toBe(120000)
-      expect(result.revenue).toBe(121800)
-      expect(result.healthContribution).toBe(9319.32)
-      expect(result.ppkContribution).toBe(2400)
-      expect(result.ppkIncomeFromEmployer).toBe(1800)
-      expect(result.disabilityContribution).toBe(1800)
-      expect(result.pensionContribution).toBe(11712)
-      expect(result.sickContribution).toBe(2940)
-      expect(result.taxAmount).toBe(8682)
-      expect(result.netAmount).toBe(83146.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
+      expect(result.revenue).toBe(120000)
+      expect(result.healthContribution).toBe(9224.1)
+      expect(result.disabilityContribution).toBe(0)
+      expect(result.pensionContribution).toBe(0)
+      expect(result.sickContribution).toBe(0)
+      expect(result.accidentContribution).toBe(0)
+      expect(result.fpContribution).toBe(0)
+      expect(result.fsContribution).toBe(0)
+      expect(result.taxAmount).toBe(9360)
+      expect(result.income).toBe(89415.9)
+      expect(result.expensesToReduceTaxBasis).toBe(12000)
     })
 
     it('with the tax relief', () => {
       const result  = new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000),
+        ...getDefaultInput(10000, 1000),
         hasTaxRelief: true,
       }).calculate().getResult()
 
-      expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
-      expect(result.healthContribution).toBe(9319.32)
-      expect(result.ppkContribution).toBe(0)
-      expect(result.disabilityContribution).toBe(1800)
-      expect(result.pensionContribution).toBe(11712)
-      expect(result.sickContribution).toBe(2940)
+      expect(result.healthContribution).toBe(7639.77)
+      expect(result.disabilityContribution).toBe(4506.6)
+      expect(result.pensionContribution).toBe(10996.2)
+      expect(result.sickContribution).toBe(1380.12)
+      expect(result.accidentContribution).toBe(940.8)
+      expect(result.fpContribution).toBe(563.28)
+      expect(result.fsContribution).toBe(816.84)
       expect(result.taxAmount).toBe(0)
-      expect(result.netAmount).toBe(94228.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
+      expect(result.income).toBe(81156.39)
+      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
     })
   })
 })
