@@ -126,7 +126,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
-      expect(result.totalZuSContributions).toBe(26843.61)
+      expect(result.totalContributions).toBe(26843.61)
       expect(result.healthContribution).toBe(7639.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)
@@ -142,7 +142,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(20000, 1000)).calculate().getResult()
 
       expect(result.revenue).toBe(240000)
-      expect(result.totalZuSContributions).toBe(36743.61)
+      expect(result.totalContributions).toBe(36743.61)
       expect(result.healthContribution).toBe(17539.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)
@@ -161,7 +161,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       }).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
-      expect(result.totalZuSContributions).toBe(9224.1)
+      expect(result.totalContributions).toBe(9224.1)
       expect(result.healthContribution).toBe(9224.1)
       expect(result.disabilityContribution).toBe(0)
       expect(result.pensionContribution).toBe(0)
@@ -180,7 +180,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       }).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
-      expect(result.totalZuSContributions).toBe(26843.61)
+      expect(result.totalContributions).toBe(26843.61)
       expect(result.healthContribution).toBe(7639.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)

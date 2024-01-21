@@ -145,7 +145,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
-      expect(result.totalZuSContributions).toBe(25771.32)
+      expect(result.totalContributions).toBe(25771.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
       expect(result.ppkIncomeFromEmployer).toBe(0)
@@ -165,7 +165,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(121800)
-      expect(result.totalZuSContributions).toBe(28171.32)
+      expect(result.totalContributions).toBe(28171.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(2400)
       expect(result.ppkIncomeFromEmployer).toBe(1800)
@@ -184,7 +184,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
-      expect(result.totalZuSContributions).toBe(25771.32)
+      expect(result.totalContributions).toBe(25771.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
       expect(result.disabilityContribution).toBe(1800)

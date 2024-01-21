@@ -1,6 +1,7 @@
-export interface SpouseResult{
+export interface JointAccountingResult{
   readonly revenue: number
   readonly totalContributions: number
   readonly taxBasis: number
-  readonly expenses: number
+  readonly taxAmount: number
+  readonly income: number
 }

@@ -12,7 +12,6 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
   protected readonly incomeTaxConstants
   protected readonly employeeZus: EmployeeZusContribution
   protected readonly incomeTax: TaxScale
-  protected calculateSumUpAmounts = false
   constructor() {
     super()
     const { incomeTaxConstants} = useConstants()
@@ -84,7 +83,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
       ppkContribution,
       pensionContribution,
       disabilityContribution,
-      totalZuSContributions: totalContributions,
+      totalContributions,
       expenses,
       taxBasis,
       taxAmount,
