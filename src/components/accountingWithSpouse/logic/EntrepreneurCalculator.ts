@@ -15,7 +15,7 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
     super()
     this.incomeTax = new TaxScale()
   }
-  
+
   public calculate():this{
     const monthlyInputs:InputFields[] = []
 
@@ -33,7 +33,7 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
         hasTaxRelief: this.getInputData().hasTaxRelief,
         isFpContribution: this.getInputData().isFpContribution,
         hasEmploymentContract: this.getInputData().hasEmploymentContract,
-        previousMonthHealthContributionBasis: 0,
+        previousMonthHealthContributionBasis: this.getInputData().previousMonthHealthContributionBasis,
         businessIsRunning: true,
         lossFromPreviousMonth: 0,
       })
@@ -68,7 +68,6 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
 
     const revenueOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(totalRevenue, 0, this.getInputData().hasTaxRelief)
     const taxBasis =  Math.max(helpers.round(revenueOverTaxReliefLimit - expensesToReduceTaxBasis, 0), 0)
-    const taxBasisForJointAccounting =  Math.max(helpers.round(totalRevenue - expensesToReduceTaxBasis, 0), 2)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis,0, 1)
 
     const income = helpers.round(totalRevenue - totalExpenses - zusContributions - taxAmount, 2)
@@ -84,9 +83,9 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
       fpContribution,
       accidentContribution,
       taxBasis,
-      taxBasisForJointAccounting,
       taxAmount,
       income,
+      expensesToReduceTaxBasis,
     }
 
     return this

@@ -1,13 +1,16 @@
 import {EmployeeCalculator} from 'components/accountingWithSpouse/logic/EmployeeCalculator'
 import {EmployeeInputFields} from 'components/accountingWithSpouse/interfaces/EmployeeInputFields'
+import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
-import {describe, expect, it } from 'vitest'
 import {useSettingStore} from 'stores/settingStore'
 
-describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p24', () => {
-  setActivePinia(createPinia())
-  const settingStore = useSettingStore()
-  settingStore.dateOfLawRules = new Date(2024,0,1)
+setActivePinia(createPinia())
+
+describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20024', () => {
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2024,0,1)
+  })
 
   const getDefaultInput = (grossAmount:number):EmployeeInputFields => {
     const grossAmounts:number[] = []
@@ -140,13 +143,17 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
     it('The standard cases', () => {
       const result  = new EmployeeCalculator().setInputData(getDefaultInput(10000)).calculate().getResult()
 
+      expect(result.grossAmount).toBe(120000)
+      expect(result.revenue).toBe(120000)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
+      expect(result.ppkIncomeFromEmployer).toBe(0)
       expect(result.disabilityContribution).toBe(1800)
       expect(result.pensionContribution).toBe(11712)
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(8466)
       expect(result.netAmount).toBe(85762.68)
+      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
 
     it('With PPK', () => {
@@ -156,13 +163,17 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
         employerPpkContributionRate: 0.015,
       }).calculate().getResult()
 
+      expect(result.grossAmount).toBe(120000)
+      expect(result.revenue).toBe(121800)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(2400)
+      expect(result.ppkIncomeFromEmployer).toBe(1800)
       expect(result.disabilityContribution).toBe(1800)
       expect(result.pensionContribution).toBe(11712)
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(8682)
       expect(result.netAmount).toBe(83146.68)
+      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
 
     it('with the tax relief', () => {
@@ -171,6 +182,8 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
         hasTaxRelief: true,
       }).calculate().getResult()
 
+      expect(result.grossAmount).toBe(120000)
+      expect(result.revenue).toBe(120000)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
       expect(result.disabilityContribution).toBe(1800)
@@ -178,6 +191,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.20p2
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(0)
       expect(result.netAmount).toBe(94228.68)
+      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
   })
 })
