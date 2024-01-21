@@ -82,10 +82,10 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
       fsContribution,
       fpContribution,
       accidentContribution,
+      totalZuSContributions: zusContributions,
       taxBasis,
       taxAmount,
       income,
-      expensesToReduceTaxBasis,
     }
 
     return this

@@ -51,6 +51,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
       ppkContribution,
       healthContribution,
       socialContributions,
+      totalContributions,
     } = this.employeeZus.getZusContributions(
       totalGrossAmount,
       contributionBasis,
@@ -69,7 +70,6 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
 
     const salaryAmountOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(totalGrossAmount + employerPpkContribution, 0, this.getInputData().hasTaxRelief)
     const expenses = this.getExpenses()
-    const expensesToReduceTaxBasis = helpers.round(socialContributions + expenses, 2)
     const taxBasis =  Math.max(helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0), 0)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis,0, 1)
     const netAmount = helpers.round(totalGrossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)
@@ -84,9 +84,9 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
       ppkContribution,
       pensionContribution,
       disabilityContribution,
+      totalZuSContributions: totalContributions,
       expenses,
       taxBasis,
-      expensesToReduceTaxBasis,
       taxAmount,
       netAmount,
     }

@@ -126,6 +126,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
+      expect(result.totalZuSContributions).toBe(26843.61)
       expect(result.healthContribution).toBe(7639.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)
@@ -135,13 +136,13 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.fsContribution).toBe(816.84)
       expect(result.taxAmount).toBe(7056)
       expect(result.income).toBe(74100.39)
-      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
     })
 
     it('Within the second tax rate', () => {
       const result  = new EntrepreneurCalculator().setInputData(getDefaultInput(20000, 1000)).calculate().getResult()
 
       expect(result.revenue).toBe(240000)
+      expect(result.totalZuSContributions).toBe(36743.61)
       expect(result.healthContribution).toBe(17539.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)
@@ -151,7 +152,6 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.fsContribution).toBe(816.84)
       expect(result.taxAmount).toBe(39215)
       expect(result.income).toBe(152041.39)
-      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
     })
 
     it('With the employment contract', () => {
@@ -161,6 +161,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       }).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
+      expect(result.totalZuSContributions).toBe(9224.1)
       expect(result.healthContribution).toBe(9224.1)
       expect(result.disabilityContribution).toBe(0)
       expect(result.pensionContribution).toBe(0)
@@ -170,7 +171,6 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.fsContribution).toBe(0)
       expect(result.taxAmount).toBe(9360)
       expect(result.income).toBe(89415.9)
-      expect(result.expensesToReduceTaxBasis).toBe(12000)
     })
 
     it('with the tax relief', () => {
@@ -180,6 +180,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       }).calculate().getResult()
 
       expect(result.revenue).toBe(120000)
+      expect(result.totalZuSContributions).toBe(26843.61)
       expect(result.healthContribution).toBe(7639.77)
       expect(result.disabilityContribution).toBe(4506.6)
       expect(result.pensionContribution).toBe(10996.2)
@@ -189,7 +190,6 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.fsContribution).toBe(816.84)
       expect(result.taxAmount).toBe(0)
       expect(result.income).toBe(81156.39)
-      expect(result.expensesToReduceTaxBasis).toBe(31203.84)
     })
   })
 })

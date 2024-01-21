@@ -145,6 +145,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
+      expect(result.totalZuSContributions).toBe(25771.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
       expect(result.ppkIncomeFromEmployer).toBe(0)
@@ -153,7 +154,6 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(8466)
       expect(result.netAmount).toBe(85762.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
 
     it('With PPK', () => {
@@ -165,6 +165,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(121800)
+      expect(result.totalZuSContributions).toBe(28171.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(2400)
       expect(result.ppkIncomeFromEmployer).toBe(1800)
@@ -173,7 +174,6 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(8682)
       expect(result.netAmount).toBe(83146.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
 
     it('with the tax relief', () => {
@@ -184,6 +184,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
 
       expect(result.grossAmount).toBe(120000)
       expect(result.revenue).toBe(120000)
+      expect(result.totalZuSContributions).toBe(25771.32)
       expect(result.healthContribution).toBe(9319.32)
       expect(result.ppkContribution).toBe(0)
       expect(result.disabilityContribution).toBe(1800)
@@ -191,7 +192,6 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
       expect(result.sickContribution).toBe(2940)
       expect(result.taxAmount).toBe(0)
       expect(result.netAmount).toBe(94228.68)
-      expect(result.expensesToReduceTaxBasis).toBe(19452)
     })
   })
 })
