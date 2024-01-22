@@ -62,7 +62,7 @@
                 val => !!val || '* Wpisz kwotę',
               ]"
               lazy-rules="ondemand"
-              hint="Składki społeczne obniżające podstawę opodatkowania."
+              hint="Składki obniżające podstawę opodatkowania."
               hide-bottom-space
             />
           </div>
