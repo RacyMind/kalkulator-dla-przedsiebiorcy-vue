@@ -128,7 +128,7 @@ export const useConstants = () => {
         if(year <= 2022) {
           return 6965.94
         }
-        return 7400
+        return 7767.85
       } ,
       minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2022) {
