@@ -7,6 +7,7 @@ import helpers from 'src/logic/helpers'
 
 export class JointAccountingCalculator extends BasicCalculator<JointAccountingInputFields, JointAccountingResult> implements Calculator<JointAccountingInputFields, JointAccountingResult>{
   protected readonly incomeTax: TaxScale
+  
   constructor() {
     super()
     this.incomeTax = new TaxScale()
@@ -23,7 +24,7 @@ export class JointAccountingCalculator extends BasicCalculator<JointAccountingIn
     const income = helpers.round(revenue - expenses - totalContributions - taxAmount, 2)
 
     this.result = {
-      revenue: helpers.round(this.getInputData().husband.revenue + this.getInputData().wife.revenue, 2),
+      revenue,
       totalContributions,
       taxBasis: totalTaxBasis,
       taxAmount,
