@@ -18,6 +18,23 @@ export interface EmployeeFormFields{
   isHealthContribution: boolean
   isPensionContribution: boolean
   isSickContribution: boolean
+  isPpkContribution: boolean
+  employerPpkContributionRate: number
+  employeePpkContributionRate: number
+}
+
+export interface EntrepreneurFormFields{
+  revenue: number
+  hasRevenueForEachMonth: boolean
+  revenueAmounts: number[]
+  expenses: number
+  hasExpensesForEachMonth: boolean
+  expensesAmounts: number[]
+  hasTaxRelief: boolean
+  isSickContribution: boolean
+  accidentContributionRate: number
+  isFpContribution: boolean
+  healthContributionBasisInJanuary: number
 }
 
 export interface CustomFormFields{

@@ -77,6 +77,11 @@
         v-model:is-disability-contribution="fields.isDisabilityContribution"
         hide-employer-contributions
       />
+      <PpkContributionFields
+        v-model:employee-ppk-contribution-rate="fields.employeePpkContributionRate"
+        v-model:employer-ppk-contribution-rate="fields.employerPpkContributionRate"
+        v-model:is-ppk-contribution="fields.isPpkContribution"
+      />
     </FormSubSection>
   </div>
 </template>
@@ -90,6 +95,7 @@ import {useConstants} from 'src/composables/constants'
 import {watch} from 'vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
+import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 

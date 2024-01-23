@@ -38,7 +38,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { wageStats } = useConstants()
+const { wageStats, zusConstants } = useConstants()
 
 const title = computed(() => props.spouse === Spouse.Husband ? 'Mąż' : 'Żona')
 
@@ -80,6 +80,9 @@ const employeeInitialValue: EmployeeFormFields = {
   isHealthContribution: true,
   isPensionContribution: true,
   isSickContribution: true,
+  isPpkContribution: false,
+  employerPpkContributionRate: zusConstants.value.employer.rates.ppkContribution.default * 100,
+  employeePpkContributionRate: zusConstants.value.employee.rates.ppkContribution.default * 100,
 }
 
 
