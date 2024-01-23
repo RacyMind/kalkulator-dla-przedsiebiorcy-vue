@@ -1,7 +1,5 @@
 import {CustomCalculator} from 'components/accountingWithSpouse/logic/CustomCalculator'
 import {CustomInputFields} from 'components/accountingWithSpouse/interfaces/CustomInputFields'
-import {JointAccountingCalculator} from 'components/accountingWithSpouse/logic/JointAccountingCalculator'
-import {JointAccountingInputFields} from 'components/accountingWithSpouse/interfaces/JointAccountingInputFields'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'

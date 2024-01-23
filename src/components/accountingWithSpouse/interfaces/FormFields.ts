@@ -5,6 +5,14 @@ export enum FormType{
   Unemployment = 4,
 }
 
+export interface EmployeeFormFields{
+  grossAmount: number
+  hasAmountForEachMonth: boolean
+  grossAmounts: number[]
+  hasTaxRelief: boolean
+  workInLivePlace: boolean
+}
+
 export interface CustomFormFields{
   revenue: number
   socialContributions: number
