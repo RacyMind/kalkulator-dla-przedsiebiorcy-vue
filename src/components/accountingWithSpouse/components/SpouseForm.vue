@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 
+import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
 import {CustomFormFields, EmployeeFormFields, FormType} from 'components/accountingWithSpouse/interfaces/FormFields'
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {computed} from 'vue'
@@ -74,6 +75,11 @@ const employeeInitialValue: EmployeeFormFields = {
   grossAmounts: [],
   workInLivePlace: true,
   hasTaxRelief: false,
+  contributionScheme: ContributionScheme.All,
+  isDisabilityContribution: true,
+  isHealthContribution: true,
+  isPensionContribution: true,
+  isSickContribution: true,
 }
 
 

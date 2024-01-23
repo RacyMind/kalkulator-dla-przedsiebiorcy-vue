@@ -1,3 +1,5 @@
+import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
+
 export enum FormType{
   EmploymentContract = 1,
   Entrepreneur = 2,
@@ -11,6 +13,11 @@ export interface EmployeeFormFields{
   grossAmounts: number[]
   hasTaxRelief: boolean
   workInLivePlace: boolean
+  contributionScheme: ContributionScheme
+  isDisabilityContribution: boolean
+  isHealthContribution: boolean
+  isPensionContribution: boolean
+  isSickContribution: boolean
 }
 
 export interface CustomFormFields{

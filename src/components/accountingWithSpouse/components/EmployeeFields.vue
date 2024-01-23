@@ -59,11 +59,31 @@
         </div>
       </div>
     </FormSubSection>
+    <FormSubSection title="Składki ZUS">
+      <div class="row q-mb-md">
+        <div class="col">
+          <q-select
+            v-model="fields.contributionScheme"
+            :options="contributionSchemeOptions"
+            emit-value
+            map-options
+            label="Schemat składek ZUS" />
+        </div>
+      </div>
+      <ZusContributionFields
+        v-model:is-pension-contribution="fields.isPensionContribution"
+        v-model:is-health-contribution="fields.isHealthContribution"
+        v-model:is-sick-contribution="fields.isSickContribution"
+        v-model:is-disability-contribution="fields.isDisabilityContribution"
+        hide-employer-contributions
+      />
+    </FormSubSection>
   </div>
 </template>
 
 <script setup lang="ts">
 
+import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
 import {EmployeeFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
 import {pln} from 'src/use/currencyFormat'
 import {useConstants} from 'src/composables/constants'
@@ -71,10 +91,26 @@ import {watch} from 'vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 
 const fields = defineModel<EmployeeFormFields>({required: true})
 
 const { incomeTaxConstants } = useConstants()
+
+const contributionSchemeOptions = [
+  {
+    label: 'Wszystkie składki ZUS',
+    value: ContributionScheme.All,
+  },
+  {
+    label: 'Tylko składka zdrowotna',
+    value: ContributionScheme.OnlyHealthContribution,
+  },
+  {
+    label: 'Bez składek ZUS',
+    value: ContributionScheme.Without,
+  },
+]
 
 watch(() => fields.value.hasAmountForEachMonth, (hasAmountForEachMonth) => {
   if (!hasAmountForEachMonth) {
@@ -87,6 +123,42 @@ watch(() => fields.value.hasAmountForEachMonth, (hasAmountForEachMonth) => {
 
   for(let i = 0; i < 12; i++) {
     fields.value.grossAmounts[i] = fields.value.grossAmount ?? 0
+  }
+})
+
+watch(() => fields.value.hasAmountForEachMonth, (hasAmountForEachMonth) => {
+  if (!hasAmountForEachMonth) {
+    fields.value.grossAmounts = []
+    return
+  }
+  if(fields.value.grossAmounts.length) {
+    return
+  }
+
+  for(let i = 0; i < 12; i++) {
+    fields.value.grossAmounts[i] = fields.value.grossAmount ?? 0
+  }
+})
+watch(() => fields.value.contributionScheme, (contributionScheme) => {
+  switch (contributionScheme) {
+    case ContributionScheme.All:
+      fields.value.isHealthContribution = true
+      fields.value.isSickContribution = true
+      fields.value.isDisabilityContribution = true
+      fields.value.isPensionContribution = true
+      break
+    case ContributionScheme.OnlyHealthContribution:
+      fields.value.isHealthContribution = true
+      fields.value.isSickContribution = false
+      fields.value.isDisabilityContribution = false
+      fields.value.isPensionContribution = false
+      break
+    case ContributionScheme.Without:
+      fields.value.isHealthContribution = false
+      fields.value.isSickContribution = false
+      fields.value.isDisabilityContribution = false
+      fields.value.isPensionContribution = false
+      break
   }
 })
 </script>

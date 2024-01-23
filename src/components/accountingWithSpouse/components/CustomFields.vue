@@ -36,6 +36,21 @@
         </div>
       </div>
     </FormSubSection>
+    <FormSubSection title="Podatek dochodowy">
+      <div class="row q-col-gutter-x-md">
+        <div>
+          <q-toggle
+            v-model="fields.hasTaxRelief"
+            checked-icon="check"
+            unchecked-icon="clear"
+            label="Ulga podatkowa"
+          />
+          <Tooltip class="q-ml-sm">
+            Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+          </Tooltip>
+        </div>
+      </div>
+    </FormSubSection>
     <FormSubSection title="Składki ZUS">
       <div class="row q-col-gutter-sm">
         <div class="col">
@@ -70,21 +85,6 @@
             lazy-rules="ondemand"
             hide-bottom-space
           />
-        </div>
-      </div>
-    </FormSubSection>
-    <FormSubSection title="Podatek dochodowy">
-      <div class="row q-col-gutter-x-md">
-        <div>
-          <q-toggle
-            v-model="fields.hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
-            label="Ulga podatkowa"
-          />
-          <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
-          </Tooltip>
         </div>
       </div>
     </FormSubSection>

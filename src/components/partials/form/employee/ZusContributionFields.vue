@@ -34,7 +34,7 @@
         />
       </div>
       <div
-        v-if="!props.hideEmployerContribution"
+        v-if="!props.hideEmployerContributions"
         class="col-6 col-sm-auto">
         <q-toggle
           v-model="isFpContribution"
@@ -44,7 +44,7 @@
         />
       </div>
       <div
-        v-if="!props.hideEmployerContribution"
+        v-if="!props.hideEmployerContributions"
         class="col-6 col-sm-auto">
         <q-toggle
           v-model="isFgspContribution"
@@ -55,7 +55,7 @@
       </div>
     </div>
     <div
-      v-if="!props.hideEmployerContribution"
+      v-if="!props.hideEmployerContributions"
       class="row q-mb-md">
       <div class="col">
         <q-input
@@ -82,9 +82,9 @@ const isFgspContribution = defineModel<boolean>('isFgspContribution', {required:
 const accidentContributionRate = defineModel<number>('accidentContributionRate', {required: false, default: 0})
 
 interface Props {
-  hideEmployerContribution?:boolean
+  hideEmployerContributions?:boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  hideEmployerContribution: false,
+  hideEmployerContributions: false,
 })
 </script>
