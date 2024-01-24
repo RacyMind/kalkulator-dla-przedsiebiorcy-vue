@@ -29,7 +29,6 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
       if(grossAMount) {
         expenses += this.getInputData().workInLivePlace ? incomeTaxConstants.value.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstants.value.taxScale.expenses.amounts.workOutsideLivingPlace
       }
-
     })
 
     return expenses
