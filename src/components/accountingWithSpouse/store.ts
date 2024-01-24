@@ -3,6 +3,8 @@ import {CustomCalculator} from 'components/accountingWithSpouse/logic/CustomCalc
 import {EmployeeCalculator} from 'components/accountingWithSpouse/logic/EmployeeCalculator'
 import {EntrepreneurCalculator} from 'components/accountingWithSpouse/logic/EntrepreneurCalculator'
 import {EntrepreneurFormFields, FormFields, FormType} from 'components/accountingWithSpouse/interfaces/FormFields'
+import {JointAccountingCalculator} from 'components/accountingWithSpouse/logic/JointAccountingCalculator'
+import {JointAccountingResult} from 'components/accountingWithSpouse/interfaces/JointAccountingResult'
 import {acceptHMRUpdate, defineStore} from 'pinia'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
@@ -49,7 +51,7 @@ const getResult = (fields:FormFields) => {
       const grossAmounts: number[] = []
 
       for(let i = 0; i < 12; i++) {
-        grossAmounts.push(fields.employee.hasAmountForEachMonth ? fields.employee.grossAmounts[i] : fields.employee.grossAmount)
+        grossAmounts.push(Number(fields.employee.hasAmountForEachMonth ? fields.employee.grossAmounts[i] : fields.employee.grossAmount))
       }
       return new EmployeeCalculator()
         .setInputData({
@@ -71,10 +73,11 @@ const getResult = (fields:FormFields) => {
       const contributionBasises: number[] = []
 
       for(let i = 0; i < 12; i++) {
-        revenueAmounts.push(fields.entrepreneur.hasRevenueForEachMonth ? fields.entrepreneur.revenueAmounts[i] : fields.entrepreneur.revenue)
-        expensesAmounts.push(fields.entrepreneur.hasRevenueForEachMonth ? fields.entrepreneur.expensesAmounts[i] : fields.entrepreneur.expenses)
+        revenueAmounts.push(Number(fields.entrepreneur.hasRevenueForEachMonth ? fields.entrepreneur.revenueAmounts[i] : fields.entrepreneur.revenue))
+        expensesAmounts.push(Number(fields.entrepreneur.hasExpensesForEachMonth ? fields.entrepreneur.expensesAmounts[i] : fields.entrepreneur.expenses))
         contributionBasises.push(getContributionBasis(i, fields.entrepreneur))
       }
+
       return new EntrepreneurCalculator()
         .setInputData({
           revenues: revenueAmounts,
@@ -109,6 +112,31 @@ export const useAccountingWithSpouseStore = defineStore('accounting-with-spouse'
         return undefined
       }
       return getResult(state.wife)
+    },
+    jointResult(state):undefined | JointAccountingResult {
+      if(state.husband === undefined || state.wife === undefined) {
+        return undefined
+      }
+
+      const husbandResult = getResult(state.husband)
+      const wifeResult = getResult(state.wife)
+
+      return new JointAccountingCalculator().setInputData({
+        husband: {
+          revenue: husbandResult.revenue,
+          expenses: husbandResult.expenses,
+          taxBasis: husbandResult.taxBasis,
+          totalContributions: husbandResult.totalContributions,
+        },
+        wife: {
+          revenue: wifeResult.revenue,
+          expenses: wifeResult.expenses,
+          taxBasis: wifeResult.taxBasis,
+          totalContributions: wifeResult.totalContributions,
+        },
+      })
+        .calculate()
+        .getResult()
     },
   },
 })
