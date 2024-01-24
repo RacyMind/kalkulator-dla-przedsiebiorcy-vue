@@ -1,3 +1,4 @@
+import {ContributionBasises} from 'src/composables/contributionBasises'
 import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
 
 export enum FormType{
@@ -31,6 +32,9 @@ export interface EntrepreneurFormFields{
   hasExpensesForEachMonth: boolean
   expensesAmounts: number[]
   hasTaxRelief: boolean
+  chosenContributionBasis: ContributionBasises
+  customContributionBasis: number
+  hasEmploymentContract:boolean
   isSickContribution: boolean
   accidentContributionRate: number
   isFpContribution: boolean
@@ -48,4 +52,6 @@ export interface CustomFormFields{
 export interface FormFields{
   formType: FormType
   custom: CustomFormFields
+  employee: EmployeeFormFields
+  entrepreneur: EntrepreneurFormFields
 }

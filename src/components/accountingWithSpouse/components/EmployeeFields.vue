@@ -131,20 +131,6 @@ watch(() => fields.value.hasAmountForEachMonth, (hasAmountForEachMonth) => {
     fields.value.grossAmounts[i] = fields.value.grossAmount ?? 0
   }
 })
-
-watch(() => fields.value.hasAmountForEachMonth, (hasAmountForEachMonth) => {
-  if (!hasAmountForEachMonth) {
-    fields.value.grossAmounts = []
-    return
-  }
-  if(fields.value.grossAmounts.length) {
-    return
-  }
-
-  for(let i = 0; i < 12; i++) {
-    fields.value.grossAmounts[i] = fields.value.grossAmount ?? 0
-  }
-})
 watch(() => fields.value.contributionScheme, (contributionScheme) => {
   switch (contributionScheme) {
     case ContributionScheme.All:
