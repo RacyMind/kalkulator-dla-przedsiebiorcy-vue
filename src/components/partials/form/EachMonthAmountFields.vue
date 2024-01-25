@@ -29,7 +29,7 @@ import helpers from 'src/logic/helpers'
 
 interface Props {
   modelValue: number[]
-  disableUntilMonth: null | number
+  disableUntilMonth?: null | number
 }
 const props = withDefaults(defineProps<Props>(), {
   disableUntilMonth: null,

@@ -53,6 +53,12 @@ export default {
       title: 'Porównywarka B2B',
     } as MenuItem,
     {
+      title: 'Rozliczenie z małżonkiem',
+      caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
+      className: 'c-business',
+      link: '/rozliczenie-z-malzonkiem',
+    } as MenuItem,
+    {
       caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',
       className: 'c-business',
       link: '/dzialalnosc-niezarejestrowana',
@@ -156,12 +162,12 @@ export default {
       link: '/umowa-o-dzielo',
       title: 'Umowa o dzieło',
     } as MenuItem,
-/*    {
+    {
       title: 'Rozliczenie z małżonkiem',
       caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
       className: 'c-work',
       link: '/rozliczenie-z-malzonkiem',
-    } as MenuItem,*/
+    } as MenuItem,
     {
       caption: 'Moduł oblicza wysokość zasiłku chorobowego',
       className: 'c-work',
