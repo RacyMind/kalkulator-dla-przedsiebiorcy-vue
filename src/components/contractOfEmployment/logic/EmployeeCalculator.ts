@@ -32,6 +32,10 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
     const { incomeTaxConstants } = useConstants()
     let expenses = 0
 
+    if(this.getInputData().grossAmount <= 0) {
+      return 0
+    }
+
     if(this.getInputData().partOfWorkWithAuthorExpenses < 1) {
       expenses = this.getInputData().workInLivePlace ? incomeTaxConstants.value.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstants.value.taxScale.expenses.amounts.workOutsideLivingPlace
     }

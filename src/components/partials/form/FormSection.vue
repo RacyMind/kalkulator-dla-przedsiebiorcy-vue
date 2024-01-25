@@ -1,7 +1,7 @@
 <template>
   <div class="q-py-md">
     <div class="q-px-md">
-      <div class="row jusstify-between">
+      <div class="row">
         <div class="col">
           <div class="text-subtitle2 text-teal-4">{{ props.title }}</div>
         </div>
@@ -41,7 +41,7 @@ const props = defineProps({
   title: String,
   hideSeparator: {
     type: Boolean,
-    reqired: false,
+    required: false,
     default: false,
   },
 })

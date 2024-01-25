@@ -83,6 +83,8 @@ export class EmployeeZusContribution extends ZusContribution {
 
     const healthContribution = isHealthContribution ? this.getHealthContribution(grossAmount - socialContributions) : 0
 
+    const totalContributions = helpers.round(pensionContribution + disabilityContribution + sickContribution + ppkContribution + healthContribution, 2)
+
     return {
       pensionContribution,
       disabilityContribution,
@@ -90,6 +92,7 @@ export class EmployeeZusContribution extends ZusContribution {
       ppkContribution,
       healthContribution,
       socialContributions,
+      totalContributions,
     }
   }
 }
