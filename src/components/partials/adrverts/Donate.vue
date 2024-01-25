@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      Rozwój tej aplikacji to setki godzin pracy. Dodaj energii na dalszy rozwój stawiając kawę :-)
+      Rozwój kalkulatora to setki godzin pracy. Jeżeli uważasz aplikację za wartościową, możesz wesprzeć twórcę :-)
     </div>
     <q-btn
       label="Wesprzyj projekt"
