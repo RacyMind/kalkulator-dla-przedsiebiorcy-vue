@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodanie modułu "Rozliczenie z małżonkiem".</li></ul>',
+    content: '<ul><li>Dodano moduł "Rozliczenie z małżonkiem".</li></ul>',
     publish_date: '2024-01-25',
     version: '5.4.0',
   },
