@@ -11,7 +11,6 @@
             step="0.01"
             label="Miesięczne wynagrodzenie brutto*"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
@@ -76,6 +75,7 @@
         v-model:is-sick-contribution="fields.isSickContribution"
         v-model:is-disability-contribution="fields.isDisabilityContribution"
         hide-employer-contributions
+        class="q-mb-sm"
       />
       <PpkContributionFields
         v-model:employee-ppk-contribution-rate="fields.employeePpkContributionRate"

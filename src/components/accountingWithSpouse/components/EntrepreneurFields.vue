@@ -11,7 +11,6 @@
             step="0.01"
             label="Miesięczny przychód (bez VAT)*"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
