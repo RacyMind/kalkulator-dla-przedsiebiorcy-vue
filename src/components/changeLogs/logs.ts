@@ -1,7 +1,12 @@
 export default [
   {
+    content: '<ul><li>Dodanie modułu "Rozliczenie z małżonkiem".</li></ul>',
+    publish_date: '2024-01-25',
+    version: '5.4.0',
+  },
+  {
     content: '<ul><li>Aktualizacja podstawy do wyliczenia składki zdrowotnej dla ryczałtu na 2024 rok.</li></ul>',
-    publish_date: '2024-01-23',
+    publish_date: '2024-01-22',
     version: '5.3.1',
   },
   {

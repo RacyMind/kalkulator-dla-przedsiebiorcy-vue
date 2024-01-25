@@ -43,7 +43,7 @@
             v-model="fields.hasTaxRelief"
             checked-icon="check"
             unchecked-icon="clear"
-            label="Ulga podatkowa"
+            label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
             Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.

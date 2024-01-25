@@ -73,7 +73,7 @@
             v-model="fields.hasTaxRelief"
             checked-icon="check"
             unchecked-icon="clear"
-            label="Ulga podatkowa"
+            label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
             Brak naliczania podatku dochodowego dla przychodu do {{ pln(incomeTaxConstants.taxReliefLimit) }}.<br>Ulga dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.

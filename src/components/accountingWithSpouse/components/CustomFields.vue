@@ -27,10 +27,6 @@
             label="Koszty"
             suffix="zł"
             color="brand"
-            :rules="[
-              val => !!val || '* Wpisz kwotę',
-            ]"
-            lazy-rules="ondemand"
             hide-bottom-space
           />
         </div>
@@ -43,7 +39,7 @@
             v-model="fields.hasTaxRelief"
             checked-icon="check"
             unchecked-icon="clear"
-            label="Ulga podatkowa"
+            label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
             Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
@@ -62,10 +58,6 @@
             label="Składki społeczne"
             suffix="zł"
             color="brand"
-            :rules="[
-              val => !!val || '* Wpisz kwotę',
-            ]"
-            lazy-rules="ondemand"
             hint="Składki obniżające podstawę opodatkowania."
             hide-bottom-space
           />
@@ -78,11 +70,6 @@
             step="0.01"
             label="Składka zdrowotna"
             suffix="zł"
-            color="brand"
-            :rules="[
-              val => !!val || '* Wpisz kwotę',
-            ]"
-            lazy-rules="ondemand"
             hide-bottom-space
           />
         </div>
