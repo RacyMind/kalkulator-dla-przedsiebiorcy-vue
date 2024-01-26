@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Naprawa błędu w Samozatrudnieniu przy wyborze ryczałtu.</li></ul>',
+    publish_date: '2024-01-26',
+    version: '5.4.1',
+  },
+  {
     content: '<ul><li>Dodano moduł "Rozliczenie z małżonkiem".</li></ul>',
     publish_date: '2024-01-25',
     version: '5.4.0',
