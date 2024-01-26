@@ -17,13 +17,14 @@ export class AnnualEntrepreneurCalculator extends BasicCalculator<InputFields[],
     const monthlyResults:EntrepreneurResult[] = []
     const calculator = new EntrepreneurCalculator(true)
 
-    this.getInputData().forEach((monthlyInput, monthIndex) => {
+    this.getInputData().forEach((monthlyInputData, monthIndex) => {
+      const monthlyInputForCalculator = {...monthlyInputData}
       if(monthIndex > 0) {
-        monthlyInput.previousMonthHealthContributionBasis = monthlyResults[monthIndex - 1].healthContributionBasis
-        monthlyInput.lossFromPreviousMonth = monthlyResults[monthIndex - 1].deductibleExpenses
+        monthlyInputForCalculator.previousMonthHealthContributionBasis = monthlyResults[monthIndex - 1].healthContributionBasis
+        monthlyInputForCalculator.lossFromPreviousMonth = monthlyResults[monthIndex - 1].deductibleExpenses
       }
-      monthlyInput.yearlyIncome = yearlyIncome
-      monthlyResults.push(calculator.setInputData(monthlyInput).calculate().getResult())
+      monthlyInputForCalculator.yearlyIncome = yearlyIncome
+      monthlyResults.push(calculator.setInputData(monthlyInputForCalculator).calculate().getResult())
     })
 
     return monthlyResults
