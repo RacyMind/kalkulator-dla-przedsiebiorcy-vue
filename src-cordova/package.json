@@ -1,8 +1,8 @@
 {
   "name": "racymind.kalkulator",
-  "displayName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2024",
+  "displayName": "Kalkulator finansowy",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,14 +10,14 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Łukasz Socha",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "cordova-android": "^12.0.1"
-  },
   "cordova": {
     "platforms": [
       "android"
     ]
+  },
+  "devDependencies": {
+    "cordova-android": "^12.0.1"
   }
 }
