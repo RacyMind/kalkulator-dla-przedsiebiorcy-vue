@@ -2,7 +2,9 @@
   <ModulePageLayout class="c-informator">
     <FormSection
       v-if="availableDates.length > 1"
-      title="Data obowiązywania przepisów">
+      title="Data obowiązywania przepisów"
+      hide-separator
+    >
       <LawRuleDate />
     </FormSection>
     <Advert/>
