@@ -115,6 +115,7 @@ interface IncomeTaxConstants{
 interface WageStats {
   averageWageInLastQuarter: (year?: number) => number,
   minimumWage: (year?: number, monthIndex?:number) => number,
+  minimumHourlyWage: (year?: number, monthIndex?:number) => number,
   projectedAverageWage: number,
 }
 
@@ -129,7 +130,7 @@ export const useConstants = () => {
           return 6965.94
         }
         return 7767.85
-      } ,
+      },
       minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2022) {
           return 3010
@@ -144,6 +145,18 @@ export const useConstants = () => {
           return 4242
         }
         return 4300
+      },
+      minimumHourlyWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
+        if(year <= 2023) {
+          if(monthIndex <= 5) {
+            return 22.8
+          }
+          return 23.5
+        }
+        if(monthIndex <= 5) {
+          return 27.7
+        }
+        return 28.1
       },
       projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
     }

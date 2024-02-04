@@ -18,7 +18,9 @@
         <icon density="xhdpi" src="res/android/xhdpi.png" />
         <icon density="xxhdpi" src="res/android/xxhdpi.png" />
         <icon density="xxxhdpi" src="res/android/xxxhdpi.png" />
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash-port-xxxhdpi.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/logo.png" />
+        <preference name="AndroidWindowSplashScreenBrandingImage" value="res/screen/android/slogan.png" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#d12526" />
     </platform>
     <preference name="SplashMaintainAspectRatio" value="true" />
     <platform name="ios">
