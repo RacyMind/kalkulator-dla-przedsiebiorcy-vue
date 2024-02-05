@@ -11,11 +11,10 @@ export class RealBoughtCostCalculator extends BasicCalculator<InputFields, Resul
   }
 
   public calculate(): this {
-    const priceWithoutTax = helpers.round(this.getInputData().price / (1 + this.getInputData().vatTaxRate), 2)
-    const vatTaxAmount = helpers.round(this.getInputData().price - priceWithoutTax, 2)
+    const priceWithoutVatTax = helpers.round(this.getInputData().price / (1 + this.getInputData().vatTaxRate), 2)
+    const vatTaxAmount = helpers.round(this.getInputData().price - priceWithoutVatTax, 2)
     const deductedVatTaxAmount = helpers.round(vatTaxAmount * this.getInputData().deductedVatTaxPart, 2)
-    const deductedIncomeTaxAmount = helpers.round(priceWithoutTax * this.getInputData().incomeTaxRate, 2)
-
+    const deductedIncomeTaxAmount = helpers.round(priceWithoutVatTax * this.getInputData().incomeTaxRate, 2)
     const savedAmount = helpers.round(deductedVatTaxAmount + deductedIncomeTaxAmount, 2)
 
     this.result = {

@@ -67,12 +67,12 @@ import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import VatTaxRateSelect from 'components/partials/form/VatTaxRateSelect.vue'
 import helpers from 'src/logic/helpers'
 
-type AvailableDeductedVatTaxParts = 0 | 0.5 | 1
-type AvailableDeductedIncomeTaxRates = 0 | 0.12 | 0.19 | 0.32
+type AvailableDeductedVatTaxPart = 0 | 0.5 | 1
+type IncomeTaxRate = 0 | 0.12 | 0.19 | 0.32
 
 const emit = defineEmits(['submit'])
 
-const deductedVatTaxPartOptions:{label: string, value: AvailableDeductedVatTaxParts}[] = [
+const deductedVatTaxPartOptions:{label: string, value: AvailableDeductedVatTaxPart}[] = [
   {
     label: 'Nie odliczaj podatku VAT',
     value: 0,
@@ -87,7 +87,7 @@ const deductedVatTaxPartOptions:{label: string, value: AvailableDeductedVatTaxPa
   },
 ]
 
-const deductedIncomeTaxOptions:{label: string, value: AvailableDeductedIncomeTaxRates}[] = [
+const deductedIncomeTaxOptions:{label: string, value: IncomeTaxRate}[] = [
   {
     label: 'Nie odliczaj podatku dochodowego',
     value: 0,
@@ -111,8 +111,8 @@ const store = useRealBoughtCostStore()
 
 const price = useLocalStorage('realBoughtCosts/form/price', helpers.round(1000), { mergeDefaults: true })
 const vatTaxRate = useLocalStorage<AvailableVatRate>('realBoughtCosts/form/vatTaxRate', 0.23, { mergeDefaults: true })
-const deductedVatTaxPart = useLocalStorage<AvailableDeductedVatTaxParts>('realBoughtCosts/form/deductedVatTaxPart', 1, { mergeDefaults: true })
-const incomeTaxRate = useLocalStorage<AvailableDeductedIncomeTaxRates>('realBoughtCosts/form/incomeTaxRate', 0.12, { mergeDefaults: true })
+const deductedVatTaxPart = useLocalStorage<AvailableDeductedVatTaxPart>('realBoughtCosts/form/deductedVatTaxPart', 1, { mergeDefaults: true })
+const incomeTaxRate = useLocalStorage<IncomeTaxRate>('realBoughtCosts/form/incomeTaxRate', 0.12, { mergeDefaults: true })
 
 const handleFormSubmit = () => {
   store.inputFields = {
