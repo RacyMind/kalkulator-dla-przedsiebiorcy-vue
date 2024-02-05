@@ -4,7 +4,7 @@ import {InputFields} from 'components/realBoughtCosts/interfaces/InputFields'
 import {Result} from 'components/realBoughtCosts/interfaces/Result'
 import helpers from 'src/logic/helpers'
 
-export class ContributionCalculator extends BasicCalculator<InputFields, Result> implements Calculator<InputFields, Result>{
+export class RealBoughtCostCalculator extends BasicCalculator<InputFields, Result> implements Calculator<InputFields, Result>{
 
   constructor() {
     super()
