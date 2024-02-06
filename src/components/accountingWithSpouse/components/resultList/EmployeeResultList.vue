@@ -41,7 +41,7 @@
     </list-row>
     <list-row>
       <template #name>
-        Składki ZUS
+        Składki ZUS i PPK
       </template>
       <template #value>
         {{ pln(result.totalContributions) }}

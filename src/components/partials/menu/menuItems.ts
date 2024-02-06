@@ -73,8 +73,8 @@ export default {
     {
       caption: 'Moduł pokazuje realne oszczędności przy zakupie produktu lub usługi na firmę',
       className: 'c-business',
-      link: '/realny-koszt-zakupu',
-      title: 'Realny koszt zakupu',
+      link: '/rzeczywisty-koszt-zakupu',
+      title: 'Rzeczywisty koszt zakupu',
     } as MenuItem,
     {
       caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',

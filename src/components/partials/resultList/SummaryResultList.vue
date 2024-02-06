@@ -24,6 +24,14 @@
         {{ pln(totalZusContributions) }}
       </template>
     </list-row>
+    <list-row>
+      <template #name>
+        Składki na PPK
+      </template>
+      <template #value>
+        {{ pln(totalPpkContributions) }}
+      </template>
+    </list-row>
     <list-row highlight>
       <template #name>
         Suma kosztów pracodawcy
@@ -49,12 +57,13 @@ interface Props {
 const props = defineProps<Props>()
 
 const totalEmployeeZusContributions = computed(() => {
-  return props.employeeResult.healthContribution + props.employeeResult.pensionContribution + props.employeeResult.disabilityContribution + props.employeeResult.sickContribution + props.employeeResult.ppkContribution
+  return props.employeeResult.healthContribution + props.employeeResult.pensionContribution + props.employeeResult.disabilityContribution + props.employeeResult.sickContribution
 })
 
 const totalEmployerZusContributions = computed(() => {
-  return props.employerResult.fpContribution + props.employerResult.fgspContribution + props.employerResult.fsContribution + props.employerResult.pensionContribution + props.employerResult.disabilityContribution + props.employerResult.accidentContribution + props.employerResult.ppkContribution
+  return props.employerResult.fpContribution + props.employerResult.fgspContribution + props.employerResult.fsContribution + props.employerResult.pensionContribution + props.employerResult.disabilityContribution + props.employerResult.accidentContribution
 })
 
 const totalZusContributions = computed(() => totalEmployerZusContributions.value + totalEmployeeZusContributions.value)
+const totalPpkContributions = computed(() => props.employeeResult.ppkContribution + props.employerResult.ppkContribution)
 </script>

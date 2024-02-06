@@ -79,7 +79,7 @@
         {{ pln(result.sickContribution)}}
       </template>
     </list-row>
-    <list-row nested>
+    <list-row>
       <template #name>
         Składka na PPK
       </template>
@@ -111,6 +111,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const totalZusContributions = computed(() => {
-  return props.result.healthContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.ppkContribution
+  return props.result.healthContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution
 })
 </script>

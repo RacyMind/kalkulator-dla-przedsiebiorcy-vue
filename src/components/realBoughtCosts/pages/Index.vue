@@ -38,7 +38,7 @@ const store = useRealBoughtCostStore()
 
 breadcrumbStore.items = [
   {
-    name: 'Realny koszt zakupu',
+    name: 'Rzeczywisty koszt zakupu',
   },
 ]
 
