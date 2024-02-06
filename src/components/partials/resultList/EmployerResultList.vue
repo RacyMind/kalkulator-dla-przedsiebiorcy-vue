@@ -67,7 +67,7 @@
         {{ pln(result.fsContribution)}}
       </template>
     </list-row>
-    <list-row nested>
+    <list-row>
       <template #name>
         Składka na PPK
       </template>
@@ -99,6 +99,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const totalZusContributions = computed(() => {
-  return props.result.fpContribution + props.result.fgspContribution + props.result.fsContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.accidentContribution + props.result.ppkContribution
+  return props.result.fpContribution + props.result.fgspContribution + props.result.fsContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.accidentContribution
 })
 </script>

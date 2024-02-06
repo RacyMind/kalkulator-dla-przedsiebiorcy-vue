@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodano moduł "Rzeczywisty koszt zakupu".</li><li>Przebudowa modułu "Informacje o wynagrodzeniu".</li><li>Składki PPK wyłączono z sumy składek ZUS.</li><li>Zmieniono kolor przycisku Oblicz.</li></ul>',
+    publish_date: '2024-02-06',
+    version: '5.5.0',
+  },
+  {
     content: '<ul><li>Naprawa błędu w Samozatrudnieniu przy wyborze ryczałtu.</li></ul>',
     publish_date: '2024-01-26',
     version: '5.4.1',

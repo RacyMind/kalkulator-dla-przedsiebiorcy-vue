@@ -58,7 +58,7 @@
     </list-row>
     <list-row highlight>
       <template #name>
-        Suma skłdek ZUS
+        Suma składek ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions)}}

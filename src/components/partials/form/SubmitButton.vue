@@ -4,7 +4,7 @@
       <q-btn
         type="submit"
         class="full-width"
-        color="brand"
+        color="teal-4"
         size="md"
         label="Oblicz"
         square
