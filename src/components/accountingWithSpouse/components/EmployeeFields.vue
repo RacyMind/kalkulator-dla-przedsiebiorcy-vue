@@ -103,7 +103,6 @@ import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpense
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
-import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 
