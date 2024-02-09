@@ -16,8 +16,7 @@
             min="1"
             max="31"
             step="1"
-            label="Ilość dni prowadzenia działalności*"
-            autofocus
+            label="Ilość dni prowadzenia działalności"
             color="brand"
             :rules="[
               val => !!val || '* Wpisz liczbę dni',
@@ -48,9 +47,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Podstawa składek ZUS*"
+            label="Podstawa składek ZUS"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
@@ -66,7 +64,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Składka wypadkowa*"
+            label="Składka wypadkowa"
             color="brand"
             suffix="%"
           />
