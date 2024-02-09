@@ -57,6 +57,12 @@
           />
         </div>
       </div>
+      <AuthorExpenseFields
+        class="q-mt-sm"
+        v-model:are-author-expenses="fields.areAuthorExpenses"
+        v-model:part-of-work-with-author-expenses="fields.partOfWorkWithAuthorExpenses"
+        disable-for-each-month
+      />
     </FormSubSection>
     <FormSubSection title="Składki ZUS">
       <div class="row q-mb-md">
@@ -93,9 +99,11 @@ import {EmployeeFormFields} from 'components/accountingWithSpouse/interfaces/For
 import {pln} from 'src/use/currencyFormat'
 import {useConstants} from 'src/composables/constants'
 import {watch} from 'vue'
+import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 

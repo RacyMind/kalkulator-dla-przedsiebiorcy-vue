@@ -1,6 +1,7 @@
 export interface EmployeeInputFields {
   grossAmounts: number[],
   workInLivePlace: boolean,
+  partOfWorkWithAuthorExpenses: number,
   hasTaxRelief: boolean,
   isDisabilityContribution: boolean,
   isHealthContribution: boolean,

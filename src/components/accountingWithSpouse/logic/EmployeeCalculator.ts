@@ -21,17 +21,22 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
     this.incomeTax = new TaxScale()
   }
 
-  protected getExpenses():number {
+  protected getExpenses(basisForExpenses:number):number {
     const { incomeTaxConstants } = useConstants()
     let expenses = 0
 
-    this.getInputData().grossAmounts.forEach((grossAMount) => {
-      if(grossAMount) {
-        expenses += this.getInputData().workInLivePlace ? incomeTaxConstants.value.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstants.value.taxScale.expenses.amounts.workOutsideLivingPlace
-      }
-    })
 
-    return expenses
+    if(this.getInputData().partOfWorkWithAuthorExpenses < 1) {
+      this.getInputData().grossAmounts.forEach((grossAMount) => {
+        if (grossAMount) {
+          expenses += this.getInputData().workInLivePlace ? incomeTaxConstants.value.taxScale.expenses.amounts.workInLivingPlace : incomeTaxConstants.value.taxScale.expenses.amounts.workOutsideLivingPlace
+        }
+      })
+    }
+
+    const authorExpenses = this.incomeTax.getAuthorExpenses(basisForExpenses, this.getInputData().partOfWorkWithAuthorExpenses, this.getInputData().hasTaxRelief, 0)
+
+    return expenses + authorExpenses
   }
   public calculate():this{
     let employerPpkContribution = 0
@@ -67,7 +72,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
 
 
     const salaryAmountOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(totalGrossAmount + employerPpkContribution, 0, this.getInputData().hasTaxRelief)
-    const expenses = this.getExpenses()
+    const expenses = this.getExpenses(salaryAmountOverTaxReliefLimit - socialContributions)
     const taxBasis =  Math.max(helpers.round(salaryAmountOverTaxReliefLimit - socialContributions - expenses, 0), 0)
     const taxAmount = this.incomeTax.getIncomeTax(taxBasis,0, 1)
     const netAmount = helpers.round(totalGrossAmount - socialContributions - healthContribution - ppkContribution - taxAmount, 2)

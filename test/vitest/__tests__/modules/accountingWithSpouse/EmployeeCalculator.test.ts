@@ -26,6 +26,7 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
       isPensionContribution: true,
       hasTaxRelief: false,
       workInLivePlace: true,
+      partOfWorkWithAuthorExpenses: 0,
       employeePpkContributionRate: 0,
       employerPpkContributionRate: 0,
     }
@@ -135,6 +136,18 @@ describe('Employee Calculator in the module "Accounting with Spouse" on 1.1.2002
         hasTaxRelief: true,
       }).calculate().getResult().taxBasis).toBe(15020)
 
+    })
+
+    it('With the author expenses', () => {
+      expect(new EmployeeCalculator().setInputData({
+        ...getDefaultInput(10000),
+        partOfWorkWithAuthorExpenses: 1,
+      }).calculate().getResult().taxBasis).toBe(51774)
+
+      expect(new EmployeeCalculator().setInputData({
+        ...getDefaultInput(10000),
+        partOfWorkWithAuthorExpenses: 0.75,
+      }).calculate().getResult().taxBasis).toBe(61718)
     })
   })
 
