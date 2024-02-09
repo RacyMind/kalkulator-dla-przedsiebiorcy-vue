@@ -14,6 +14,8 @@ export interface EmployeeFormFields{
   grossAmounts: number[]
   hasTaxRelief: boolean
   workInLivePlace: boolean
+  areAuthorExpenses: boolean
+  partOfWorkWithAuthorExpenses: number
   contributionScheme: ContributionScheme
   isDisabilityContribution: boolean
   isHealthContribution: boolean
