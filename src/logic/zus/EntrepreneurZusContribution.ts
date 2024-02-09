@@ -17,7 +17,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
   /**
    * Returns the health contribution of the entrepreneur
    */
-  public getHealthContribution(healthContributionBasis: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0): number {
+  public getHealthContribution(healthContributionBasis: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0, ignoreMinimumContribution = false): number {
     const {wageStats} = useConstants()
 
     let year = this.settingStore.dateOfLawRules.getFullYear()
@@ -30,7 +30,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
     }
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
-    const minimumContribution = helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * wageStats.value.minimumWage(year, 0), 2)
+    const minimumContribution = ignoreMinimumContribution ? 0 : helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * wageStats.value.minimumWage(year, 0), 2)
 
     let contribution: number
 

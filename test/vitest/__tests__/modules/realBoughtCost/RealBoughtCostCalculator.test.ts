@@ -33,7 +33,8 @@ describe('Calculator for real bought costs on 1.01.2024', () => {
     expect(result.vatTaxAmount).toBe(23)
     expect(result.deductedVatTaxAmount).toBe(23)
     expect(result.deductedIncomeTaxAmount).toBe(12)
-    expect(result.savedAmount).toBe(35)
+    expect(result.healthContribution).toBe(9)
+    expect(result.savedAmount).toBe(44)
   })
 
   it('with the deducted vat tax', () => {
@@ -60,6 +61,22 @@ describe('Calculator for real bought costs on 1.01.2024', () => {
     expect(result.vatTaxAmount).toBe(23)
     expect(result.deductedVatTaxAmount).toBe(0)
     expect(result.deductedIncomeTaxAmount).toBe(32)
-    expect(result.savedAmount).toBe(32)
+    expect(result.healthContribution).toBe(9)
+    expect(result.savedAmount).toBe(41)
+  })
+
+  it('with the deducted income flat tax', () => {
+    const result = new RealBoughtCostCalculator().setInputData({
+      ...getDefaultInput(),
+      deductedVatTaxPart: 0,
+      incomeTaxRate: 0.19,
+    }).calculate().getResult()
+
+    expect(result.price).toBe(123)
+    expect(result.vatTaxAmount).toBe(23)
+    expect(result.deductedVatTaxAmount).toBe(0)
+    expect(result.deductedIncomeTaxAmount).toBe(19)
+    expect(result.healthContribution).toBe(4.9)
+    expect(result.savedAmount).toBe(23.9)
   })
 })
