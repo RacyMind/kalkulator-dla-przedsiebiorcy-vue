@@ -16,9 +16,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Wynagrodzenie*"
+            label="Wynagrodzenie"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',

@@ -30,7 +30,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Stawka godzinowa*"
+            label="Stawka godzinowa"
             suffix="zł"
             color="brand"
             :rules="[
@@ -47,7 +47,7 @@
             class="full-width"
             min="1"
             step="1"
-            label="Ilość godzin*"
+            label="Ilość godzin"
             color="brand"
             :rules="[
               val => !!val || '* Wpisz ilość godzin',
@@ -64,9 +64,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Wynagrodzenie*"
+            label="Wynagrodzenie"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',

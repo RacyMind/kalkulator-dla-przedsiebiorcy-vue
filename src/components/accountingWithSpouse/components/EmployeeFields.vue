@@ -9,7 +9,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Miesięczne wynagrodzenie brutto*"
+            label="Miesięczne wynagrodzenie brutto"
             suffix="zł"
             color="brand"
             :rules="[

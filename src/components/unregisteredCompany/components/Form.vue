@@ -15,9 +15,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Przychód (bez VAT)*"
+            label="Przychód (bez VAT)"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',

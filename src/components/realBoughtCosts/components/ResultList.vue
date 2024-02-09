@@ -10,7 +10,7 @@
     </list-row>
     <list-row>
       <template #name>
-        Kwota podatku VAT
+        Podatek VAT
       </template>
       <template #value>
         {{ pln(props.result.vatTaxAmount)}}
@@ -18,7 +18,7 @@
     </list-row>
     <list-row>
       <template #name>
-        Kwota podatku VAT do odliczenia
+        Podatek VAT do odliczenia
       </template>
       <template #value>
         {{ pln(props.result.deductedVatTaxAmount)}}
@@ -26,7 +26,7 @@
     </list-row>
     <list-row>
       <template #name>
-        Kwota podatku dochodowego do odliczenia
+        Podatek dochodowy do odliczenia
       </template>
       <template #value>
         {{ pln(props.result.deductedIncomeTaxAmount)}}
