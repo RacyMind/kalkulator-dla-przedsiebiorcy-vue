@@ -32,6 +32,14 @@
         {{ pln(props.result.deductedIncomeTaxAmount)}}
       </template>
     </list-row>
+    <list-row>
+      <template #name>
+        Składka zdrowotna
+      </template>
+      <template #value>
+        {{ pln(props.result.healthContribution)}}
+      </template>
+    </list-row>
     <list-row highlight>
       <template #name>
         Zaoszczędzona kwota
