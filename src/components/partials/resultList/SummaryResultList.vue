@@ -44,10 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import {EmployeeResult} from '../../../logic/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {computed} from 'vue'
-import {pln} from '../../../use/currencyFormat'
+import {pln} from 'src/use/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {
