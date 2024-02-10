@@ -40,4 +40,14 @@ describe('Income tax using General Rules in 2023', () => {
     expect(taxScale.getIncomeTax(2500, 0, 12)).toBe(0)
     expect(taxScale.getIncomeTax(2600, 0, 12)).toBe(12)
   })
+
+  it('the tax free amount limit', () => {
+    expect(taxScale.getTaxFreeAmount(0, 0)).toBe(0)
+    expect(taxScale.getTaxFreeAmount(-5, 0)).toBe(0)
+    expect(taxScale.getTaxFreeAmount(10, 0)).toBe(10)
+    expect(taxScale.getTaxFreeAmount(3601, 0)).toBe(3600)
+    expect(taxScale.getTaxFreeAmount(1, 3600)).toBe(0)
+    expect(taxScale.getTaxFreeAmount(700, 3000)).toBe(600)
+    expect(taxScale.getTaxFreeAmount(0, 3600)).toBe(0)
+  })
 })

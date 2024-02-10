@@ -72,6 +72,22 @@ export class TaxScale {
 
     return helpers.round(taxAmount)
   }
+
+  public getTaxFreeAmount(taxAmount:number, sumUpTaxFreeAmount = 0): number {
+    if(taxAmount <= 0) {
+      return 0
+    }
+
+    if(sumUpTaxFreeAmount >= this.annualTaxReducingAmount) {
+      return 0
+    }
+
+    if(taxAmount + sumUpTaxFreeAmount > this.annualTaxReducingAmount) {
+      return this.annualTaxReducingAmount - sumUpTaxFreeAmount
+    }
+
+    return taxAmount
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

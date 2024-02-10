@@ -43,7 +43,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 12,
+      hasTaxFreeAmount: true,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
@@ -129,7 +129,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
           hasTaxRelief: true,
         })).calculate().getResult().annualResult
 
-        expect(result.taxAmount).toBe(8046)
+        expect(result.taxAmount).toBe(6546)
       })
     })
   })
@@ -145,7 +145,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 12,
+      hasTaxFreeAmount: true,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
@@ -240,7 +240,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 12,
+      hasTaxFreeAmount: true,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
