@@ -13,19 +13,33 @@
       :breakpoint="0"
       align="justify">
       <q-tab
+        :name="Tabs.Summary"
+        label="Podsumowanie" />
+      <q-tab
         :name="Tabs.Employee"
         label="Pracownik" />
       <q-tab
         :name="Tabs.Employer"
         label="Pracodawca" />
-      <q-tab
-        :name="Tabs.Summary"
-        label="Podsumowanie" />
     </q-tabs>
     <q-tab-panels
       v-model="tab"
       animated
       swipeable>
+      <q-tab-panel
+        :name="Tabs.Summary"
+        class="q-pa-none">
+        <SummaryTabPanel
+          v-if="employeeResult && employerResult"
+          :employee-result="employeeResult"
+          :employer-result="employerResult"
+        />
+        <div
+          v-else
+          class="q-pa-md">
+          Brak danych
+        </div>
+      </q-tab-panel>
       <q-tab-panel
         :name="Tabs.Employee"
         class="q-pa-none">
@@ -44,20 +58,6 @@
         <EmployerTabPanel
           v-if="employerResult"
           :result="employerResult"/>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.Summary"
-        class="q-pa-none">
-        <SummaryTabPanel
-          v-if="employeeResult && employerResult"
-          :employee-result="employeeResult"
-          :employer-result="employerResult"
-        />
         <div
           v-else
           class="q-pa-md">
@@ -98,7 +98,7 @@ breadcrumbStore.items = [
   },
 ]
 
-const tab = ref(Tabs.Employee)
+const tab = ref(Tabs.Summary)
 const qtabs:Ref<QTabs|null> = ref(null)
 
 const employeeResult = computed(() => store.employeeResult)

@@ -22,7 +22,12 @@
       </ListHeader>
       <SummaryResultList
         :employee-result="employeeMonthlyResult"
-        :employer-result="employerRonthlyResult"
+        :employer-result="employerMonthlyResult"
+      />
+      <Separator />
+      <SummaryStatistics
+        :employee-result="employeeMonthlyResult"
+        :employer-result="employerMonthlyResult"
       />
     </template>
   </div>
@@ -35,7 +40,9 @@ import {AnnualEmployerResult} from 'src/logic/interfaces/AnnualEmployerResult'
 import {computed, ref} from 'vue'
 import AnnualSummaryResultList from 'components/partials/resultList/AnnualSummaryResultList.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
+import Separator from 'components/partials/Separator.vue'
 import SummaryResultList from 'components/partials/resultList/SummaryResultList.vue'
+import SummaryStatistics from 'components/partials/statistics/SummaryStatistics.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
@@ -50,5 +57,5 @@ const employeeResult = computed(() => props.employeeResult)
 const employeeMonthlyResult = computed(() => employeeResult.value?.monthlyResults[0])
 
 const employerResult = computed(() => props.employerResult)
-const employerRonthlyResult = computed(() => employerResult.value?.monthlyResults[0])
+const employerMonthlyResult = computed(() => employerResult.value?.monthlyResults[0])
 </script>
