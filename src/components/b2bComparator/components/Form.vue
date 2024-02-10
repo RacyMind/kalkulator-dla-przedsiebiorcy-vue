@@ -88,9 +88,16 @@
           </Tooltip>
         </div>
       </div>
-      <TaxFreeAmountFields
-        v-model:has-tax-free-amount="hasTaxFreeAmount"
-        v-model:employer-count="employerCount" />
+      <div class="row q-col-gutter-md">
+        <div class="col">
+          <q-toggle
+            v-model="hasTaxFreeAmount"
+            label="Kwota wolna od podatku"
+            checked-icon="check"
+            unchecked-icon="clear"
+          />
+        </div>
+      </div>
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row">
@@ -199,13 +206,11 @@ import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
-import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
@@ -226,7 +231,7 @@ const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEa
 // the income tax section
 const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>('b2bComparator/form/lumpSumTaxRate', 0.17, { mergeDefaults: true })
 const hasTaxRelief = useLocalStorage('b2bComparator/form/hasTaxRelief', false, { mergeDefaults: true })
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('b2bComparator/form')
+const hasTaxFreeAmount = useLocalStorage('b2bComparator/form/hasTaxFreeAmount', true, { mergeDefaults: true })
 
 // the ZUS contribution section
 const { chosenContributionBasis } = useContributionBasis('b2bComparator/form')
@@ -271,7 +276,7 @@ const handleFormSubmit = () => {
     expenses: expenses.value ?? 0,
     lumpSumTaxRate: lumpSumTaxRate.value,
     hasTaxRelief: hasTaxRelief.value,
-    partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
+    hasTaxFreeAmount: hasTaxFreeAmount.value,
     hasEmploymentContract: hasEmploymentContract.value,
     isFpContribution: isFpContribution.value,
     isSickContribution: isSickContribution.value,

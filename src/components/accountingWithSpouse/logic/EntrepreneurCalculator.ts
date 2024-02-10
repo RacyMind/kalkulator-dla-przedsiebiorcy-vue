@@ -28,7 +28,7 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
         isSickContribution: this.getInputData().isSickContribution,
         accidentContributionRate: this.getInputData().accidentContributionRate,
         monthIndex: i,
-        partTaxReducingAmount: 12,
+        hasTaxFreeAmount: 12,
         yearlyIncome: 0,
         hasTaxRelief: this.getInputData().hasTaxRelief,
         isFpContribution: this.getInputData().isFpContribution,

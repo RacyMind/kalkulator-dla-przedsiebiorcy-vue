@@ -12,7 +12,7 @@ export interface InputFields{
   hasEmploymentContract:boolean
   accidentContributionRate: number
   hasTaxRelief: boolean
-  partTaxReducingAmount: number
+  hasTaxFreeAmount: boolean
   lumpSumTaxRate?:LumpSumTaxRate
   yearlyIncome: number
   previousMonthHealthContributionBasis: number

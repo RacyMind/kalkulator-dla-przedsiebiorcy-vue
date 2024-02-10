@@ -17,6 +17,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
   protected sumUpRevenue = 0
   protected sumUpTaxBasis = 0
   protected sumUpDeductibleHealthContribution = 0
+  protected sumUpTaxFreeAmount = 0
 
   /**
    * @param isPartOfAnnualResult if isPartOfAnnualResult is true, it saves important values for next month calculations
@@ -82,7 +83,14 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
 
     switch (this.getInputData().taxSystem) {
       case EntrepreneurTaxSystem.TaxScale:
-        taxAmount = new TaxScale().getIncomeTax(taxBasis, this.sumUpTaxBasis, this.getInputData().partTaxReducingAmount)
+        const taxScale = new TaxScale()
+        taxAmount = taxScale.getIncomeTax(taxBasis, this.sumUpTaxBasis, 0)
+
+        if(this.getInputData().hasTaxFreeAmount) {
+          const taxFreeAmount = taxScale.getTaxFreeAmount(taxAmount, this.sumUpTaxFreeAmount)
+          taxAmount = taxAmount - taxFreeAmount
+          this.sumUpTaxFreeAmount = helpers.round(this.sumUpTaxFreeAmount + taxFreeAmount)
+        }
         break
       case EntrepreneurTaxSystem.FlatTax:
         taxAmount = new FlatTax().getIncomeTax(taxBasis)
@@ -123,6 +131,7 @@ export class EntrepreneurCalculator extends BasicCalculator<InputFields, Entrepr
     if(!this.isPartOfAnnualResult) {
       this.sumUpRevenue = 0
       this.sumUpTaxBasis = 0
+      this.sumUpTaxFreeAmount = 0
       this.sumUpContributionBasis = 0
       this.sumUpDeductibleHealthContribution = 0
     }

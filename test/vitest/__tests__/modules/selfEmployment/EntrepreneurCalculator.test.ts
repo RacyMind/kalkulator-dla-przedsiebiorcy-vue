@@ -29,7 +29,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 0,
+      hasTaxFreeAmount: 0,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
@@ -137,33 +137,13 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
       })
     })
 
-    describe('with the tax free amount', () => {
-      it('with the 1/12 amount', () => {
+    it('with the tax free amount', () => {
       const result = new EntrepreneurCalculator().setInputData({
         ...input,
-        partTaxReducingAmount: 12,
+        hasTaxFreeAmount: true,
       }).calculate().getResult()
       expect(result.taxBasis).toBe(8582)
-      expect(result.taxAmount).toBe(730)
-      })
-
-      it('with the 1/24 amount', () => {
-        const result = new EntrepreneurCalculator().setInputData({
-          ...input,
-          partTaxReducingAmount: 24,
-        }).calculate().getResult()
-        expect(result.taxBasis).toBe(8582)
-        expect(result.taxAmount).toBe(880)
-      })
-
-      it('with the 1/36 amount', () => {
-        const result = new EntrepreneurCalculator().setInputData({
-          ...input,
-          partTaxReducingAmount: 36,
-        }).calculate().getResult()
-        expect(result.taxBasis).toBe(8582)
-        expect(result.taxAmount).toBe(930)
-      })
+      expect(result.taxAmount).toBe(0)
     })
 
     describe('with the tax relief', () => {
@@ -215,10 +195,10 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
         const result = new EntrepreneurCalculator().setInputData({
           ...input,
           revenue: incomeTaxConstants.value.taxScale.taxThreshold + 10000,
-          partTaxReducingAmount: 12,
+          hasTaxFreeAmount: true,
         }).calculate().getResult()
         expect(result.taxBasis).toBe(128582)
-        expect(result.taxAmount).toBe(16846)
+        expect(result.taxAmount).toBe(13546)
       })
 
       it('with the tax relief', () => {
@@ -271,7 +251,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 0,
+      hasTaxFreeAmount: 0,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
@@ -411,7 +391,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 0,
+      hasTaxFreeAmount: 0,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
@@ -527,7 +507,7 @@ describe('Entrepreneur Calculator of Self employment on 1.01.2024', () => {
       accidentContributionRate: 0.0167,
       isFpContribution: true,
       isSickContribution: true,
-      partTaxReducingAmount: 0,
+      hasTaxFreeAmount: 0,
       hasTaxRelief: false,
       yearlyIncome: 0,
       hasEmploymentContract: false,
