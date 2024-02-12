@@ -11,7 +11,7 @@
     />
     <ListRow
       name="Współczynnik proporcjonalny"
-      :value="result.propoitonalRate"
+      :value="result.proportionalRate"
     />
     <ListRow
       class="bg-primary text-white"

@@ -1,6 +1,6 @@
 import {AvailableYear} from 'src/types/AvailableYear'
+import {Result} from 'components/salaryForUnusedHolidays/interfaces/Result'
 import {SalaryForUnusedHolidaysFields} from 'components/salaryForUnusedHolidays/interfaces/SalaryForUnusedHolidaysFields'
-import {SalaryForUnusedHolidaysResult} from 'components/salaryForUnusedHolidays/interfaces/SalaryForUnusedHolidaysResult'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
@@ -22,15 +22,15 @@ function setParams (year:AvailableYear) {
  * Returns the result
  *
  * @param {SalaryForUnusedHolidaysFields} input
- * @returns {SalaryForUnusedHolidaysResult}
+ * @returns {Result}
  */
-function getResult (input:SalaryForUnusedHolidaysFields):SalaryForUnusedHolidaysResult {
+function getResult (input:SalaryForUnusedHolidaysFields):Result {
   if(!input.dailyNorm || !input.dailyNorm) {
     return {
       basicAmount: 0,
       equivalent: 0,
       holidayRate: 0,
-      propoitonalRate: 0,
+      proportionalRate: 0,
     }
   }
 
@@ -43,7 +43,7 @@ function getResult (input:SalaryForUnusedHolidaysFields):SalaryForUnusedHolidays
     basicAmount: input.amount,
     equivalent: equivalent,
     holidayRate: params.holidayRate,
-    propoitonalRate: proportionalRate,
+    proportionalRate: proportionalRate,
   }
 }
 
