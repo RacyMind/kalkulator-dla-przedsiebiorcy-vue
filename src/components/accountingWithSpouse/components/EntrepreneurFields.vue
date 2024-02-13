@@ -9,7 +9,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Miesięczny przychód (bez VAT)*"
+            label="Miesięczny przychód (bez VAT)"
             suffix="zł"
             color="brand"
             :rules="[
@@ -44,7 +44,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Miesięczne koszty (bez VAT)*"
+            label="Miesięczne koszty (bez VAT)"
             suffix="zł"
             hide-bottom-space
           />
@@ -110,9 +110,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Podstawa składek ZUS*"
+            label="Podstawa składek ZUS"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
@@ -143,7 +142,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Składka wypadkowa*"
+            label="Składka wypadkowa"
             color="brand"
             suffix="%"
           />

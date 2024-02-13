@@ -10,9 +10,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Cena brutto*"
+            label="Cena brutto"
             suffix="zł"
-            autofocus
             color="brand"
             hide-bottom-space
             :rules="[
@@ -32,7 +31,7 @@
           <q-select
             v-model.number="incomeTaxRate"
             :options="deductedIncomeTaxOptions"
-            label="Odliczanie podatku dochodowego*"
+            label="Odliczanie podatku dochodowego"
             color="brand"
             required
             emit-value
@@ -43,7 +42,7 @@
           <q-select
             v-model.number="deductedVatTaxPart"
             :options="deductedVatTaxPartOptions"
-            label="Odliczanie podatku VAT*"
+            label="Odliczanie podatku VAT"
             color="brand"
             required
             emit-value

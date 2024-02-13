@@ -58,6 +58,7 @@ const getResult = (fields:FormFields) => {
           grossAmounts: grossAmounts,
           hasTaxRelief: fields.employee.hasTaxRelief,
           workInLivePlace: fields.employee.workInLivePlace,
+          partOfWorkWithAuthorExpenses: fields.employee.areAuthorExpenses ? helpers.round(fields.employee.partOfWorkWithAuthorExpenses / 100, 2) : 0,
           isDisabilityContribution: fields.employee.isDisabilityContribution,
           isHealthContribution: fields.employee.isHealthContribution,
           isPensionContribution: fields.employee.isPensionContribution,

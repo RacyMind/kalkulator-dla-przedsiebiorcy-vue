@@ -38,9 +38,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Przychód (bez VAT)*"
+            label="Przychód (bez VAT)"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
@@ -101,7 +100,7 @@
           <q-select
             v-model.number="incomeTaxType"
             :options="incomeTaxTypes"
-            label="Forma opodatkowania*"
+            label="Forma opodatkowania"
             color="brand"
             required
             emit-value
@@ -129,10 +128,18 @@
           </Tooltip>
         </div>
       </div>
-      <TaxFreeAmountFields
+      <div
         v-if="incomeTaxType === EntrepreneurTaxSystem.TaxScale"
-        v-model:has-tax-free-amount="hasTaxFreeAmount"
-        v-model:employer-count="employerCount" />
+        class="row q-col-gutter-md">
+        <div class="col">
+          <q-toggle
+            v-model="hasTaxFreeAmount"
+            label="Kwota wolna od podatku"
+            checked-icon="check"
+            unchecked-icon="clear"
+          />
+        </div>
+      </div>
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row">
@@ -164,9 +171,8 @@
             type="number"
             min="0"
             step="0.01"
-            label="Podstawa składek ZUS*"
+            label="Podstawa składek ZUS"
             suffix="zł"
-            autofocus
             color="brand"
             :rules="[
               val => !!val || '* Wpisz kwotę',
@@ -199,7 +205,7 @@
             type="number"
             min="0"
             step="0.01"
-            label="Składka wypadkowa*"
+            label="Składka wypadkowa"
             color="brand"
             suffix="%"
           />
@@ -268,13 +274,11 @@ import {useLocalStorage} from '@vueuse/core'
 import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
 import {useMonths} from 'src/composables/months'
 import {useSelfEmploymentStore} from 'components/selfEmployment/store'
-import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
@@ -318,7 +322,7 @@ const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEa
 
 // the income tax section
 const hasTaxRelief = useLocalStorage('selfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('selfEmployment/form')
+const hasTaxFreeAmount = useLocalStorage('selfEmployment/form/hasTaxFreeAmount', true, { mergeDefaults: true })
 
 // the ZUS contribution section
 const { chosenContributionBasis } = useContributionBasis('selfEmployment/form')
@@ -377,7 +381,7 @@ const handleFormSubmit = () => {
     taxSystem: incomeTaxType.value,
     lumpSumTaxRate: lumpSumTaxRate.value,
     hasTaxRelief: hasTaxRelief.value,
-    partTaxReducingAmount: hasTaxFreeAmount.value && incomeTaxType.value === EntrepreneurTaxSystem.TaxScale ? employerCount.value * 12 : 0,
+    hasTaxFreeAmount: hasTaxFreeAmount.value,
     hasEmploymentContract: hasEmploymentContract.value,
     isFpContribution: isFpContribution.value,
     isSickContribution: isSickContribution.value,

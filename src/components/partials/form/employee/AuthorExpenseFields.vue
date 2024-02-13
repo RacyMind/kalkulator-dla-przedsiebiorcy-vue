@@ -30,7 +30,9 @@
         />
       </div>
     </div>
-    <div class="row">
+    <div
+      v-if="!props.disableForEachMonth"
+      class="row">
       <div class="col">
         <q-toggle
           v-if="areAuthorExpenses"
@@ -55,10 +57,15 @@ import EachMonthPercentageFields from 'components/partials/form/EachMonthPercent
 interface Props {
   areAuthorExpenses: boolean
   partOfWorkWithAuthorExpenses: number
-  hasPercentageForEachMonth: boolean
-  monthlyValues: number[]
+  hasPercentageForEachMonth?: boolean
+  monthlyValues?: number[]
+  disableForEachMonth?: boolean
 }
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  disableForEachMonth: false,
+  hasPercentageForEachMonth: false,
+  monthlyValues: () => [],
+})
 const emit = defineEmits(['update:areAuthorExpenses', 'update:hasPercentageForEachMonth', 'update:partOfWorkWithAuthorExpenses', 'update:monthlyValues'])
 
 const areAuthorExpenses = computed({

@@ -2,57 +2,41 @@
   <div v-if="props.result">
     <list-row>
       <template #name>
-        Cena
+        Podstawa wymiaru świadczenia
       </template>
       <template #value>
-        {{ pln(props.result.price)}}
+        {{ pln(props.result.basicAmount)}}
       </template>
     </list-row>
     <list-row>
       <template #name>
-        Podatek VAT
+        Współczynnik urlopowy
       </template>
       <template #value>
-        {{ pln(props.result.vatTaxAmount)}}
+        {{ props.result.holidayRate }}
       </template>
     </list-row>
     <list-row>
       <template #name>
-        Podatek VAT do odliczenia
+        Współczynnik proporcjonalny
       </template>
       <template #value>
-        {{ pln(props.result.deductedVatTaxAmount)}}
-      </template>
-    </list-row>
-    <list-row>
-      <template #name>
-        Podatek dochodowy do odliczenia
-      </template>
-      <template #value>
-        {{ pln(props.result.deductedIncomeTaxAmount)}}
-      </template>
-    </list-row>
-    <list-row>
-      <template #name>
-        Składka zdrowotna
-      </template>
-      <template #value>
-        {{ pln(props.result.healthContribution)}}
+        {{ props.result.proportionalRate }}
       </template>
     </list-row>
     <list-row highlight>
       <template #name>
-        Zaoszczędzona kwota
+        Ekwiwalent
       </template>
       <template #value>
-        {{ pln(props.result.savedAmount)}}
+        {{ pln(props.result.equivalent)}}
       </template>
     </list-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import {Result} from 'components/realBoughtCosts/interfaces/Result'
+import {Result} from 'components/salaryForUnusedHolidays/interfaces/Result'
 import {pln} from 'src/use/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

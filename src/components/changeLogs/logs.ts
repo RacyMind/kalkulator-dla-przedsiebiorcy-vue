@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Poprawiono odliczanie kwoty wolnej od podatku w działalności gospodarczej.</li><li>Dodano wykres kołowy w podsumowaniu pracownika i pracodawcy.</li><li>Dodano autorskie koszty przychodu w module "Rozliczenie z małżonkiem".</li><li>Przebudowa modułu "Ekwiwalent za niewykorzystany urlop".</li><li>Dodano składkę zdrowotną w module "Rzeczywisty koszt zakupu".</li><li>Pomniejsze usprawnienia w interfejsie.</li></ul>',
+    publish_date: '2024-02-12',
+    version: '5.6.0',
+  },
+  {
     content: '<ul><li>Dodano moduł "Rzeczywisty koszt zakupu".</li><li>Przebudowa modułu "Informacje o wynagrodzeniu".</li><li>Składki PPK wyłączono z sumy składek ZUS.</li><li>Zmieniono kolor przycisku Oblicz.</li></ul>',
     publish_date: '2024-02-06',
     version: '5.5.0',

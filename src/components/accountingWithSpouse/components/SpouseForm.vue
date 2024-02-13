@@ -88,6 +88,8 @@ const employeeInitialValue: EmployeeFormFields = {
   grossAmounts: [],
   workInLivePlace: true,
   hasTaxRelief: false,
+  areAuthorExpenses: false,
+  partOfWorkWithAuthorExpenses: 100,
   contributionScheme: ContributionScheme.All,
   isDisabilityContribution: true,
   isHealthContribution: true,
