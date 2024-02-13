@@ -2,10 +2,10 @@
   <div v-if="employeeResult && employerResult">
     <list-row>
       <template #name>
-        Wynagrodzenie brutto
+        Wynagrodzenie netto
       </template>
       <template #value>
-        {{ pln(employeeResult.grossAmount) }}
+        {{ pln(employeeResult.netAmount) }}
       </template>
     </list-row>
     <list-row>
