@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
+import {InputFields} from 'components/sickPay/interfaces/InputFields'
 import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
@@ -43,7 +43,7 @@ breadcrumbStore.items = [
   },
 ]
 
-const inputFields = ref(<SickPayInputFields>{
+const inputFields = ref(<InputFields>{
   basicAmount: 0,
   dayCount: 0,
   rate: 1,
@@ -51,7 +51,7 @@ const inputFields = ref(<SickPayInputFields>{
 
 const scrollTarget = ref(null) as any
 
-const save = (input: SickPayInputFields) => {
+const save = (input: InputFields) => {
   inputFields.value = input
   helpers.scrollToElement(scrollTarget?.value?.$el)
 }

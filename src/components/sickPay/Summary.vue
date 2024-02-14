@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
+import {InputFields} from 'components/sickPay/interfaces/InputFields'
 import {PropType, computed, defineComponent} from 'vue'
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
 import { pln } from 'src/use/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import sickPay from 'components/sickPay/sickPay'
@@ -31,7 +31,7 @@ export default defineComponent({
   props: {
     input: {
       required: true,
-      type: Object as PropType<SickPayInputFields>,
+      type: Object as PropType<InputFields>,
     },
   },
   setup(props) {

@@ -1,6 +1,6 @@
 import {AvailableYear} from 'src/types/AvailableYear'
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
-import {SickPayResult} from 'components/sickPay/interfaces/SickPayResult'
+import {InputFields} from 'components/sickPay/interfaces/InputFields'
+import {Result} from 'components/sickPay/interfaces/Result'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
@@ -15,10 +15,10 @@ const zusContributionRate:number = (constants.PARAMS[currentYear].ZUS.EMPLOYEE.R
 /**
  * Returns the result
  *
- * @param {SickPayInputFields} input
- * @returns {SickPayResult}
+ * @param {InputFields} input
+ * @returns {Result}
  */
-function getResult (input:SickPayInputFields):SickPayResult {
+function getResult (input:InputFields):Result {
   let amount:number = helpers.round(input.basicAmount * (1 - zusContributionRate), 2)
   amount = helpers.round(amount / 30, 2)
   amount = amount * input.rate * input.dayCount

@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import {SickPayInputFields} from 'components/sickPay/interfaces/SickPayInputFields'
+import {InputFields} from 'components/sickPay/interfaces/InputFields'
 import {SickPayRate} from 'components/sickPay/types/SickPayRate'
 import {computed, defineComponent, ref} from 'vue'
 import constants from 'src/logic/constants'
@@ -83,7 +83,7 @@ export default defineComponent({
     })
 
     const save = () => {
-      const input: SickPayInputFields = {
+      const input: InputFields = {
         basicAmount: Number(basicAmount.value),
         dayCount: Number(dayCount.value),
         rate: <SickPayRate>rate.value.value,
