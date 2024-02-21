@@ -9,7 +9,7 @@ import Donate from 'components/partials/adrverts/Donate.vue'
 import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
 
 const isTaxDonationTimeFrame = () => {
-  const nmonth = new Date().getMonth()
-  return nmonth > 1 && nmonth < 5
+  const month = new Date().getMonth()
+  return month > 0 && month < 5
 }
 </script>

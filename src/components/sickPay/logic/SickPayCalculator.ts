@@ -14,10 +14,10 @@ export class SickPayCalculator extends BasicCalculator<InputFields, Result> impl
   public calculate(): this {
     const {zusConstants} = useConstants()
     const zusContributionRate = zusConstants.value.employee.rates.pensionContribution + zusConstants.value.employee.rates.disabilityContribution + zusConstants.value.employee.rates.sickContribution
-console.log('zusContributionRate', zusContributionRate)
+
     let amount = helpers.round(this.getInputData().basicAmount * (1 - zusContributionRate), 2)
     amount = helpers.round(amount / 30, 2)
-    amount = amount * this.getInputData().rate * this.getInputData().dayCount
+    amount = helpers.round(amount * this.getInputData().rate * this.getInputData().dayCount, 2)
 
     this.result = {
       basicAmount: this.getInputData().basicAmount,
