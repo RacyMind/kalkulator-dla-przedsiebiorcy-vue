@@ -102,15 +102,25 @@
 import {EmployeeResult} from '../../../logic/interfaces/EmployeeResult'
 import {computed} from 'vue'
 import {pln} from '../../../use/currencyFormat'
+import {useEventStore} from 'stores/eventStore'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   result: EmployeeResult
+  monthIndex?: number
 }
 const props = defineProps<Props>()
+const eventStore = useEventStore()
 
 const totalZusContributions = computed(() => {
   return props.result.healthContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution
+})
+
+const showCrossingTaxThresholdWarning = computed(() => {
+  if(props.monthIndex === undefined) {
+    return false
+  }
+  
 })
 </script>
