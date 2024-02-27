@@ -11,7 +11,9 @@
       <ListHeader>
         {{ constants.MONTH_NAMES[index] }}
       </ListHeader>
-      <EmployeeResultList :result="monthlyResult" />
+      <EmployeeResultList
+        :result="monthlyResult"
+        :month-index="index"/>
       <Separator v-if="index < 11" />
     </div>
   </div>

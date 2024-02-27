@@ -19,6 +19,7 @@
     <list-row>
       <template #name>
         Podstawa opodatkowania
+        <CrossingTaxThreshold v-if="showCrossingTaxThresholdWarning" />
       </template>
       <template #value>
         {{ pln(result.taxBasis)}}
@@ -99,10 +100,11 @@
 </template>
 
 <script setup lang="ts">
-import {EmployeeResult} from '../../../logic/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
+import {EventType, useEventStore} from 'stores/eventStore'
 import {computed} from 'vue'
-import {pln} from '../../../use/currencyFormat'
-import {useEventStore} from 'stores/eventStore'
+import {pln} from 'src/use/currencyFormat'
+import CrossingTaxThreshold from 'components/partials/notifications/CrossingTaxThreshold.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
@@ -118,9 +120,9 @@ const totalZusContributions = computed(() => {
 })
 
 const showCrossingTaxThresholdWarning = computed(() => {
-  if(props.monthIndex === undefined) {
-    return false
+  if(typeof props.monthIndex === 'undefined') {
+    return eventStore.events.some(event => event.type === EventType.CrossingTaxThreshold)
   }
-  
+  return eventStore.events.some(event => event.type === EventType.CrossingTaxThreshold  && event.sinceMonth && props.monthIndex >= event.sinceMonth)
 })
 </script>

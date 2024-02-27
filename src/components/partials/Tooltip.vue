@@ -5,7 +5,7 @@
     size="sm"
     padding="none"
     :color="props.color"
-    icon="help">
+    :icon="props.icon">
     <q-tooltip
       anchor="top middle"
       self="bottom middle"
@@ -22,6 +22,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'primary',
+  },
+  icon: {
+    type: String,
+    required: false,
+    default: 'help',
   },
 })
 </script>
