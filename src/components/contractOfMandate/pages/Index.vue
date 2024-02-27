@@ -103,8 +103,6 @@ breadcrumbStore.items = [
   },
 ]
 
-eventStore.$reset()
-
 const tab = ref(Tabs.Summary)
 const qtabs:Ref<QTabs|null> = ref(null)
 
