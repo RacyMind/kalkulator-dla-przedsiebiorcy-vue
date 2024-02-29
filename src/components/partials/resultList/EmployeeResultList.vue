@@ -19,6 +19,7 @@
     <list-row>
       <template #name>
         Podstawa opodatkowania
+        <CrossingTaxThreshold v-if="showCrossingTaxThresholdWarning" />
       </template>
       <template #value>
         {{ pln(result.taxBasis)}}
@@ -99,18 +100,29 @@
 </template>
 
 <script setup lang="ts">
-import {EmployeeResult} from '../../../logic/interfaces/EmployeeResult'
+import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
+import {EventType, useEventStore} from 'stores/eventStore'
 import {computed} from 'vue'
-import {pln} from '../../../use/currencyFormat'
+import {pln} from 'src/use/currencyFormat'
+import CrossingTaxThreshold from 'components/partials/notifications/CrossingTaxThreshold.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   result: EmployeeResult
+  monthIndex?: number
 }
 const props = defineProps<Props>()
+const eventStore = useEventStore()
 
 const totalZusContributions = computed(() => {
   return props.result.healthContribution + props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution
+})
+
+const showCrossingTaxThresholdWarning = computed(() => {
+  if(typeof props.monthIndex === 'undefined') {
+    return eventStore.events.some(event => event.type === EventType.CrossingTaxThreshold)
+  }
+  return eventStore.events.some(event => event.type === EventType.CrossingTaxThreshold  && event.sinceMonth && props.monthIndex >= event.sinceMonth)
 })
 </script>

@@ -20,11 +20,16 @@
           size="md"
           label="Oblicz"
           square
+          @click="eventStore.$reset()"
         />
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import {useEventStore} from 'stores/eventStore'
 import Separator from 'components/partials/Separator.vue'
+
+const eventStore = useEventStore()
+
 </script>

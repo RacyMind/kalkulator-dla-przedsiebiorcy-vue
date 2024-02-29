@@ -68,10 +68,12 @@
   </ModulePageLayout>
 </template>
 <script setup lang="ts">
+import {EventType, useEventStore} from 'stores/eventStore'
 import {QTabs} from 'quasar'
 import {Ref, computed, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
+import {useConstants} from 'src/composables/constants'
 import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
 import EmployeeTabPanel from 'components/partials/tabPanel/EmployeeTabPanel.vue'
@@ -92,6 +94,9 @@ const store = useEmploymentContractStore()
 store.monthlyInputFields = undefined
 
 const breadcrumbStore = useBreadcrumbStore()
+const eventStore = useEventStore()
+const { incomeTaxConstants } = useConstants()
+
 breadcrumbStore.items = [
   {
     name: 'Umowa o pracę',
@@ -108,5 +113,22 @@ lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)
+
+  let sumUpTaxBasis = 0
+
+  try {
+    employeeResult.value?.monthlyResults.forEach((result, monthIndex) => {
+      sumUpTaxBasis += result.taxBasis
+
+      if (sumUpTaxBasis >= incomeTaxConstants.value.taxScale.taxThreshold) {
+        eventStore.events.push({
+          type: EventType.CrossingTaxThreshold,
+          sinceMonth: monthIndex,
+        })
+        throw new Error('Break the loop.')
+      }
+    })
+  } catch (error) {
+  }
 }
 </script>

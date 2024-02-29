@@ -63,6 +63,8 @@
 
 <script setup lang="ts">
 
+import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {EventType, useEventStore} from 'stores/eventStore'
 import {QTabs} from 'quasar'
 import {Ref, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
@@ -87,6 +89,9 @@ enum Tabs {
 const {monthNames} = useMonths()
 const store = useSelfEmploymentStore()
 const breadcrumbStore = useBreadcrumbStore()
+const eventStore = useEventStore()
+const { incomeTaxConstants } = useConstants()
+
 breadcrumbStore.items = [
   {
     name: 'Samozatrudnienie (B2B)',
@@ -100,5 +105,26 @@ lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)
+
+  if(store?.monthlyInputFields?.length &&  store.monthlyInputFields[0].taxSystem !== EntrepreneurTaxSystem.TaxScale) {
+    return
+  }
+
+  let sumUpTaxBasis = 0
+
+  try {
+    store.result?.monthlyResults.forEach((result, monthIndex) => {
+      sumUpTaxBasis += result.taxBasis
+
+      if (sumUpTaxBasis >= incomeTaxConstants.value.taxScale.taxThreshold) {
+        eventStore.events.push({
+          type: EventType.CrossingTaxThreshold,
+          sinceMonth: monthIndex,
+        })
+        throw new Error('Break the loop.')
+      }
+    })
+  } catch (error) {
+  }
 }
 </script>
