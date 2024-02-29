@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import {AnnualEmployeeResult} from 'src/logic/interfaces/AnnualEmployeeResult'
 import {AnnualEmployerResult} from 'src/logic/interfaces/AnnualEmployerResult'
-import EmployeeResultList from 'components/partials/resultList/EmployeeResultList.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 import SummaryResultList from 'components/partials/resultList/SummaryResultList.vue'

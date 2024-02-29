@@ -37,7 +37,6 @@ import EmployeeResultList from 'components/partials/resultList/EmployeeResultLis
 import EmployeeStatistics from 'components/partials/statistics/EmployeeStatistics.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import Separator from 'components/partials/Separator.vue'
-import SummaryResultList from 'components/partials/resultList/SummaryResultList.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

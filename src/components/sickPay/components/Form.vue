@@ -11,8 +11,7 @@
             min="0"
             step="0.01"
             suffix="zł"
-            label="Podstawa wymiaru świadczenia*"
-            autofocus
+            label="Podstawa wymiaru świadczenia"
             color="brand"
             :rules="[validationRules.requiredAmount]"
             hide-bottom-space
@@ -25,7 +24,7 @@
           <q-select
             v-model="rate"
             :options="sickTaxRates"
-            label="Stawka zasiłku chorobowego*"
+            label="Stawka zasiłku chorobowego"
             color="brand"
             emit-value
             map-options
@@ -38,7 +37,7 @@
             type="number"
             min="1"
             step="1"
-            label="Liczba dni na zwolnieniu*"
+            label="Liczba dni na zwolnieniu"
             color="brand"
             hide-bottom-space
             :rules="[validationRules.required]"

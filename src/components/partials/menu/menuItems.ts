@@ -16,10 +16,10 @@ if(Platform.is.mobile && !Platform.is.nativeMobile	 && Platform.is.android) {
 if(Platform.is.nativeMobile	 && Platform.is.android) {
   appMenuItems.push(
     {
-      caption: 'Oceń w Google Store',
+      title: 'Oceń w Google Store',
+      caption: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Store',
       className: 'c-app',
       link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-      title: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Store',
     },
   )
 }
