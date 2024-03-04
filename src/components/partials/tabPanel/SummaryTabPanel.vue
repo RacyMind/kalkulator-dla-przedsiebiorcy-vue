@@ -23,6 +23,7 @@
       <SummaryResultList
         :employee-result="employeeMonthlyResult"
         :employer-result="employerMonthlyResult"
+        :month-index="0"
       />
       <Separator />
       <SummaryStatistics

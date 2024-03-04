@@ -19,7 +19,9 @@
         </Tooltip>
       </ListHeader>
       <EmployeeResultList
-        :result="monthlyResult" />
+        :result="monthlyResult"
+        :month-index="0"
+      />
       <Separator />
       <EmployeeStatistics :result="monthlyResult" />
     </template>

@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Przebudowa modułu "Zasiłek chorobowy".</li><li>Dodano ostrzeżenie, gdy podstawa opodatkowania przekracza próg podatkowy.</li></ul>',
+    publish_date: '2024-02-29',
+    version: '5.7.0',
+  },
+  {
     content: '<ul><li>Poprawiono odliczanie kwoty wolnej od podatku w działalności gospodarczej.</li><li>Dodano wykres kołowy w podsumowaniu pracownika i pracodawcy.</li><li>Dodano autorskie koszty przychodu w module "Rozliczenie z małżonkiem".</li><li>Przebudowa modułu "Ekwiwalent za niewykorzystany urlop".</li><li>Dodano składkę zdrowotną w module "Rzeczywisty koszt zakupu".</li><li>Pomniejsze usprawnienia w interfejsie.</li></ul>',
     publish_date: '2024-02-12',
     version: '5.6.0',

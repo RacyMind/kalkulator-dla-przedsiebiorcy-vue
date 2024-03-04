@@ -1,44 +1,65 @@
 import {MenuItem} from 'components/partials/menu/interfaces/MenuItem'
+import {Platform} from 'quasar'
 
-export default {
-  app: [
+const appMenuItems: MenuItem[] = []
+
+if(Platform.is.mobile && !Platform.is.nativeMobile	 && Platform.is.android) {
+  appMenuItems.push(
+    {
+      caption: 'Pobierz natywną aplikację na swoje urządzenie',
+      className: 'c-app',
+      link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
+      title: 'Pobierz w Google Store',
+    },
+  )
+}
+if(Platform.is.nativeMobile	 && Platform.is.android) {
+  appMenuItems.push(
+    {
+      title: 'Oceń w Google Store',
+      caption: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Store',
+      className: 'c-app',
+      link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
+    },
+  )
+}
+
+appMenuItems.push(
     {
       caption: 'Pokazuje historię zmian w aplikacji',
       className: 'c-app',
       link: '/historia-zmian',
       title: 'Historia zmian',
-    } as MenuItem,
-    {
-      caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
-      className: 'c-app',
-      link: '/kontakt',
-      title: 'Formularz kontaktowy',
-    } as MenuItem,
-    {
-      caption: '',
-      className: 'c-app',
-      link: 'https://kalkulatorfinansowy.app',
-      title: 'O aplikacji',
-    } as MenuItem,
-    {
-      caption: '',
-      className: 'c-app',
-      link: '/polityka-prywatnosci',
-      title: 'Polityka prywatności',
-    } as MenuItem,
+    },
     {
       caption: '@kalkulator.finansowy',
       className: 'c-app',
       link: 'https://www.facebook.com/kalkulator.finansowy',
       title: 'Polub na Facebooku',
-    } as MenuItem,
+    },
+    {
+      caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
+      className: 'c-app',
+      link: '/kontakt',
+      title: 'Formularz kontaktowy',
+    },
+    {
+      caption: '',
+      className: 'c-app',
+      link: '/polityka-prywatnosci',
+      title: 'Polityka prywatności',
+    },
     {
       caption: 'Repozytorium aplikacji',
       className: 'c-app',
       link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
       title: 'GitHub',
-    } as MenuItem,
-  ],
+    },
+)
+export default {
+
+
+  app: appMenuItems,
   business: [
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',

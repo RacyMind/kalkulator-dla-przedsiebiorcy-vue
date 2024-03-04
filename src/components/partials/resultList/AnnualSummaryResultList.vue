@@ -16,6 +16,7 @@
       <SummaryResultList
         :employee-result="monthlyResult"
         :employer-result="props.employerResult.monthlyResults[index]"
+        :month-index="index"
       />
       <Separator v-if="index < 11" />
     </div>

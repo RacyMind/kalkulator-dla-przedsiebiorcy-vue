@@ -1,6 +1,6 @@
 {
   "name": "kalkulator-finansowy",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
   "productName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2024",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
