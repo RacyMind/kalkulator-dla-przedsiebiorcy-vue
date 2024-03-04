@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Usunięcie błędu w wyświetlaniu NaN w wynikach.</li></ul>',
+    publish_date: '2024-03-04',
+    version: '5.7.1',
+  },
+  {
     content: '<ul><li>Przebudowa modułu "Zasiłek chorobowy".</li><li>Dodano ostrzeżenie, gdy podstawa opodatkowania przekracza próg podatkowy.</li></ul>',
     publish_date: '2024-02-29',
     version: '5.7.0',

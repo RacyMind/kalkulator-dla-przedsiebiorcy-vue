@@ -376,7 +376,7 @@ const handleFormSubmit = () => {
 
   const basicInputFields: InputFields = {
     revenue: revenue.value,
-    expenses: expenses.value ?? 0,
+    expenses: expenses.value ? expenses.value : 0,
     lossFromPreviousMonth: 0,
     taxSystem: incomeTaxType.value,
     lumpSumTaxRate: lumpSumTaxRate.value,
@@ -388,7 +388,7 @@ const handleFormSubmit = () => {
     accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
     contributionBasis: 0,
     yearlyIncome: 0,
-    previousMonthHealthContributionBasis: businessHasStartedBeforeThisYear.value ? previousMonthHealthContributionBasis.value : 0,
+    previousMonthHealthContributionBasis: businessHasStartedBeforeThisYear.value && previousMonthHealthContributionBasis.value ? previousMonthHealthContributionBasis.value : 0,
     businessIsRunning: true,
     monthIndex: 0,
   }
