@@ -130,7 +130,7 @@ const handleFormSubmit = () => {
 
   const basicInputFields: InputFields = {
     revenue: revenue.value,
-    expenses: expenses.value ?? 0,
+    expenses: expenses.value ? expenses.value : 0,
     partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
   }
 
