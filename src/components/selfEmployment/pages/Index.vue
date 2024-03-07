@@ -26,9 +26,11 @@
       <q-tab-panel
         :name="Tabs.AnnualSummary"
         class="q-pa-none">
-        <AnnualResultList
-          v-if="store.result"
-          :result="store.result.annualResult" />
+        <template v-if="store.result">
+          <AnnualResultList :result="store.result.annualResult" />
+          <Separator />
+          <Statistics :result="store.result.annualResult" />
+        </template>
         <div
           v-else
           class="q-pa-md">
@@ -79,6 +81,7 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyResultList from 'components/selfEmployment/components/MonthlyResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
+import Statistics from 'components/selfEmployment/components/Statistics.vue'
 import helpers from 'src/logic/helpers'
 
 enum Tabs {
