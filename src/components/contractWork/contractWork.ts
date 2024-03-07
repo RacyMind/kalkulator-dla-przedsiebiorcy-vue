@@ -1,7 +1,7 @@
 import {AvailableYear} from 'src/types/AvailableYear'
 import {ContractWorkInputFields} from 'components/contractWork/interfaces/ContractWorkInputFields'
-import {ContractWorkResult} from 'components/contractWork/interfaces/ContractWorkResult'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
+import {Result} from 'components/contractWork/interfaces/Result'
 import constants from 'src/logic/constants'
 import helpers from 'src/logic/helpers'
 
@@ -91,9 +91,9 @@ function calculateNetAmount (grossAmount:number, taxAmount:number):number {
  *
  * @param {number} netAmount
  * @param {ExpenseRate} expenseRate
- * @returns {ContractWorkResult}
+ * @returns {Result}
  */
-function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
+function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):Result {
   let grossAmount = calculateGrossAmount(netAmount, expenseRate)
 
   if (grossAmount <= params.lumpSumUpToAmount) {
@@ -120,9 +120,9 @@ function getResultUsingNetAmount (netAmount:number, expenseRate:ExpenseRate):Con
  *
  * @param {number} grossAmount
  * @param {number} expenseRate
- * @returns {ContractWorkResult}
+ * @returns {Result}
  */
-function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate):ContractWorkResult {
+function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate):Result {
   if (grossAmount < params.lumpSumUpToAmount) {
     expenseRate = 0
   }
@@ -145,9 +145,9 @@ function getResultUsingGrossAmount (grossAmount:number, expenseRate:ExpenseRate)
  * Gets the result
  *
  * @param {ContractWorkInputFields} input
- * @return {ContractWorkResult}
+ * @return {Result}
  */
-function getResult (input:ContractWorkInputFields):ContractWorkResult {
+function getResult (input:ContractWorkInputFields):Result {
   if (!input.amount || !input.amountType || !input.expenseRate || !input.year) {
     throw new Error('Uncompleted input data')
   }
