@@ -9,15 +9,15 @@ if(Platform.is.mobile && !Platform.is.nativeMobile	 && Platform.is.android) {
       caption: 'Pobierz natywną aplikację na swoje urządzenie',
       className: 'c-app',
       link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-      title: 'Pobierz w Google Store',
+      title: 'Pobierz w Google Play',
     },
   )
 }
 if(Platform.is.nativeMobile	 && Platform.is.android) {
   appMenuItems.push(
     {
-      title: 'Oceń w Google Store',
-      caption: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Store',
+      title: 'Oceń w Google Play',
+      caption: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Play',
       className: 'c-app',
       link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
     },
