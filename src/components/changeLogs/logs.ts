@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodano wykres w samozatrudnieniu.</li><li>Przebudowano moduł "Umowa o dzieło".</li></ul>',
+    publish_date: '2024-03-20',
+    version: '5.8.0',
+  },
+  {
     content: '<ul><li>Usunięcie błędu w wyświetlaniu NaN w wynikach.</li></ul>',
     publish_date: '2024-03-04',
     version: '5.7.1',
