@@ -13,7 +13,7 @@ export const useLawRuleDate = () => {
       value: new Date(2024,  0, 1),
     },
     {
-      label: '202',
+      label: '2025',
       value: new Date(2025,  0, 1),
     },
   ]
