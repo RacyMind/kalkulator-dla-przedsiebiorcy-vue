@@ -124,12 +124,15 @@ export const useConstants = () => {
 
   const wageStats = computed<WageStats>(() => {
     return {
-      // Q4 2022
       averageWageInLastQuarter: (year = settingStore.dateOfLawRules.getFullYear() - 1) => {
         if(year <= 2022) {
           return 6965.94
         }
-        return 7767.85
+        if(year <= 2023) {
+          return 7767.85
+        }
+        // Q4 2024
+        return 8549.18
       },
       minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2022) {
@@ -141,10 +144,13 @@ export const useConstants = () => {
           }
           return 3600
         }
-        if(monthIndex <= 5) {
-          return 4242
+        if(year <= 2024) {
+          if(monthIndex <= 5) {
+            return 4242
+          }
+          return 4300
         }
-        return 4300
+        return 4666
       },
       minimumHourlyWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2023) {
@@ -153,10 +159,13 @@ export const useConstants = () => {
           }
           return 23.5
         }
-        if(monthIndex <= 5) {
-          return 27.7
+        if(year <= 2024) {
+          if(monthIndex <= 5) {
+            return 27.7
+          }
+          return 28.1
         }
-        return 28.1
+        return 30.5
       },
       projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
     }

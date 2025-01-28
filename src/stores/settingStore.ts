@@ -12,7 +12,10 @@ const getDefaultDate = () => {
   if(now.getFullYear() <= 2023) {
     return new Date(2023,  10, 1)
   }
-  return new Date(2024,  0, 1)
+  if(now.getFullYear() <= 2024) {
+    return new Date(2024,  10, 1)
+  }
+  return new Date(2025,  0, 1)
 }
 
 export const useSettingStore = defineStore('settingStore', {
