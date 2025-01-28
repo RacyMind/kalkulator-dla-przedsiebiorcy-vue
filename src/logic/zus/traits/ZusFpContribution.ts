@@ -43,6 +43,19 @@ export class ZusFpContribution extends ZusContribution {
   }
 
   /**
+   * Returns the sum of "Fundusz Pracy" and " "Fundusz Solidarnościowy" contributions of the employer
+   * Przy ustalaniu podstawy wymiaru składek nie stosuje się ograniczenia limitu podstawy składek
+   * https://www.zus.pl/pracujacy/fundusze-pozaubezpieczeniowe/fp
+   */
+  public getFPandFSPContribution(grossAmount: number): number {
+    if(grossAmount < 0) {
+      return 0
+    }
+
+    return helpers.round((this.zusConstants.value.employer.rates.fpContribution + this.zusConstants.value.employer.rates.fsContribution) * grossAmount, 2)
+  }
+
+  /**
    * Returns the PPK (Pracownicze Plany Kapitałowe) contribution of the employer
    */
   public getPPKContribution(grossAmount: number, ppkRate = this.zusConstants.value.employer.rates.ppkContribution.default): number {

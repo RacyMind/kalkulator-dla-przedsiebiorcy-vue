@@ -116,7 +116,7 @@ interface WageStats {
   averageWageInLastQuarter: (year?: number) => number,
   minimumWage: (year?: number, monthIndex?:number) => number,
   minimumHourlyWage: (year?: number, monthIndex?:number) => number,
-  projectedAverageWage: number,
+  projectedAverageWage: () => number,
 }
 
 export const useConstants = () => {
@@ -129,7 +129,10 @@ export const useConstants = () => {
         if(year <= 2022) {
           return 6965.94
         }
-        return 7767.85
+        if(year <= 2023) {
+          return 7767.85
+        }
+        return 8549.18
       },
       minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2022) {
@@ -141,10 +144,14 @@ export const useConstants = () => {
           }
           return 3600
         }
-        if(monthIndex <= 5) {
-          return 4242
+        if(year <= 2024) {
+          if (monthIndex <= 5) {
+            return 4242
+          }
+          return 4300
         }
-        return 4300
+
+        return 4666
       },
       minimumHourlyWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2023) {
@@ -153,12 +160,24 @@ export const useConstants = () => {
           }
           return 23.5
         }
-        if(monthIndex <= 5) {
-          return 27.7
+        if(year <= 2024) {
+          if(monthIndex <= 5) {
+            return 27.7
+          }
+          return 28.1
         }
-        return 28.1
+
+        return 30.5
       },
-      projectedAverageWage: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 6935 : 7824,
+      projectedAverageWage: () => {
+        if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
+          return 6935
+        }
+        if(settingStore.dateOfLawRules.getFullYear() <= 2024) {
+          return 7824
+        }
+        return 8673
+      },
     }
   })
 
@@ -229,7 +248,7 @@ export const useConstants = () => {
 
     const entrepreneurZusConstants:EntrepreneurZusConstants = {
       basises: {
-        big: helpers.round(0.6 * wageStats.value.projectedAverageWage, 2),
+        big: helpers.round(0.6 * wageStats.value.projectedAverageWage(), 2),
         small: (monthIndex = settingStore.dateOfLawRules.getMonth()) => helpers.round(0.3 * wageStats.value.minimumWage(settingStore.dateOfLawRules.getFullYear(), monthIndex), 2),
         startRelief: 0,
       },
@@ -248,7 +267,7 @@ export const useConstants = () => {
       },
     }
     return {
-      contributionBasisLimit: helpers.round(30 * wageStats.value.projectedAverageWage, 2),
+      contributionBasisLimit: helpers.round(30 * wageStats.value.projectedAverageWage(), 2),
       employee: employeeZusConstants,
       employer: employerZusConstants,
       entrepreneur: entrepreneurZusConstants,

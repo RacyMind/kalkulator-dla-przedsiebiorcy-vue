@@ -28,8 +28,7 @@ const labels = [
   'Składka rentowa',
   'Składka emerytalna',
   'Składka wypadkowa',
-  'Składka na Fundusz Pracy',
-  'Składka na Fundusz Solidarnościowy',
+  'Składka na Fundusz Pracy i Fundusz Solidarnościowy',
 ]
 
 const chartData = computed(() => usePieChart(
@@ -43,8 +42,7 @@ const chartData = computed(() => usePieChart(
       props.result.disabilityContribution,
       props.result.pensionContribution,
       props.result.accidentContribution,
-      props.result.fpContribution,
-      props.result.fsContribution,
+      props.result.fpAndFsContribution,
     ],
   ),
 )
