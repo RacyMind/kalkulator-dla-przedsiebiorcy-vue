@@ -83,22 +83,13 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       }).calculate().getResult().accidentContribution).toBe(0)
     })
 
-    it('The FP contribution', () => {
-      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult().fpContribution).toBe(563.28)
+    it('The FP and FS contribution', () => {
+      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult().fpAndFsContribution).toBe(1380.12)
 
       expect(new EntrepreneurCalculator().setInputData({
         ...getDefaultInput(10000, 1000),
         isFpContribution: false,
-      }).calculate().getResult().fpContribution).toBe(0)
-    })
-
-    it('The FS contribution', () => {
-      expect(new EntrepreneurCalculator().setInputData(getDefaultInput(10000, 1000)).calculate().getResult().fsContribution).toBe(816.84)
-
-      expect(new EntrepreneurCalculator().setInputData({
-        ...getDefaultInput(10000, 1000),
-        isFpContribution: false,
-      }).calculate().getResult().fsContribution).toBe(0)
+      }).calculate().getResult().fpAndFsContribution).toBe(0)
     })
   })
 
@@ -132,8 +123,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.pensionContribution).toBe(10996.2)
       expect(result.sickContribution).toBe(1380.12)
       expect(result.accidentContribution).toBe(940.8)
-      expect(result.fpContribution).toBe(563.28)
-      expect(result.fsContribution).toBe(816.84)
+      expect(result.fpAndFsContribution).toBe(1380.12)
       expect(result.taxAmount).toBe(7056)
       expect(result.income).toBe(74100.39)
     })
@@ -148,8 +138,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.pensionContribution).toBe(10996.2)
       expect(result.sickContribution).toBe(1380.12)
       expect(result.accidentContribution).toBe(940.8)
-      expect(result.fpContribution).toBe(563.28)
-      expect(result.fsContribution).toBe(816.84)
+      expect(result.fpAndFsContribution).toBe(1380.12)
       expect(result.taxAmount).toBe(39215)
       expect(result.income).toBe(152041.39)
     })
@@ -167,8 +156,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.pensionContribution).toBe(0)
       expect(result.sickContribution).toBe(0)
       expect(result.accidentContribution).toBe(0)
-      expect(result.fpContribution).toBe(0)
-      expect(result.fsContribution).toBe(0)
+      expect(result.fpAndFsContribution).toBe(0)
       expect(result.taxAmount).toBe(9360)
       expect(result.income).toBe(89415.9)
     })
@@ -186,8 +174,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
       expect(result.pensionContribution).toBe(10996.2)
       expect(result.sickContribution).toBe(1380.12)
       expect(result.accidentContribution).toBe(940.8)
-      expect(result.fpContribution).toBe(563.28)
-      expect(result.fsContribution).toBe(816.84)
+      expect(result.fpAndFsContribution).toBe(1380.12)
       expect(result.taxAmount).toBe(0)
       expect(result.income).toBe(81156.39)
     })

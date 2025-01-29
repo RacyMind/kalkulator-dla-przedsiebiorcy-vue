@@ -17,8 +17,7 @@ export class ContributionCalculator extends BasicCalculator<InputFields, Result>
   public calculate(): this {
     let accidentContribution = 0
     let sickContribution = 0
-    let fpContribution = 0
-    let fsContribution = 0
+    let fpAndFsContribution = 0
 
     let actualContributionBasis = this.getInputData().contributionBasis
     actualContributionBasis = actualContributionBasis / this.getDaysInMonth(this.getInputData().monthIndex)
@@ -33,8 +32,7 @@ export class ContributionCalculator extends BasicCalculator<InputFields, Result>
       sickContribution = this.zus.getSickContribution(actualContributionBasis)
     }
     if(this.getInputData().isFpContribution) {
-      fpContribution = this.zus.getFPContribution(actualContributionBasis)
-      fsContribution = this.zus.getFSContribution(actualContributionBasis)
+      fpAndFsContribution = this.zus.getFPandFSPContribution(actualContributionBasis)
     }
     if (this.getInputData().accidentContributionRate) {
       accidentContribution = this.zus.getAccidentContribution(actualContributionBasis, this.getInputData().accidentContributionRate)
@@ -46,8 +44,7 @@ export class ContributionCalculator extends BasicCalculator<InputFields, Result>
       sickContribution,
       pensionContribution,
       disabilityContribution,
-      fpContribution,
-      fsContribution,
+      fpAndFsContribution,
     }
 
     return this

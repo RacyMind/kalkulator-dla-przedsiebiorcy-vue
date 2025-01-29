@@ -30,7 +30,12 @@ export class EntrepreneurZusContribution extends ZusContribution {
     }
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
-    const minimumContribution = ignoreMinimumContribution ? 0 : helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * wageStats.value.minimumWage(year, 0), 2)
+    let basisForMinimumContribution = wageStats.value.minimumWage(year, 0)
+    if(year >= 2025 && monthIndex > 0) {
+      // https://poradnikprzedsiebiorcy.pl/-nowy-polski-lad-skladka-zdrowotna-uzalezniona-od-dochodu-i-bez-odliczenia
+      basisForMinimumContribution = 0.75 * basisForMinimumContribution
+    }
+    const minimumContribution = ignoreMinimumContribution ? 0 : helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * basisForMinimumContribution, 2)
 
     let contribution: number
 

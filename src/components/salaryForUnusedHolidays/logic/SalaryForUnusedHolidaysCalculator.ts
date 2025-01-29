@@ -15,7 +15,15 @@ export class SalaryForUnusedHolidaysCalculator extends BasicCalculator<InputFiel
   public calculate(): this {
     const settingStore = useSettingStore()
 
-    const holidayRate = computed(() => settingStore.dateOfLawRules.getFullYear() <= 2023 ? 20.83 : 20.92)
+    const holidayRate = computed(() => {
+      if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
+        return 20.83
+      }
+      if(settingStore.dateOfLawRules.getFullYear() <= 2024) {
+        return 20.92
+      }
+      return 20.83
+    })
 
     const proportionalRate =  helpers.round(holidayRate.value * this.getInputData().workingTime, 2)
 

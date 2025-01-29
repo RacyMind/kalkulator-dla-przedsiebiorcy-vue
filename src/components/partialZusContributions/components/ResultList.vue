@@ -42,18 +42,10 @@
     </list-row>
     <list-row>
       <template #name>
-        Składka na Fundusz Pracy
+        Składka na Fundusz Pracy i Fundusz Solidarnościowy
       </template>
       <template #value>
-        {{ pln(result.fpContribution)}}
-      </template>
-    </list-row>
-    <list-row>
-      <template #name>
-        Składka na Fundusz Solidarnościowy
-      </template>
-      <template #value>
-        {{ pln(result.fsContribution)}}
+        {{ pln(result.fpAndFsContribution)}}
       </template>
     </list-row>
     <list-row highlight>
@@ -79,6 +71,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const totalZusContributions = computed(() => {
-  return props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.accidentContribution + props.result.fpContribution + props.result.fsContribution
+  return props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.accidentContribution + props.result.fpAndFsContribution
 })
 </script>
