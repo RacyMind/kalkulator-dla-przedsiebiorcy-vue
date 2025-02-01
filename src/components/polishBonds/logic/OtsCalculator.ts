@@ -58,8 +58,8 @@ export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> imple
       }
 
       this.result?.monthlyResults.push(monthlyResult)
-
-      return this
     }
+
+    return this
   }
 }
