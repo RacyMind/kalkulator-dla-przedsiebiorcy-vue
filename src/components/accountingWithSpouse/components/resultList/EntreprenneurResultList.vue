@@ -108,7 +108,6 @@ import {computed} from 'vue'
 import {pln} from '../../../../use/currencyFormat'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
-import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   spouse: Spouse
