@@ -50,8 +50,7 @@ export class AnnualEntrepreneurCalculator extends BasicCalculator<InputFields[],
       pensionContribution: sum('pensionContribution'),
       sickContribution: sum('sickContribution'),
       accidentContribution: sum('accidentContribution'),
-      fpContribution: sum('fpContribution'),
-      fsContribution: sum('fsContribution'),
+      fpAndFsContribution: sum('fpAndFsContribution'),
     }
 
     this.result = {

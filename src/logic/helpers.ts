@@ -20,15 +20,13 @@ function scrollToElement (el:any) {
 /**
  * Rounds the number
  *
- * @param {number} number
+ * @param {number} value
  * @param {number} precision
  * @returns {number}
  */
-function round (number:number, precision = 0):number {
-  if (!precision) {
-    return Math.round(number)
-  }
-  return +number.toFixed(precision)
+function round (value:number, precision = 0):number {
+  const factor = Math.pow(10, precision)
+  return Math.round(value * factor) / factor
 }
 
 /**

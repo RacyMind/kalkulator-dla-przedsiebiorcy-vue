@@ -84,21 +84,10 @@
     </list-row>
     <list-row nested>
       <template #name>
-        Składka na Fundusz Pracy
+        Składka na Fundusz Pracy i Fundusz Solidarnościowy
       </template>
       <template #value>
-        {{ pln(result.fpContribution)}}
-      </template>
-    </list-row>
-    <list-row nested>
-      <template #name>
-        Składka na Fundusz Solidarnościowy
-        <tooltip>
-          Do składek na Fundusz Solidarnościowy stosuje się zasady dotyczące obowiązkowych składek na Fundusz Pracy. Do 21 grudnia 2019 r. fundusz ten nosił nazwę Solidarnościowy Fundusz Wsparcia Osób Niepełnosprawnych.
-        </tooltip>
-      </template>
-      <template #value>
-        {{ pln(result.fsContribution)}}
+        {{ pln(result.fpAndFsContribution)}}
       </template>
     </list-row>
     <list-row highlight>

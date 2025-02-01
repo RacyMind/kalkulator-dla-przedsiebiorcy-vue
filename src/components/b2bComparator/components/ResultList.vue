@@ -65,6 +65,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const totalZusContributions = computed(() => {
-  return props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.accidentContribution + props.result.fpContribution + props.result.fsContribution
+  return props.result.pensionContribution + props.result.disabilityContribution + props.result.sickContribution + props.result.accidentContribution + props.result.fpAndFsContribution
 })
 </script>

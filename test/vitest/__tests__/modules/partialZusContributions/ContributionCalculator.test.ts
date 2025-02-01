@@ -33,8 +33,7 @@ describe('The partial zus contribution basises', () => {
     expect(result.disabilityContribution).toBe(332.88)
     expect(result.accidentContribution).toBe(69.49)
     expect(result.sickContribution).toBe(101.94)
-    expect(result.fsContribution).toBe(60.33)
-    expect(result.fpContribution).toBe(41.61)
+    expect(result.fpAndFsContribution).toBe(101.94)
   })
 
   it('0 days', () => {
@@ -48,8 +47,7 @@ describe('The partial zus contribution basises', () => {
     expect(result.disabilityContribution).toBe(0)
     expect(result.accidentContribution).toBe(0)
     expect(result.sickContribution).toBe(0)
-    expect(result.fsContribution).toBe(0)
-    expect(result.fpContribution).toBe(0)
+    expect(result.fpAndFsContribution).toBe(0)
   })
 
   it('15 days', () => {
@@ -63,7 +61,6 @@ describe('The partial zus contribution basises', () => {
     expect(result.disabilityContribution).toBe(161.07)
     expect(result.accidentContribution).toBe(33.62)
     expect(result.sickContribution).toBe(49.33)
-    expect(result.fsContribution).toBe(29.19)
-    expect(result.fpContribution).toBe(20.13)
+    expect(result.fpAndFsContribution).toBe(49.33)
   })
 })

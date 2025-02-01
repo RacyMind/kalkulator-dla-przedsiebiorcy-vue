@@ -8,6 +8,5 @@ export interface EntrepreneurResult extends IncomeTaxResult, SpouseResult{
   readonly disabilityContribution: number
   readonly pensionContribution: number
   readonly accidentContribution: number
-  readonly fpContribution: number
-  readonly fsContribution: number
+  readonly fpAndFsContribution: number
 }

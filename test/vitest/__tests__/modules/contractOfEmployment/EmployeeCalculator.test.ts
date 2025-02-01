@@ -118,7 +118,7 @@ describe('Employee Calculator of Contract of Employment on 1.11.2023', () => {
       expect(new EmployeeCalculator().setInputData({
         ...input,
         partOfWorkWithAuthorExpenses: 0.5,
-      }).calculate().getResult().expenses).toBe(465.72)
+      }).calculate().getResult().expenses).toBe(465.73)
     })
 
     it('The expenses are over limit of author expenses', () => {

@@ -48,8 +48,7 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
       sickContribution,
       healthContribution,
       accidentContribution,
-      fpContribution,
-      fsContribution,
+      fpAndFsContribution,
     } = annualResults
 
     const totalRevenue = this.getInputData().revenues.reduce((accumulator:number, grosAmount:number) => {
@@ -61,10 +60,10 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
     }, 0)
 
     // the sum of all ZUS contributions
-    const zusContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpContribution + fsContribution + healthContribution, 2)
+    const zusContributions = helpers.round(disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpAndFsContribution + healthContribution, 2)
 
     // all social contributions can be the expenses
-    const expensesToReduceTaxBasis = helpers.round(totalExpenses + disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpContribution + fsContribution, 2)
+    const expensesToReduceTaxBasis = helpers.round(totalExpenses + disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpAndFsContribution, 2)
 
     const revenueOverTaxReliefLimit = this.incomeTax.geRevenueOverTaxReliefLimit(totalRevenue, 0, this.getInputData().hasTaxRelief)
     const taxBasis =  Math.max(helpers.round(revenueOverTaxReliefLimit - expensesToReduceTaxBasis, 0), 0)
@@ -79,8 +78,7 @@ export class EntrepreneurCalculator extends BasicCalculator<EntrepreneurInputFie
       sickContribution,
       pensionContribution,
       disabilityContribution,
-      fsContribution,
-      fpContribution,
+      fpAndFsContribution,
       accidentContribution,
       totalContributions: zusContributions,
       taxBasis,
