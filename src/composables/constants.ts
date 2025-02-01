@@ -109,7 +109,8 @@ interface IncomeTaxConstants{
   flatTax: {
     deductibleHealthContributionLimit: number
     taxRate: number
-  }
+  },
+  belkaTaxRate: number
 }
 
 interface WageStats {
@@ -207,6 +208,7 @@ export const useConstants = () => {
         deductibleHealthContributionLimit: settingStore.dateOfLawRules.getFullYear() <= 2023 ? 10200 : 11600,
         taxRate: 0.19,
       },
+      belkaTaxRate: 0.19,
     }
   })
 
