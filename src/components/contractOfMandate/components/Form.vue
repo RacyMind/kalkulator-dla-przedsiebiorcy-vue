@@ -46,7 +46,7 @@
             type="number"
             class="full-width"
             min="1"
-            step="1"
+            step="0.01"
             label="Ilość godzin"
             color="brand"
             :rules="[

@@ -15,9 +15,15 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
+    }
   },
   "devDependencies": {
-    "cordova-android": "^12.0.1"
+    "cordova-android": "^13.0.0",
+    "cordova-android-support-gradle-release": "^3.0.1"
   }
 }
