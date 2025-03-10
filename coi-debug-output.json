@@ -1,0 +1,60 @@
+{
+  "withBelkaTax": {
+    "month1": {
+      "interestRate": 0.0655,
+      "interest": 5.46,
+      "payout": 0
+    },
+    "month12": {
+      "interestRate": 0.0655,
+      "interest": 5.46,
+      "payout": 53.06
+    },
+    "month24": {
+      "interestRate": 0.045,
+      "interest": 4,
+      "payout": 38.84
+    },
+    "month36": {
+      "interestRate": 0.045,
+      "interest": 4.18,
+      "payout": 40.59
+    },
+    "month48": {
+      "interestRate": 0.045,
+      "interest": 4.36,
+      "payout": 1042.41,
+      "accumulatedInterest": 216,
+      "accumulatedProfit": 174.96
+    }
+  },
+  "withoutBelkaTax": {
+    "month1": {
+      "interestRate": 0.0655,
+      "interest": 5.46,
+      "payout": 0
+    },
+    "month12": {
+      "interestRate": 0.0655,
+      "interest": 5.46,
+      "payout": 65.5
+    },
+    "month24": {
+      "interestRate": 0.045,
+      "interest": 4,
+      "payout": 47.95
+    },
+    "month36": {
+      "interestRate": 0.045,
+      "interest": 4.18,
+      "payout": 50.11
+    },
+    "month48": {
+      "interestRate": 0.045,
+      "interest": 4.36,
+      "payout": 1052.36,
+      "accumulatedInterest": 216,
+      "accumulatedProfit": 216
+    }
+  }
+}

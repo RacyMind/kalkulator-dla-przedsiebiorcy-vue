@@ -7,7 +7,7 @@ import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
 import {useConstants} from 'src/composables/constants'
 import helpers from 'src/logic/helpers'
 
-export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> implements Calculator<OtsInputFields, Result>{
+export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> implements Calculator<OtsInputFields, Result> {
 
   public calculate(): this {
     const constants = useConstants()
@@ -22,6 +22,8 @@ export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> imple
     let accumulatedBelkaTaxAmount = 0
     let accumulatedProfit = 0
     let accumulatedRealProfit = 0
+
+    const monthlyResults: MonthlyResult[] = []
 
     for(let i = 0; i < monthCount; i++) {
       const inflationCost = helpers.round(boughtBondAmount * this.getInputData().yearlyInflationRate / 12, 2)
@@ -57,8 +59,10 @@ export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> imple
         payout: payout,
       }
 
-      this.result?.monthlyResults.push(monthlyResult)
+      monthlyResults.push(monthlyResult)
     }
+    
+    this.result = {monthlyResults: monthlyResults}
 
     return this
   }
