@@ -26,4 +26,9 @@ export default {
       return 'Wybierz temat'
     }
   },
+  minValue: (min:number) => (val:any):string|void => {
+    if (val < min) {
+      return `Minimalna wartość to ${min}`
+    }
+  },
 }

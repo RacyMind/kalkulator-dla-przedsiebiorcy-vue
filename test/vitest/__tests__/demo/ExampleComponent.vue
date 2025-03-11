@@ -2,7 +2,10 @@
   <div>
     <p>{{ title }}</p>
     <q-list>
-      <q-item v-for="todo in todos" :key="todo.id" @click="increment" clickable>
+      <q-item v-for="todo in todos"
+              :key="todo.id"
+              @click="increment"
+              clickable>
         {{ todo.id }} - {{ todo.content }}
       </q-item>
     </q-list>
@@ -14,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 
 interface Todo {
   id: number;
@@ -35,13 +38,13 @@ const props = withDefaults(
   {
     todos: () => [],
   },
-);
+)
 
-const clickCount = ref(0);
+const clickCount = ref(0)
 function increment() {
-  clickCount.value += 1;
-  return clickCount.value;
+  clickCount.value += 1
+  return clickCount.value
 }
 
-const todoCount = computed(() => props.todos.length);
+const todoCount = computed(() => props.todos.length)
 </script>

@@ -35,10 +35,9 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
     const result = getResult(defaultInput)
     const bondConstants = useBondConstants()
     const bondCost = bondConstants.bondCost
-    const boughtBondAmount = defaultInput.boughtBondCount * bondCost
 
     expect(result.monthlyResults.length).toBe(3)
-    
+
     // First month
     expect(result.monthlyResults[0].interestRate).toBe(0.03)
     expect(result.monthlyResults[0].interest).toBe(2.5) // 1000 * 0.03 / 12
@@ -67,7 +66,7 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
     })
 
     expect(result.monthlyResults.length).toBe(3)
-    
+
     // First month
     expect(result.monthlyResults[0].taxAmount).toBe(0)
     expect(result.monthlyResults[0].accumulatedTaxAmount).toBe(0)
@@ -89,7 +88,7 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
     })
 
     expect(result.monthlyResults.length).toBe(3)
-    
+
     // First month
     expect(result.monthlyResults[0].interestRate).toBe(0.05)
     expect(result.monthlyResults[0].interest).toBe(4.17) // 1000 * 0.05 / 12
@@ -117,10 +116,9 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
     })
     const bondConstants = useBondConstants()
     const bondCost = bondConstants.bondCost
-    const boughtBondAmount = 20 * bondCost
 
     expect(result.monthlyResults.length).toBe(3)
-    
+
     // First month
     expect(result.monthlyResults[0].interest).toBe(5) // 2000 * 0.03 / 12
     expect(result.monthlyResults[0].accumulatedInterest).toBe(5)
@@ -146,7 +144,7 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
     })
 
     expect(result.monthlyResults.length).toBe(3)
-    
+
     // First month
     expect(result.monthlyResults[0].interest).toBe(2.5) // 1000 * 0.03 / 12
     expect(result.monthlyResults[0].accumulatedInterest).toBe(2.5)
