@@ -13,84 +13,56 @@ export class CoiCalculator extends BasicCalculator<CoiInputFields, Result> imple
     const constants = useConstants()
     const bondConstants = useBondConstants()
 
+    const monthCount = 48 // COI bonds have a 4-year maturity period
     const boughtBondAmount = this.getInputData().boughtBondCount * bondConstants.bondCost
-    const maxMonths = 48 // COI bonds have a 4-year (48 month) maturity period
     
     let accumulatedInterest = 0
+    let accumulatedBelkaTaxAmount = 0
     let accumulatedProfit = 0
-    let accumulatedTaxAmount = 0
+    let accumulatedRealProfit = 0
     
     const monthlyResults: MonthlyResult[] = []
     
-    // For COI bonds with annual interest rate adjustments
     const currentPrincipal = boughtBondAmount
     
-    for(let i = 0; i < maxMonths; i++) {
+    for(let i = 0; i < monthCount; i++) {
       // Determine the interest rate based on the period
-      // First year uses the initial interest rate from bond constants
-      // Subsequent years use inflation rate + margin
       const interestRate = i < 12 
         ? bondConstants.coi.initialInterestRate 
-        : helpers.round(this.getInputData().yearlyInflationRate + bondConstants.coi.inflationMargin, 4)
+        : helpers.round(Math.max(0, this.getInputData().yearlyInflationRate) + bondConstants.coi.inflationMargin, 4)
       
-      // Calculate monthly interest based on the current principal
-      const monthlyInterest = helpers.round(currentPrincipal * interestRate / 12, 2)
-      accumulatedInterest = helpers.round(accumulatedInterest + monthlyInterest, 2)
+      const inflationCost = helpers.round(boughtBondAmount * this.getInputData().yearlyInflationRate / 12, 2)
       
-      // Calculate tax if applicable
-      let monthlyTaxAmount = 0
+      const interest = helpers.round(currentPrincipal * interestRate / 12, 2)
+      accumulatedInterest = helpers.round(accumulatedInterest + interest, 2)
+      
+      let belkaTaxAmount = 0
       if(this.getInputData().belkaTax) {
-        monthlyTaxAmount = helpers.round(monthlyInterest * constants.incomeTaxConstants.value.belkaTaxRate, 2)
-        accumulatedTaxAmount = helpers.round(accumulatedTaxAmount + monthlyTaxAmount, 2)
+        belkaTaxAmount = helpers.round(interest * constants.incomeTaxConstants.value.belkaTaxRate, 2)
+        accumulatedBelkaTaxAmount = helpers.round(accumulatedBelkaTaxAmount + belkaTaxAmount, 2)
       }
       
-      // Calculate post-tax interest
-      const monthlyInterestPostTax = helpers.round(monthlyInterest - monthlyTaxAmount, 2)
-      accumulatedProfit = helpers.round(accumulatedProfit + monthlyInterestPostTax, 2)
+      const profit = helpers.round(interest - belkaTaxAmount, 2)
+      accumulatedProfit = helpers.round(accumulatedProfit + profit, 2)
       
-      // Calculate inflation cost for real profit calculation
-      const inflationCost = helpers.round(boughtBondAmount * this.getInputData().yearlyInflationRate / 12, 2)
-      const realProfit = helpers.round(monthlyInterestPostTax - inflationCost, 2)
-      const accumulatedRealProfit = helpers.round((i > 0 ? monthlyResults[i-1].accumulatedRealProfit : 0) + realProfit, 2)
+      const realProfit = helpers.round(profit - inflationCost, 2)
+      accumulatedRealProfit = helpers.round(accumulatedRealProfit + realProfit, 2)
       
       // For COI bonds, interest is paid at the end of each year
       let payout = 0
       
-      // At the end of each year, pay out the interest
-      // This happens at months 12, 24, 36, and 48 (1-indexed), which are indices 11, 23, 35, and 47 (0-indexed)
-      if ((i + 1) % 12 === 0) {
-        // For the last month (month 48), add principal to the payout
-        if (i === maxMonths - 1) {
-          // At maturity, pay out the principal plus the last year's interest
-          if(this.getInputData().belkaTax) {
-            // With Belka tax
-            payout = helpers.round(boughtBondAmount + accumulatedInterest - (i > 11 ? monthlyResults[i-12].accumulatedInterest : 0), 2)
-            payout = helpers.round(payout - accumulatedTaxAmount + (i > 11 ? monthlyResults[i-12].accumulatedTaxAmount : 0), 2)
-          } else {
-            // Without Belka tax
-            payout = helpers.round(boughtBondAmount + accumulatedInterest - (i > 11 ? monthlyResults[i-12].accumulatedInterest : 0), 2)
-          }
-        } else {
-          // For yearly payouts (months 12, 24, 36), pay out the accumulated interest for the year
-          if(this.getInputData().belkaTax) {
-            // With Belka tax
-            const yearlyInterest = helpers.round(accumulatedInterest - (i > 11 ? monthlyResults[i-12].accumulatedInterest : 0), 2)
-            const yearlyTax = helpers.round(accumulatedTaxAmount - (i > 11 ? monthlyResults[i-12].accumulatedTaxAmount : 0), 2)
-            payout = helpers.round(yearlyInterest - yearlyTax, 2)
-          } else {
-            // Without Belka tax
-            payout = helpers.round(accumulatedInterest - (i > 11 ? monthlyResults[i-12].accumulatedInterest : 0), 2)
-          }
-        }
+      const isEndOfYear = (i + 1) % 12 === 0
+      if (isEndOfYear) {
+        payout = this.calculatePayout(i, monthlyResults, boughtBondAmount, accumulatedInterest, accumulatedBelkaTaxAmount)
       }
       
       const monthlyResult: MonthlyResult = {
         interestRate: interestRate,
-        interest: monthlyInterest,
+        interest: interest,
         accumulatedInterest: accumulatedInterest,
         accumulatedProfit: accumulatedProfit,
-        taxAmount: monthlyTaxAmount,
-        accumulatedTaxAmount: accumulatedTaxAmount,
+        taxAmount: belkaTaxAmount,
+        accumulatedTaxAmount: accumulatedBelkaTaxAmount,
         accumulatedRealProfit: accumulatedRealProfit,
         payout: payout,
       }
@@ -101,5 +73,44 @@ export class CoiCalculator extends BasicCalculator<CoiInputFields, Result> imple
     this.result = {monthlyResults: monthlyResults}
 
     return this
+  }
+
+  private calculatePayout(
+    currentMonth: number, 
+    monthlyResults: MonthlyResult[], 
+    boughtBondAmount: number, 
+    accumulatedInterest: number, 
+    accumulatedBelkaTaxAmount: number,
+  ): number {
+    const monthCount = 48
+    const isFinalMonth = currentMonth === monthCount - 1
+    const hasPreviousYearData = currentMonth > 11
+    
+    // Get interest accumulated at the end of previous year (if available)
+    const previousYearInterest = hasPreviousYearData ? monthlyResults[currentMonth-12].accumulatedInterest : 0
+    const previousYearTax = hasPreviousYearData ? monthlyResults[currentMonth-12].accumulatedTaxAmount : 0
+    
+    // Calculate interest earned in current year
+    const currentYearInterest = helpers.round(accumulatedInterest - previousYearInterest, 2)
+    const currentYearTax = helpers.round(accumulatedBelkaTaxAmount - previousYearTax, 2)
+    
+    // Case 1: Final month with Belka tax
+    if (isFinalMonth && this.getInputData().belkaTax) {
+      const principalPlusInterest = helpers.round(boughtBondAmount + currentYearInterest, 2)
+      return helpers.round(principalPlusInterest - currentYearTax, 2)
+    }
+    
+    // Case 2: Final month without Belka tax
+    if (isFinalMonth) {
+      return helpers.round(boughtBondAmount + currentYearInterest, 2)
+    }
+    
+    // Case 3: Yearly payout with Belka tax
+    if (this.getInputData().belkaTax) {
+      return helpers.round(currentYearInterest - currentYearTax, 2)
+    }
+    
+    // Case 4: Yearly payout without Belka tax
+    return currentYearInterest
   }
 }

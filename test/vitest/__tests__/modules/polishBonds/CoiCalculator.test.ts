@@ -220,4 +220,130 @@ describe('Calculator for COI bonds', () => {
     expect(result.monthlyResults[47].accumulatedTaxAmount).toBe(0)
     expect(result.monthlyResults[47].accumulatedRealProfit).toBe(80.52)
   })
+
+  it('Verify handling of negative inflation rate', () => {
+    const input = {
+      ...defaultInput,
+      yearlyInflationRate: -0.02, // Negative inflation rate
+      belkaTax: true,
+    }
+
+    const result = getResult(input)
+    
+    // Month 1 (first month of first year - fixed rate)
+    expect(result.monthlyResults[0].interestRate).toBe(0.0655)
+    expect(result.monthlyResults[0].interest).toBe(5.46)
+    expect(result.monthlyResults[0].taxAmount).toBe(1.04)
+    expect(result.monthlyResults[0].accumulatedInterest).toBe(5.46)
+    expect(result.monthlyResults[0].accumulatedTaxAmount).toBe(1.04)
+    expect(result.monthlyResults[0].accumulatedProfit).toBe(4.42)
+    expect(result.monthlyResults[0].payout).toBe(0)
+    expect(result.monthlyResults[0].accumulatedRealProfit).toBe(6.09)
+    
+    // Month 12 (end of first year - fixed rate)
+    expect(result.monthlyResults[11].interestRate).toBe(0.0655)
+    expect(result.monthlyResults[11].interest).toBe(5.46)
+    expect(result.monthlyResults[11].taxAmount).toBe(1.04)
+    expect(result.monthlyResults[11].accumulatedInterest).toBe(65.52)
+    expect(result.monthlyResults[11].accumulatedTaxAmount).toBe(12.48)
+    expect(result.monthlyResults[11].accumulatedProfit).toBe(53.04)
+    expect(result.monthlyResults[11].payout).toBe(53.04)
+    expect(result.monthlyResults[11].accumulatedRealProfit).toBe(73.08)
+    
+    // Month 13 (first month of second year - should use 0 inflation + margin)
+    expect(result.monthlyResults[12].interestRate).toBe(0.015)
+    expect(result.monthlyResults[12].interest).toBe(1.25)
+    expect(result.monthlyResults[12].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[12].accumulatedInterest).toBe(66.77)
+    expect(result.monthlyResults[12].accumulatedTaxAmount).toBe(12.72)
+    expect(result.monthlyResults[12].accumulatedProfit).toBe(54.05)
+    expect(result.monthlyResults[12].payout).toBe(0)
+    expect(result.monthlyResults[12].accumulatedRealProfit).toBe(75.76)
+    
+    // Month 24 (end of second year - should use 0 inflation + margin)
+    expect(result.monthlyResults[23].interestRate).toBe(0.015)
+    expect(result.monthlyResults[23].interest).toBe(1.25)
+    expect(result.monthlyResults[23].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[23].accumulatedInterest).toBe(80.52)
+    expect(result.monthlyResults[23].accumulatedTaxAmount).toBe(15.36)
+    expect(result.monthlyResults[23].accumulatedProfit).toBe(65.16)
+    expect(result.monthlyResults[23].payout).toBe(12.12)
+    expect(result.monthlyResults[23].accumulatedRealProfit).toBe(105.24)
+    
+    // Month 36 (end of third year - should use 0 inflation + margin)
+    expect(result.monthlyResults[35].interestRate).toBe(0.015)
+    expect(result.monthlyResults[35].interest).toBe(1.25)
+    expect(result.monthlyResults[35].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[35].accumulatedInterest).toBe(95.52)
+    expect(result.monthlyResults[35].accumulatedTaxAmount).toBe(18.24)
+    expect(result.monthlyResults[35].accumulatedProfit).toBe(77.28)
+    expect(result.monthlyResults[35].payout).toBe(12.12)
+    expect(result.monthlyResults[35].accumulatedRealProfit).toBe(137.4)
+    
+    // Month 48 (final month with principal repayment)
+    expect(result.monthlyResults[47].interestRate).toBe(0.015)
+    expect(result.monthlyResults[47].interest).toBe(1.25)
+    expect(result.monthlyResults[47].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[47].accumulatedInterest).toBe(110.52)
+    expect(result.monthlyResults[47].accumulatedTaxAmount).toBe(21.12)
+    expect(result.monthlyResults[47].accumulatedProfit).toBe(89.4)
+    expect(result.monthlyResults[47].payout).toBe(1012.12)
+    expect(result.monthlyResults[47].accumulatedRealProfit).toBe(169.56)
+    
+    // Since inflation is negative, real profit should be higher than nominal profit
+    expect(result.monthlyResults[47].accumulatedRealProfit).toBeGreaterThan(result.monthlyResults[47].accumulatedProfit)
+  })
+
+  it('Verify handling of zero inflation rate', () => {
+    const input = {
+      ...defaultInput,
+      yearlyInflationRate: 0, // Zero inflation rate
+      belkaTax: true,
+    }
+
+    const result = getResult(input)
+    
+    // Month 1 (first month of first year - fixed rate)
+    expect(result.monthlyResults[0].interestRate).toBe(0.0655)
+    expect(result.monthlyResults[0].interest).toBe(5.46)
+    expect(result.monthlyResults[0].taxAmount).toBe(1.04)
+    expect(result.monthlyResults[0].accumulatedInterest).toBe(5.46)
+    expect(result.monthlyResults[0].accumulatedTaxAmount).toBe(1.04)
+    expect(result.monthlyResults[0].accumulatedProfit).toBe(4.42)
+    expect(result.monthlyResults[0].payout).toBe(0)
+    expect(result.monthlyResults[0].accumulatedRealProfit).toBe(4.42)
+    
+    // Month 12 (end of first year - fixed rate)
+    expect(result.monthlyResults[11].interestRate).toBe(0.0655)
+    expect(result.monthlyResults[11].interest).toBe(5.46)
+    expect(result.monthlyResults[11].taxAmount).toBe(1.04)
+    expect(result.monthlyResults[11].accumulatedInterest).toBe(65.52)
+    expect(result.monthlyResults[11].accumulatedTaxAmount).toBe(12.48)
+    expect(result.monthlyResults[11].accumulatedProfit).toBe(53.04)
+    expect(result.monthlyResults[11].payout).toBe(53.04)
+    expect(result.monthlyResults[11].accumulatedRealProfit).toBe(53.04)
+    
+    // Month 13 (first month of second year - should use 0 inflation + margin)
+    expect(result.monthlyResults[12].interestRate).toBe(0.015)
+    expect(result.monthlyResults[12].interest).toBe(1.25)
+    expect(result.monthlyResults[12].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[12].accumulatedInterest).toBe(66.77)
+    expect(result.monthlyResults[12].accumulatedTaxAmount).toBe(12.72)
+    expect(result.monthlyResults[12].accumulatedProfit).toBe(54.05)
+    expect(result.monthlyResults[12].payout).toBe(0)
+    expect(result.monthlyResults[12].accumulatedRealProfit).toBe(54.05)
+    
+    // Month 48 (final month with principal repayment)
+    expect(result.monthlyResults[47].interestRate).toBe(0.015)
+    expect(result.monthlyResults[47].interest).toBe(1.25)
+    expect(result.monthlyResults[47].taxAmount).toBe(0.24)
+    expect(result.monthlyResults[47].accumulatedInterest).toBe(110.52)
+    expect(result.monthlyResults[47].accumulatedTaxAmount).toBe(21.12)
+    expect(result.monthlyResults[47].accumulatedProfit).toBe(89.4)
+    expect(result.monthlyResults[47].payout).toBe(1012.12)
+    expect(result.monthlyResults[47].accumulatedRealProfit).toBe(89.4)
+    
+    // With zero inflation, real profit should equal nominal profit
+    expect(result.monthlyResults[47].accumulatedRealProfit).toBe(result.monthlyResults[47].accumulatedProfit)
+  })
 })

@@ -71,8 +71,6 @@ describe('Calculator for DOR bonds', () => {
     expect(result.monthlyResults[23].payout).toBe(1003.99) // Principal (1000) + last month interest (4.92) - tax (0.93)
     expect(result.monthlyResults[23].accumulatedRealProfit).toBe(35.76)
     
-    const realYearlyRate = 0.0479 
-    expect(realYearlyRate).toBe(0.0479)
   })
 
   it('Verify all months with varying NBP rates', () => {

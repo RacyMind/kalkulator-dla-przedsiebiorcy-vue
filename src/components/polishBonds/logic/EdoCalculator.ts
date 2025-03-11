@@ -17,7 +17,9 @@ export class EdoCalculator extends BasicCalculator<EdoInputFields, Result> imple
     const maxMonths = 120 // EDO bonds have a 10-year maturity period
     
     let accumulatedInterest = 0
+    let accumulatedBelkaTaxAmount = 0
     let accumulatedProfit = 0
+    let accumulatedRealProfit = 0
     let currentPrincipal = boughtBondAmount
     let yearlyInterest = 0
     
@@ -29,54 +31,43 @@ export class EdoCalculator extends BasicCalculator<EdoInputFields, Result> imple
       const isFirstMonthOfYear = i % 12 === 0
       const isLastMonth = i === maxMonths - 1
       
-      // Determine the interest rate for this year
       let yearlyRate
       if (currentYear === 0) {
         yearlyRate = this.getInputData().initialInterestRate
       } else {
+        const inflationRate = Math.max(0, this.getInputData().yearlyInflationRate)
         yearlyRate = helpers.round(
-          this.getInputData().yearlyInflationRate + 
+          inflationRate + 
           bondConstants.edo.inflationMargin, 
           4,
         )
       }
       
-      // Reset yearly interest at the beginning of each year
       if (isFirstMonthOfYear) {
         yearlyInterest = 0
       }
       
-      // Calculate monthly interest
-      const monthlyInterest = helpers.round(currentPrincipal * yearlyRate / 12, 2)
-      yearlyInterest = helpers.round(yearlyInterest + monthlyInterest, 2)
+      const interest = helpers.round(currentPrincipal * yearlyRate / 12, 2)
+      yearlyInterest = helpers.round(yearlyInterest + interest, 2)
+      accumulatedInterest = helpers.round(accumulatedInterest + interest, 2)
       
-      // Update accumulated interest
-      accumulatedInterest = helpers.round(accumulatedInterest + monthlyInterest, 2)
-      
-      // Calculate tax - only for the last month
-      let monthlyTaxAmount = 0
-      let accumulatedTaxAmount = 0
-      
+      let belkaTaxAmount = 0
       if (isLastMonth && this.getInputData().belkaTax) {
-        accumulatedTaxAmount = helpers.round(accumulatedInterest * constants.incomeTaxConstants.value.belkaTaxRate, 2)
-        monthlyTaxAmount = accumulatedTaxAmount
+        accumulatedBelkaTaxAmount = helpers.round(accumulatedInterest * constants.incomeTaxConstants.value.belkaTaxRate, 2)
+        belkaTaxAmount = accumulatedBelkaTaxAmount
       }
       
-      // Calculate profit
-      const monthlyProfit = helpers.round(monthlyInterest - monthlyTaxAmount, 2)
+      const profit = helpers.round(interest - belkaTaxAmount, 2)
       
       if (isLastMonth && this.getInputData().belkaTax) {
-        accumulatedProfit = helpers.round(accumulatedInterest - accumulatedTaxAmount, 2)
+        accumulatedProfit = helpers.round(accumulatedInterest - accumulatedBelkaTaxAmount, 2)
       } else {
-        accumulatedProfit = helpers.round(i === 0 ? monthlyProfit : accumulatedProfit + monthlyProfit, 2)
+        accumulatedProfit = helpers.round(i === 0 ? profit : accumulatedProfit + profit, 2)
       }
       
-      // Calculate inflation cost for real profit calculation
       const inflationCost = helpers.round(boughtBondAmount * this.getInputData().yearlyInflationRate / 12, 2)
-      const realProfit = helpers.round(monthlyProfit - inflationCost, 2)
+      const realProfit = helpers.round(profit - inflationCost, 2)
       
-      // Calculate accumulated real profit
-      let accumulatedRealProfit
       if (i === 0) {
         accumulatedRealProfit = realProfit
       } else if (isLastMonth) {
@@ -86,26 +77,23 @@ export class EdoCalculator extends BasicCalculator<EdoInputFields, Result> imple
         accumulatedRealProfit = helpers.round(monthlyResults[i-1].accumulatedRealProfit + realProfit, 2)
       }
       
-      // Monthly payout (interest is capitalized annually, no monthly payout)
       let payout = 0
       
-      // For the last month of each year, capitalize the interest
       if (isLastMonthOfYear && i < maxMonths - 1) {
         currentPrincipal = helpers.round(currentPrincipal + yearlyInterest, 2)
       }
       
-      // For the last month, add principal to the payout
       if (isLastMonth) {
         payout = helpers.round(boughtBondAmount + accumulatedProfit, 2)
       }
       
       const monthlyResult: MonthlyResult = {
         interestRate: yearlyRate,
-        interest: monthlyInterest,
+        interest: interest,
         accumulatedInterest: accumulatedInterest,
         accumulatedProfit: accumulatedProfit,
-        taxAmount: monthlyTaxAmount,
-        accumulatedTaxAmount: accumulatedTaxAmount,
+        taxAmount: belkaTaxAmount,
+        accumulatedTaxAmount: accumulatedBelkaTaxAmount,
         accumulatedRealProfit: accumulatedRealProfit,
         payout: payout,
       }
