@@ -54,6 +54,10 @@
         v-if="bondType === 'DOR'" 
         ref="dorFormRef" 
       />
+      <p class="q-my-none text-caption text-grey">
+        Aktualne oprocentowanie obligacji skarbowych znajduje się na stronie <a href="https://www.obligacjeskarbowe.pl/"
+                                                                                target="_blank">obligacjeskarbowe.pl</a>.
+      </p>
     </FormSection>
 
     <SubmitButton />
