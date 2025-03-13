@@ -21,9 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
 
-const interestRate = useLocalStorage('polishBonds/form/interestRate', 3.0, { mergeDefaults: true })
+const constants = useBondConstants()
+const interestRate = useLocalStorage('polishBonds/form/tos/interestRate', constants.tos.interestRate * 100, { mergeDefaults: true })
 
 defineExpose({
   interestRate,

@@ -33,8 +33,6 @@ describe('Calculator for OTS bonds on 1.01.2025', () => {
 
   it('Default input values', () => {
     const result = getResult(defaultInput)
-    const bondConstants = useBondConstants()
-    const bondCost = bondConstants.bondCost
 
     expect(result.monthlyResults.length).toBe(3)
 

@@ -17,11 +17,21 @@
           />
         </div>
       </div>
+      
+      <BondDescription 
+        v-if="bondType" 
+        :bond-type="bondType" 
+      />
     </FormSection>
 
     <FormSection title="Parametry obligacji">
       <CommonFields 
         ref="commonFieldsRef" 
+      />
+
+      <OtsForm 
+        v-if="bondType === 'OTS'" 
+        ref="otsFormRef" 
       />
 
       <EdoForm 
@@ -58,6 +68,8 @@ import { DorCalculator } from 'components/polishBonds/logic/DorCalculator'
 import { DorInputFields } from 'components/polishBonds/interfaces/DorInputFields'
 import { EdoCalculator } from 'components/polishBonds/logic/EdoCalculator'
 import { EdoInputFields } from 'components/polishBonds/interfaces/EdoInputFields'
+import { OtsCalculator } from 'components/polishBonds/logic/OtsCalculator'
+import { OtsInputFields } from 'components/polishBonds/interfaces/OtsInputFields'
 import { RorCalculator } from 'components/polishBonds/logic/RorCalculator'
 import { RorInputFields } from 'components/polishBonds/interfaces/RorInputFields'
 import { TosCalculator } from 'components/polishBonds/logic/TosCalculator'
@@ -65,11 +77,13 @@ import { TosInputFields } from 'components/polishBonds/interfaces/TosInputFields
 import { ref } from 'vue'
 import { useFormValidation } from 'src/composables/formValidation'
 import { useLocalStorage } from '@vueuse/core'
+import BondDescription from '../components/BondDescription.vue'
 import CoiForm from './bondForms/CoiForm.vue'
 import CommonFields from './bondForms/CommonFields.vue'
 import DorForm from './bondForms/DorForm.vue'
 import EdoForm from './bondForms/EdoForm.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
+import OtsForm from './bondForms/OtsForm.vue'
 import RorForm from './bondForms/RorForm.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TosForm from './bondForms/TosForm.vue'
@@ -81,23 +95,21 @@ const store = usePolishBondsStore()
 
 const commonFieldsRef = ref<InstanceType<typeof CommonFields> | null>(null)
 
+const otsFormRef = ref<InstanceType<typeof OtsForm> | null>(null)
 const edoFormRef = ref<InstanceType<typeof EdoForm> | null>(null)
-
 const coiFormRef = ref<InstanceType<typeof CoiForm> | null>(null)
-
 const tosFormRef = ref<InstanceType<typeof TosForm> | null>(null)
-
 const rorFormRef = ref<InstanceType<typeof RorForm> | null>(null)
-
 const dorFormRef = ref<InstanceType<typeof DorForm> | null>(null)
 
 const bondTypeOptions = [
-  { label: 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe', value: 'EDO' },
-  { label: 'COI - Czteroletnie Obligacje Indeksowane', value: 'COI' },
-  { label: 'TOS - Trzymiesięczne Oszczędnościowe', value: 'TOS' },
-  { label: 'ROR - Rodzinne Obligacje Skarbowe', value: 'ROR' },
+  { label: 'OTS - Trzymiesięczne Oszczędnościowe', value: 'OTS' },
+  { label: 'ROR - Roczne Obligacje Skarbowe', value: 'ROR' },
   { label: 'DOR - Dwuletnie Obligacje Skarbowe', value: 'DOR' },
-]
+  { label: 'TOS - Trzyletnie Oszczędnościowe', value: 'TOS' },
+  { label: 'COI - Czteroletnie Obligacje Indeksowane', value: 'COI' },
+  { label: 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe', value: 'EDO' },
+  ]
 
 const bondType = useLocalStorage<BondType>('polishBonds/form/bondType', 'EDO', { mergeDefaults: true })
 
@@ -118,6 +130,9 @@ const handleFormSubmit = () => {
       break
     case 'TOS':
       calculateTos()
+      break
+    case 'OTS':
+      calculateOts()
       break
     case 'ROR':
       calculateRor()
@@ -180,6 +195,25 @@ const calculateTos = () => {
   }
   
   const calculator = new TosCalculator()
+  const result = calculator.setInputData(inputFields).calculate().getResult()
+  store.result = result
+}
+
+const calculateOts = () => {
+  const common = commonFieldsRef.value
+  const form = otsFormRef.value
+  
+  if (!common || !form) return
+  
+  const inputFields: OtsInputFields = {
+    boughtBondCount: common.boughtBondCount,
+    yearlyInflationRate: common.yearlyInflationRate / 100,
+    belkaTax: common.belkaTax,
+    interestRate: form.interestRate / 100,
+    initialInterestRate: form.interestRate / 100, 
+  }
+  
+  const calculator = new OtsCalculator()
   const result = calculator.setInputData(inputFields).calculate().getResult()
   store.result = result
 }

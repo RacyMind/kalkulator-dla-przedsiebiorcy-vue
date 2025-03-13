@@ -2,12 +2,12 @@
   <div class="row q-col-gutter-md q-mt-md">
     <div class="col-12 col-md-6">
       <q-input
-        v-model.number="initialInterestRate"
+        v-model.number="interestRate"
         type="number"
         min="0"
         max="20"
         step="0.01"
-        label="Początkowa stopa procentowa (%)"
+        label="Stopa procentowa (%)"
         suffix="%"
         color="brand"
         :rules="[
@@ -25,9 +25,9 @@ import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
 
 const constants = useBondConstants()
-const initialInterestRate = useLocalStorage('polishBonds/form/edo/initialInterestRate', constants.edo.initialInterestRate * 100, { mergeDefaults: true })
+const interestRate = useLocalStorage('polishBonds/form/ots/interestRate', constants.ots.interestRate * 100, { mergeDefaults: true })
 
 defineExpose({
-  initialInterestRate,
+  interestRate,
 })
 </script>

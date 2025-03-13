@@ -26,7 +26,7 @@
     </list-row>
     <list-row>
       <template #name>
-        Całkowite odsetki
+        Odsetki
       </template>
       <template #value>
         {{ pln(totalInterest) }}
@@ -34,15 +34,15 @@
     </list-row>
     <list-row>
       <template #name>
-        Całkowity podatek Belka
+        Podatek Belki
       </template>
       <template #value>
         {{ pln(totalTaxAmount) }}
       </template>
     </list-row>
-    <list-row highlight>
+    <list-row>
       <template #name>
-        Całkowity zysk
+        Zysk
       </template>
       <template #value>
         {{ pln(totalProfit) }}
@@ -50,7 +50,11 @@
     </list-row>
     <list-row highlight>
       <template #name>
-        Całkowity zysk realny
+        Zysk realny
+        <Tooltip class="q-ml-sm"
+                 color="white">
+          Zysk realny jest to zysk pomniejszony o inflację
+        </Tooltip>
       </template>
       <template #value>
         {{ pln(totalRealProfit) }}
@@ -66,6 +70,7 @@ import {pln} from 'src/use/currencyFormat'
 import {usePolishBondsStore} from 'components/polishBonds/store'
 
 import ListRow from 'components/partials/resultList/ListRow.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {
   result: Result
@@ -78,6 +83,7 @@ const bondTypeMap = {
   'EDO': 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe',
   'COI': 'COI - Czteroletnie Obligacje Indeksowane',
   'TOS': 'TOS - Trzymiesięczne Oszczędnościowe',
+  'OTS': 'OTS - Trzymiesięczne Oszczędnościowe',
   'ROR': 'ROR - Rodzinne Obligacje Skarbowe',
   'DOR': 'DOR - Dwuletnie Obligacje Skarbowe',
 }

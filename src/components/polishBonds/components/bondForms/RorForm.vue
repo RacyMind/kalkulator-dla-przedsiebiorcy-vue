@@ -17,15 +17,44 @@
         lazy-rules="ondemand"
       />
     </div>
+    
+    <div class="col-12 col-md-6">
+      <q-input
+        v-model.number="nbpReferenceRate"
+        type="number"
+        min="0"
+        max="20"
+        step="0.01"
+        label="Stopa referencyjna NBP (%)"
+        suffix="%"
+        color="brand"
+        :rules="[
+          (val) => val !== null || 'Uzupełnij pole',
+          (val) => val >= 0 || 'Minimalna wartość to 0'
+        ]"
+        lazy-rules="ondemand"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
+import { watch } from 'vue'
 
-const initialInterestRate = useLocalStorage('polishBonds/form/initialInterestRate', 4.0, { mergeDefaults: true })
+const constants = useBondConstants()
+const initialInterestRate = useLocalStorage('polishBonds/form/ror/initialInterestRate', constants.ror.initialInterestRate * 100, { mergeDefaults: true })
 
-const nbpReferenceRates = useLocalStorage('polishBonds/form/rorNbpReferenceRates', Array(12).fill(4.0), { mergeDefaults: true })
+const nbpReferenceRate = useLocalStorage('polishBonds/form/ror/nbpReferenceRate', constants.ror.initialInterestRate * 100, { mergeDefaults: true })
+
+const nbpReferenceRates = useLocalStorage('polishBonds/form/ror/nbpReferenceRates', Array(12).fill(nbpReferenceRate.value), { mergeDefaults: true })
+
+watch(nbpReferenceRate, (newValue) => {
+  for (let i = 0; i < nbpReferenceRates.value.length; i++) {
+    nbpReferenceRates.value[i] = newValue
+  }
+})
 
 defineExpose({
   initialInterestRate,

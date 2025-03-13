@@ -1,3 +1,6 @@
+# General
+Don't add cmments to evey line. Add just important comments to explain some cases or complex logic.
+
 # TypeScript
 When you create the logic of the calculator, always use the BasicCalculator class.
 Always implement tests for the calculator using the current year. Tests have to contain all output values.
