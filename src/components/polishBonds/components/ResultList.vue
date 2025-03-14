@@ -82,12 +82,12 @@ const store = usePolishBondsStore()
 const constants = useBondConstants()
 
 const bondTypeMap = {
-  'EDO': 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe',
-  'COI': 'COI - Czteroletnie Obligacje Indeksowane',
-  'TOS': 'TOS - Trzyletnie Oszczędnościowe',
-  'OTS': 'OTS - Trzymiesięczne Oszczędnościowe',
-  'ROR': 'ROR - Roczne Obligacje Skarbowe',
-  'DOR': 'DOR - Dwuletnie Obligacje Skarbowe',
+  'EDO': 'EDO - Obligacje 10-letnie',
+  'COI': 'COI - Obligacje 4-letnie',
+  'TOS': 'TOS - Obligacje 3-letnie',
+  'OTS': 'OTS - Obligacje 3-miesięczne',
+  'ROR': 'ROR - Obligacje roczne',
+  'DOR': 'DOR - Obligacje 2-letnie',
 }
 
 const bondTypeLabel = computed(() => {

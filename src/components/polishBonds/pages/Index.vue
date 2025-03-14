@@ -171,7 +171,6 @@ const calculateOts = () => {
   const inputFields: OtsInputFields = {
     ...common,
     interestRate: helpers.round(form.interestRate / 100, 4),
-    initialInterestRate: helpers.round(form.interestRate / 100, 4),
   }
 
   useCalculator(new OtsCalculator(), inputFields)

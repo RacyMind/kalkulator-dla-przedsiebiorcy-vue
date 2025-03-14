@@ -46,6 +46,7 @@
 import { BondType, usePolishBondsStore } from 'components/polishBonds/store'
 import { computed, ref } from 'vue'
 import {useFormValidation} from 'src/composables/formValidation'
+import { useLocalStorage } from '@vueuse/core'
 import BondDescription from 'components/polishBonds/components/BondDescription.vue'
 import CoiForm from 'components/polishBonds/components/bondForms/CoiForm.vue'
 import CommonFields from 'components/polishBonds/components/bondForms/CommonFields.vue'
@@ -62,36 +63,18 @@ const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
 const store = usePolishBondsStore()
-const bondType = ref<BondType>('EDO')
+const bondType = useLocalStorage<BondType>('polishBonds/form/bondType', 'EDO', { mergeDefaults: true })
 const bondCount = ref<number | null>(null)
 const yearlyInflationRate = ref<number | null>(null)
 const belkaTax = ref(true)
 
 const bondTypeOptions = [
-  {
-    label: 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe',
-    value: 'EDO',
-  },
-  {
-    label: 'COI - Czteroletnie Obligacje Indeksowane',
-    value: 'COI',
-  },
-  {
-    label: 'TOS - Trzymiesięczne Oszczędnościowe',
-    value: 'TOS',
-  },
-  {
-    label: 'OTS - Trzyletnie Oszczędnościowe',
-    value: 'OTS',
-  },
-  {
-    label: 'ROR - Rodzinne Obligacje Skarbowe',
-    value: 'ROR',
-  },
-  {
-    label: 'DOR - Dwuletnie Obligacje Skarbowe',
-    value: 'DOR',
-  },
+  { label: 'OTS - Obligacje 3-miesięczne', value: 'OTS' },
+  { label: 'ROR - Obligacje roczne', value: 'ROR' },
+  { label: 'DOR - Obligacje 2-letnie', value: 'DOR' },
+  { label: 'TOS - Obligacje 3-letnie', value: 'TOS' },
+  { label: 'COI - Obligacje 4-letnie', value: 'COI' },
+  { label: 'EDO - Obligacje 10-letnie', value: 'EDO' },
 ]
 
 const bondForm = computed(() => {
@@ -174,7 +157,6 @@ const handleFormSubmit = () => {
       store.otsInputFields = {
         ...commonFields,
         interestRate: bondFormRefValue.interestRate,
-        initialInterestRate: bondFormRefValue.initialInterestRate || bondFormRefValue.interestRate,
       }
       break
     case 'ROR':
@@ -197,7 +179,6 @@ const handleFormSubmit = () => {
 }
 
 const setBondFormRef = (el: any) => {
-  console.log('setBondFormRef', el)
   bondFormRef.value = el
 }
 </script>
