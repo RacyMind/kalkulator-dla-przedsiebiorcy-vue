@@ -28,7 +28,7 @@ export class CoiCalculator extends BasicCalculator<CoiInputFields, Result> imple
     for(let i = 0; i < monthCount; i++) {
       // Determine the interest rate based on the period
       const interestRate = i < 12 
-        ? bondConstants.coi.initialInterestRate 
+        ? this.getInputData().initialInterestRate
         : helpers.round(Math.max(0, this.getInputData().yearlyInflationRate) + bondConstants.coi.inflationMargin, 4)
       
       const inflationCost = helpers.round(boughtBondAmount * this.getInputData().yearlyInflationRate / 12, 2)

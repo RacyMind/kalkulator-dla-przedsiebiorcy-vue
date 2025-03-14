@@ -91,7 +91,7 @@ const bondTypeMap = {
 }
 
 const bondTypeLabel = computed(() => {
-  return bondTypeMap[store.selectedBondType] || store.selectedBondType
+  return store.selectedBondType ? bondTypeMap[store.selectedBondType] || store.selectedBondType : ''
 })
 
 const lastMonthResult = computed(() => {
@@ -100,7 +100,7 @@ const lastMonthResult = computed(() => {
 })
 
 const bondCount = computed(() => {
-  return store.bondCount
+  return store.commonInputFields?.boughtBondCount || 0
 })
 
 const investmentAmount = computed(() => {
