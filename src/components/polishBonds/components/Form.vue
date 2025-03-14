@@ -12,54 +12,32 @@
             emit-value
             map-options
             color="brand"
-            :rules="[(val) => !!val || 'Uzupełnij pole']"
+            :rules="[validationRules.required]"
             lazy-rules="ondemand"
           />
         </div>
       </div>
-      
-      <BondDescription 
-        v-if="bondType" 
-        :bond-type="bondType" 
+
+      <BondDescription
+        v-if="bondType"
+        :bond-type="bondType"
       />
     </FormSection>
 
     <FormSection title="Parametry obligacji">
-      <CommonFields 
-        ref="commonFieldsRef" 
+      <CommonFields
+        ref="commonFieldsRef"
       />
-
-      <OtsForm 
-        v-if="bondType === 'OTS'" 
-        ref="otsFormRef" 
-      />
-
-      <EdoForm 
-        v-if="bondType === 'EDO'" 
-        ref="edoFormRef" 
-      />
-      <CoiForm 
-        v-if="bondType === 'COI'" 
-        ref="coiFormRef" 
-      />
-      <TosForm 
-        v-if="bondType === 'TOS'" 
-        ref="tosFormRef" 
-      />
-      <RorForm 
-        v-if="bondType === 'ROR'" 
-        ref="rorFormRef" 
-      />
-      <DorForm 
-        v-if="bondType === 'DOR'" 
-        ref="dorFormRef" 
+      <component
+        :is="dynamicBondForm"
+        v-if="bondType"
+        :ref="setBondFormRef"
       />
       <p class="q-my-none text-caption text-grey">
         Aktualne oprocentowanie obligacji skarbowych znajduje się na stronie <a href="https://www.obligacjeskarbowe.pl/"
                                                                                 target="_blank">obligacjeskarbowe.pl</a>.
       </p>
     </FormSection>
-
     <SubmitButton />
   </q-form>
 </template>
@@ -74,11 +52,12 @@ import { EdoCalculator } from 'components/polishBonds/logic/EdoCalculator'
 import { EdoInputFields } from 'components/polishBonds/interfaces/EdoInputFields'
 import { OtsCalculator } from 'components/polishBonds/logic/OtsCalculator'
 import { OtsInputFields } from 'components/polishBonds/interfaces/OtsInputFields'
+import { Result } from 'components/polishBonds/interfaces/Result'
 import { RorCalculator } from 'components/polishBonds/logic/RorCalculator'
 import { RorInputFields } from 'components/polishBonds/interfaces/RorInputFields'
 import { TosCalculator } from 'components/polishBonds/logic/TosCalculator'
 import { TosInputFields } from 'components/polishBonds/interfaces/TosInputFields'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useFormValidation } from 'src/composables/formValidation'
 import { useLocalStorage } from '@vueuse/core'
 import BondDescription from '../components/BondDescription.vue'
@@ -91,6 +70,7 @@ import OtsForm from './bondForms/OtsForm.vue'
 import RorForm from './bondForms/RorForm.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import TosForm from './bondForms/TosForm.vue'
+import validationRules from 'src/logic/validationRules'
 
 const emit = defineEmits(['submit'])
 
@@ -98,6 +78,7 @@ const { handleValidationError } = useFormValidation()
 const store = usePolishBondsStore()
 
 const commonFieldsRef = ref<InstanceType<typeof CommonFields> | null>(null)
+const bondFormRef = ref<any>(null)
 
 const otsFormRef = ref<InstanceType<typeof OtsForm> | null>(null)
 const edoFormRef = ref<InstanceType<typeof EdoForm> | null>(null)
@@ -117,14 +98,50 @@ const bondTypeOptions = [
 
 const bondType = useLocalStorage<BondType>('polishBonds/form/bondType', 'EDO', { mergeDefaults: true })
 
+const dynamicBondForm = computed(() => {
+  switch (bondType.value) {
+    case 'OTS': return OtsForm
+    case 'EDO': return EdoForm
+    case 'COI': return CoiForm
+    case 'TOS': return TosForm
+    case 'ROR': return RorForm
+    case 'DOR': return DorForm
+    default: return null
+  }
+})
+
+const setBondFormRef = (el: any) => {
+  bondFormRef.value = el
+
+  switch (bondType.value) {
+    case 'OTS':
+      otsFormRef.value = el
+      break
+    case 'EDO':
+      edoFormRef.value = el
+      break
+    case 'COI':
+      coiFormRef.value = el
+      break
+    case 'TOS':
+      tosFormRef.value = el
+      break
+    case 'ROR':
+      rorFormRef.value = el
+      break
+    case 'DOR':
+      dorFormRef.value = el
+      break
+  }
+}
+
 const handleFormSubmit = () => {
   store.selectedBondType = bondType.value
-  
-  // Save bond count to store
+
   if (commonFieldsRef.value) {
     store.bondCount = commonFieldsRef.value.boughtBondCount
   }
-  
+
   switch (bondType.value) {
     case 'EDO':
       calculateEdo()
@@ -145,118 +162,118 @@ const handleFormSubmit = () => {
       calculateDor()
       break
   }
-  
+
   emit('submit')
 }
 
-const calculateEdo = () => {
+const prepareCommonInputFields = () => {
   const common = commonFieldsRef.value
-  const form = edoFormRef.value
-  
-  if (!common || !form) return
-  
-  const inputFields: EdoInputFields = {
+  if (!common) return null
+
+  return {
     boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100, 
+    yearlyInflationRate: common.yearlyInflationRate / 100,
     belkaTax: common.belkaTax,
-    initialInterestRate: form.initialInterestRate / 100, 
   }
-  
-  const calculator = new EdoCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+}
+
+type Calculator<T, R> = {
+  setInputData(inputFields: T): Calculator<T, R>
+  calculate(): Calculator<T, R>
+  getResult(): R
+}
+
+function useCalculator<T extends EdoInputFields | CoiInputFields | TosInputFields | OtsInputFields | RorInputFields | DorInputFields>(
+  calculator: Calculator<T, Result>,
+  inputFields: T,
+): void {
+  store.result = calculator.setInputData(inputFields).calculate().getResult()
+}
+
+const calculateEdo = () => {
+  const common = prepareCommonInputFields()
+  const form = edoFormRef.value
+
+  if (!common || !form) return
+
+  const inputFields: EdoInputFields = {
+    ...common,
+    initialInterestRate: form.initialInterestRate / 100,
+  }
+
+  useCalculator(new EdoCalculator(), inputFields)
 }
 
 const calculateCoi = () => {
-  const common = commonFieldsRef.value
+  const common = prepareCommonInputFields()
   const form = coiFormRef.value
-  
+
   if (!common || !form) return
-  
+
   const inputFields: CoiInputFields = {
-    boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100,
-    belkaTax: common.belkaTax,
+    ...common,
     initialInterestRate: form.initialInterestRate / 100,
   }
-  
-  const calculator = new CoiCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+
+  useCalculator(new CoiCalculator(), inputFields)
 }
 
 const calculateTos = () => {
-  const common = commonFieldsRef.value
+  const common = prepareCommonInputFields()
   const form = tosFormRef.value
-  
+
   if (!common || !form) return
-  
+
   const inputFields: TosInputFields = {
-    boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100,
-    belkaTax: common.belkaTax,
+    ...common,
     interestRate: form.interestRate / 100,
   }
-  
-  const calculator = new TosCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+
+  useCalculator(new TosCalculator(), inputFields)
 }
 
 const calculateOts = () => {
-  const common = commonFieldsRef.value
+  const common = prepareCommonInputFields()
   const form = otsFormRef.value
-  
+
   if (!common || !form) return
-  
+
   const inputFields: OtsInputFields = {
-    boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100,
-    belkaTax: common.belkaTax,
+    ...common,
     interestRate: form.interestRate / 100,
-    initialInterestRate: form.interestRate / 100, 
+    initialInterestRate: form.interestRate / 100,
   }
-  
-  const calculator = new OtsCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+
+  useCalculator(new OtsCalculator(), inputFields)
 }
 
 const calculateRor = () => {
-  const common = commonFieldsRef.value
+  const common = prepareCommonInputFields()
   const form = rorFormRef.value
-  
+
   if (!common || !form) return
-  
+
   const inputFields: RorInputFields = {
-    boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100,
-    belkaTax: common.belkaTax,
+    ...common,
     initialInterestRate: form.initialInterestRate / 100,
     nbpReferenceRates: form.nbpReferenceRates.map((rate: number) => rate / 100),
   }
-  
-  const calculator = new RorCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+
+  useCalculator(new RorCalculator(), inputFields)
 }
 
 const calculateDor = () => {
-  const common = commonFieldsRef.value
+  const common = prepareCommonInputFields()
   const form = dorFormRef.value
-  
+
   if (!common || !form) return
-  
+
   const inputFields: DorInputFields = {
-    boughtBondCount: common.boughtBondCount,
-    yearlyInflationRate: common.yearlyInflationRate / 100,
-    belkaTax: common.belkaTax,
+    ...common,
     initialInterestRate: form.initialInterestRate / 100,
     nbpReferenceRates: form.nbpReferenceRates.map((rate: number) => rate / 100),
   }
-  
-  const calculator = new DorCalculator()
-  const result = calculator.setInputData(inputFields).calculate().getResult()
-  store.result = result
+
+  useCalculator(new DorCalculator(), inputFields)
 }
 </script>

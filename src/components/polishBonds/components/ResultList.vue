@@ -69,6 +69,7 @@ import {computed} from 'vue'
 import {pln} from 'src/use/currencyFormat'
 import {usePolishBondsStore} from 'components/polishBonds/store'
 
+import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
@@ -78,17 +79,16 @@ interface Props {
 const props = defineProps<Props>()
 
 const store = usePolishBondsStore()
+const constants = useBondConstants()
 
 const bondTypeMap = {
   'EDO': 'EDO - Emerytalne Dziesięcioletnie Oszczędnościowe',
   'COI': 'COI - Czteroletnie Obligacje Indeksowane',
-  'TOS': 'TOS - Trzymiesięczne Oszczędnościowe',
+  'TOS': 'TOS - Trzyletnie Oszczędnościowe',
   'OTS': 'OTS - Trzymiesięczne Oszczędnościowe',
-  'ROR': 'ROR - Rodzinne Obligacje Skarbowe',
+  'ROR': 'ROR - Roczne Obligacje Skarbowe',
   'DOR': 'DOR - Dwuletnie Obligacje Skarbowe',
 }
-
-const BOND_FACE_VALUE = 100
 
 const bondTypeLabel = computed(() => {
   return bondTypeMap[store.selectedBondType] || store.selectedBondType
@@ -104,7 +104,7 @@ const bondCount = computed(() => {
 })
 
 const investmentAmount = computed(() => {
-  return bondCount.value * BOND_FACE_VALUE
+  return bondCount.value * constants.bondCost
 })
 
 const totalInterest = computed(() => {

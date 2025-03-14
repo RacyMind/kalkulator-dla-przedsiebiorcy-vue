@@ -5,7 +5,7 @@
     </SectionHeader>
     <Form @submit="handleSubmit" />
     <Advert />
-    
+
     <q-tabs
       ref="qtabs"
       v-model="tab"
@@ -17,7 +17,7 @@
         :name="Tabs.Summary"
         label="Podsumowanie" />
       <q-tab
-        :name="Tabs.Details"
+        :name="Tabs.Payouts"
         label="Wypłaty" />
     </q-tabs>
     <q-tab-panels
@@ -37,7 +37,7 @@
         </div>
       </q-tab-panel>
       <q-tab-panel
-        :name="Tabs.Details"
+        :name="Tabs.Payouts"
         class="q-pa-none">
         <template v-if="store.result">
           <MonthlyDetailsList :result="store.result" />
@@ -67,7 +67,7 @@ import helpers from 'src/logic/helpers'
 
 enum Tabs {
   Summary = 1,
-  Details = 2,
+  Payouts = 2,
 }
 
 const store = usePolishBondsStore()
@@ -75,7 +75,7 @@ const breadcrumbStore = useBreadcrumbStore()
 
 breadcrumbStore.items = [
   {
-    name: 'Obligacje Skarbowe',
+    name: 'Obligacje skarbowe',
   },
 ]
 

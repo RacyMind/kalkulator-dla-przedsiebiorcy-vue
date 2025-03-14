@@ -25,13 +25,13 @@
         label="Roczna stopa inflacji (%)"
         suffix="%"
         color="brand"
-        :rules="[(val) => !!val || 'Uzupełnij pole']"
+        :rules="[validationRules.required]"
         lazy-rules="ondemand"
       />
     </div>
   </div>
 
-  <div class="row q-mt-md">
+  <div class="row">
     <div class="col">
       <q-toggle
         v-model="belkaTax"
@@ -44,10 +44,15 @@
 </template>
 
 <script setup lang="ts">
+import { useBondConstants } from '../../logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
+import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
+
+const constants = useBondConstants()
 
 const boughtBondCount = useLocalStorage('polishBonds/form/boughtBondCount', 1, { mergeDefaults: true })
-const yearlyInflationRate = useLocalStorage('polishBonds/form/yearlyInflationRate', 2.5, { mergeDefaults: true })
+const yearlyInflationRate = useLocalStorage('polishBonds/form/yearlyInflationRate', helpers.round(constants.yearlyInflationRate * 100, 2), { mergeDefaults: true })
 const belkaTax = useLocalStorage('polishBonds/form/belkaTax', true, { mergeDefaults: true })
 
 defineExpose({

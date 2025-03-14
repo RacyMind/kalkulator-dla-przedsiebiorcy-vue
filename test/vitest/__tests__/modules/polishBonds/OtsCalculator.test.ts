@@ -3,7 +3,6 @@ import {OtsInputFields} from 'components/polishBonds/interfaces/OtsInputFields'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
-import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
 import {useSettingStore} from 'stores/settingStore'
 
 setActivePinia(createPinia())

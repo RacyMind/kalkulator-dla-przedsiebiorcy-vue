@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-col-gutter-md q-mt-md">
+  <div class="row q-col-gutter-md">
     <div class="col-12 col-md-6">
       <q-input
         v-model.number="interestRate"
@@ -10,10 +10,7 @@
         label="Stopa procentowa (%)"
         suffix="%"
         color="brand"
-        :rules="[
-          (val) => !!val || 'Uzupełnij pole',
-          (val) => val >= 0 || 'Minimalna wartość to 0'
-        ]"
+        :rules="[validationRules.required]"
         lazy-rules="ondemand"
       />
     </div>
@@ -23,9 +20,11 @@
 <script setup lang="ts">
 import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
+import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
 
 const constants = useBondConstants()
-const interestRate = useLocalStorage('polishBonds/form/tos/interestRate', constants.tos.interestRate * 100, { mergeDefaults: true })
+const interestRate = useLocalStorage('polishBonds/form/tos/interestRate', helpers.round(constants.tos.interestRate * 100, 2), { mergeDefaults: true })
 
 defineExpose({
   interestRate,

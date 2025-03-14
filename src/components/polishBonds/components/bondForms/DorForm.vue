@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-col-gutter-md q-mt-md">
+  <div class="row q-col-gutter-md">
     <div class="col-12 col-md-6">
       <q-input
         v-model.number="initialInterestRate"
@@ -7,17 +7,14 @@
         min="0"
         max="20"
         step="0.01"
-        label="Początkowa stopa procentowa (%)"
+        label="Stopa procentowa w 1. miesiącu (%)"
         suffix="%"
         color="brand"
-        :rules="[
-          (val) => !!val || 'Uzupełnij pole',
-          (val) => val >= 0 || 'Minimalna wartość to 0'
-        ]"
+        :rules="[validationRules.required]"
         lazy-rules="ondemand"
       />
     </div>
-    
+
     <div class="col-12 col-md-6">
       <q-input
         v-model.number="nbpReferenceRate"
@@ -28,10 +25,7 @@
         label="Stopa referencyjna NBP (%)"
         suffix="%"
         color="brand"
-        :rules="[
-          (val) => val !== null || 'Uzupełnij pole',
-          (val) => val >= 0 || 'Minimalna wartość to 0'
-        ]"
+        :rules="[validationRules.required]"
         lazy-rules="ondemand"
       />
     </div>
@@ -42,11 +36,12 @@
 import { useBondConstants } from 'components/polishBonds/logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
 import { watch } from 'vue'
+import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
 
 const constants = useBondConstants()
-const initialInterestRate = useLocalStorage('polishBonds/form/dor/initialInterestRate', constants.dor.initialInterestRate * 100, { mergeDefaults: true })
-
-const nbpReferenceRate = useLocalStorage('polishBonds/form/dor/nbpReferenceRate', constants.dor.initialInterestRate * 100, { mergeDefaults: true })
+const initialInterestRate = useLocalStorage('polishBonds/form/dor/initialInterestRate', helpers.round(constants.dor.initialInterestRate * 100, 2), { mergeDefaults: true })
+const nbpReferenceRate = useLocalStorage('polishBonds/form/dor/nbpReferenceRate', helpers.round(constants.dor.nbpReferenceRate * 100, 2), { mergeDefaults: true })
 
 const nbpReferenceRates = useLocalStorage('polishBonds/form/dor/nbpReferenceRates', Array(24).fill(nbpReferenceRate.value), { mergeDefaults: true })
 
@@ -58,6 +53,7 @@ watch(nbpReferenceRate, (newValue) => {
 
 defineExpose({
   initialInterestRate,
+  nbpReferenceRate,
   nbpReferenceRates,
 })
 </script>
