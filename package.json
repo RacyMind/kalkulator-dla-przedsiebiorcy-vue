@@ -13,26 +13,27 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "test:unit": "vitest",
-    "test:unit:ci": "vitest run"
+    "test:unit:ci": "vitest run",
+    "test:unit:ui": "vitest --ui"
   },
   "dependencies": {
     "@j-t-mcc/vue3-chartjs": "^1.3.0",
     "@quasar/babel-preset-app": "^2.0.3",
-    "@quasar/extras": "^1.16.16",
+    "@quasar/extras": "^1.16.17",
     "@vueuse/core": "^10.7.1",
     "axios": "^1.6.2",
     "date-fns": "^2.17.0",
     "pinia": "^2.0.14",
-    "quasar": "^2.17.7",
+    "quasar": "^2.18.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.11.0",
     "@quasar/quasar-app-extension-testing": "^2.2.0",
-    "@quasar/quasar-app-extension-testing-unit-vitest": "^0.4.0",
+    "@quasar/quasar-app-extension-testing-unit-vitest": "^1.1.0",
     "@testing-library/vue": "^6.6.1",
-    "@types/node": "^12.20.21",
+    "@types/node": "^20.17.24",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "@vue/test-utils": "^2.4.1",
@@ -44,7 +45,7 @@
     "eslint-plugin-vue": "^8.5.0",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4",
-    "vitest": "^0.34.0",
+    "vitest": "^2.1.9",
     "workbox-build": "^6.5.3",
     "workbox-cacheable-response": "^6.5.3",
     "workbox-core": "^6.5.3",
@@ -54,7 +55,7 @@
     "workbox-strategies": "^6.5.3"
   },
   "engines": {
-    "node": "^18 || ^16 || ^14.19",
+    "node": ">= 20.0.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }

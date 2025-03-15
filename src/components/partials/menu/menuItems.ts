@@ -169,6 +169,12 @@ export default {
       link: '/odsetki',
       title: 'Odsetki',
     } as MenuItem,
+    {
+      caption: 'Moduł oblicza zysk z obligacji skarbowych',
+      className: 'c-percentage',
+      link: '/obligacje-skarbowe',
+      title: 'Obligacje skarbowe',
+    } as MenuItem,
   ],
   work: [
     {

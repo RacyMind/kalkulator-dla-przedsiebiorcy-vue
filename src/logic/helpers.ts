@@ -93,6 +93,20 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
   })
 }
 
+/**
+ * Formats a number with specified decimal places
+ * 
+ * @param {number} value - The number to format
+ * @param {number} decimalPlaces - Number of decimal places
+ * @returns {string} - Formatted number as string
+ */
+function formatNumber(value: number, decimalPlaces = 2): string {
+  return value.toLocaleString('pl-PL', {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  })
+}
+
 export default {
   getDefaultYear,
   round,
@@ -100,4 +114,5 @@ export default {
   sum,
   sumMonthlyResults,
   applyMixins,
+  formatNumber,
 }
