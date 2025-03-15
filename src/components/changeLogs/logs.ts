@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodano modułu Obligacje skarbowe.</li></ul>',
+    content: '<ul><li>Dodano moduł Obligacje skarbowe.</li></ul>',
     publish_date: '2025-03-15',
     version: '5.10.0',
   },
