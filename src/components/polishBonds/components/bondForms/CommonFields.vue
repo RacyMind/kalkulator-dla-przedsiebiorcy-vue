@@ -37,7 +37,7 @@
         v-model="belkaTax"
         checked-icon="check"
         unchecked-icon="clear"
-        label="Uwzględnij podatek Belki (19%)"
+        label="Podatek Belki"
       />
     </div>
   </div>
@@ -51,7 +51,7 @@ import validationRules from 'src/logic/validationRules'
 
 const constants = useBondConstants()
 
-const boughtBondCount = useLocalStorage('polishBonds/form/boughtBondCount', 1, { mergeDefaults: true })
+const boughtBondCount = useLocalStorage('polishBonds/form/boughtBondCount', 10, { mergeDefaults: true })
 const yearlyInflationRate = useLocalStorage('polishBonds/form/yearlyInflationRate', helpers.round(constants.yearlyInflationRate * 100, 2), { mergeDefaults: true })
 const belkaTax = useLocalStorage('polishBonds/form/belkaTax', true, { mergeDefaults: true })
 
