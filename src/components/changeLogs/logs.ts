@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodano moduł Obligacje skarbowe.</li></ul>',
+    publish_date: '2025-03-15',
+    version: '5.10.0',
+  },
+  {
     content: '<ul><li>Aktualizacja składek ZUS na 2025 rok.</li><li>Dodano możliwość wpisania ułamkowej liczby godzin w Umowa zlecenie.</li><li>Poprawiono pomniejsze błędy.</li></ul>',
     publish_date: '2025-01-30',
     version: '5.9.0',

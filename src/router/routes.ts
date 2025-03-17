@@ -31,6 +31,7 @@ const routes: RouteRecordRaw[] = [
       { component: () => import('components/b2bComparator/pages/Index.vue'), path: 'porownywarka-b2b' },
       { component: () => import('components/accountingWithSpouse/pages/Index.vue'), path: 'rozliczenie-z-malzonkiem' },
       { component: () => import('components/realBoughtCosts/pages/Index.vue'), path: 'rzeczywisty-koszt-zakupu' },
+      { component: () => import('components/polishBonds/pages/Index.vue'), path: 'obligacje-skarbowe' },
     ],
     component: () => import('layouts/MainLayout.vue'),
     path: '/',

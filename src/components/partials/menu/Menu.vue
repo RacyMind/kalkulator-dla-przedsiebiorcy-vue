@@ -58,7 +58,7 @@
         class="q-my-md"
         style="margin-left: 32px;"
       >
-        Oprocentowanie
+        Oszczędności
       </h6>
       <Item
         v-for="link in visibleMenuItems.percentage"
