@@ -88,6 +88,8 @@ const bondTypeMap = {
   'OTS': 'OTS - Obligacje 3-miesięczne',
   'ROR': 'ROR - Obligacje roczne',
   'DOR': 'DOR - Obligacje 2-letnie',
+  'ROD': 'ROD - Obligacje 12-letnie',
+  'ROS': 'ROS - Obligacje 6-letnie',
 }
 
 const bondTypeLabel = computed(() => {
