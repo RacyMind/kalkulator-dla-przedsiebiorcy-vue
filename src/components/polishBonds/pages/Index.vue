@@ -64,8 +64,10 @@ import { OtsInputFields } from 'components/polishBonds/interfaces/OtsInputFields
 import { QTabs } from 'quasar'
 import { Ref, ref } from 'vue'
 import { Result } from 'components/polishBonds/interfaces/Result'
+import { RodCalculator } from 'components/polishBonds/logic/RodCalculator'
 import { RorCalculator } from 'components/polishBonds/logic/RorCalculator'
 import { RorInputFields } from 'components/polishBonds/interfaces/RorInputFields'
+import { RosCalculator } from 'components/polishBonds/logic/RosCalculator'
 import { TosCalculator } from 'components/polishBonds/logic/TosCalculator'
 import { TosInputFields } from 'components/polishBonds/interfaces/TosInputFields'
 import { useBreadcrumbStore } from 'stores/breadcrumbStore'
@@ -206,6 +208,46 @@ const calculateDor = () => {
   useCalculator(new DorCalculator(), inputFields)
 }
 
+const calculateRod = () => {
+  const form = store.rodInputFields
+
+  if (!form) {
+    return
+  }
+
+  const commonInputFields = prepareCommonInputFields()
+
+  if (!commonInputFields) {
+    return
+  }
+
+  const calculator = new RodCalculator()
+  useCalculator(calculator, {
+    ...commonInputFields,
+    initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
+  })
+}
+
+const calculateRos = () => {
+  const form = store.rosInputFields
+
+  if (!form) {
+    return
+  }
+
+  const commonInputFields = prepareCommonInputFields()
+
+  if (!commonInputFields) {
+    return
+  }
+
+  const calculator = new RosCalculator()
+  useCalculator(calculator, {
+    ...commonInputFields,
+    initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
+  })
+}
+
 const handleSubmit = () => {
   helpers.scrollToElement(qtabs?.value?.$el)
 
@@ -227,6 +269,12 @@ const handleSubmit = () => {
       break
     case 'DOR':
       calculateDor()
+      break
+    case 'ROD':
+      calculateRod()
+      break
+    case 'ROS':
+      calculateRos()
       break
   }
 }
