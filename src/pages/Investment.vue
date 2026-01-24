@@ -1,28 +1,22 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-percentage"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-white">
-      <SectionHeader>
-        <q-icon name="o_description"/>
-        Wypełnij formularz
-      </SectionHeader>
-      <Form
-        class="q-mt-md q-mb-lg q-px-md"
-        @save="save"
-      />
-      <Advert/>
-      <SectionHeader ref="scrollTarget">
-        <q-icon name="o_credit_card"/>
-        Podsumowanie
-      </SectionHeader>
-      <Summary
-        :input="inputFields"
-      />
-    </div>
-    <Footer/>
-  </q-page>
+  <ModulePageLayout class="c-percentage">
+    <SectionHeader>
+      <q-icon name="o_description"/>
+      Wypełnij formularz
+    </SectionHeader>
+    <Form
+      class="q-mt-md q-mb-lg q-px-md"
+      @save="save"
+    />
+    <Advert/>
+    <SectionHeader ref="scrollTarget">
+      <q-icon name="o_credit_card"/>
+      Podsumowanie
+    </SectionHeader>
+    <Summary
+      :input="inputFields"
+    />
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
@@ -30,8 +24,8 @@ import {InvestmentInputFields} from 'components/investment/interfaces/Investment
 import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/partials/Footer.vue'
 import Form from 'components/investment/Form.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/investment/Summary.vue'
 import helpers from 'src/logic/helpers'
