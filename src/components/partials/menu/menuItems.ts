@@ -60,72 +60,62 @@ export default {
 
 
   app: appMenuItems,
-  business: [
+  company: [
     {
       caption: 'Moduł oblicza składowe wynagrodzenia przy samozatrudnieniu',
-      className: 'c-business',
+      className: 'c-company',
       link: '/samozatrudnienie',
       title: 'Samozatrudnienie (B2B)',
     } as MenuItem,
     {
       caption: 'Moduł pokazuje różnice pomiędzy skalą podatkową, podatkiem liniowym, a podatkiem zryczałtowanym',
-      className: 'c-business',
+      className: 'c-company',
       link: '/porownywarka-b2b',
       title: 'Porównywarka B2B',
     } as MenuItem,
     {
-      caption: 'Moduł oblicza ulgę podatkową z tytułu wpłat na IKZE',
-      className: 'c-business',
-      link: '/ulga-podatkowa-ikze',
-      title: 'Ulga podatkowa IKZE',
-    } as MenuItem,
-    {
-      caption: 'Moduł symuluje oszczędności na IKE z uwzględnieniem oszczędności podatkowej',
-      className: 'c-business',
-      link: '/kalkulator-ike',
-      title: 'Kalkulator IKE',
-    } as MenuItem,
-    {
-      title: 'Rozliczenie z małżonkiem',
-      caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
-      className: 'c-business',
-      link: '/rozliczenie-z-malzonkiem',
-    } as MenuItem,
-    {
       caption: 'Moduł oblicza składowe wynagrodzenia przy działalności niezarejestrowanej',
-      className: 'c-business',
+      className: 'c-company',
       link: '/dzialalnosc-niezarejestrowana',
       title: 'Działalność niezarejestrowana',
     } as MenuItem,
     {
-      caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
-      className: 'c-business',
-      link: '/faktura-vat',
-      title: 'Faktura VAT',
-    } as MenuItem,
-    {
       caption: 'Moduł pokazuje realne oszczędności przy zakupie produktu lub usługi na firmę',
-      className: 'c-business',
+      className: 'c-company',
       link: '/rzeczywisty-koszt-zakupu',
       title: 'Rzeczywisty koszt zakupu',
     } as MenuItem,
     {
       caption: 'Moduł oblicza kwotę obrotu, której przekroczenie powoduje utratę prawa do zwolnienia z ewidencjonowania',
-      className: 'c-business',
+      className: 'c-company',
       link: '/limit-obrotu-dla-kasy-fiskalnej',
       title: 'Limit zwolnienia z ewidencjonowania w kasie fiskalnej',
     } as MenuItem,
     {
       caption: 'Moduł oblicza kwotę przychodu, którego przekroczenie powoduje utratę prawa do zwolnienia z VAT',
-      className: 'c-business',
+      className: 'c-company',
       link: '/limit-zwolnienia-z-vat',
       title: 'Limit zwolnienia z VAT',
     } as MenuItem,
     {
       caption: 'Moduł oblicza składki ZUS dla przedsiębiorców za część miesiąca',
-      className: 'c-business',
+      className: 'c-company',
       link: '/skladki-zus-za-czesc-miesiaca',
       title: 'Składki ZUS za część miesiąca',
+    } as MenuItem,
+  ],
+  taxes: [
+    {
+      caption: 'Moduł przelicza kwoty z netto na brutto i z brutto na netto',
+      className: 'c-taxes',
+      link: '/faktura-vat',
+      title: 'Faktura VAT',
+    } as MenuItem,
+    {
+      title: 'Rozliczenie z małżonkiem',
+      caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
+      className: 'c-taxes',
+      link: '/rozliczenie-z-malzonkiem',
     } as MenuItem,
   ],
   currencies: [
@@ -142,48 +132,60 @@ export default {
       title: 'Przelicznik walut',
     } as MenuItem,
   ],
-  informator: [
+  info: [
     {
       caption: 'Moduł pokazuje wykres z inflacją w Polsce',
-      className: 'c-informator',
+      className: 'c-info',
       link: '/inflacja',
       title: 'Inflacja',
     } as MenuItem,
     {
       caption: 'Moduł pokazuje wykres z siła nabywczą pieniądza w Polsce',
-      className: 'c-informator',
+      className: 'c-info',
       link: '/sila-nabywcza-pieniadza',
       title: 'Siła nabywcza pieniądza',
     } as MenuItem,
     {
       caption: 'Moduł pokazuje informacje o wynagrodzeniu w Polsce',
-      className: 'c-informator',
+      className: 'c-info',
       link: '/informacje-o-wynagrodzeniu',
       title: 'Informacje o wynagrodzeniu',
     } as MenuItem,
     {
       caption: 'Moduł pokazuje istotne terminy w US, ZUS i PFRON',
-      className: 'c-informator',
+      className: 'c-info',
       link: '/terminy-w-us-zus-pfron',
       title: 'Terminy w US, ZUS i PFRON',
     } as MenuItem,
   ],
-  percentage: [
+  savings: [
+    {
+      caption: 'Moduł oblicza ulgę podatkową z tytułu wpłat na IKZE',
+      className: 'c-savings',
+      link: '/ulga-podatkowa-ikze',
+      title: 'Ulga podatkowa IKZE',
+    } as MenuItem,
+    {
+      caption: 'Moduł symuluje oszczędności na IKE z uwzględnieniem oszczędności podatkowej',
+      className: 'c-savings',
+      link: '/kalkulator-ike',
+      title: 'Kalkulator IKE',
+    } as MenuItem,
     {
       caption: 'Moduł oblicza zysk z lokaty',
-      className: 'c-percentage',
+      className: 'c-savings',
       link: '/lokata',
       title: 'Lokata',
     } as MenuItem,
     {
       caption: 'Moduł oblicza odsetki za każdy dzień',
-      className: 'c-percentage',
+      className: 'c-savings',
       link: '/odsetki',
       title: 'Odsetki',
     } as MenuItem,
     {
       caption: 'Moduł oblicza zysk z obligacji skarbowych',
-      className: 'c-percentage',
+      className: 'c-savings',
       link: '/obligacje-skarbowe',
       title: 'Obligacje skarbowe',
     } as MenuItem,
@@ -206,12 +208,6 @@ export default {
       className: 'c-work',
       link: '/umowa-o-dzielo',
       title: 'Umowa o dzieło',
-    } as MenuItem,
-    {
-      title: 'Rozliczenie z małżonkiem',
-      caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
-      className: 'c-work',
-      link: '/rozliczenie-z-malzonkiem',
     } as MenuItem,
     {
       caption: 'Moduł oblicza wysokość zasiłku chorobowego',

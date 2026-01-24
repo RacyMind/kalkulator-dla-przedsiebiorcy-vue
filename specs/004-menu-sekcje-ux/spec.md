@@ -17,7 +17,7 @@ Użytkownik otwiera menu boczne i chce przejść do konkretnego modułu (np. "Um
 
 **Acceptance Criteria**:
 
-1. **Given** użytkownik otworzył menu, **When** szuka modułu związanego z pracą (np. "Umowa zlecenie"), **Then** znajduje go w sekcji "Praca i umowy".
+1. **Given** użytkownik otworzył menu, **When** szuka modułu związanego z pracą (np. "Umowa zlecenie"), **Then** znajduje go w sekcji "Praca".
 2. **Given** użytkownik otworzył menu, **When** szuka modułu walutowego ("Kursy walut" / "Przelicznik walut"), **Then** znajduje go w sekcji "Waluty".
 3. **Given** użytkownik otworzył menu, **When** przegląda listę, **Then** nie widzi tej samej pozycji (tego samego linku docelowego) w więcej niż jednej sekcji.
 
@@ -25,28 +25,29 @@ Użytkownik otwiera menu boczne i chce przejść do konkretnego modułu (np. "Um
 ```
 Oczekiwany podział sekcji (propozycja UX):
 
-1) Firma i działalność
+1) Firma
 - Samozatrudnienie (B2B)
 - Porównywarka B2B
 - Działalność niezarejestrowana
 - Składki ZUS za część miesiąca
 - Limit zwolnienia z ewidencjonowania w kasie fiskalnej
+- Limit zwolnienia z VAT
+- Rzeczywisty koszt zakupu
 
 2) Podatki i rozliczenia
 - Faktura VAT
-- Limit zwolnienia z VAT
-- Ulga podatkowa IKZE
 - Rozliczenie z małżonkiem
-- Rzeczywisty koszt zakupu
 
-3) Praca i umowy
+3) Praca
 - Umowa o pracę
 - Umowa zlecenie
 - Umowa o dzieło
 - Zasiłek chorobowy
 - Ekwiwalent za niewykorzystany urlop
 
-4) Oszczędzanie i inwestycje
+4) Oszczędzanie
+- Ulga podatkowa IKZE
+- Kalkulator IKE
 - Lokata
 - Odsetki
 - Obligacje skarbowe
@@ -61,7 +62,7 @@ Oczekiwany podział sekcji (propozycja UX):
 - Informacje o wynagrodzeniu
 - Terminy w US, ZUS i PFRON
 
-7) Aplikacja i pomoc
+7) Aplikacja
 - (pozycje systemowe, kontakt, polityki, social, repo)
 ```
 
@@ -105,6 +106,17 @@ Użytkownik przegląda menu i oczekuje, że każdy moduł występuje w jednym, j
 - **FR-003**: Pozycje "Aplikacja"/pomocnicze (kontakt, polityki, social, repo) MUST być oddzielone od modułów obliczeniowych w osobnej sekcji.
 - **FR-004**: Wyszukiwanie w menu MUST filtrować po tytule i opisie pozycji we wszystkich sekcjach.
 - **FR-005**: Cały tekst w menu MUST być w języku polskim.
+- **FR-006**: Każda sekcja MUST mieć własny dominujący kolor (spójny w menu i wewnątrz modułów) realizowany poprzez dedykowaną klasę CSS.
+
+**Mapowanie sekcji na klasę CSS (kolor dominujący)**:
+
+- **Firma**: `c-company`
+- **Podatki i rozliczenia**: `c-taxes`
+- **Praca**: `c-work`
+- **Oszczędzanie**: `c-savings`
+- **Waluty**: `c-currencies`
+- **Informacje**: `c-info`
+- **Aplikacja**: `c-app`
 
 ### Calculation Requirements
 
@@ -117,6 +129,7 @@ Użytkownik przegląda menu i oczekuje, że każdy moduł występuje w jednym, j
 - **MenuItem**: Pojedyncza pozycja w menu (tytuł, opis, link docelowy).
 - **InternalLink**: Link wewnętrzny (nawigacja do modułu aplikacji).
 - **ExternalLink**: Link zewnętrzny (np. Google Play, Facebook, GitHub) przypisany do sekcji "Aplikacja i pomoc".
+- **SectionTheme**: Powiązanie sekcji z dominującym kolorem (w praktyce: klasa CSS przypisana do pozycji i/lub layoutu modułu).
 
 ## Assumptions
 
