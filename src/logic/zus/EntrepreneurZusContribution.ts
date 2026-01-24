@@ -31,8 +31,10 @@ export class EntrepreneurZusContribution extends ZusContribution {
 
     // we always take the minimum wage from the beginning of the year to calculate the contribution
     let basisForMinimumContribution = wageStats.value.minimumWage(year, 0)
-    if(year >= 2025 && monthIndex > 0) {
-      // https://poradnikprzedsiebiorcy.pl/-nowy-polski-lad-skladka-zdrowotna-uzalezniona-od-dochodu-i-bez-odliczenia
+    if(year === 2025) {
+      // https://businessinsider.com.pl/prawo/firma/skladka-zdrowotna-znowu-w-gore-oto-stawki-na-2026-r/zx7eqmb
+      // In contribution year 2025 (Feb 2025 - Jan 2026) the minimum basis is 75% of minimum wage.
+      // From Feb 2026 it's back to 100%.
       basisForMinimumContribution = 0.75 * basisForMinimumContribution
     }
     const minimumContribution = ignoreMinimumContribution ? 0 : helpers.round(this.zusConstants.value.entrepreneur.rates.healthContribution.taxScales * basisForMinimumContribution, 2)

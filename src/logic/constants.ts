@@ -276,7 +276,7 @@ export default {
   },
   APP: {
     NAME: 'Kalkulator finansowy',
-    VERSION: '5.0.0',
+    VERSION: '5.11.0',
   },
   AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE: {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
