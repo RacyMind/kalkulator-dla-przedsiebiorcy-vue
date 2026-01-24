@@ -1,7 +1,6 @@
 <template>
   <ModulePageLayout class="c-currencies">
     <SectionHeader>
-      <q-icon name="o_euro"/>
       Kursy walut
     </SectionHeader>
     <Table/>

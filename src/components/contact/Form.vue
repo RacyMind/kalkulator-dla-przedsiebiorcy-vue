@@ -1,69 +1,71 @@
 <template>
-  <q-form @submit.prevent="send">
-    <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <q-input
-          v-model="email"
-          type="email"
-          label="Email*"
-          autofocus
-          color="brand"
-          :rules="[validationRules.required, validationRules.email]"
-          required
-        />
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="send">
+    <FormSection title="Dane kontaktowe">
+      <div class="row items-end q-col-gutter-sm">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="email"
+            type="email"
+            label="Email"
+            autofocus
+            color="brand"
+            :rules="[validationRules.required, validationRules.email]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="name"
+            type="text"
+            label="Imię"
+            color="brand"
+            hide-bottom-space
+          />
+        </div>
       </div>
-      <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="name"
-          type="text"
-          label="Imię"
-          color="brand"
-        />
-      </div>
+    </FormSection>
+    <FormSection title="Wiadomość">
+      <q-select
+        v-model="subject"
+        :options="subjects"
+        label="Temat"
+        color="brand"
+        :rules="[validationRules.subject]"
+        lazy-rules="ondemand"
+        hide-bottom-space
+        class="q-mb-sm"
+      />
+      <q-input
+        v-model="message"
+        type="textarea"
+        label="Treść wiadomości"
+        color="brand"
+        :rules="[validationRules.required]"
+        lazy-rules="ondemand"
+        hide-bottom-space
+      />
+    </FormSection>
+    <div class="full-width bg-white q-pa-md text-grey text-caption">
+      <p class="q-mb-none text-justify">
+        Podane przez Ciebie w formularzu kontaktowym dane zostaną wykorzystane w celu kontaktu zwrotnego. Ponadto, Twoje dane zostaną zapisane w bazie administratora w celu archiwizacji wymienianej z Tobą korespondencji. Administratorem danych osobowych będzie Racy Mind Łukasz Socha, ul. Puławska 15/7, 24-300 Opole Lubelskie, NIP: 717-181-21-16. Będziesz mieć prawo żądania dostępu do danych osobowych, ich sprostowania, usunięcia oraz przenoszenia. Jeżeli uznasz, że Twoje dane przetwarzane są niezgodnie z prawem, będziesz mógł wnieść skargę do organu nadzorczego. Podanie danych jest dobrowolne, ale niezbędne, by przesłać formularz kontaktowy.
+      </p>
     </div>
+    <Separator />
     <div class="row">
-      <div class="col-12">
-        <q-select
-          v-model="subject"
-          :options="subjects"
-          label="Temat*"
-          color="brand"
-          :rules="[validationRules.subject]"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <q-input
-          v-model="message"
-          type="textarea"
-          label="Wiadomość*"
-          color="brand"
-          :rules="[validationRules.required]"
-          required
-        />
-      </div>
-    </div>
-    <div class="row q-mt-lg">
       <div class="col-12">
         <q-btn
           type="submit"
           class="full-width"
-          color="brand"
-          size="lg"
+          color="teal-4"
+          size="md"
           label="Wyślij"
+          square
           :loading="isSending"
           :disable="isDisabledButton"
         />
-      </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <p
-          class="q-mb-none text-grey text-justify"
-          style="font-size:0.8rem;">
-          Podane przez Ciebie w formularzu kontaktowym dane zostaną wykorzystane w celu kontaktu zwrotnego. Ponadto, Twoje dane zostaną zapisane w bazie administratora w celu archiwizacji wymienianej z Tobą korespondencji. Administratorem danych osobowych będzie Racy Mind Łukasz Socha, ul. Puławska 15/7, 24-300 Opole Lubelskie, NIP: 717-181-21-16. Będziesz mieć prawo żądania dostępu do danych osobowych, ich sprostowania, usunięcia oraz przenoszenia. Jeżeli uznasz, że Twoje dane przetwarzane są niezgodnie z prawem, będziesz mógł wnieść skargę do organu nadzorczego. Podanie danych jest dobrowolne, ale niezbędne, by przesłać formularz kontaktowy.
-        </p>
       </div>
     </div>
   </q-form>
@@ -71,13 +73,23 @@
 
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
+import {useFormValidation} from 'src/composables/formValidation'
 import {useQuasar} from 'quasar'
+import FormSection from 'components/partials/form/FormSection.vue'
+import Separator from 'components/partials/Separator.vue'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 
+// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
+
 export default defineComponent({
+  components: {
+    FormSection,
+    Separator,
+  },
   setup() {
     const $q = useQuasar()
+    const {handleValidationError} = useFormValidation()
 
     const subjects =[
       'Zaproponuj nową funkcjonalność',
@@ -132,6 +144,7 @@ export default defineComponent({
 
     return {
       email,
+      handleValidationError,
       isDisabledButton,
       isSending,
       message,

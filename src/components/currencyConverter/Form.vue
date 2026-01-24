@@ -1,60 +1,57 @@
 <template>
-  <q-form @submit.prevent="calculate">
-    <div class="row justify-between">
-      <div class="col-12 col-md-4 q-pr-md-sm">
-        <q-input
-          v-model.number="amount"
-          type="number"
-          min="0"
-          step="0.01"
-          label="Kwota*"
-          color="brand"
-          :rules="[validationRules.requiredAmount]"
-          lazy-rules
-        />
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="calculate">
+    <FormSection title="Przelicznik walut">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-4">
+          <q-input
+            v-model.number="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Kwota"
+            color="brand"
+            :rules="[validationRules.requiredAmount]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <q-select
+            v-model="fromCurrency"
+            :options="currencies"
+            label="Mam"
+            color="brand"
+            use-input
+            input-debounce="0"
+            @filter="filterCurrency"
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <q-select
+            v-model="toCurrency"
+            :options="currencies"
+            label="Chcę"
+            color="brand"
+            use-input
+            input-debounce="0"
+            @filter="filterCurrency"
+          />
+        </div>
       </div>
-      <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
-        <q-select
-          v-model="fromCurrency"
-          :options="currencies"
-          label="Mam*"
-          color="brand"
-          use-input
-          input-debounce="0"
-          @filter="filterCurrency"
-        />
-      </div>
-      <div class="col-12 col-md-4 q-pl-md-sm">
-        <q-select
-          v-model="toCurrency"
-          :options="currencies"
-          label="Chcę*"
-          color="brand"
-          use-input
-          input-debounce="0"
-          @filter="filterCurrency"
-        />
-      </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <q-btn
-          type="submit"
-          class="full-width"
-          color="brand"
-          size="lg"
-          label="Oblicz"
-          :disable="isDisabledButton"
-        />
-      </div>
-    </div>
+    </FormSection>
+    <SubmitButton />
   </q-form>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import {useCurrencyConverterStore} from 'stores/currency-converter-store'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import {useFormValidation} from 'src/composables/formValidation'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import currencyConverter from './currencyConverter'
 import validationRules from 'src/logic/validationRules'
 
@@ -67,6 +64,7 @@ const pln = {
 
 const emit = defineEmits(['scroll'])
 
+const {handleValidationError} = useFormValidation()
 const currencyRateStore = useCurrencyRateStore()
 const currencyConverterStore = useCurrencyConverterStore()
 
@@ -76,13 +74,6 @@ const amount = ref(null)
 const currencies = ref([pln])
 const fromCurrency = ref(pln)
 const toCurrency = ref(pln)
-
-const isDisabledButton = computed(() => {
-  if (currencyRateStore.isLoading) {
-    return false
-  }
-  return !amount.value || !fromCurrency.value || !toCurrency.value
-})
 
 const filterCurrency = (val: string, update: any) => {
   let allRates = [pln]

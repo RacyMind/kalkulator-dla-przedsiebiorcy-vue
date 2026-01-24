@@ -1,67 +1,72 @@
 <template>
-  <q-form @submit.prevent="save">
-    <div class="row justify-between">
-      <div class="col-12 col-md-4 q-pr-md-sm">
-        <q-input
-          v-model.number="amount"
-          type="number"
-          min="0"
-          step="0.01"
-          suffix="zł"
-          label="Kapitał*"
-          autofocus
-          color="brand"
-          :rules="[validationRules.requiredAmount]"
-          lazy-rules
-        />
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="save">
+    <FormSection title="Parametry lokaty">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-4">
+          <q-input
+            v-model.number="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            suffix="zł"
+            label="Kapitał"
+            autofocus
+            color="brand"
+            :rules="[validationRules.requiredAmount]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <q-input
+            v-model.number="rate"
+            type="number"
+            min="0"
+            step="0.01"
+            suffix="%"
+            label="Oprocentowanie"
+            color="brand"
+            :rules="[validationRules.required]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <q-input
+            v-model.number="monthCount"
+            type="number"
+            min="1"
+            step="1"
+            label="Okres lokaty (w miesiącach)"
+            color="brand"
+            :rules="[validationRules.required]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
       </div>
-      <div class="col-12 col-md-4 q-pl-md-sm q-pr-md-sm">
-        <q-input
-          v-model.number="rate"
-          type="number"
-          min="0"
-          step="0.01"
-          suffix="%"
-          label="Oprocentowanie*"
-          :rules="[validationRules.required]"
-          lazy-rules
-        />
-      </div>
-      <div class="col-12 col-md-4 q-pl-md-sm">
-        <q-input
-          v-model.number="monthCount"
-          type="number"
-          min="1"
-          step="1"
-          label="Okres lokaty* (w miesiącach)"
-          color="brand"
-          :rules="[validationRules.required]"
-          lazy-rules
-        />
-      </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <q-btn
-          type="submit"
-          class="full-width"
-          color="brand"
-          size="lg"
-          label="Oblicz"
-          :disable="isDisabledButton"
-        />
-      </div>
-    </div>
+    </FormSection>
+    <SubmitButton />
   </q-form>
 </template>
 
 <script lang="ts">
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {computed, defineComponent, ref} from 'vue'
+import {useFormValidation} from 'src/composables/formValidation'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
+  components: {
+    FormSection,
+    SubmitButton,
+  },
   setup(props, context) {
+    const {handleValidationError} = useFormValidation()
     const amount = ref(null)
     const rate = ref(null)
     const monthCount = ref(12)
@@ -81,6 +86,7 @@ export default defineComponent({
 
     return{
       amount,
+      handleValidationError,
       isDisabledButton,
       monthCount,
       rate,

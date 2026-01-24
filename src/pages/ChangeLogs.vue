@@ -1,37 +1,28 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-app"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-white">
-      <SectionHeader>
-        <q-icon name="list"/>
-        Historia zmian
-      </SectionHeader>
-      <Advert/>
-      <div
-        v-for="log in logItems"
-        :key="log.version">
-        <ChangeLog
-          :log="log"
-        />
-        <q-separator v-if="log !== logItems[logItems.length - 1]"/>
-      </div>
-
-      <div class="text-center">
-        <q-btn
-          v-if="!showAll"
-          v-model="showAll"
-          class="q-mb-md"
-          color="brand"
-          size="md"
-          label="Pokaż wszystko"
-          @click="showAll = true"
-        />
-      </div>
+  <ModulePageLayout class="c-app">
+    <SectionHeader>
+      Historia zmian
+    </SectionHeader>
+    <Advert/>
+    <div
+      v-for="log in logItems"
+      :key="log.version">
+      <ChangeLog
+        :log="log"
+      />
+      <q-separator v-if="log !== logItems[logItems.length - 1]"/>
     </div>
-    <Footer/>
-  </q-page>
+
+    <div class="text-center q-py-md">
+      <q-btn
+        v-if="!showAll"
+        color="teal-4"
+        size="md"
+        label="Pokaż wszystko"
+        @click="showAll = true"
+      />
+    </div>
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
@@ -39,7 +30,7 @@ import {computed, ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import ChangeLog from 'components/changeLogs/ChangeLog.vue'
-import Footer from 'components/partials/Footer.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import logs from 'components/changeLogs/logs'
 

@@ -6,8 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <SectionHeader
-      ref="summary"
-      class="bg-primary">
+      ref="summary">
       Podsumowanie
     </SectionHeader>
     <ResultList

@@ -5,18 +5,15 @@
   >
     <div class="full-width bg-white">
       <SectionHeader>
-        <q-icon name="event"/>
         Terminy w US
       </SectionHeader>
       <USSummary/>
       <SectionHeader>
-        <q-icon name="event"/>
         Terminy w ZUS
       </SectionHeader>
       <ZUSSummary/>
       <Advert/>
       <SectionHeader>
-        <q-icon name="event"/>
         Terminy w PFRON
       </SectionHeader>
       <PFRONSummary/>

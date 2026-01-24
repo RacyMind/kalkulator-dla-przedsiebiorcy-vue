@@ -1,54 +1,47 @@
 <template>
-  <q-form @submit.prevent="save">
-    <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <q-input
-          v-model.number="amount"
-          type="number"
-          min="0"
-          step="0.01"
-          suffix="zł"
-          label="Kwota*"
-          autofocus
-          color="brand"
-          :rules="[validationRules.requiredAmount]"
-          lazy-rules
-        />
-        <div class="q-mt-sm block">
-          <q-radio
-            v-model="amountType"
-            :val="constants.AMOUNT_TYPES.NET"
-            label="netto"
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="save">
+    <FormSection title="Dane faktury">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model.number="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            suffix="zł"
+            label="Kwota"
+            autofocus
+            color="brand"
+            :rules="[validationRules.requiredAmount]"
+            lazy-rules="ondemand"
+            hide-bottom-space
           />
-          <q-radio
-            v-model="amountType"
-            :val="constants.AMOUNT_TYPES.GROSS"
-            label="brutto"
+          <div class="q-mt-sm block">
+            <q-radio
+              v-model="amountType"
+              :val="constants.AMOUNT_TYPES.NET"
+              label="netto"
+            />
+            <q-radio
+              v-model="amountType"
+              :val="constants.AMOUNT_TYPES.GROSS"
+              label="brutto"
+            />
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <q-select
+            v-model="taxRate"
+            :options="vatTaxRates"
+            label="Stawka podatku VAT"
+            color="brand"
           />
         </div>
       </div>
-      <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-select
-          v-model="taxRate"
-          :options="vatTaxRates"
-          label="Stawka podatku VAT*"
-          color="brand"
-          required
-        />
-      </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <q-btn
-          type="submit"
-          class="full-width"
-          color="brand"
-          size="lg"
-          label="Oblicz"
-          :disable="isDisabledButton"
-        />
-      </div>
-    </div>
+    </FormSection>
+    <SubmitButton />
   </q-form>
 </template>
 
@@ -57,11 +50,19 @@ import {AmountType} from 'src/types/AmountType'
 import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
 import {VatTaxRate} from 'src/types/VatTaxRate'
 import {computed, defineComponent, ref} from 'vue'
+import {useFormValidation} from 'src/composables/formValidation'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import constants from 'src/logic/constants'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
+  components: {
+    FormSection,
+    SubmitButton,
+  },
   setup(props, context) {
+    const {handleValidationError} = useFormValidation()
     const vatTaxRates = [
       {
         label: '0%',
@@ -102,6 +103,7 @@ export default defineComponent({
       amount,
       amountType,
       constants,
+      handleValidationError,
       isDisabledButton,
       save,
       taxRate,

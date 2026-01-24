@@ -80,3 +80,4 @@ test/vitest/__tests__/
 - [ ] Validation uses `validationRules`
 - [ ] Tests include all output values
 - [ ] Constants added to `src/logic/constants.ts` (if needed)
+- [ ] Changelog updated in `src/components/changeLogs/logs.ts` (describe user-visible changes)

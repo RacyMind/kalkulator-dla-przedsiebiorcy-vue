@@ -1,100 +1,97 @@
 <template>
-  <q-form @submit.prevent="save">
-    <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <q-input
-          v-model.number="amount"
-          type="number"
-          min="0"
-          step="0.01"
-          suffix="zł"
-          label="Kwota*"
-          autofocus
-          color="brand"
-          data-testid="amount"
-          :rules="[validationRules.requiredAmount]"
-          lazy-rules
-        />
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="save">
+    <FormSection title="Kwota i odsetki">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model.number="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            suffix="zł"
+            label="Kwota"
+            autofocus
+            color="brand"
+            data-testid="amount"
+            :rules="[validationRules.requiredAmount]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model.number="rate"
+            type="number"
+            min="0"
+            step="0.01"
+            suffix="%"
+            label="Odsetki"
+            color="brand"
+            data-testid="rate"
+            :rules="[validationRules.required]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+          <q-toggle
+            v-model="isBasicCapitalRate"
+            class="q-mt-sm"
+            data-testid="basic-capital-rate"
+            label="Ustawowe odsetki kapitałowe"
+          />
+          <q-toggle
+            v-model="isBasicLateRate"
+            class="q-mt-sm"
+            data-testid="basic-late-rate"
+            label="Ustawowe odsetki za opóźnienie"
+          />
+        </div>
       </div>
-      <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model.number="rate"
-          type="number"
-          min="0"
-          step="0.01"
-          suffix="%"
-          label="Odsetki*"
-          color="brand"
-          data-testid="rate"
-          :rules="[validationRules.required]"
-          lazy-rules
-        />
-        <q-toggle
-          v-model="isBasicCapitalRate"
-          class="q-mt-sm"
-          data-testid="basic-capital-rate"
-          label="Ustawowe odsetki kapitałowe"
-        />
-        <q-toggle
-          v-model="isBasicLateRate"
-          class="q-mt-sm"
-          data-testid="basic-late-rate"
-          label="Ustawowe odsetki za opóźnienie"
-        />
+    </FormSection>
+    <FormSection title="Okres naliczania">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="startDate"
+            color="brand"
+            mask="##.##.####"
+            label="Termin zapłaty"
+            :rules="[validationRules.required]"
+            data-testid="startDate"
+            lazy-rules="ondemand"
+            hide-bottom-space>
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer">
+              </q-icon>
+            </template>
+            <DatePopup v-model="startDate" />
+          </q-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="endDate"
+            color="brand"
+            mask="##.##.####"
+            label="Data zapłaty"
+            :rules="[validationRules.required]"
+            data-testid="endDate"
+            lazy-rules="ondemand"
+            hide-bottom-space>
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer">
+              </q-icon>
+            </template>
+            <DatePopup v-model="endDate" />
+          </q-input>
+        </div>
       </div>
-    </div>
-    <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <q-input
-          v-model="startDate"
-          color="brand"
-          mask="##.##.####"
-          label="Termin zapłaty*"
-          :rules="[validationRules.required]"
-          data-testid="startDate"
-          lazy-rules>
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer">
-            </q-icon>
-          </template>
-          <DatePopup v-model="startDate" />
-        </q-input>
-      </div>
-      <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="endDate"
-          class="q-pb-none"
-          color="brand"
-          mask="##.##.####"
-          label="Data zapłaty*"
-          :rules="[validationRules.required]"
-          data-testid="endDate"
-          lazy-rules>
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer">
-            </q-icon>
-          </template>
-          <DatePopup v-model="endDate" />
-        </q-input>
-      </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <q-btn
-          type="submit"
-          class="full-width"
-          color="brand"
-          size="lg"
-          label="Oblicz"
-          :disable="isDisabledButton"
-          data-testid="button"
-        />
-      </div>
-    </div>
+    </FormSection>
+    <SubmitButton />
   </q-form>
 </template>
 
@@ -102,7 +99,10 @@
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {computed, defineComponent, ref, watch} from 'vue'
 import {parse} from 'date-fns'
+import {useFormValidation} from 'src/composables/formValidation'
 import DatePopup from 'components/partials/DatePopup.vue'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import constants from 'src/logic/constants'
 import differenceInDays from 'date-fns/differenceInDays'
 import validationRules from 'src/logic/validationRules'
@@ -110,8 +110,11 @@ import validationRules from 'src/logic/validationRules'
 export default defineComponent({
   components: {
     DatePopup,
+    FormSection,
+    SubmitButton,
   },
   setup(props, context) {
+    const {handleValidationError} = useFormValidation()
     const amount = ref(null)
     const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
 
@@ -178,6 +181,7 @@ export default defineComponent({
     return{
       amount,
       endDate,
+      handleValidationError,
       isBasicCapitalRate,
       isBasicLateRate,
       isDisabledButton,

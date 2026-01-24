@@ -24,6 +24,7 @@ description: "Task list template for feature implementation"
 - **Logic**: `src/components/[moduleName]/logic/`
 - **Tests**: `test/vitest/__tests__/modules/[moduleName]/`
 - **Shared**: `src/logic/`
+- **Changelog**: `src/components/changeLogs/logs.ts`
 
 <!-- 
   ============================================================================
@@ -90,6 +91,8 @@ description: "Task list template for feature implementation"
 - [ ] T017 Add routing in `src/router/`
 - [ ] T018 Add to navigation (if needed)
 - [ ] T019 Run tests: `npx vitest run test/vitest/__tests__/modules/[moduleName]/`
+- [ ] T020 Update changelog in `src/components/changeLogs/logs.ts` (add entry describing user-visible changes)
+- [ ] T021 Verify changelog renders correctly in `src/pages/ChangeLogs.vue`
 
 ---
 
