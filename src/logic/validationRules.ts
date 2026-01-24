@@ -31,4 +31,9 @@ export default {
       return `Minimalna wartość to ${min}`
     }
   },
+  maxValue: (max:number) => (val:any):string|void => {
+    if (val > max) {
+      return `Maksymalna wartość to ${max}`
+    }
+  },
 }

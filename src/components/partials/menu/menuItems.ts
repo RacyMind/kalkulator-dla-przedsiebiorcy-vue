@@ -74,6 +74,12 @@ export default {
       title: 'Porównywarka B2B',
     } as MenuItem,
     {
+      caption: 'Moduł oblicza ulgę podatkową z tytułu wpłat na IKZE',
+      className: 'c-business',
+      link: '/ulga-podatkowa-ikze',
+      title: 'Ulga podatkowa IKZE',
+    } as MenuItem,
+    {
       title: 'Rozliczenie z małżonkiem',
       caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
       className: 'c-business',
