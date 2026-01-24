@@ -1,35 +1,29 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-business"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-white">
-      <SectionHeader>
-        <q-icon name="o_description"/>
-        Wypełnij formularz
-      </SectionHeader>
-      <Form
-        class="q-mt-md q-mb-lg q-px-md"
-        @save="save"
-      />
-      <Advert/>
-      <SectionHeader ref="scrollTarget">
-        <q-icon name="o_credit_card"/>
-        Podsumowanie
-      </SectionHeader>
-      <Summary
-        :input="invoiceInputFields"
-      />
-      <SectionHeader>
-        <q-icon name="o_pie_chart"/>
-        Wykres
-      </SectionHeader>
-      <Statistics
-        :input="invoiceInputFields"
-      />
-    </div>
-    <Footer/>
-  </q-page>
+  <ModulePageLayout class="c-business">
+    <SectionHeader>
+      <q-icon name="o_description"/>
+      Wypełnij formularz
+    </SectionHeader>
+    <Form
+      class="q-mt-md q-mb-lg q-px-md"
+      @save="save"
+    />
+    <Advert/>
+    <SectionHeader ref="scrollTarget">
+      <q-icon name="o_credit_card"/>
+      Podsumowanie
+    </SectionHeader>
+    <Summary
+      :input="invoiceInputFields"
+    />
+    <SectionHeader>
+      <q-icon name="o_pie_chart"/>
+      Wykres
+    </SectionHeader>
+    <Statistics
+      :input="invoiceInputFields"
+    />
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
@@ -37,8 +31,8 @@ import {InvoiceInputFields} from 'src/components/invoice/interfaces/InvoiceInput
 import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/partials/Footer.vue'
 import Form from 'src/components/invoice/Form.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/invoice/Statistics.vue'
 import Summary from 'components/invoice/Summary.vue'
