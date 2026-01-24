@@ -1,5 +1,5 @@
 <template>
-  <ModulePageLayout class="c-informator">
+  <ModulePageLayout class="c-info">
     <SectionHeader>
       Wypełnij formularz
     </SectionHeader>
