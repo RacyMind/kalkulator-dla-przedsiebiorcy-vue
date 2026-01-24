@@ -36,4 +36,9 @@ export default {
       return `Maksymalna wartość to ${max}`
     }
   },
+  greaterThan: (min:number) => (val:any):string|void => {
+    if (val <= min) {
+      return `Wartość musi być większa niż ${min}`
+    }
+  },
 }

@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Aktualizacja składek ZUS na 2026 rok.</li><li>Aktualizacja odsetek ustawowych na 2026 rok.</li><li>Aktualizacja współczynnika urlopowego na 2026 rok.</li><li>Aktualizacja oprocentowania obligacji skarbowych na stan z stycznia 2026.</li><li>Ujednolicono wygląd formularzy i przycisków w wybranych modułach.</li><li>Ujednolicono układ stron w modułach: Kontakt, Historia zmian, Limit obrotu dla kasy fiskalnej.</li><li>Dodano moduł Ulga podatkowa IKZE</li></ul>',
+    content: '<ul><li>Aktualizacja składek ZUS na 2026 rok.</li><li>Aktualizacja odsetek ustawowych na 2026 rok.</li><li>Aktualizacja współczynnika urlopowego na 2026 rok.</li><li>Aktualizacja oprocentowania obligacji skarbowych na stan z stycznia 2026.</li><li>Ujednolicono wygląd formularzy i przycisków w wybranych modułach.</li><li>Ujednolicono układ stron w modułach: Kontakt, Historia zmian, Limit obrotu dla kasy fiskalnej.</li><li>Dodano moduł Ulga podatkowa IKZE</li><li>Dodano moduł Kalkulator IKE - symulator oszczędności emerytalnych z obliczeniem oszczędności podatkowej</li></ul>',
     publish_date: '2026-01-24',
     version: '5.11.0',
   },
