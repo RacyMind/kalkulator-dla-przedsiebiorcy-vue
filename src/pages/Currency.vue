@@ -1,16 +1,13 @@
 <template>
   <ModulePageLayout class="c-currencies">
     <SectionHeader>
-      <q-icon name="o_description"/>
       Wypełnij formularz
     </SectionHeader>
     <Form
-      class="q-mt-md q-mb-lg q-px-md"
       @scroll="scrollTo"
     />
     <Advert/>
     <SectionHeader>
-      <q-icon name="o_insights"/>
       Wykres
     </SectionHeader>
     <CurrencyStatistics/>

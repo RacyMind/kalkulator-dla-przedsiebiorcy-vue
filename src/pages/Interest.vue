@@ -1,23 +1,19 @@
 <template>
   <ModulePageLayout class="c-percentage">
     <SectionHeader>
-      <q-icon name="o_description"/>
       Wypełnij formularz
     </SectionHeader>
     <Form
-      class="q-mt-md q-mb-lg q-px-md"
       @save="save"
     />
     <Advert/>
     <SectionHeader ref="scrollTarget">
-      <q-icon name="o_credit_card"/>
       Podsumowanie
     </SectionHeader>
     <Summary
       :input="inputFields"
     />
     <SectionHeader>
-      <q-icon name="o_pie_chart"/>
       Wykres
     </SectionHeader>
     <Statistics

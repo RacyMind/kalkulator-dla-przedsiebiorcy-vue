@@ -1,23 +1,16 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-app"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-white">
-      <SectionHeader>
-        <q-icon name="o_description" />
-        Wypełnij formularz
-      </SectionHeader>
-      <Form class="q-mt-md q-px-md q-pb-md" />
-    </div>
-    <Footer />
-  </q-page>
+  <ModulePageLayout class="c-app">
+    <SectionHeader>
+      Wypełnij formularz
+    </SectionHeader>
+    <Form />
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
-import Footer from 'components/partials/Footer.vue'
 import Form from 'components/contact/Form.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 
 const breadcrumbStore = useBreadcrumbStore()

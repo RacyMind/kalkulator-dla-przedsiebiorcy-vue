@@ -1,76 +1,76 @@
 <template>
-  <q-form @submit.prevent="loadData">
-    <div class="row justify-between">
-      <div class="col-12 col-md-6 q-pr-md-sm">
-        <q-input
-          v-model="startDate"
-          color="brand"
-          mask="##.##.####"
-          label="Data początkowa*"
-          :rules="[
-            validationRules.todayOrPast,
-            validationRules.required,
-          ]">
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer"/>
-          </template>
-          <DatePopup
+  <q-form
+    @validation-error="handleValidationError"
+    @submit.prevent="loadData">
+    <FormSection title="Zakres dat">
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-6">
+          <q-input
             v-model="startDate"
-            only-past-or-today/>
-        </q-input>
-      </div>
-      <div class="col-12 col-md-6 q-pl-md-sm">
-        <q-input
-          v-model="endDate"
-          class="q-pb-none"
-          color="brand"
-          mask="##.##.####"
-          label="Data końcowa*"
-          :rules="[
-            validationRules.todayOrPast,
-            validationRules.required,
-          ]">
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer"/>
-          </template>
-          <DatePopup
+            color="brand"
+            mask="##.##.####"
+            label="Data początkowa"
+            :rules="[
+              validationRules.todayOrPast,
+              validationRules.required,
+            ]"
+            lazy-rules="ondemand"
+            hide-bottom-space>
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer"/>
+            </template>
+            <DatePopup
+              v-model="startDate"
+              only-past-or-today/>
+          </q-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <q-input
             v-model="endDate"
-            only-past-or-today/>
-        </q-input>
+            color="brand"
+            mask="##.##.####"
+            label="Data końcowa"
+            :rules="[
+              validationRules.todayOrPast,
+              validationRules.required,
+            ]"
+            lazy-rules="ondemand"
+            hide-bottom-space>
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer"/>
+            </template>
+            <DatePopup
+              v-model="endDate"
+              only-past-or-today/>
+          </q-input>
+        </div>
       </div>
-    </div>
-    <div class="row q-mt-lg">
-      <div class="col-12">
-        <q-btn
-          type="submit"
-          class="full-width"
-          color="brand"
-          size="lg"
-          label="Pokaż"
-          :disable="isDisabledButton"
-        />
-      </div>
-    </div>
+    </FormSection>
+    <SubmitButton />
   </q-form>
 </template>
 
 <script lang="ts" setup>
 import {computed, ref} from 'vue'
-import {format, isFuture, parse, subMonths} from 'date-fns'
+import {format, parse, subMonths} from 'date-fns'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
+import {useFormValidation} from 'src/composables/formValidation'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import DatePopup from 'components/partials/DatePopup.vue'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import npb from 'src/api/nbp'
 import validationRules from 'src/logic/validationRules'
 
 const $q = useQuasar()
 const currencyRateStore = useCurrencyRateStore()
 const route = useRoute()
+const {handleValidationError} = useFormValidation()
 
 const now = new Date()
 const monthAgo = subMonths(now, 1)
@@ -91,16 +91,6 @@ const formattedEndDate = computed(() => {
     'dd.MM.y',
     new Date(),
   )
-})
-
-const isDisabledButton = computed(() => {
-  if (!startDate.value || !endDate.value) {
-    return true
-  }
-  if (isFuture(formattedStartDate.value) || isFuture(formattedEndDate.value)) {
-    return true
-  }
-  return formattedStartDate.value >= formattedEndDate.value
 })
 
 const loadData = () => {
