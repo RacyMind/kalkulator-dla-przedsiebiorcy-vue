@@ -215,6 +215,57 @@ const from2023 = {
   },
   HOLIDAY_RATE: 20.83,
 }
+const from2024 = {
+  ...from2023,
+  AVERAGE_SALARY: 7824,
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 234720,
+  MINIMUM_SALARY: {
+    FISRT_HALF_OF_YEAR: 4242,
+    SECOND_HALF_OF_YEAR: 4300,
+  },
+  ZUS: {
+    ...from2023.ZUS,
+    OWNER: {
+      ...from2023.ZUS.OWNER,
+      BASIS_AMOUNT_FOR_HEALTH: 4242,
+      BIG_AMOUNT: 4694.40,
+      SMALL_AMOUNT: {
+        FISRT_HALF_OF_YEAR: 1272.60,
+        SECOND_HALF_OF_YEAR: 1290,
+      },
+    },
+  },
+}
+const from2025 = {
+  ...from2024,
+  AVERAGE_SALARY: 8673,
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 260190,
+  MINIMUM_SALARY: 4666,
+  ZUS: {
+    ...from2024.ZUS,
+    OWNER: {
+      ...from2024.ZUS.OWNER,
+      BASIS_AMOUNT_FOR_HEALTH: 4666,
+      BIG_AMOUNT: 5203.80,
+      SMALL_AMOUNT: 1399.80,
+    },
+  },
+}
+const from2026 = {
+  ...from2025,
+  AVERAGE_SALARY: 9420,
+  LIMIT_BASIC_AMOUNT_FOR_ZUS: 282600,
+  MINIMUM_SALARY: 4806,
+  ZUS: {
+    ...from2025.ZUS,
+    OWNER: {
+      ...from2025.ZUS.OWNER,
+      BASIS_AMOUNT_FOR_HEALTH: 4806,
+      BIG_AMOUNT: 5652,
+      SMALL_AMOUNT: 1441.80,
+    },
+  },
+}
 export default {
   ACCIDENT_RATE: 1.67,
   AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD: 120000,
@@ -231,9 +282,9 @@ export default {
     CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
     SELF_EMPLOYMENT: 'selfEmployment',
   },
-  AVAILABLE_YEARS: [2021, 2022, 2023],
-  BASIC_CAPITAL_INTEREST_RATE: 13.75,
-  BASIC_LATE_INTEREST_RATE: 15.75,
+  AVAILABLE_YEARS: [2021, 2022, 2023, 2024, 2025, 2026],
+  BASIC_CAPITAL_INTEREST_RATE: 7.5,
+  BASIC_LATE_INTEREST_RATE: 9.5,
   CASH_REGISTER_LIMIT: 20000,
   COLORS: {
     CASH_REGISTER_LIMIT: '#a31718',
@@ -291,6 +342,9 @@ export default {
     2021: from2021,
     2022: from2022,
     2023: from2023,
+    2024: from2024,
+    2025: from2025,
+    2026: from2026,
   },
   POLSKI_LAD_FREE_AMOUNT_FOR_TAX: 5100 / 12,
   PPK: {

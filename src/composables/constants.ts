@@ -133,7 +133,10 @@ export const useConstants = () => {
         if(year <= 2023) {
           return 7767.85
         }
-        return 8549.18
+        if(year <= 2024) {
+          return 8549.18
+        }
+        return 9228.64
       },
       minimumWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2022) {
@@ -151,8 +154,10 @@ export const useConstants = () => {
           }
           return 4300
         }
-
-        return 4666
+        if(year <= 2025) {
+          return 4666
+        }
+        return 4806
       },
       minimumHourlyWage: (year = settingStore.dateOfLawRules.getFullYear(), monthIndex = settingStore.dateOfLawRules.getMonth()) => {
         if(year <= 2023) {
@@ -167,8 +172,10 @@ export const useConstants = () => {
           }
           return 28.1
         }
-
-        return 30.5
+        if(year <= 2025) {
+          return 30.5
+        }
+        return 31.40
       },
       projectedAverageWage: () => {
         if(settingStore.dateOfLawRules.getFullYear() <= 2023) {
@@ -177,7 +184,10 @@ export const useConstants = () => {
         if(settingStore.dateOfLawRules.getFullYear() <= 2024) {
           return 7824
         }
-        return 8673
+        if(settingStore.dateOfLawRules.getFullYear() <= 2025) {
+          return 8673
+        }
+        return 9420
       },
     }
   })
