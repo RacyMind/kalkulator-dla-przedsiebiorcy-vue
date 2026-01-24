@@ -34,12 +34,18 @@
             lazy-rules="ondemand"
             hide-bottom-space
           />
+        </div>
+      </div>
+      <div class="row items-start q-col-gutter-sm">
+        <div class="col-12 col-md-6">
           <q-toggle
             v-model="isBasicCapitalRate"
             class="q-mt-sm"
             data-testid="basic-capital-rate"
             label="Ustawowe odsetki kapitałowe"
           />
+        </div>
+        <div class="col-12 col-md-6">
           <q-toggle
             v-model="isBasicLateRate"
             class="q-mt-sm"
