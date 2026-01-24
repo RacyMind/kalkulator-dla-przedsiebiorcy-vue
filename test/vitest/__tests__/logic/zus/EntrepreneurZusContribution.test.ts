@@ -268,24 +268,46 @@ describe('the health contributions in 2025', () => {
   })
 })
 
-describe('the health contributions in 2026', () => {
+describe('the health contributions in January 2026 (still 75% from contribution year 2025)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2026, 0, 1)
+  })
+
+  it('the tax scales - minimum is 75% of 4666 = 3499.50 -> 314.96', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(900)
+  })
+
+  it('the flat tax - minimum is 75% of 4666 = 3499.50 -> 314.96', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(490)
+  })
+})
+
+describe('the health contributions from February 2026 (100% - new contribution year)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     const settingStore = useSettingStore()
     settingStore.dateOfLawRules = new Date(2026, 1, 1)
   })
 
-  it('the tax scales', () => {
+  it('the tax scales - minimum is 100% of 4806 = 4806 -> 432.54', () => {
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
-    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(324.4)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(432.54)
     expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(900)
   })
 
   it('the flat tax', () => {
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
-    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(324.4)
+    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(432.54)
     expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax, 1)).toBe(490)
   })
 

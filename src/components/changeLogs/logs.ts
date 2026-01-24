@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Aktualizacja składek ZUS na 2026 rok.</li><li>Aktualizacja odsetek ustawowych na 2026 rok.</li><li>Aktualizacja współczynnika urlopowego na 2026 rok.</li><li>Aktualizacja oprocentowania obligacji skarbowych na stan z stycznia 2026.</li></ul>',
+    publish_date: '2026-01-24',
+    version: '5.11.0',
+  },
+  {
     content: '<ul><li>Dodano moduł Obligacje skarbowe.</li></ul>',
     publish_date: '2025-03-15',
     version: '5.10.0',
