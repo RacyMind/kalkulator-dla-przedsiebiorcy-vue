@@ -33,6 +33,7 @@ const routes: RouteRecordRaw[] = [
       { component: () => import('components/realBoughtCosts/pages/Index.vue'), path: 'rzeczywisty-koszt-zakupu' },
       { component: () => import('components/polishBonds/pages/Index.vue'), path: 'obligacje-skarbowe' },
       { component: () => import('components/ikzeTaxRelief/pages/Index.vue'), path: 'ulga-podatkowa-ikze' },
+      { component: () => import('components/ikeSavings/pages/IkeSavingsPage.vue'), path: 'kalkulator-ike' },
     ],
     component: () => import('layouts/MainLayout.vue'),
     path: '/',

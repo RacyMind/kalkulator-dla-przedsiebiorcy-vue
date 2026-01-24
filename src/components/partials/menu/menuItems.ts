@@ -80,6 +80,12 @@ export default {
       title: 'Ulga podatkowa IKZE',
     } as MenuItem,
     {
+      caption: 'Moduł symuluje oszczędności na IKE z uwzględnieniem oszczędności podatkowej',
+      className: 'c-business',
+      link: '/kalkulator-ike',
+      title: 'Kalkulator IKE',
+    } as MenuItem,
+    {
       title: 'Rozliczenie z małżonkiem',
       caption: 'Moduł umożliwia obliczenie podatku dochodowego przy wspólnym rozliczeniu małżonków',
       className: 'c-business',
