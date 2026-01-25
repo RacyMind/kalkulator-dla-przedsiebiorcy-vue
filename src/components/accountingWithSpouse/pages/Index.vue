@@ -1,5 +1,5 @@
 <template>
-  <ModulePageLayout class="c-work">
+  <ModulePageLayout class="c-taxes">
     <SectionHeader>
       Wypełnij formularz
     </SectionHeader>

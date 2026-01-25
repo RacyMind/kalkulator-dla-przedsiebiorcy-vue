@@ -1,13 +1,12 @@
 <template>
-  <ModulePageLayout class="c-business">
+  <ModulePageLayout class="c-company">
     <SectionHeader>
       Wypełnij formularz
     </SectionHeader>
     <Form @submit="handleSubmit" />
     <Advert />
     <SectionHeader
-      ref="summary"
-      class="bg-primary">
+      ref="summary">
       Podsumowanie
     </SectionHeader>
     <template

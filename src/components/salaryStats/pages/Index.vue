@@ -1,5 +1,8 @@
 <template>
-  <ModulePageLayout class="c-informator">
+  <ModulePageLayout class="c-info">
+    <SectionHeader>
+      Wypełnij formularz
+    </SectionHeader>
     <FormSection
       v-if="availableDates.length > 1"
       title="Data obowiązywania przepisów"
@@ -21,6 +24,7 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import MinimumWageSummary from 'components/salaryStats/components/MinimumWageSummary.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
+import SectionHeader from 'components/partials/SectionHeader.vue'
 
 const { availableDates } = useLawRuleDate()
 

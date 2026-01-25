@@ -209,3 +209,113 @@ describe('the health contributions in 2024', () => {
     expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1258.39)
   })
 })
+
+describe('ZUS contribution basises in 2025', () => {
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2025, 0, 1)
+  })
+
+  it('1.2025', () => {
+    const { zusConstants } = useConstants()
+
+    expect(zusConstants.value.entrepreneur.basises.big).toBe(5203.80)
+    expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1399.80)
+  })
+})
+
+describe('ZUS contribution basises in 2026', () => {
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2026, 0, 1)
+  })
+
+  it('1.2026', () => {
+    const { zusConstants } = useConstants()
+
+    expect(zusConstants.value.entrepreneur.basises.big).toBe(5652)
+    expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1441.80)
+  })
+})
+
+describe('the health contributions in 2025', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2025, 1, 1)
+  })
+
+  it('the tax scales', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(900)
+  })
+
+  it('the flat tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax, 1)).toBe(490)
+  })
+
+  it('the lump sum tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(461.66)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60001)).toBe(769.43)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1384.97)
+  })
+})
+
+describe('the health contributions in January 2026 (still 75% from contribution year 2025)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2026, 0, 1)
+  })
+
+  it('the tax scales - minimum is 75% of 4666 = 3499.50 -> 314.96', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale, 0)).toBe(900)
+  })
+
+  it('the flat tax - minimum is 75% of 4666 = 3499.50 -> 314.96', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(314.96)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax, 0)).toBe(490)
+  })
+})
+
+describe('the health contributions from February 2026 (100% - new contribution year)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(2026, 1, 1)
+  })
+
+  it('the tax scales - minimum is 100% of 4806 = 4806 -> 432.54', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(432.54)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.TaxScale, 1)).toBe(900)
+  })
+
+  it('the flat tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(6410.10, EntrepreneurTaxSystem.FlatTax, 1)).toBe(432.54)
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.FlatTax, 1)).toBe(490)
+  })
+
+  it('the lump sum tax', () => {
+    const entrepreneurZusContribution = new EntrepreneurZusContribution()
+
+    expect(entrepreneurZusContribution.getHealthContribution(10000, EntrepreneurTaxSystem.LumpSumTax)).toBe(498.35)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 60001)).toBe(830.58)
+    expect(entrepreneurZusContribution.getHealthContribution(1000, EntrepreneurTaxSystem.LumpSumTax, 0, 300001)).toBe(1495.04)
+  })
+})

@@ -13,7 +13,7 @@
         <q-icon name="search" />
       </template>
     </q-input>
-    <template v-if="visibleMenuItems.business.length">
+    <template v-if="visibleMenuItems.company.length">
       <h6
         class="q-my-md"
         style="margin-left: 32px;"
@@ -21,7 +21,20 @@
         Firma
       </h6>
       <Item
-        v-for="link in visibleMenuItems.business"
+        v-for="link in visibleMenuItems.company"
+        :key="link.title"
+        v-bind="link"
+      />
+    </template>
+    <template v-if="visibleMenuItems.taxes.length">
+      <h6
+        class="q-my-md"
+        style="margin-left: 32px;"
+      >
+        Podatki i rozliczenia
+      </h6>
+      <Item
+        v-for="link in visibleMenuItems.taxes"
         :key="link.title"
         v-bind="link"
       />
@@ -39,29 +52,15 @@
         v-bind="link"
       />
     </template>
-    <template v-if="visibleMenuItems.informator.length">
+    <template v-if="visibleMenuItems.savings.length">
       <h6
         class="q-my-md"
         style="margin-left: 32px;"
       >
-        Informator
+        Oszczędzanie
       </h6>
       <Item
-        v-for="link in visibleMenuItems.informator"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
-
-    <template v-if="visibleMenuItems.percentage.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Oszczędności
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.percentage"
+        v-for="link in visibleMenuItems.savings"
         :key="link.title"
         v-bind="link"
       />
@@ -76,6 +75,20 @@
       </h6>
       <Item
         v-for="link in visibleMenuItems.currencies"
+        :key="link.title"
+        v-bind="link"
+      />
+    </template>
+
+    <template v-if="visibleMenuItems.info.length">
+      <h6
+        class="q-my-md"
+        style="margin-left: 32px;"
+      >
+        Informacje
+      </h6>
+      <Item
+        v-for="link in visibleMenuItems.info"
         :key="link.title"
         v-bind="link"
       />
