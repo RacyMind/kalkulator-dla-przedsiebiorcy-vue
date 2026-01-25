@@ -38,6 +38,10 @@ const interestRateInfo = computed(() => {
       return `${formatPercent(constants.ror.initialInterestRate)} w skali roku, w pierwszym miesięcznym okresie odsetkowym. W kolejnych miesięcznych okresach odsetkowych: stopa referencyjna NBP + ${formatPercent(constants.ror.nbpRateMargin)}`
     case 'DOR':
       return `${formatPercent(constants.dor.initialInterestRate)} w skali roku, w pierwszym miesięcznym okresie odsetkowym. W kolejnych miesięcznych okresach odsetkowych: stopa referencyjna NBP + ${formatPercent(constants.dor.nbpRateMargin)}`
+    case 'ROS':
+      return `${formatPercent(constants.ros.initialInterestRate)} w pierwszym rocznym okresie odsetkowym. W kolejnych rocznych okresach odsetkowych: inflacja + ${formatPercent(constants.ros.inflationMargin)}`
+    case 'ROD':
+      return `${formatPercent(constants.rod.initialInterestRate)} w pierwszym rocznym okresie odsetkowym. W kolejnych rocznych okresach odsetkowych: inflacja + ${formatPercent(constants.rod.inflationMargin)}`
     default:
       return 'Brak danych'
   }
@@ -57,6 +61,10 @@ const capitalizationPeriod = computed(() => {
     return 'Brak kapitalizacji'
     case 'DOR':
     return 'Brak kapitalizacji'
+    case 'ROS':
+      return '12 miesięcy'
+    case 'ROD':
+      return '12 miesięcy'
     default:
       return 'Brak danych'
   }
@@ -76,6 +84,10 @@ const interestPayment = computed(() => {
       return 'Co miesiąc'
     case 'DOR':
     return 'Co miesiąc'
+    case 'ROS':
+      return 'Po 6 latach'
+    case 'ROD':
+      return 'Po 12 latach'
     default:
       return 'Brak danych'
   }
