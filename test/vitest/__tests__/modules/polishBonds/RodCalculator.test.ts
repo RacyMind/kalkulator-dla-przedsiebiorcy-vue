@@ -10,7 +10,7 @@ describe('Calculator for ROD bonds', () => {
     boughtBondCount: 10,
     yearlyInflationRate: 0.03,
     belkaTax: true,
-    initialInterestRate: 0.0515,
+    initialInterestRate: 0.0585,
   }
 
   const getResult = (input: RodInputFields): Result => {
@@ -35,35 +35,35 @@ describe('Calculator for ROD bonds', () => {
     
     const result = getResult(input)
     
-    // Month 1 (first month of first year - fixed rate 5.15%)
-    expect(result.monthlyResults[0].interestRate).toBe(0.0515)
-    expect(result.monthlyResults[0].interest).toBe(4.29)
+    // Month 1 (first month of first year - fixed rate 5.85%)
+    expect(result.monthlyResults[0].interestRate).toBe(0.0585)
+    expect(result.monthlyResults[0].interest).toBe(4.88)
     expect(result.monthlyResults[0].taxAmount).toBe(0)
-    expect(result.monthlyResults[0].accumulatedInterest).toBe(4.29)
+    expect(result.monthlyResults[0].accumulatedInterest).toBe(4.88)
     expect(result.monthlyResults[0].accumulatedTaxAmount).toBe(0)
-    expect(result.monthlyResults[0].accumulatedProfit).toBe(4.29)
+    expect(result.monthlyResults[0].accumulatedProfit).toBe(4.88)
     expect(result.monthlyResults[0].payout).toBe(0)
     
     // Month 12 (end of first year - fixed rate)
-    expect(result.monthlyResults[11].interestRate).toBe(0.0515)
-    expect(result.monthlyResults[11].interest).toBe(4.29)
+    expect(result.monthlyResults[11].interestRate).toBe(0.0585)
+    expect(result.monthlyResults[11].interest).toBe(4.88)
     expect(result.monthlyResults[11].taxAmount).toBe(0)
-    expect(result.monthlyResults[11].accumulatedInterest).toBe(51.48)
+    expect(result.monthlyResults[11].accumulatedInterest).toBe(58.56)
     expect(result.monthlyResults[11].accumulatedTaxAmount).toBe(0)
-    expect(result.monthlyResults[11].accumulatedProfit).toBe(51.48)
+    expect(result.monthlyResults[11].accumulatedProfit).toBe(58.56)
     expect(result.monthlyResults[11].payout).toBe(0)
     
-    // Month 13 (first month of second year - inflation 3% + margin 1.75% = 4.75%)
-    expect(result.monthlyResults[12].interestRate).toBe(0.0475)
-    expect(result.monthlyResults[12].interest).toBe(4.16)
+    // Month 13 (first month of second year - inflation 3% + margin 2.50% = 5.50%)
+    expect(result.monthlyResults[12].interestRate).toBe(0.055)
+    expect(result.monthlyResults[12].interest).toBe(4.85)
     expect(result.monthlyResults[12].taxAmount).toBe(0)
-    expect(result.monthlyResults[12].accumulatedInterest).toBe(55.64)
+    expect(result.monthlyResults[12].accumulatedInterest).toBe(63.41)
     expect(result.monthlyResults[12].accumulatedTaxAmount).toBe(0)
-    expect(result.monthlyResults[12].accumulatedProfit).toBe(55.64)
+    expect(result.monthlyResults[12].accumulatedProfit).toBe(63.41)
     expect(result.monthlyResults[12].payout).toBe(0)
     
     // Month 144 (final month with principal repayment and tax application)
-    expect(result.monthlyResults[143].interestRate).toBe(0.0475)
+    expect(result.monthlyResults[143].interestRate).toBe(0.055)
     expect(result.monthlyResults[143].taxAmount).toBeGreaterThan(0)
     expect(result.monthlyResults[143].payout).toBeGreaterThan(1000)
   })
@@ -77,8 +77,8 @@ describe('Calculator for ROD bonds', () => {
     const result = getResult(input)
     
     // Month 1
-    expect(result.monthlyResults[0].interestRate).toBe(0.0515)
-    expect(result.monthlyResults[0].interest).toBe(4.29)
+    expect(result.monthlyResults[0].interestRate).toBe(0.0585)
+    expect(result.monthlyResults[0].interest).toBe(4.88)
     expect(result.monthlyResults[0].taxAmount).toBe(0)
     
     // Month 144 (final month - no tax)
@@ -96,10 +96,10 @@ describe('Calculator for ROD bonds', () => {
     const result = getResult(input)
     
     // Month 1 (first year - fixed rate)
-    expect(result.monthlyResults[0].interestRate).toBe(0.0515)
+    expect(result.monthlyResults[0].interestRate).toBe(0.0585)
     
-    // Month 13 (second year - should use max(0, -0.02) + 0.0175 = 0.0175)
-    expect(result.monthlyResults[12].interestRate).toBe(0.0175)
+    // Month 13 (second year - should use max(0, -0.02) + 0.025 = 0.025)
+    expect(result.monthlyResults[12].interestRate).toBe(0.025)
     
     // With negative inflation, real profit should be higher than nominal profit
     expect(result.monthlyResults[143].accumulatedRealProfit).toBeGreaterThan(result.monthlyResults[143].accumulatedProfit)
@@ -113,8 +113,8 @@ describe('Calculator for ROD bonds', () => {
     
     const result = getResult(input)
     
-    // Month 13 (second year - should use 0 + margin = 0.0175)
-    expect(result.monthlyResults[12].interestRate).toBe(0.0175)
+    // Month 13 (second year - should use 0 + margin = 0.025)
+    expect(result.monthlyResults[12].interestRate).toBe(0.025)
     
     // With zero inflation, real profit should equal nominal profit
     expect(result.monthlyResults[143].accumulatedRealProfit).toBe(result.monthlyResults[143].accumulatedProfit)
