@@ -1,13 +1,14 @@
 {
   "name": "kalkulator-finansowy",
-  "version": "5.9.0",
+  "version": "5.11.0",
   "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
-  "productName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2025",
+  "productName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2026",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
   "scripts": {
     "start": "quasar dev -m pwa",
     "build": "quasar build -m pwa",
+    "build:android": "quasar build -m capacitor -T android",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint-fix": "eslint --fix --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
