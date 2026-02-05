@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 
 import { defineConfig } from 'vitest/config'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'

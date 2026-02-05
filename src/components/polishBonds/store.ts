@@ -4,13 +4,13 @@ import { DorInputFields } from './interfaces/DorInputFields'
 import { EdoInputFields } from './interfaces/EdoInputFields'
 import { OtsInputFields } from './interfaces/OtsInputFields'
 import { Result } from './interfaces/Result'
-import { Result } from './interfaces/Result'
+import { RodInputFields } from './interfaces/RodInputFields'
 import { RorInputFields } from './interfaces/RorInputFields'
+import { RosInputFields } from './interfaces/RosInputFields'
 import { TosInputFields } from './interfaces/TosInputFields'
 import { defineStore } from 'pinia'
-import { defineStore } from 'pinia'
 
-export type BondType = 'COI' | 'DOR' | 'EDO' | 'OTS' | 'ROR' | 'TOS'
+export type BondType = 'COI' | 'DOR' | 'EDO' | 'OTS' | 'ROD' | 'ROR' | 'ROS' | 'TOS'
 
 export interface PolishBondsState {
   result: Result | null
@@ -20,7 +20,9 @@ export interface PolishBondsState {
   dorInputFields: DorInputFields | null
   edoInputFields: EdoInputFields | null
   otsInputFields: OtsInputFields | null
+  rodInputFields: RodInputFields | null
   rorInputFields: RorInputFields | null
+  rosInputFields: RosInputFields | null
   tosInputFields: TosInputFields | null
 }
 
@@ -35,5 +37,7 @@ export const usePolishBondsStore = defineStore('polishBonds', {
     otsInputFields: null,
     rorInputFields: null,
     dorInputFields: null,
+    rosInputFields: null,
+    rodInputFields: null,
   }),
 })

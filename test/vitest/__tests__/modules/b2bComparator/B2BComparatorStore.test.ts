@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
 import {useB2BComparatorStore} from 'components/b2bComparator/store'
-import {useSettingStore} from 'stores/settingStore'
 import {useConstants} from 'src/composables/constants'
+import {useSettingStore} from 'stores/settingStore'
 
 import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'

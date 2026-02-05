@@ -28,5 +28,13 @@ export const useBondConstants =() => {
       initialInterestRate: 0.056,
       inflationMargin: 0.02,
     },
+    ros: {
+      initialInterestRate: 0.052,
+      inflationMargin: 0.02,
+    },
+    rod: {
+      initialInterestRate: 0.0585,
+      inflationMargin: 0.025,
+    },
   }
 }
