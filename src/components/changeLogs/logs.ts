@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li></ul>',
+    content: '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej wraz z odliczeniem urlopu/zwolnienia w module Samozatrudnienie (B2B).</li></ul>',
     publish_date: '2026-01-25',
     version: '5.12.0',
   },
