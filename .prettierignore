@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+.quasar/
+src-capacitor/
+src-cordova/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

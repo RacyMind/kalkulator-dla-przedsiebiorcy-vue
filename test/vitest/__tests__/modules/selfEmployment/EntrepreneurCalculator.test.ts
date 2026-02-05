@@ -1,9 +1,16 @@
 import {EntrepreneurCalculator} from 'components/selfEmployment/logic/EntrepreneurCalculator'
 import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
-import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
+import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
+import {FlatTax} from 'src/logic/taxes/FlatTax'
+import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
+import {IncomeMode, InputFields} from 'components/selfEmployment/interfaces/InputFields'
+import {LumpSumTax, LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
+import {TaxScale} from 'src/logic/taxes/TaxScale'
 import {beforeEach, describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
+import {getHourlyRevenue} from 'components/selfEmployment/logic/helpers'
 import {useSettingStore} from 'stores/settingStore'
+import helpers from 'src/logic/helpers'
 
 setActivePinia(createPinia())
 
@@ -477,6 +484,172 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
         expect(result.income).toBe(7155.36)
       })
     })
+  })
+})
+
+describe('Entrepreneur Calculator of Self employment on 1.01.2026', () => {
+  const staticYear = 2026
+
+  beforeEach(() => {
+    const settingStore = useSettingStore()
+    settingStore.dateOfLawRules = new Date(staticYear, 0, 1)
+  })
+
+  const getExpectedResult = (input: InputFields) => {
+    const zus = new EntrepreneurZusContribution()
+    let expensesToReduceTaxBasis = 0
+    const revenueOverTaxReliefLimit = new HasTaxReliefLimit().geRevenueOverTaxReliefLimit(input.revenue, 0, input.hasTaxRelief)
+
+    if (input.taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
+      expensesToReduceTaxBasis = helpers.round(input.expenses + input.lossFromPreviousMonth, 2)
+    }
+
+    let contributionBasis = 0
+    let accidentContribution = 0
+    let pensionContribution = 0
+    let disabilityContribution = 0
+    let sickContribution = 0
+    let fpAndFsContribution = 0
+
+    if (!input.hasEmploymentContract) {
+      contributionBasis = zus.getContributionBasisWithinLimit(input.contributionBasis, 0)
+      pensionContribution = zus.gePensionContribution(contributionBasis)
+      disabilityContribution = zus.geDisabilityContribution(contributionBasis)
+
+      if (input.isSickContribution) {
+        sickContribution = zus.getSickContribution(input.contributionBasis)
+      }
+      if (input.isFpContribution) {
+        fpAndFsContribution = zus.getFPandFSPContribution(input.contributionBasis)
+      }
+      if (input.accidentContributionRate) {
+        accidentContribution = zus.getAccidentContribution(input.contributionBasis, input.accidentContributionRate)
+      }
+    }
+
+    expensesToReduceTaxBasis = helpers.round(
+      expensesToReduceTaxBasis + disabilityContribution + pensionContribution + sickContribution + accidentContribution,
+      2,
+    )
+
+    if (input.taxSystem !== EntrepreneurTaxSystem.LumpSumTax) {
+      expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + fpAndFsContribution, 2)
+    }
+
+    let healthContributionBasis = helpers.round(input.revenue - expensesToReduceTaxBasis, 2)
+
+    if (healthContributionBasis < 0) {
+      healthContributionBasis = 0
+    }
+
+    const healthContribution = input.businessIsRunning ? zus.getHealthContribution(
+      input.previousMonthHealthContributionBasis,
+      input.taxSystem,
+      input.monthIndex,
+      input.yearlyIncome,
+    ) : 0
+
+    const zusContributions = helpers.round(
+      disabilityContribution + pensionContribution + sickContribution + accidentContribution + fpAndFsContribution + healthContribution,
+      2,
+    )
+
+    const deductibleHealthContribution = zus.getDeductibleHealthContribution(healthContribution, input.taxSystem, 0)
+    expensesToReduceTaxBasis = helpers.round(expensesToReduceTaxBasis + deductibleHealthContribution, 2)
+
+    let taxBasis = revenueOverTaxReliefLimit <= 0 && input.hasTaxRelief
+      ? 0
+      : helpers.round(revenueOverTaxReliefLimit - expensesToReduceTaxBasis)
+    const deductibleExpenses = input.taxSystem !== EntrepreneurTaxSystem.LumpSumTax && taxBasis < 0 ? Math.abs(taxBasis) : 0
+    taxBasis = taxBasis < 0 ? 0 : taxBasis
+
+    let taxAmount: number
+
+    switch (input.taxSystem) {
+      case EntrepreneurTaxSystem.TaxScale:
+        const taxScale = new TaxScale()
+        taxAmount = taxScale.getIncomeTax(taxBasis, 0, 0)
+
+        if (input.hasTaxFreeAmount) {
+          const taxFreeAmount = taxScale.getTaxFreeAmount(taxAmount, 0)
+          taxAmount -= taxFreeAmount
+        }
+        break
+      case EntrepreneurTaxSystem.FlatTax:
+        taxAmount = new FlatTax().getIncomeTax(taxBasis)
+        break
+      case EntrepreneurTaxSystem.LumpSumTax:
+        taxAmount = new LumpSumTax().getIncomeTax(taxBasis, input.lumpSumTaxRate as LumpSumTaxRate)
+        break
+    }
+
+    const income = helpers.round(input.revenue - input.expenses - zusContributions - taxAmount, 2)
+
+    return {
+      revenue: input.revenue,
+      expenses: input.expenses,
+      income,
+      taxBasis,
+      deductibleExpenses,
+      taxAmount,
+      accidentContribution,
+      healthContributionBasis,
+      healthContribution,
+      sickContribution,
+      pensionContribution,
+      disabilityContribution,
+      fpAndFsContribution,
+    }
+  }
+
+  const getHourlyInput = (revenue: number, leaveHours: number, deductLeave = true): InputFields => {
+    const { zusConstants } = useConstants()
+    return {
+      revenue,
+      incomeMode: IncomeMode.HourlyRate,
+      hourlyRate: 120,
+      plannedHours: 160,
+      deductLeave,
+      leaveHours,
+      expenses: 0,
+      lossFromPreviousMonth: 0,
+      taxSystem: EntrepreneurTaxSystem.TaxScale,
+      monthIndex: 0,
+      previousMonthHealthContributionBasis: 10000,
+      accidentContributionRate: 0.0167,
+      isFpContribution: true,
+      isSickContribution: true,
+      hasTaxFreeAmount: false,
+      hasTaxRelief: false,
+      yearlyIncome: 0,
+      hasEmploymentContract: false,
+      contributionBasis: zusConstants.value.entrepreneur.basises.big,
+      businessIsRunning: true,
+    }
+  }
+
+  it('hourly mode with leave reduces revenue', () => {
+    const revenue = getHourlyRevenue(120, 160, 24)
+    const input = getHourlyInput(revenue, 24)
+    const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
+
+    expect(result).toEqual(getExpectedResult(input))
+  })
+
+  it('hourly mode with leave >= planned hours yields zero revenue', () => {
+    const revenue = getHourlyRevenue(120, 160, 200)
+    const input = getHourlyInput(revenue, 200)
+    const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
+
+    expect(result).toEqual(getExpectedResult(input))
+  })
+
+  it('hourly mode without leave uses planned hours only', () => {
+    const revenue = getHourlyRevenue(120, 160, 0)
+    const input = getHourlyInput(revenue, 0, false)
+    const result = new EntrepreneurCalculator().setInputData(input).calculate().getResult()
+
+    expect(result).toEqual(getExpectedResult(input))
   })
 })
 
