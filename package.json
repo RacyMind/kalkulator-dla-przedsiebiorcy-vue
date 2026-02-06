@@ -5,6 +5,7 @@
   "productName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2026",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "quasar dev -m pwa",
     "build": "quasar build -m pwa",
@@ -26,13 +27,15 @@
     "date-fns": "^2.17.0",
     "pinia": "^2.3.1",
     "quasar": "^2.18.6",
+    "register-service-worker": "^1.7.2",
     "vue": "^3.5.27",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.11.0",
+    "@quasar/app-vite": "^2.4.0",
     "@quasar/quasar-app-extension-testing": "^2.2.0",
     "@quasar/quasar-app-extension-testing-unit-vitest": "^1.2.4",
+    "@quasar/vite-plugin": "^1.10.0",
     "@testing-library/vue": "^6.6.1",
     "@types/node": "^20.17.24",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
@@ -46,7 +49,7 @@
     "eslint-plugin-vue": "^8.5.0",
     "prettier": "^2.5.1",
     "sass": "^1.97.3",
-    "typescript": "^4.5.4",
+    "typescript": "^5.9.3",
     "vitest": "^2.1.9",
     "workbox-build": "^6.5.3",
     "workbox-cacheable-response": "^6.5.3",
