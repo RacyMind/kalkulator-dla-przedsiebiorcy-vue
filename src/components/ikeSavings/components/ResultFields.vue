@@ -10,46 +10,46 @@
     </q-banner>
 
     <div class="text-h6 q-mb-sm">Okres oszczędzania</div>
-    <list-row>
+    <ListRow>
       <template #name>Okres oszczędzania</template>
       <template #value>{{ props.result.savingsPeriodYears }} lat</template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>Roczna wpłata</template>
       <template #value>{{ pln(props.result.yearlyContribution) }}</template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>Suma wpłat</template>
       <template #value>{{ pln(props.result.totalContributions) }}</template>
-    </list-row>
+    </ListRow>
 
     <q-separator class="q-my-md" />
 
     <div class="text-h6 q-mb-sm">Przewidywany kapitał</div>
-    <list-row highlight>
+    <ListRow highlight>
       <template #name>Przewidywany kapitał</template>
       <template #value>{{ pln(props.result.finalCapital) }}</template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>Zysk z inwestycji</template>
       <template #value>{{ pln(props.result.investmentGain) }}</template>
-    </list-row>
+    </ListRow>
 
     <q-separator class="q-my-md" />
 
     <div class="text-h6 q-mb-sm">Oszczędność podatkowa</div>
-    <list-row highlight>
+    <ListRow highlight>
       <template #name>Oszczędność podatkowa IKE (podatek Belki 19%)</template>
       <template #value>{{ pln(props.result.taxSaving) }}</template>
-    </list-row>
+    </ListRow>
 
     <q-separator class="q-my-md" />
 
     <div class="text-h6 q-mb-sm">Emerytura</div>
-    <list-row highlight>
+    <ListRow highlight>
       <template #name>Średnia miesięczna emerytura</template>
       <template #value>{{ pln(props.result.monthlyPension) }}</template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

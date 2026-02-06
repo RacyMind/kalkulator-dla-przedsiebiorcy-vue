@@ -11,15 +11,15 @@
     </SectionHeader>
     <template
       v-if="store.taxScaleResult && store.flatTaxResult && store.lumpSUmTaxResult">
-      <list-header>Skala podatkowa</list-header>
+      <ListHeader>Skala podatkowa</ListHeader>
       <ResultList
         :result="store.taxScaleResult.annualResult" />
       <Separator />
-      <list-header>Podatek liniowy</list-header>
+      <ListHeader>Podatek liniowy</ListHeader>
       <ResultList
         :result="store.flatTaxResult.annualResult" />
       <Separator />
-      <list-header>Podatek zryczałtowany</list-header>
+      <ListHeader>Podatek zryczałtowany</ListHeader>
       <ResultList
         :result="store.lumpSUmTaxResult.annualResult" />
       <Separator />

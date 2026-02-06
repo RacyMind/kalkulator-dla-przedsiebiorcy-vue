@@ -1,37 +1,37 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Podstawa wymiaru świadczenia
       </template>
       <template #value>
         {{ pln(props.result.basicAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Współczynnik urlopowy
       </template>
       <template #value>
         {{ props.result.holidayRate }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Współczynnik proporcjonalny
       </template>
       <template #value>
         {{ props.result.proportionalRate }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Ekwiwalent
       </template>
       <template #value>
         {{ pln(props.result.equivalent)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

@@ -1,45 +1,45 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Wynagrodzenie brutto
       </template>
       <template #value>
         {{ pln(props.result.grossAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Koszty uzyskania przychodu
       </template>
       <template #value>
         {{ pln(props.result.expenses)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania
       </template>
       <template #value>
         {{ pln(props.result.taxBasis)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Zaliczka na podatek dochodowy
       </template>
       <template #value>
         {{ pln(props.result.taxAmount)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Wynagrodzenie netto
       </template>
       <template #value>
         {{ pln(props.result.netAmount)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

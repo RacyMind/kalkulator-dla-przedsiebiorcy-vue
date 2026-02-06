@@ -1,61 +1,61 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Roczny przychód brutto
       </template>
       <template #value>
         {{ pln(props.result.grossRevenue) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Przychód do opodatkowania
       </template>
       <template #value>
         {{ pln(props.result.taxableRevenue) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek ryczałtowy
       </template>
       <template #value>
         {{ pln(props.result.tax) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Roczne koszty utrzymania
       </template>
       <template #value>
         {{ pln(props.result.annualExpenses) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Zysk netto
       </template>
       <template #value>
         {{ pln(props.result.netProfit) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Efektywna stawka podatku
       </template>
       <template #value>
         {{ props.result.effectiveTaxRate }}%
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Miesięczny zysk netto
       </template>
       <template #value>
         {{ pln(monthlyNetProfit) }}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

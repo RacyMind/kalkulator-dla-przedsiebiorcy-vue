@@ -90,6 +90,6 @@ export class TaxScale {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface TaxScale extends HasTaxReliefLimit {}
 helpers.applyMixins(TaxScale, [HasTaxReliefLimit])

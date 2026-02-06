@@ -1,22 +1,22 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Przychód
       </template>
       <template #value>
         {{ pln(result.revenue)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Koszty
       </template>
       <template #value>
         {{ pln(result.expenses)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         <div class="row items-center">
           Zaliczka na podatek dochodowy
@@ -25,31 +25,31 @@
       <template #value>
         {{ pln(result.taxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka zdrowotna
       </template>
       <template #value>
         {{ pln(result.healthContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Pozostałe składki ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Dochód
       </template>
       <template #value>
         {{ pln(result.income)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

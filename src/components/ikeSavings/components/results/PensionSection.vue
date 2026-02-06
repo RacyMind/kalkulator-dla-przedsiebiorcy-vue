@@ -1,9 +1,9 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>Miesięczna wypłata na emeryturze</template>
       <template #value>{{ pln(props.result.monthlyPension) }}</template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

@@ -6,22 +6,22 @@
       Minimalna pensja
     </SectionHeader>
     <div>
-      <list-row>
+      <ListRow>
         <template #name>
           styczeń - czerwiec
         </template>
         <template #value>
           {{ pln(wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), 0))}}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           lipiec - grudzień
         </template>
         <template #value>
           {{ pln(wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), 6))}}
         </template>
-      </list-row>
+      </ListRow>
     </div>
     <Separator />
 
@@ -31,22 +31,22 @@
       Minimalna stawka za godzinę
     </SectionHeader>
     <div>
-      <list-row>
+      <ListRow>
         <template #name>
           styczeń - czerwiec
         </template>
         <template #value>
           {{ pln(wageStats.minimumHourlyWage(settingStore.dateOfLawRules.getFullYear(), 0))}}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           lipiec - grudzień
         </template>
         <template #value>
           {{ pln(wageStats.minimumHourlyWage(settingStore.dateOfLawRules.getFullYear(), 6))}}
         </template>
-      </list-row>
+      </ListRow>
     </div>
   </div>
 </template>

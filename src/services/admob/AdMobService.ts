@@ -36,7 +36,7 @@ export class AdMobService {
       this.state.isInitialized = true
       this.state.isBannerVisible = true
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('[AdMobService] Initialization failed:', error)
     }
   }
@@ -50,7 +50,7 @@ export class AdMobService {
       await AdMob.resumeBanner()
       this.state.isBannerVisible = true
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('[AdMobService] resumeBanner failed:', error)
     }
   }
@@ -64,7 +64,7 @@ export class AdMobService {
       await AdMob.hideBanner()
       this.state.isBannerVisible = false
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error('[AdMobService] hideBanner failed:', error)
     }
   }
@@ -80,7 +80,7 @@ export class AdMobService {
 
     AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: { code: number; message: string }) => {
       this.state.lastError = { code: error.code, message: error.message }
-      // eslint-disable-next-line no-console
+       
       console.error('[AdMobService] Banner failed to load:', error.code, error.message)
     })
 

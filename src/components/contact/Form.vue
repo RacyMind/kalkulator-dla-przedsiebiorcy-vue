@@ -80,8 +80,6 @@ import Separator from 'components/partials/Separator.vue'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 
-// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
-
 export default defineComponent({
   components: {
     FormSection,
