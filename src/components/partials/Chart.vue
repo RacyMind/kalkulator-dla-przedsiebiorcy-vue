@@ -1,59 +1,67 @@
 <template>
-  <Vue3ChartJs
-    ref="chartRef"
-    :type="type"
-    :data="chart.data"
-    :options="chart.options"
+  <component
+    :is="chartComponent"
+    :data="chartData"
+    :options="mergedOptions"
     :width="400"
   />
 </template>
-<script lang="ts">
+<script lang="ts" setup>
+import {computed} from 'vue'
+import {Pie, Bar, Line, Doughnut} from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Filler,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from 'chart.js'
 
-import {defineComponent, ref, watch} from 'vue'
-import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
-export default defineComponent({
-  components: {
-    Vue3ChartJs,
+ChartJS.register(
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Filler,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+)
+
+const props = defineProps({
+  chartData: {
+    required: true,
+    type: Object,
   },
-  props: {
-    chartData: {
-      required: true,
-      type: Object,
-    },
-    chartOptions: {
-      required: false,
-      type: Object,
-    },
-    type: {
-      required: true,
-      type: String,
-    },
+  chartOptions: {
+    required: false,
+    type: Object,
   },
-  setup (props) {
-    const chartRef = ref<Vue3ChartJs>(null)
-
-    const chart = {
-      data: {
-        ...props.chartData,
-        labels: [...props.chartData.labels],
-      },
-      options: {
-        ...props.chartOptions,
-        plugins: {},
-      },
-    }
-
-
-    watch(props, async () => {
-      chart.data.datasets[0].data = [...props.chartData.datasets[0].data]
-      chart.data.labels = [...props.chartData.labels]
-      chartRef.value.update(1)
-    }, {deep: true})
-
-    return {
-      chart,
-      chartRef,
-    }
+  type: {
+    required: true,
+    type: String,
   },
 })
+
+const chartComponentMap: Record<string, any> = {
+  pie: Pie,
+  bar: Bar,
+  line: Line,
+  doughnut: Doughnut,
+}
+
+const chartComponent = computed(() => chartComponentMap[props.type] || Bar)
+
+const mergedOptions = computed(() => ({
+  ...props.chartOptions,
+  plugins: {},
+}))
 </script>
