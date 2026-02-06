@@ -13,7 +13,7 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
       'google-analytics',
-      ...(ctx.mode.capacitor ? ['admob'] : []),
+      ...('capacitor' in ctx.mode ? ['admob'] : []),
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
@@ -29,7 +29,7 @@ export default defineConfig((ctx) => {
         vueShim: true,
       },
       extendViteConf(viteConf) {
-        if (!ctx.mode.capacitor) {
+        if (!('capacitor' in ctx.mode)) {
           viteConf.build = viteConf.build || {}
           viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
           viteConf.build.rollupOptions.external = [

@@ -84,9 +84,9 @@
 
 ### Step 3c: Build verification
 
-- [ ] T030 [US2] Run `npx quasar build -m pwa` — verify PWA build succeeds
-- [ ] T031 [US2] Run `npx quasar build -m capacitor -T android` — verify Capacitor build succeeds
-- [ ] T032 [US2] Commit: "chore: verify builds pass after app-vite v2 migration" (if any fixes were needed)
+- [x] T030 [US2] Run `npx quasar build -m pwa` — PWA build succeeds (required Capacitor externalization fix)
+- [ ] T031 [US2] Run `npx quasar build -m capacitor -T android` — deferred (requires Android SDK, manual verification)
+- [x] T032 [US2] Commit: "fix: conditionally load admob, externalize Capacitor for non-Capacitor builds"
 
 **Checkpoint**: Build tools migrated, all builds succeed, all tests pass
 
@@ -99,11 +99,11 @@
 
 ### Step 4a: TypeScript 5.x (without strict)
 
-- [ ] T033 [US3] Update `typescript` from `^4.5.4` to latest 5.x in `package.json`
-- [ ] T034 [US3] Run `npm install`
-- [ ] T035 [US3] Fix any immediate TS 5.x compilation errors in `src/**/*.ts` and `src/**/*.vue`
-- [ ] T036 [US3] Run `npx vitest run` — all tests must pass
-- [ ] T037 [US3] Commit: "chore: upgrade TypeScript to 5.x"
+- [x] T033 [US3] TypeScript already updated to 5.9.3 during app-vite v2 migration (peer dep)
+- [x] T034 [US3] npm install completed
+- [x] T035 [US3] No immediate TS 5.x compilation errors
+- [x] T036 [US3] `npx vitest run` — 410/410 tests pass
+- [x] T037 [US3] Included in app-vite v2 commit
 
 ### Step 4b: TypeScript strict mode
 

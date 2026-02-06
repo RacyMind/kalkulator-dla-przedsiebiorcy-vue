@@ -1,8 +1,21 @@
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
 import { scroll } from 'quasar'
 import constants from 'src/logic/constants'
+
+interface MonthlyEmployeeResult {
+  basisForRentAndPensionContributions: number
+  basisForTax: number
+  contributionTotal: number
+  disabilityContribution: number
+  expenses: number
+  grossAmount: number
+  healthContribution: number
+  netAmount: number
+  pensionContribution: number
+  ppkContribution: number
+  sickContribution: number
+  taxAmount: number
+}
 
 /**
  * Scrolls to the element
@@ -50,7 +63,7 @@ function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeT
   }, 0)
 }
 
-function  sumMonthlyResults(monthlyResults:ContractOfEmploymentEmployeeSingleResult[]|ContractOfMandateEmployeeSingleResult[]) {
+function  sumMonthlyResults(monthlyResults:MonthlyEmployeeResult[]) {
   return {
     basisForRentAndPensionContributions: round(monthlyResults.map(result => result.basisForRentAndPensionContributions)
       .reduce((current, sum) => current + sum, 0), 2),
