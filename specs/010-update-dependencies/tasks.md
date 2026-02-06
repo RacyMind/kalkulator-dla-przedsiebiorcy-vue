@@ -61,26 +61,26 @@
 
 ### Step 3a: app-vite v2 + config migration
 
-- [ ] T013 [US2] Update `@quasar/app-vite` from `^1.11.0` to latest v2.x in `package.json`
-- [ ] T014 [US2] Run `npm install` and resolve peer dependency conflicts
-- [ ] T015 [US2] Rename `quasar.config.js` → `quasar.config.ts`
-- [ ] T016 [US2] Convert `quasar.config.ts` from CJS to ESM: replace `require('quasar/wrappers')` with `import { defineConfig } from '#q-app/wrappers'` and `module.exports = configure(...)` with `export default defineConfig(...)`
-- [ ] T017 [US2] Update all config sections in `quasar.config.ts` per app-vite v2 API (boot, build, framework, pwa, capacitor, eslint, etc.)
-- [ ] T018 [US2] Verify boot files compatibility: check `src/boot/google-analytics.ts` and `src/boot/admob.ts` work with v2
-- [ ] T019 [US2] Verify PWA config in `quasar.config.ts`: `workboxMode`, `workboxOptions` (skipWaiting, clientsClaim)
-- [ ] T020 [US2] Verify Capacitor config in `quasar.config.ts`: `hideSplashscreen`
-- [ ] T021 [US2] Run `npx quasar dev` — verify app starts
-- [ ] T022 [US2] Run `npx vitest run` — all tests must pass
-- [ ] T023 [US2] Commit: "chore: migrate @quasar/app-vite to v2, convert quasar.config to TS"
+- [x] T013 [US2] Update `@quasar/app-vite` from `^1.11.0` to v2.4.0 in `package.json` (required TS 5.x first)
+- [x] T014 [US2] Run `npm install` and resolve peer dependency conflicts
+- [x] T015 [US2] Rename `quasar.config.js` → `quasar.config.ts`
+- [x] T016 [US2] Convert `quasar.config.ts` from CJS to ESM
+- [x] T017 [US2] Update all config sections per app-vite v2 API (PWA workboxMode casing, build.typescript, tsconfig extends .quasar/)
+- [x] T018 [US2] Verify boot files compatibility (admob error is pre-existing Capacitor-only issue)
+- [x] T019 [US2] Verify PWA config: workboxMode → GenerateSW, workboxOptions preserved
+- [x] T020 [US2] Verify Capacitor config: hideSplashscreen preserved
+- [x] T021 [US2] Run `npx quasar dev` — app starts on localhost:9001
+- [x] T022 [US2] Run `npx vitest run` — 410/410 tests pass
+- [x] T023 [US2] Commit: "chore: migrate @quasar/app-vite to v2, TypeScript to 5.9.3, convert configs to ESM"
 
 ### Step 3b: Testing extensions
 
-- [ ] T024 [US2] Update `@quasar/quasar-app-extension-testing` to latest in `package.json`
-- [ ] T025 [US2] Update `@quasar/quasar-app-extension-testing-unit-vitest` to latest in `package.json`
-- [ ] T026 [US2] Run `npm install` and resolve conflicts
-- [ ] T027 [US2] Update `vitest.config.ts` if needed: check `@quasar/vite-plugin` import path, `@vitejs/plugin-vue` compatibility
-- [ ] T028 [US2] Run `npx vitest run` — all tests must pass
-- [ ] T029 [US2] Commit: "chore: update Quasar testing extensions for app-vite v2"
+- [x] T024 [US2] `@quasar/quasar-app-extension-testing` already at latest (2.2.0)
+- [x] T025 [US2] `@quasar/quasar-app-extension-testing-unit-vitest` already at latest (1.2.4)
+- [x] T026 [US2] No conflicts to resolve
+- [x] T027 [US2] Installed `@quasar/vite-plugin` separately (nested in app-vite v2)
+- [x] T028 [US2] `npx vitest run` — 410/410 tests pass
+- [x] T029 [US2] Included in previous commit
 
 ### Step 3c: Build verification
 
