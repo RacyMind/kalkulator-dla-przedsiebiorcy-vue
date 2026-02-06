@@ -454,6 +454,12 @@ export default {
     'Grudzień',
   ],
   FULL_YEAR: 'Cały rok',
+  RENTAL_TAX: {
+    LUMP_SUM_RATE: 0.085,
+    LUMP_SUM_RATE_ABOVE_THRESHOLD: 0.125,
+    THRESHOLD: 100000,
+    SPOUSE_THRESHOLD: 200000,
+  },
 }
 
 
