@@ -1,11 +1,6 @@
 export default [
   {
-    content: '<ul><li>Dodano moduł Kalkulator zysku z najmu — obliczanie podatku ryczałtowego (8,5%/12,5%), projekcja wieloletnia z waloryzacją czynszu, opcja rozliczenia małżonków i pustostanów.</li></ul>',
-    publish_date: '2026-02-06',
-    version: '5.13.0',
-  },
-  {
-    content: '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej wraz z odliczeniem urlopu/zwolnienia w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja i Siła nabywcza pieniądza pobiera teraz dane automatycznie z publicznego API Eurostat/ECB (HICP). Dane nie wymagają już ręcznej aktualizacji.</li></ul>',
+    content: '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej wraz z odliczeniem urlopu/zwolnienia w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja i Siła nabywcza pieniądza pobiera teraz dane automatycznie z publicznego API Eurostat/ECB (HICP). Dane nie wymagają już ręcznej aktualizacji.</li><li>Dodano moduł Kalkulator zysku z najmu.</li></ul>',
     publish_date: '2026-01-25',
     version: '5.12.0',
   },
