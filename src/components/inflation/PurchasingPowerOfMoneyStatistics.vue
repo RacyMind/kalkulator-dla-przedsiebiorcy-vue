@@ -43,8 +43,8 @@
       Wykres pokazuje zmianę siły nabywczej pieniądza w odniesieniu do kwoty bazowej.<br><br>
       Źródło danych: <a
         class="text-grey"
-        href="https://stat.gov.pl/obszary-tematyczne/ceny-handel/wskazniki-cen/wskazniki-cen-towarow-i-uslug-konsumpcyjnych-pot-inflacja-/miesieczne-wskazniki-cen-towarow-i-uslug-konsumpcyjnych-od-1982-roku/"
-        target="_blank">GUS</a>
+        href="https://data.ecb.europa.eu/data/datasets/ICP/ICP.M.PL.N.000000.4.ANR"
+        target="_blank">Eurostat/ECB</a>
     </p>
   </div>
 </template>
