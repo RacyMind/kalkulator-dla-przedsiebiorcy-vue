@@ -1,8 +1,8 @@
 import {InputFields} from 'components/rentalProfit/interfaces/InputFields'
 import {RentalProfitCalculator} from 'components/rentalProfit/logic/RentalProfitCalculator'
 import {Result} from 'components/rentalProfit/interfaces/Result'
-import {describe, expect, it} from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
+import {describe, expect, it} from 'vitest'
 
 setActivePinia(createPinia())
 

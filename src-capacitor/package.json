@@ -5,6 +5,7 @@
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
   "dependencies": {
+    "@capacitor-community/admob": "^6.2.0",
     "@capacitor/android": "^6.2.1",
     "@capacitor/app": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
