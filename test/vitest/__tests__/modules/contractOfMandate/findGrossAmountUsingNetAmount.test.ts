@@ -19,6 +19,7 @@ describe('Find the gross amount using net amount on 1.11.2023', () => {
     grossAmount: 1000,
     isDisabilityContribution: true,
     isFpContribution: true,
+    isFgspContribution: true,
     partTaxReducingAmount: 12,
     isHealthContribution: true,
     isPensionContribution: true,

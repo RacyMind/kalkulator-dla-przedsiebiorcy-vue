@@ -1,22 +1,22 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Łączny przychód
       </template>
       <template #value>
         {{ pln(result.revenue)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania
       </template>
       <template #value>
         {{ pln(result.taxBasis)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         <div class="row items-center">
           Podatek dochodowy
@@ -25,23 +25,23 @@
       <template #value>
         {{ pln(result.taxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Łączne składki ZUS i PPK
       </template>
       <template #value>
         {{ pln(result.totalContributions) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Łączny dochód
       </template>
       <template #value>
         {{ pln(result.income)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
-  <tooltip
+  <Tooltip
     color="orange"
     icon="warning">
     Przekroczono próg podatkowy, który wynosi {{pln(incomeTaxConstants.taxScale.taxThreshold)}}. Dla kwoty powyżej progu odprowadzany jest {{ incomeTaxConstants.taxScale.taxRates.second * 100}}% podatek.
-  </tooltip>
+  </Tooltip>
 </template>
 
 <script setup lang="ts">

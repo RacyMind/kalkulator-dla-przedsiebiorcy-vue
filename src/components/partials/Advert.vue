@@ -7,16 +7,20 @@
   </div>
 </template>
 <script lang="ts" setup>
+import {onMounted, ref} from 'vue'
 import Donate from 'components/partials/adrverts/Donate.vue'
 import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
 
-let isNativePlatform = false
-try {
-  const { Capacitor } = await import('@capacitor/core')
-  isNativePlatform = Capacitor.isNativePlatform()
-} catch {
-  isNativePlatform = false
-}
+const isNativePlatform = ref(false)
+
+onMounted(async () => {
+  try {
+    const { Capacitor } = await import('@capacitor/core')
+    isNativePlatform.value = Capacitor.isNativePlatform()
+  } catch {
+    isNativePlatform.value = false
+  }
+})
 
 const isTaxDonationTimeFrame = () => {
   const month = new Date().getMonth()

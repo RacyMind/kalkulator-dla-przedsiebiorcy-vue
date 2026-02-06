@@ -1,29 +1,29 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Podstawa wymiaru świadczenia
       </template>
       <template #value>
         {{ pln(props.result.basicAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Liczba dni
       </template>
       <template #value>
         {{ props.result.dayCount }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Zasiłek chorobowy
       </template>
       <template #value>
         {{ pln(props.result.sickPayAmount)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

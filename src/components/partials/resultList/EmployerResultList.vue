@@ -1,88 +1,88 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Wynagrodzenie brutto
       </template>
       <template #value>
         {{ pln(result.grossAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składki ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions) }}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka emerytalna
       </template>
       <template #value>
         {{ pln(result.pensionContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka rentowa
       </template>
       <template #value>
         {{ pln(result.disabilityContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka wypadkowa
       </template>
       <template #value>
         {{ pln(result.accidentContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka na Fundusz Pracy
       </template>
       <template #value>
         {{ pln(result.fpContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka na FGŚP
       </template>
       <template #value>
         {{ pln(result.fgspContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka na Fundusz Solidarnościowy
-        <tooltip>
+        <Tooltip>
           Do składek na Fundusz Solidarnościowy stosuje się zasady dotyczące obowiązkowych składek na Fundusz Pracy. Do 21 grudnia 2019 r. fundusz ten nosił nazwę Solidarnościowy Fundusz Wsparcia Osób Niepełnosprawnych.
-        </tooltip>
+        </Tooltip>
       </template>
       <template #value>
         {{ pln(result.fsContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka na PPK
       </template>
       <template #value>
         {{ pln(result.ppkContribution)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Suma kosztów pracodawcy
       </template>
       <template #value>
         {{ pln(result.totalAmount) }}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

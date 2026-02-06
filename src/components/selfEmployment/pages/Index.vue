@@ -5,7 +5,7 @@
     </SectionHeader>
     <Form @submit="handleSubmit" />
     <Advert />
-    <q-tabs
+    <QTabs
       ref="qtabs"
       v-model="tab"
       inline-label
@@ -18,7 +18,7 @@
       <q-tab
         :name="Tabs.EachMonth"
         label="Poszczególne miesiące" />
-    </q-tabs>
+    </QTabs>
     <q-tab-panels
       v-model="tab"
       animated

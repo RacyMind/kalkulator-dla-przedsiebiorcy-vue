@@ -1,100 +1,100 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Wynagrodzenie brutto
       </template>
       <template #value>
         {{ pln(result.grossAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Koszty przychodu
       </template>
       <template #value>
         {{ pln(result.expenses)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania
       </template>
       <template #value>
         {{ pln(result.taxBasis)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         <div class="row items-center">
           <div class="flex">Podatek dochodowy</div>
-          <tooltip
+          <Tooltip
             v-if="result.ppkIncomeFromEmployer"
             class="q-ml-xs">
             Składka na PPK wpłacona przez pracodawcę ({{ pln(result.ppkIncomeFromEmployer ) }}) traktowana jest jako dochód od którego potrącany jset podatek.
-          </tooltip>
+          </Tooltip>
         </div>
       </template>
       <template #value>
         {{ pln(result.taxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składki ZUS i PPK
       </template>
       <template #value>
         {{ pln(result.totalContributions) }}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka zdrowotna
       </template>
       <template #value>
         {{ pln(result.healthContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka emerytalna
       </template>
       <template #value>
         {{ pln(result.pensionContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka rentowa
       </template>
       <template #value>
         {{ pln(result.disabilityContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka chorobowa
       </template>
       <template #value>
         {{ pln(result.sickContribution)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka na PPK
       </template>
       <template #value>
         {{ pln(result.ppkContribution)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Wynagrodzenie netto
       </template>
       <template #value>
         {{ pln(result.netAmount)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

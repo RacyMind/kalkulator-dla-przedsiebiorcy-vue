@@ -18,65 +18,66 @@
 
 ---
 
-## Milestone 1 - Aktualizacja zależności
+## Milestone 1 - Aktualizacja zależności ✅
 
+> **Status: UKOŃCZONY** (2026-02-06, branch `010-update-dependencies`)
 > Cel: Zaktualizować wszystkie biblioteki do najnowszych wersji, zmigrować konfigurację narzędzi. Wszystkie testy muszą przechodzić po każdej zmianie.
 
-### 1.1 Aktualizacja core dependencies
+### 1.1 Aktualizacja core dependencies ✅
 
-- [ ] Zaktualizować `vue` z `^3.4.15` do najnowszej 3.x
-- [ ] Zaktualizować `quasar` z `^2.18.6` do najnowszej 2.x
-- [ ] Zaktualizować `@quasar/extras` z `^1.17.0` do najnowszej
-- [ ] Zaktualizować `vue-router` z `^4.2.5` do najnowszej 4.x
-- [ ] Zaktualizować `pinia` z `^2.0.14` do najnowszej 2.x
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] `vue` → 3.5.27
+- [x] `quasar` → 2.18.6
+- [x] `@quasar/extras` → najnowsza
+- [x] `vue-router` → 4.6.4
+- [x] `pinia` → 2.3.1
+- [x] Testy: 410/410 pass
 
-### 1.2 Aktualizacja Quasar CLI i build tools
+### 1.2 Aktualizacja Quasar CLI i build tools ✅
 
-- [ ] Zaktualizować `@quasar/app-vite` z `^1.11.0` do v2.x (breaking changes - wymaga migracji `quasar.config.js` → `quasar.config.ts`)
-- [ ] Zmigrować `quasar.config.js` na format wymagany przez `@quasar/app-vite` v2
-- [ ] Sprawdzić kompatybilność boot files (`google-analytics.ts`, `admob.ts`)
-- [ ] Sprawdzić kompatybilność konfiguracji PWA (`src-pwa/`)
-- [ ] Sprawdzić kompatybilność konfiguracji Capacitor (`src-capacitor/`)
-- [ ] Uruchomić `quasar dev` i zweryfikować działanie aplikacji
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] `@quasar/app-vite` → v2.4.0 (migracja `quasar.config.js` → `quasar.config.ts`)
+- [x] Boot files — warunkowe ładowanie admob w trybie Capacitor
+- [x] Vite plugin do stubowania Capacitor packages w trybach non-Capacitor
+- [x] Konfiguracja PWA — działa
+- [x] Konfiguracja Capacitor — build Android działa
+- [x] `quasar dev` — działa bez błędów
+- [x] Testy: 410/410 pass
 
-### 1.3 Aktualizacja TypeScript i linterów
+### 1.3 Aktualizacja TypeScript i linterów ✅
 
-- [ ] Zaktualizować `typescript` z `^4.5.4` do 5.x
-- [ ] Zaktualizować `@typescript-eslint/eslint-plugin` i `@typescript-eslint/parser` z `^5.10.0` do v8.x
-- [ ] Zaktualizować `eslint` z `^8.10.0` do v9.x
-- [ ] Zmigrować `.eslintrc.js` na ESLint flat config (`eslint.config.js`)
-- [ ] Zaktualizować `eslint-plugin-vue` z `^8.5.0` do najnowszej
-- [ ] Zaktualizować `eslint-config-prettier` do najnowszej
-- [ ] Zaktualizować `prettier` z `^2.5.1` do v3.x
-- [ ] Sprawdzić i naprawić nowe błędy lintowania
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] `typescript` → 5.9.3 (strict mode włączony)
+- [x] `@typescript-eslint/*` → v8.54.0
+- [x] `eslint` → v9.39.2 (flat config `eslint.config.js`)
+- [x] `eslint-plugin-vue` → najnowsza + `vue-eslint-parser`
+- [x] `eslint-config-prettier` → najnowsza
+- [x] `prettier` → v3.5.3
+- [x] Usunięto: `.eslintrc.js`, `.eslintignore`, sort plugins
+- [x] ESLint: 0 errors, 3 warnings
+- [x] Testy: 410/410 pass
 
-### 1.4 Aktualizacja pozostałych bibliotek
+### 1.4 Aktualizacja pozostałych bibliotek ✅
 
-- [ ] Zaktualizować `@vueuse/core` z `^10.7.1` do najnowszej
-- [ ] Zaktualizować `axios` z `^1.6.2` do najnowszej
-- [ ] Zaktualizować `date-fns` z `^2.17.0` do v4.x (breaking changes w importach)
-- [ ] Zaktualizować `vitest` z `^2.1.9` do najnowszej
-- [ ] Zaktualizować `@vue/test-utils` z `^2.4.1` do najnowszej
-- [ ] Zaktualizować `@testing-library/vue` z `^6.6.1` do najnowszej
-- [ ] Zaktualizować `sass` z `^1.97.3` do najnowszej (uwaga na deprecations)
-- [ ] Zaktualizować `workbox-*` z `^6.5.3` do v7.x
-- [ ] Zaktualizować `@types/node` z `^20.17.24` do najnowszej
-- [ ] Usunąć `@quasar/babel-preset-app` (niepotrzebny z Vite)
-- [ ] Uruchomić pełne testy: `npx vitest run`
+- [x] `@vueuse/core` → najnowsza
+- [x] `axios` → najnowsza
+- [x] `date-fns` → v4.x (naprawione importy deep → named)
+- [x] `vitest` → v4.x
+- [x] `@vue/test-utils` → najnowsza
+- [x] `@testing-library/vue` → najnowsza
+- [x] `sass` → najnowsza (deprecation warnings zaakceptowane — Milestone 2)
+- [x] `workbox-*` → v7.x
+- [x] `@types/node` → najnowsza
+- [x] `autoprefixer` → najnowsza
+- [x] Usunięto: `@quasar/babel-preset-app`, `.babelrc`, `babel.config.js`
+- [x] Testy: 410/410 pass
 
-### 1.5 Wymiana biblioteki wykresów
+### 1.5 Wymiana biblioteki wykresów ✅
 
-- [ ] Usunąć `@j-t-mcc/vue3-chartjs`
-- [ ] Zainstalować `chart.js` v4 + `vue-chartjs`
-- [ ] Przepisać `src/components/partials/Chart.vue` na nowe API
-- [ ] Przepisać `src/components/partials/statistics/PieChart.vue`
-- [ ] Przepisać `src/components/partials/LineChart.vue`
-- [ ] Przepisać `src/use/usePieChart.ts`, `src/use/useBarChart.ts`, `src/use/useLineChart.ts`
-- [ ] Zweryfikować wykresy we wszystkich modułach które je używają
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Usunięto `@j-t-mcc/vue3-chartjs`
+- [x] Zainstalowano `chart.js` v4 + `vue-chartjs`
+- [x] Przepisano `Chart.vue` — dynamiczny wybór komponentu (Pie/Bar/Line/Doughnut)
+- [x] `PieChart.vue`, `BarChart.vue`, `LineChart.vue` — bez zmian (delegują do Chart.vue)
+- [x] `usePieChart.ts`, `useBarChart.ts`, `useLineChart.ts` — kompatybilne bez zmian
+- [x] Wykresy zweryfikowane we wszystkich modułach
+- [x] Testy: 410/410 pass
 
 ---
 
@@ -116,24 +117,33 @@
   - Przejrzeć wszystkie pozostałe komponenty w `src/components/partials/`
 - [ ] Uruchomić testy: `npx vitest run`
 
-### 2.3 Eliminacja duplikacji kodu
+### 2.3 Ujednolicenie systemu stałych (rate constants)
+
+> **PRIORYTET**: Obecnie istnieją 2 osobne sposoby przechowywania stałych (stawki, progi, współczynniki). Należy je zunifikować do jednego wspólnego wzorca.
+
+- [ ] Zaudytować obecne użycie stałych:
+  - `src/logic/constants.ts` — dane historyczne (PARAMS per year), stałe globalne (APP, COLORS, TAX_RATES, ZUS)
+  - `src/composables/constants.ts` — computed wartości zależne od `settingStore` (rok, parametry ZUS, progi podatkowe)
+  - Stałe hardcodowane bezpośrednio w kalkulatorach
+- [ ] Zaprojektować jednolity system stałych:
+  - Jeden punkt dostępu do stałych zależnych od roku
+  - Jasny podział: statyczne stałe vs. dynamiczne (zależne od wybranego roku)
+  - Typowane interfejsy dla każdej kategorii stałych
+- [ ] Zmigrować wszystkie moduły do nowego systemu
+- [ ] Usunąć zduplikowane definicje stałych
+- [ ] Uruchomić testy: `npx vitest run`
+
+### 2.4 Eliminacja duplikacji kodu
 
 - [ ] Wyekstrahować logikę progu podatkowego z `contractOfEmployment/pages/Index.vue` i `selfEmployment/pages/Index.vue` do wspólnego composable `src/composables/useTaxThresholdNotification.ts`
 - [ ] Wyekstrahować `findGrossAmountUsingNetAmount` z `contractWork/logic/` i `contractOfMandate/logic/` do wspólnego `src/logic/findGrossAmountUsingNetAmount.ts`
   - Zrefaktoryzować aby przyjmowała Calculator jako parametr generyczny
-- [ ] Skonsolidować stałe:
-  - `src/logic/constants.ts` zawiera dane historyczne (PARAMS per year) + stałe globalne
-  - `src/composables/constants.ts` zawiera computed wartości zależne od `settingStore`
-  - Rozdzielić wyraźnie: `src/logic/constants/` (folder) z plikami per kategoria
 - [ ] Wyekstrahować powtarzającą się logikę `scrollToElement` + `ref(summary)` z modułów do composable `src/composables/useScrollToResults.ts`
 - [ ] Uruchomić testy: `npx vitest run`
 
-### 2.4 Porządki w strukturze kodu
+### 2.5 Porządki w strukturze kodu
 
-- [ ] Usunąć nieużywany plik `src/.babelrc` i `babel.config.js` (projekt używa Vite, nie Babel)
-- [ ] Usunąć `src/logic/constants.ts` - zduplikowane kolory (`COLORS`), stałe (`TAX_RATES`, `ZUS`) które są już w `composables/constants.ts`
-  - Przenieść `AVAILABLE_YEARS`, `APP`, `LOCALE_DATE`, `MONTH_NAMES`, `RENTAL_TAX` do odpowiednich plików
-  - Zaktualizować wszystkie importy
+- [x] ~~Usunąć `.babelrc` i `babel.config.js`~~ (zrobione w Milestone 1)
 - [ ] Wyczyścić `helpers.ts`:
   - `sumMonthlyResults` - jest ściśle powiązany z interfejsami `ContractOfEmployment` i `ContractOfMandate` - przenieść bliżej tych modułów
   - `applyMixins` - sprawdzić czy jest nadal używany, jeśli nie - usunąć
@@ -408,17 +418,21 @@
 
 ### Biblioteki - aktualizacje
 
-| Biblioteka | Obecna | Docelowa | Breaking changes |
+| Biblioteka | Przed | Po | Breaking changes |
 |---|---|---|---|
-| `@quasar/app-vite` | ^1.11.0 | v2.x | Migracja config, API changes |
-| `typescript` | ^4.5.4 | v5.x | Stricter types |
-| `eslint` | ^8.10.0 | v9.x | Flat config |
-| `@typescript-eslint/*` | ^5.10.0 | v8.x | New API |
-| `prettier` | ^2.5.1 | v3.x | Trailing commas default |
-| `date-fns` | ^2.17.0 | v4.x | ESM-only, changed imports |
-| `@j-t-mcc/vue3-chartjs` | ^1.3.0 | Usunąć → `vue-chartjs` + `chart.js` v4 | Nowa biblioteka |
-| `workbox-*` | ^6.5.3 | v7.x | API changes |
-| `sass` | ^1.97.3 | Najnowsza | Deprecation warnings |
+| `@quasar/app-vite` | ^1.11.0 | **v2.4.0** ✅ | Migracja config, API changes |
+| `typescript` | ^4.5.4 | **5.9.3** ✅ | Strict mode, stricter types |
+| `eslint` | ^8.10.0 | **v9.39.2** ✅ | Flat config |
+| `@typescript-eslint/*` | ^5.10.0 | **v8.54.0** ✅ | New API |
+| `prettier` | ^2.5.1 | **v3.5.3** ✅ | Trailing commas default |
+| `date-fns` | ^2.17.0 | **v4.x** ✅ | ESM-only, changed imports |
+| `@j-t-mcc/vue3-chartjs` | ^1.3.0 | **vue-chartjs + chart.js v4** ✅ | Nowa biblioteka |
+| `workbox-*` | ^6.5.3 | **v7.x** ✅ | API changes |
+| `sass` | ^1.97.3 | **Najnowsza** ✅ | Deprecation warnings |
+| `vitest` | ^2.1.9 | **v4.x** ✅ | New API |
+| `vue` | ^3.4.15 | **3.5.27** ✅ | — |
+| `vue-router` | ^4.2.5 | **4.6.4** ✅ | — |
+| `pinia` | ^2.0.14 | **2.3.1** ✅ | — |
 
 ### Pliki do migracji JS → TS
 
@@ -432,11 +446,11 @@
 
 ### Komponenty do przepisania (Options API → `<script setup>`)
 
-| Komponent | Priorytet |
-|---|---|
-| `src/App.vue` | Wysoki |
-| `src/components/partials/menu/Menu.vue` | Wysoki |
-| `src/components/partials/Chart.vue` | Wysoki (wymiana biblioteki) |
+| Komponent | Priorytet | Status |
+|---|---|---|
+| `src/App.vue` | Wysoki | Do zrobienia |
+| `src/components/partials/menu/Menu.vue` | Wysoki | Do zrobienia |
+| `src/components/partials/Chart.vue` | Wysoki | ✅ Przepisany na `<script setup>` (Milestone 1) |
 
 ### Duplikacje do eliminacji
 
@@ -444,7 +458,7 @@
 |---|---|---|
 | Logika progu podatkowego w `handleSubmit` | `contractOfEmployment`, `selfEmployment` | Composable `useTaxThresholdNotification` |
 | `findGrossAmountUsingNetAmount` | `contractWork`, `contractOfMandate` | Wspólny `src/logic/findGrossAmountUsingNetAmount.ts` |
-| Stałe podatkowe | `logic/constants.ts` + `composables/constants.ts` | Konsolidacja do `src/logic/constants/` |
+| Stałe podatkowe / rate constants | `logic/constants.ts` + `composables/constants.ts` + hardcoded w kalkulatorach | **Priorytet** — ujednolicenie do jednego systemu (sekcja 2.3) |
 | Scroll do wyników | Wiele modułów | Composable `useScrollToResults` |
 
 ---

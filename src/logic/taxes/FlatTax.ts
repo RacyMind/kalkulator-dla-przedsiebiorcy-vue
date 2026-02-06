@@ -14,6 +14,6 @@ export class FlatTax{
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface FlatTax extends HasTaxReliefLimit {}
 helpers.applyMixins(FlatTax, [HasTaxReliefLimit])

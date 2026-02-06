@@ -12,6 +12,6 @@ export class LumpSumTax{
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface LumpSumTax extends HasTaxReliefLimit {}
 helpers.applyMixins(LumpSumTax, [HasTaxReliefLimit])

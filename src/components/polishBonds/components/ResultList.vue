@@ -1,54 +1,54 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Rodzaj obligacji
       </template>
       <template #value>
         {{ bondTypeLabel }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Liczba zakupionych obligacji
       </template>
       <template #value>
         {{ bondCount }} szt.
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Wartość zakupionych obligacji
       </template>
       <template #value>
         {{ pln(investmentAmount) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Odsetki
       </template>
       <template #value>
         {{ pln(totalInterest) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek Belki
       </template>
       <template #value>
         {{ pln(totalTaxAmount) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Zysk
       </template>
       <template #value>
         {{ pln(totalProfit) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Zysk realny
         <Tooltip class="q-ml-sm"
@@ -59,7 +59,7 @@
       <template #value>
         {{ pln(totalRealProfit) }}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

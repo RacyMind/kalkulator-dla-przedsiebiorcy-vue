@@ -5,7 +5,7 @@
     </SectionHeader>
     <Form @submit="handleSubmit" />
     <Advert />
-    <q-tabs
+    <QTabs
       ref="qtabs"
       v-model="tab"
       inline-label
@@ -21,7 +21,7 @@
       <q-tab
         :name="Tabs.Wife"
         label="Żona" />
-    </q-tabs>
+    </QTabs>
     <q-tab-panels
       v-model="tab"
       animated

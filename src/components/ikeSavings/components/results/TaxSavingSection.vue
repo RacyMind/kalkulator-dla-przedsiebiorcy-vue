@@ -1,9 +1,9 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>Zaoszczędzona kwota przez brak podatku</template>
       <template #value>{{ pln(props.result.taxSaving) }}</template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 

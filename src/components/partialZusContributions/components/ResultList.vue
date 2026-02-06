@@ -1,61 +1,61 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Podstawa wymiaru składek ZUS
       </template>
       <template #value>
         {{ pln(result.contributionBasis)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka emerytalna
       </template>
       <template #value>
         {{ pln(result.pensionContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka rentowa
       </template>
       <template #value>
         {{ pln(result.disabilityContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka chorobowa
       </template>
       <template #value>
         {{ pln(result.sickContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka wypadkowa
       </template>
       <template #value>
         {{ pln(result.accidentContribution)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka na Fundusz Pracy i Fundusz Solidarnościowy
       </template>
       <template #value>
         {{ pln(result.fpAndFsContribution)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Suma składek ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 
