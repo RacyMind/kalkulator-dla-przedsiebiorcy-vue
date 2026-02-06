@@ -104,13 +104,12 @@
 <script lang="ts">
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
 import {computed, defineComponent, ref, watch} from 'vue'
-import {parse} from 'date-fns'
+import {differenceInDays, parse} from 'date-fns'
 import {useFormValidation} from 'src/composables/formValidation'
 import DatePopup from 'components/partials/DatePopup.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import constants from 'src/logic/constants'
-import differenceInDays from 'date-fns/differenceInDays'
 import validationRules from 'src/logic/validationRules'
 
 export default defineComponent({
