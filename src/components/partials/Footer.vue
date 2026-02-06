@@ -14,7 +14,7 @@
         &copy; 2011-{{ currentYear }} Kalkulator finansowy<br>
         Wersja {{ appVersion }}<br>
         Stworzone przez <a
-          href="https://www.linkedin.com/in/%C5%82ukasz-socha-30083841/"
+          href="https://lukasz-socha.pl"
           class="text-teal-7"
           target="_blank">
           Łukasz Socha

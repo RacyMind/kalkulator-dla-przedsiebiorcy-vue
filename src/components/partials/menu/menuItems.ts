@@ -189,6 +189,12 @@ export default {
       link: '/obligacje-skarbowe',
       title: 'Obligacje skarbowe',
     } as MenuItem,
+    {
+      caption: 'Moduł oblicza zysk z najmu prywatnego na ryczałcie',
+      className: 'c-savings',
+      link: '/zysk-z-najmu',
+      title: 'Zysk z najmu',
+    } as MenuItem,
   ],
   work: [
     {
