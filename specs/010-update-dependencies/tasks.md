@@ -224,13 +224,13 @@
 **Goal**: Final validation across all success criteria
 
 - [x] T108 `npx vitest run` — 51 files, 410/410 tests pass (SC-001)
-- [x] T109 `npx quasar dev` — app starts on localhost:9004 (pre-existing Capacitor error in SPA mode, handled by try/catch) (SC-004)
+- [x] T109 `npx quasar dev` — app starts cleanly, Capacitor stub plugin resolves imports (SC-004)
 - [x] T110 `npx quasar build -m pwa` — build succeeds (SC-002)
-- [ ] T111 `npx quasar build -m capacitor -T android` — deferred (requires Android SDK) (SC-003)
+- [x] T111 `npx quasar build -m capacitor -T android` — build succeeds (verified by user) (SC-003)
 - [x] T112 `npx eslint .` — 0 errors, 3 warnings (SC-006)
 - [x] T113 Removed @quasar/babel-preset-app, .babelrc, babel.config.js, sort plugins (SC-007)
-- [ ] T114 PWA offline mode — deferred (manual verification) (SC-008)
-- [ ] T115 Charts render — deferred (manual visual inspection) (SC-005)
+- [x] T114 PWA offline mode — verified by user (SC-008)
+- [x] T115 Charts render — verified by user (SC-005)
 - [ ] T116 Changelog update — deferred to user
 - [ ] T117 Changelog verification — deferred to user
 - [x] T118 Commit: "chore: finalize Milestone 1 — dependency update complete"
