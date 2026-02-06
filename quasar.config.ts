@@ -30,12 +30,23 @@ export default defineConfig((ctx) => {
       },
       extendViteConf(viteConf) {
         if (!('capacitor' in ctx.mode)) {
-          viteConf.build = viteConf.build || {}
-          viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
-          viteConf.build.rollupOptions.external = [
-            '@capacitor/core',
-            '@capacitor-community/admob',
-          ]
+          const capacitorStubs = ['@capacitor/core', '@capacitor-community/admob']
+          const STUB_PREFIX = '\0capacitor-stub:'
+
+          viteConf.plugins = viteConf.plugins || []
+          viteConf.plugins.push({
+            name: 'capacitor-stub',
+            resolveId(id: string) {
+              if (capacitorStubs.includes(id)) {
+                return STUB_PREFIX + id
+              }
+            },
+            load(id: string) {
+              if (id.startsWith(STUB_PREFIX)) {
+                return 'export const Capacitor = { isNativePlatform: () => false }; export default {};'
+              }
+            },
+          })
         }
       },
     },
