@@ -6,7 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <QTabs
-      ref="qtabs"
+      ref="scrollTarget"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -65,10 +65,10 @@
 
 <script setup lang="ts">
 
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
-import {EventType, useEventStore} from 'stores/eventStore'
+import {EntrepreneurTaxSystem} from 'stores/constantsStore'
+import {checkTaxThresholdCrossing} from 'src/composables/useTaxThresholdNotification'
 import {QTabs} from 'quasar'
-import {Ref, ref} from 'vue'
+import {ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
@@ -82,7 +82,9 @@ import MonthlyResultList from 'components/selfEmployment/components/MonthlyResul
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/selfEmployment/components/Statistics.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 enum Tabs {
   AnnualSummary = 1,
@@ -92,8 +94,6 @@ enum Tabs {
 const {monthNames} = useMonths()
 const store = useSelfEmploymentStore()
 const breadcrumbStore = useBreadcrumbStore()
-const eventStore = useEventStore()
-const { incomeTaxConstants } = useConstants()
 
 breadcrumbStore.items = [
   {
@@ -102,32 +102,16 @@ breadcrumbStore.items = [
 ]
 
 const tab = ref(Tabs.AnnualSummary)
-const qtabs:Ref<QTabs|null> = ref(null)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 
   if(store?.monthlyInputFields?.length &&  store.monthlyInputFields[0].taxSystem !== EntrepreneurTaxSystem.TaxScale) {
     return
   }
 
-  let sumUpTaxBasis = 0
-
-  try {
-    store.result?.monthlyResults.forEach((result, monthIndex) => {
-      sumUpTaxBasis += result.taxBasis
-
-      if (sumUpTaxBasis >= incomeTaxConstants.value.taxScale.taxThreshold) {
-        eventStore.events.push({
-          type: EventType.CrossingTaxThreshold,
-          sinceMonth: monthIndex,
-        })
-        throw new Error('Break the loop.')
-      }
-    })
-  } catch (error) {
-  }
+  checkTaxThresholdCrossing(store.result?.monthlyResults)
 }
 </script>

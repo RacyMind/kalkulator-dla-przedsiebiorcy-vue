@@ -1,5 +1,6 @@
 import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class TaxScale {
@@ -7,7 +8,7 @@ export class TaxScale {
   protected annualTaxReducingAmount:number
 
   public constructor() {
-    const { incomeTaxConstants} = useConstants()
+    const { incomeTaxConstants} = storeToRefs(useConstantsStore())
 
     this.incomeTaxConstants = incomeTaxConstants
     this.annualTaxReducingAmount = this.incomeTaxConstants.value.taxScale.taxFreeAmount * this.incomeTaxConstants.value.taxScale.taxRates.first

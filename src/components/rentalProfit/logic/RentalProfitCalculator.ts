@@ -2,25 +2,26 @@ import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {InputFields} from 'components/rentalProfit/interfaces/InputFields'
 import {Result, Summary, YearResult} from 'components/rentalProfit/interfaces/Result'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class RentalProfitCalculator extends BasicCalculator<InputFields, Result> implements Calculator<InputFields, Result> {
 
   private calculateTax(taxableRevenue: number, isSpouseSettlement: boolean): number {
+    const constants = useConstantsStore()
     const threshold = isSpouseSettlement
-      ? constants.RENTAL_TAX.SPOUSE_THRESHOLD
-      : constants.RENTAL_TAX.THRESHOLD
+      ? constants.rentalTax.spouseThreshold
+      : constants.rentalTax.threshold
 
     if (taxableRevenue <= 0) return 0
 
     if (taxableRevenue <= threshold) {
-      return helpers.round(taxableRevenue * constants.RENTAL_TAX.LUMP_SUM_RATE, 2)
+      return helpers.round(taxableRevenue * constants.rentalTax.lumpSumRate, 2)
     }
 
     return helpers.round(
-      threshold * constants.RENTAL_TAX.LUMP_SUM_RATE
-      + (taxableRevenue - threshold) * constants.RENTAL_TAX.LUMP_SUM_RATE_ABOVE_THRESHOLD,
+      threshold * constants.rentalTax.lumpSumRate
+      + (taxableRevenue - threshold) * constants.rentalTax.lumpSumRateAboveThreshold,
       2,
     )
   }

@@ -6,7 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <SectionHeader
-      ref="summary">
+      ref="scrollTarget">
       Podsumowanie
     </SectionHeader>
     <template
@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import {Ref, ref} from 'vue'
+import {ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
@@ -74,7 +74,9 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/unregisteredCompany/components/Statistics.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 const store = useUnregisteredCompanyStore()
@@ -86,12 +88,11 @@ breadcrumbStore.items = [
   },
 ]
 
-const summary:Ref<InstanceType<typeof SectionHeader>|null> = ref(null)
 const showAnnualResult = ref(false)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(summary?.value.$el)
+  scrollToResults()
 }
 </script>

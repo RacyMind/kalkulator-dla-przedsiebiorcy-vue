@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Refaktoryzacja kodu: migracja na Pinia, ujednolicenie systemu stałych, deduplikacja logiki (findGross, scrollToResults, taxThreshold), nowa paleta kolorów z tokenami CSS (light/dark mode), usunięcie katalogu src/use/.</li></ul>',
+    publish_date: '2026-01-26',
+    version: '6.0.0',
+  },
+  {
     content: '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej wraz z odliczeniem urlopu/zwolnienia w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja i Siła nabywcza pieniądza pobiera teraz dane automatycznie z publicznego API Eurostat/ECB (HICP). Dane nie wymagają już ręcznej aktualizacji.</li><li>Dodano moduł Kalkulator zysku z najmu.</li></ul>',
     publish_date: '2026-01-25',
     version: '5.12.0',

@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import {useBarChart} from 'src/use/useBarChart'
+import {useBarChart} from 'src/composables/useBarChart'
 import BarChart from 'components/partials/statistics/BarChart.vue'
 
 interface Props {

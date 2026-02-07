@@ -1,7 +1,7 @@
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {beforeEach, describe, expect, it} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import {useSettingStore} from 'stores/settingStore'
 
 setActivePinia(createPinia())
@@ -14,7 +14,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
 
 
   it('the disability contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.geDisabilityContribution(zusConstants.value.entrepreneur.basises.big)).toBe(332.88)
@@ -23,7 +23,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the pension contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.gePensionContribution(zusConstants.value.entrepreneur.basises.big)).toBe(812.23)
@@ -32,7 +32,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the sick contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.getSickContribution(zusConstants.value.entrepreneur.basises.big)).toBe(101.94)
@@ -41,7 +41,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the accident contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.getAccidentContribution(zusConstants.value.entrepreneur.basises.big, 0.0167)).toBe(69.49)
@@ -50,7 +50,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the FP contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.getFPContribution(zusConstants.value.entrepreneur.basises.big)).toBe(41.61)
@@ -58,7 +58,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the FPGSP contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.getFGSPContribution(zusConstants.value.entrepreneur.basises.big)).toBe(4.16)
@@ -66,7 +66,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
   })
 
   it('the FS contribution', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(entrepreneurZusContribution.getFSContribution(zusConstants.value.entrepreneur.basises.big)).toBe(60.33)
@@ -109,7 +109,7 @@ describe('ZUS contributions for an entrepreneur in 2023.12', () => {
     })
 
     it('the flat tax', () => {
-      const { incomeTaxConstants} = useConstants()
+      const { incomeTaxConstants} = storeToRefs(useConstantsStore())
       const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
       expect(incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit).toBe(10200)
@@ -133,14 +133,14 @@ describe('ZUS contribution basises in 2023', () => {
   })
 
   it('1.2023', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
 
     expect(zusConstants.value.entrepreneur.basises.big).toBe(4161)
     expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1047)
   })
 
   it('7.2023', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
 
     expect(zusConstants.value.entrepreneur.basises.small(6)).toBe(1080)
   })
@@ -153,13 +153,13 @@ describe('ZUS contribution basises in 2024', () => {
   })
 
   it('1.2024', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     expect(zusConstants.value.entrepreneur.basises.big).toBe(4694.40)
     expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1272.60)
   })
 
   it('7.2024', () => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     expect(zusConstants.value.entrepreneur.basises.small(6)).toBe(1290)
   })
 })
@@ -171,7 +171,7 @@ describe('the deductible health contribution in 2024', () => {
   })
 
   it('the flat tax', () => {
-    const { incomeTaxConstants} = useConstants()
+    const { incomeTaxConstants} = storeToRefs(useConstantsStore())
     const entrepreneurZusContribution = new EntrepreneurZusContribution()
 
     expect(incomeTaxConstants.value.flatTax.deductibleHealthContributionLimit).toBe(11600)
@@ -217,7 +217,7 @@ describe('ZUS contribution basises in 2025', () => {
   })
 
   it('1.2025', () => {
-    const { zusConstants } = useConstants()
+    const { zusConstants } = storeToRefs(useConstantsStore())
 
     expect(zusConstants.value.entrepreneur.basises.big).toBe(5203.80)
     expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1399.80)
@@ -231,7 +231,7 @@ describe('ZUS contribution basises in 2026', () => {
   })
 
   it('1.2026', () => {
-    const { zusConstants } = useConstants()
+    const { zusConstants } = storeToRefs(useConstantsStore())
 
     expect(zusConstants.value.entrepreneur.basises.big).toBe(5652)
     expect(zusConstants.value.entrepreneur.basises.small(0)).toBe(1441.80)

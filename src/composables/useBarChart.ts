@@ -1,14 +1,8 @@
+import {useChartColors} from 'src/composables/useChartColors'
+
 export function useBarChart(label:string, labels: string[], values: number[]) {
-  const colors: string[] = [
-    '#e32514',
-    '#edb113',
-    '#ed6d13',
-    '#360d13',
-    '#BB4985',
-    '#a31718',
-    '#00A7D9',
-    '#70B749',
-  ]
+  const { chartColors } = useChartColors()
+  const colors = Object.values(chartColors.value)
 
   return {
     datasets: [{

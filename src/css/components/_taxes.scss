@@ -1,9 +1,9 @@
 .c-taxes {
   .text-brand {
-    color: #C2410C;
+    color: var(--module-taxes);
   }
 
   .bg-brand, .bg-module {
-    background: #C2410C;
+    background: var(--module-taxes);
   }
 }

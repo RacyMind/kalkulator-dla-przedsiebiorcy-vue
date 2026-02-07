@@ -1,10 +1,11 @@
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 
 export class ZusContribution{
   protected readonly zusConstants
 
   constructor() {
-    const {zusConstants} = useConstants()
+    const {zusConstants} = storeToRefs(useConstantsStore())
     this.zusConstants = zusConstants
   }
 

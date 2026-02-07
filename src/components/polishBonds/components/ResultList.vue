@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {usePolishBondsStore} from 'components/polishBonds/store'
 
 import { useBondConstants } from 'components/polishBonds/logic/BondConstants'

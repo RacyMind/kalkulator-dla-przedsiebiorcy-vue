@@ -39,7 +39,7 @@
           outline
           type="a"
           target="_blank"
-          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.APP.NAME}`"
+          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.app.name}`"
         />
         <q-btn
           label="Twitter"
@@ -50,7 +50,7 @@
           outline
           type="a"
           target="_blank"
-          :href="`http://twitter.com/share?url=${url}&text=${constants.APP.NAME}&hashtags=wynagrodzenie,finanse,kalkulator`"
+          :href="`http://twitter.com/share?url=${url}&text=${constants.app.name}&hashtags=wynagrodzenie,finanse,kalkulator`"
         />
       </div>
       <p  class="q-mb-none text-justify">
@@ -63,20 +63,12 @@
   </q-card>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import constants from 'src/logic/constants'
+<script setup lang="ts">
+import {useConstantsStore} from 'stores/constantsStore'
 import ga from '../../logic/analytics'
 
-export default defineComponent({
-  setup() {
-    const url = 'https://kalkulatorfinansowy.app'
-    ga.logEvent('Modal', 'Open', 'Wsparcie')
+const constants = useConstantsStore()
 
-    return {
-      constants,
-      url,
-    }
-  },
-})
+const url = 'https://kalkulatorfinansowy.app'
+ga.logEvent('Modal', 'Open', 'Wsparcie')
 </script>

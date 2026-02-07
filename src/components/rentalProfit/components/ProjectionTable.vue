@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import {Result} from 'components/rentalProfit/interfaces/Result'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 
 interface Props {
   result: Result

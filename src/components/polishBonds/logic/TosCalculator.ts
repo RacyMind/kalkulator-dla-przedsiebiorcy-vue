@@ -4,13 +4,14 @@ import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {TosInputFields} from 'components/polishBonds/interfaces/TosInputFields'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class TosCalculator extends BasicCalculator<TosInputFields, Result> implements Calculator<TosInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const monthCount = 36 // TOS bonds have a 3-year maturity period

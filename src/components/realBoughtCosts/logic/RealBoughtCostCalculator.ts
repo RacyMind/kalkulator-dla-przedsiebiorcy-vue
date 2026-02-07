@@ -1,6 +1,7 @@
 import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {InputFields} from 'components/realBoughtCosts/interfaces/InputFields'
 import {Result} from 'components/realBoughtCosts/interfaces/Result'
@@ -14,7 +15,7 @@ export class RealBoughtCostCalculator extends BasicCalculator<InputFields, Resul
 
   public calculate(): this {
     const zus = new EntrepreneurZusContribution()
-    const {incomeTaxConstants} = useConstants()
+    const {incomeTaxConstants} = storeToRefs(useConstantsStore())
 
     const priceWithoutVatTax = helpers.round(this.getInputData().price / (1 + this.getInputData().vatTaxRate), 2)
     const vatTaxAmount = helpers.round(this.getInputData().price - priceWithoutVatTax, 2)

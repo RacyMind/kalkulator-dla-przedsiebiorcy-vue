@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { MonthlyResult } from 'components/polishBonds/interfaces/MonthlyResult'
 import { Result } from 'components/polishBonds/interfaces/Result'
-import { pln } from 'src/use/currencyFormat'
+import { pln } from 'src/composables/currencyFormat'
 
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'

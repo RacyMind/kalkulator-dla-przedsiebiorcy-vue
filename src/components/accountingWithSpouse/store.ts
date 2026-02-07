@@ -6,7 +6,8 @@ import {EntrepreneurFormFields, FormFields, FormType} from 'components/accountin
 import {JointAccountingCalculator} from 'components/accountingWithSpouse/logic/JointAccountingCalculator'
 import {JointAccountingResult} from 'components/accountingWithSpouse/interfaces/JointAccountingResult'
 import {acceptHMRUpdate, defineStore} from 'pinia'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 type Store = {
@@ -15,7 +16,7 @@ type Store = {
 }
 
 const getContributionBasis = (currentMonth: number, fields: EntrepreneurFormFields): number => {
-  const { zusConstants } = useConstants()
+  const { zusConstants } = storeToRefs(useConstantsStore())
 
   if(fields.chosenContributionBasis === ContributionBasises.Custom) {
     return fields.customContributionBasis ?? 0

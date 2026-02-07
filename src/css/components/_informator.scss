@@ -1,8 +1,8 @@
 .c-informator, .c-info {
   .text-brand {
-    color: #0369A1;
+    color: var(--module-informator);
   }
   .bg-brand, .bg-module {
-    background: #0369A1;
+    background: var(--module-informator);
   }
 }

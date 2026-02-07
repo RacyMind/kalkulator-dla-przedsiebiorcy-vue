@@ -24,9 +24,9 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
-import {computed, defineComponent, ref} from 'vue'
+import {ref} from 'vue'
 import {format, parse} from 'date-fns'
 import {useFormValidation} from 'src/composables/formValidation'
 import DatePopup from 'components/partials/DatePopup.vue'
@@ -34,38 +34,21 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
 
-export default defineComponent({
-  components: {
-    DatePopup,
-    FormSection,
-    SubmitButton,
-  },
-  setup(props, context) {
-    const {handleValidationError} = useFormValidation()
-    const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
+const emit = defineEmits<{
+  save: [input: VatLimitInputFields]
+}>()
 
-    const isDisabledButton = computed(() => {
-      return !startDate.value
-    })
+const {handleValidationError} = useFormValidation()
+const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
 
-    const save = () => {
-      const input: VatLimitInputFields = {
-        startDate: parse(
-          startDate.value,
-          'dd.MM.yyyy',
-          new Date(),
-        ),
-      }
-      context.emit('save', input)
-    }
-
-    return {
-      handleValidationError,
-      isDisabledButton,
-      save,
-      startDate,
-      validationRules,
-    }
-  },
-})
+const save = () => {
+  const input: VatLimitInputFields = {
+    startDate: parse(
+      startDate.value,
+      'dd.MM.yyyy',
+      new Date(),
+    ),
+  }
+  emit('save', input)
+}
 </script>

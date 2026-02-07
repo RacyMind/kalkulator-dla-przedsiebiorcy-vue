@@ -8,44 +8,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import {usePieChart} from 'src/use/usePieChart'
+import {computed} from 'vue'
+import {usePieChart} from 'src/composables/usePieChart'
 import PieChart from 'components/partials/statistics/PieChart.vue'
 import interest from 'components/interest/interest'
 
-export default defineComponent({
-  components: {
-    PieChart,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<InterestInputFields>,
-    },
-  },
-  setup(props) {
-    const labels:string[] =  [
-      'Kwota',
-      'Odsetki',
-    ]
+interface Props {
+  input: InterestInputFields
+}
 
-    const result = computed(() => interest.getResult(props.input))
+const props = defineProps<Props>()
 
-    const chartData = computed(() => usePieChart(
-        labels,
-        [
-          result.value.amount,
-          result.value.interestAmount,
-        ],
-      ),
-    )
+const labels: string[] = [
+  'Kwota',
+  'Odsetki',
+]
 
-    return {
-      chartData,
-      result,
-    }
-  },
-})
+const result = computed(() => interest.getResult(props.input))
+
+const chartData = computed(() => usePieChart(
+    labels,
+    [
+      result.value.amount,
+      result.value.interestAmount,
+    ],
+  ),
+)
 </script>

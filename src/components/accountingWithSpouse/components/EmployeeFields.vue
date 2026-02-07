@@ -96,8 +96,9 @@
 
 import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
 import {EmployeeFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {watch} from 'vue'
 import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
@@ -108,7 +109,7 @@ import ZusContributionFields from 'components/partials/form/employee/ZusContribu
 
 const fields = defineModel<EmployeeFormFields>({required: true})
 
-const { incomeTaxConstants } = useConstants()
+const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
 const contributionSchemeOptions = [
   {

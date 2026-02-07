@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import {AmountTypes} from 'src/composables/constants'
+import {AmountTypes} from 'stores/constantsStore'
 import {computed, watch} from 'vue'
 import {useQuasar} from 'quasar'
 

@@ -24,8 +24,5 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Error404',
-}
+<script setup lang="ts">
 </script>

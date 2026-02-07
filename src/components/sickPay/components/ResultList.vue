@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import {Result} from 'components/sickPay/interfaces/Result'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {

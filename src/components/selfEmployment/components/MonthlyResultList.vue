@@ -119,7 +119,7 @@
 import {EntrepreneurResult} from 'src/logic/interfaces/EntrepreneurResult'
 import {EventType, useEventStore} from 'stores/eventStore'
 import {computed} from 'vue'
-import {pln} from '../../../use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import CrossingTaxThreshold from 'components/partials/notifications/CrossingTaxThreshold.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

@@ -4,13 +4,14 @@ import {CoiInputFields} from 'components/polishBonds/interfaces/CoiInputFields'
 import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class CoiCalculator extends BasicCalculator<CoiInputFields, Result> implements Calculator<CoiInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const monthCount = 48 // COI bonds have a 4-year maturity period

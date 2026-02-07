@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import {YearResult} from 'components/rentalProfit/interfaces/Result'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {

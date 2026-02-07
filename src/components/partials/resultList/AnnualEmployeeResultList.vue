@@ -1,7 +1,7 @@
 <template>
   <div v-if="result">
     <ListHeader>
-      {{ constants.FULL_YEAR }}
+      {{ constants.fullYear }}
     </ListHeader>
     <EmployeeResultList :result="props.result.annualResult" />
     <Separator />
@@ -9,7 +9,7 @@
       v-for="(monthlyResult, index) in props.result.monthlyResults"
       :key="index">
       <ListHeader>
-        {{ constants.MONTH_NAMES[index] }}
+        {{ constants.monthNames[index] }}
       </ListHeader>
       <EmployeeResultList
         :result="monthlyResult"
@@ -24,7 +24,8 @@ import {AnnualEmployeeResult} from 'src/logic/interfaces/AnnualEmployeeResult'
 import EmployeeResultList from 'components/partials/resultList/EmployeeResultList.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import Separator from 'components/partials/Separator.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
+const constants = useConstantsStore()
 
 interface Props {
   result: AnnualEmployeeResult

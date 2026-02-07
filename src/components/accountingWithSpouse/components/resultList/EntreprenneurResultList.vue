@@ -105,7 +105,7 @@
 import {EntrepreneurResult} from 'components/accountingWithSpouse/interfaces/EntrepreneurResult'
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {computed} from 'vue'
-import {pln} from '../../../../use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

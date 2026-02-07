@@ -199,9 +199,10 @@ import {ContributionBasises, useContributionBasis} from 'src/composables/contrib
 import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useB2BComparatorStore} from 'components/b2bComparator/store'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -219,7 +220,7 @@ const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
-const { zusConstants, incomeTaxConstants } = useConstants()
+const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore())
 const store = useB2BComparatorStore()
 
 // the revenue and expenses section

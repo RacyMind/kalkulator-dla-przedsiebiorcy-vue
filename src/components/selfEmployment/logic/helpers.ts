@@ -1,4 +1,4 @@
-export const getBillableHours = (plannedHours = 0, leaveHours = 0): number => {
+const getBillableHours = (plannedHours = 0, leaveHours = 0): number => {
   return Math.max(0, plannedHours - leaveHours)
 }
 

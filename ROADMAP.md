@@ -15,6 +15,7 @@
 4. [Milestone 4 - Nowoczesny UI/UX](#milestone-4---nowoczesny-uiux)
 5. [Milestone 5 - Accessibility (WCAG AA)](#milestone-5---accessibility-wcag-aa)
 6. [Milestone 6 - Finalizacja i testy](#milestone-6---finalizacja-i-testy)
+7. [Milestone 7 - Git Hooks i CI](#milestone-7---git-hooks-i-ci)
 
 ---
 
@@ -81,78 +82,64 @@
 
 ---
 
-## Milestone 2 - Refaktoryzacja kodu
+## Milestone 2 - Refaktoryzacja kodu ✅
 
+> **Status: UKOŃCZONY** (2026-02-07, branch `011-code-refactoring`)
 > Cel: Ujednolicić bazę kodu - migracja JS→TS, eliminacja duplikacji, ujednolicenie wzorców komponentów. Logika obliczeniowa nie zmienia się.
 
-### 2.1 Migracja plików JavaScript na TypeScript
+### 2.1 Migracja plików JavaScript na TypeScript ✅
 
-- [ ] Zmigrować `src/logic/employeeContributions.js` → `.ts`
+- [x] Zmigrować `src/logic/employeeContributions.js` → `.ts`
   - Dodać typy do parametrów i zwracanych wartości
   - Zamienić globalny stan (`setYear`) na parametry w composable `useConstants`
-- [ ] Zmigrować `src/logic/employerContributions.js` → `.ts`
+- [x] Zmigrować `src/logic/employerContributions.js` → `.ts`
   - Analogicznie jak employeeContributions
-- [ ] Zmigrować `src/logic/jointAccounting.js` → `.ts`
+- [x] Zmigrować `src/logic/jointAccounting.js` → `.ts`
   - Dodać pełne typowanie
-- [ ] Zmigrować `src/use/currencyFormat.js` → `.ts`
+- [x] Zmigrować `src/use/currencyFormat.js` → `src/composables/currencyFormat.ts`
   - Dodać typy: `(value: number) => string` i `(value: number, code: string) => string`
-- [ ] Zmigrować `src/use/deepEqual.js` → `.ts`
-  - Rozważyć zastąpienie natywnym `structuredClone` lub `lodash/isEqual`
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Zmigrować `src/use/deepEqual.js` → `src/composables/deepEqual.ts`
+  - Przepisano z TypeScript generics
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 2.2 Ujednolicenie komponentów na Composition API + `<script setup>`
+### 2.2 Ujednolicenie komponentów na Composition API + `<script setup>` ✅
 
-- [ ] Przepisać `src/App.vue` - zamienić `defineComponent` na `<script setup lang="ts">`
-- [ ] Przepisać `src/components/partials/menu/Menu.vue` - Options API → `<script setup lang="ts">`
+- [x] Przepisać `src/App.vue` - zamienić `defineComponent` na `<script setup lang="ts">`
+- [x] Przepisać `src/components/partials/menu/Menu.vue` - Options API → `<script setup lang="ts">`
   - Zamienić `setup()` return na top-level zmienne
   - Zamienić `props` runtime na `defineProps<Props>()`
-- [ ] Przepisać `src/components/partials/Chart.vue` - Options API → `<script setup lang="ts">`
-  - Zamienić `defineComponent` + `setup()` na `<script setup>`
-  - Dodać typy do props
-- [ ] Przejrzeć i ujednolicić definiowanie props we wszystkich komponentach:
-  - `PieChart.vue` - zamienić runtime props na typed `defineProps<Props>()`
-  - `FormSection.vue` - zamienić runtime props na typed
-  - `SubmitButton.vue` - OK (nie ma props)
-  - `ListRow.vue` - zamienić runtime props na typed
-  - Przejrzeć wszystkie pozostałe komponenty w `src/components/partials/`
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Przepisać `src/components/partials/Chart.vue` - Options API → `<script setup lang="ts">` (Milestone 1)
+- [x] Przejrzeć i ujednolicić definiowanie props we wszystkich komponentach (30 plików zmigrowanych)
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 2.3 Ujednolicenie systemu stałych (rate constants)
+### 2.3 Ujednolicenie systemu stałych (rate constants) ✅
 
-> **PRIORYTET**: Obecnie istnieją 2 osobne sposoby przechowywania stałych (stawki, progi, współczynniki). Należy je zunifikować do jednego wspólnego wzorca.
+> Zunifikowano do jednego Pinia store `src/stores/constantsStore.ts` z typowanymi interfejsami w `src/stores/constants/types.ts` i danymi per-year w `src/stores/constants/yearParams.ts`.
 
-- [ ] Zaudytować obecne użycie stałych:
-  - `src/logic/constants.ts` — dane historyczne (PARAMS per year), stałe globalne (APP, COLORS, TAX_RATES, ZUS)
-  - `src/composables/constants.ts` — computed wartości zależne od `settingStore` (rok, parametry ZUS, progi podatkowe)
-  - Stałe hardcodowane bezpośrednio w kalkulatorach
-- [ ] Zaprojektować jednolity system stałych:
-  - Jeden punkt dostępu do stałych zależnych od roku
-  - Jasny podział: statyczne stałe vs. dynamiczne (zależne od wybranego roku)
-  - Typowane interfejsy dla każdej kategorii stałych
-- [ ] Zmigrować wszystkie moduły do nowego systemu
-- [ ] Usunąć zduplikowane definicje stałych
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Zaudytować obecne użycie stałych
+- [x] Zaprojektować jednolity system stałych (Pinia store, setup syntax, typowane interfejsy)
+- [x] Zmigrować wszystkie moduły do nowego systemu (29 modułów)
+- [x] Usunąć zduplikowane definicje stałych — usunięto `src/logic/constants.ts` i `src/composables/constants.ts`
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 2.4 Eliminacja duplikacji kodu
+### 2.4 Eliminacja duplikacji kodu ✅
 
-- [ ] Wyekstrahować logikę progu podatkowego z `contractOfEmployment/pages/Index.vue` i `selfEmployment/pages/Index.vue` do wspólnego composable `src/composables/useTaxThresholdNotification.ts`
-- [ ] Wyekstrahować `findGrossAmountUsingNetAmount` z `contractWork/logic/` i `contractOfMandate/logic/` do wspólnego `src/logic/findGrossAmountUsingNetAmount.ts`
-  - Zrefaktoryzować aby przyjmowała Calculator jako parametr generyczny
-- [ ] Wyekstrahować powtarzającą się logikę `scrollToElement` + `ref(summary)` z modułów do composable `src/composables/useScrollToResults.ts`
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Wyekstrahować logikę progu podatkowego → `src/composables/useTaxThresholdNotification.ts`
+- [x] Wyekstrahować `findGrossAmountUsingNetAmount` → `src/logic/findGrossAmountUsingNetAmount.ts` (generyczny, usunięto 3 kopie)
+- [x] Wyekstrahować scroll → `src/composables/useScrollToResults.ts` (zaktualizowano 21 modułów)
+- [x] Przenieść `sumMonthlyResults` → `src/logic/sumMonthlyResults.ts`
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 2.5 Porządki w strukturze kodu
+### 2.5 Porządki w strukturze kodu ✅
 
 - [x] ~~Usunąć `.babelrc` i `babel.config.js`~~ (zrobione w Milestone 1)
-- [ ] Wyczyścić `helpers.ts`:
-  - `sumMonthlyResults` - jest ściśle powiązany z interfejsami `ContractOfEmployment` i `ContractOfMandate` - przenieść bliżej tych modułów
-  - `applyMixins` - sprawdzić czy jest nadal używany, jeśli nie - usunąć
-- [ ] Uporządkować folder `src/use/` - przenieść composables do `src/composables/` dla spójności
-- [ ] Uruchomić testy: `npx vitest run`
+- [x] Wyczyścić `helpers.ts` — `sumMonthlyResults` przeniesiono do `src/logic/sumMonthlyResults.ts`, `applyMixins` zweryfikowano (nadal używany przez 5 plików)
+- [x] Uporządkować folder `src/use/` — przeniesiono `useBarChart`, `useLineChart`, `usePieChart` do `src/composables/`, usunięto `src/use/`
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 2.6 Design Tokens — jednolita paleta barw
+### 2.6 Design Tokens — jednolita paleta barw ✅
 
-> **PRIORYTET**: Ustalenie pełnej palety kolorów **raz**, z uwzględnieniem wymagań dark mode (M3), nowoczesnego UI (M4) i kontrastu WCAG AA (M5). Kolejne milestone'y tylko konsumują te tokeny — nie projektują kolorów od nowa.
+> Ustalenie pełnej palety kolorów **raz**, z uwzględnieniem wymagań dark mode (M3), nowoczesnego UI (M4) i kontrastu WCAG AA (M5). Kolejne milestone'y tylko konsumują te tokeny — nie projektują kolorów od nowa.
 
 **Audyt obecnego stanu** — kolory są w 3 niespójnych źródłach:
 
@@ -164,27 +151,44 @@
 
 Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale `#B45309` w SCSS.
 
-- [ ] Zaprojektować pełną paletę Design Tokens:
-  - **Primary brand**: zachować `#d12526` lub skorygować pod WCAG AA (kontrast ≥ 4.5:1 na białym / ≥ 4.5:1 na ciemnym tle)
-  - **Secondary / Accent**: nowe, spójne kolory (zastępują `$secondary: #26A69A`, `$accent: #9C27B0`)
-  - **Powierzchnie (light)**: `--surface`, `--surface-variant`, `--surface-elevated` (zastępują `bg-white`, `bg-teal-1`, `bg-grey-2`, `bg-grey-3`)
-  - **Powierzchnie (dark)**: ciemne warianty tych samych tokenów
-  - **Kolory modułów** (6 kategorii): work, business/company, taxes, currencies, percentage/savings, informator/info, app
-  - **Kolory wykresów** (CHART1–CHART8): spójna paleta danych, czytelna w light i dark mode
-  - **Semantyczne**: positive, negative, info, warning (zachować lub skorygować obecne)
-- [ ] Zweryfikować kontrast WCAG AA dla wszystkich par kolor–tło (narzędzie: WebAIM Contrast Checker lub axe-core):
-  - Tekst na powierzchni: ≥ 4.5:1
-  - Tekst na module brand bg: ≥ 4.5:1
-  - UI components (ikony, obramowania): ≥ 3:1
-- [ ] Stworzyć plik `src/css/_design-tokens.scss` z CSS custom properties:
-  - Tokeny light mode (`:root`)
-  - Tokeny dark mode (`.body--dark` lub `@media (prefers-color-scheme: dark)`)
-  - Tokeny modułów (`.c-work`, `.c-business`, `.c-taxes`, itd.)
-- [ ] Zaktualizować `src/css/quasar.variables.scss` — zmapować `$primary`, `$secondary`, `$accent` na nowe wartości
-- [ ] Zaktualizować `src/logic/constants.ts → COLORS` — zmapować na nowe wartości z palety (lub usunąć na rzecz CSS variables + composable `useChartColors`)
-- [ ] Zaktualizować 7 plików `src/css/components/_*.scss` — zamienić hardcodowane hex na `var(--module-brand-*)` z `_design-tokens.scss`
-- [ ] Uruchomić testy: `npx vitest run`
-- [ ] Zweryfikować wizualnie na kilku modułach (light mode) — kolory spójne, czytelne
+- [x] Zaprojektować pełną paletę Design Tokens (WCAG AA compliant): primary `#1565C0`, secondary `#00897B`, accent `#7B1FA2`, 6 module brands, 8 chart colors, surface variants, semantyczne
+- [x] Zweryfikować kontrast WCAG AA dla wszystkich par kolor–tło
+- [x] Stworzyć plik `src/css/_design-tokens.scss` z CSS custom properties (light + dark mode + moduły)
+- [x] Zaktualizować `src/css/quasar.variables.scss` — zmapowano na nowe wartości
+- [x] Usunięto obiekt `COLORS` z `constantsStore.ts` — zastąpiono composable `src/composables/useChartColors.ts`
+- [x] Zaktualizować 7 plików `src/css/components/_*.scss` — zamieniono hex na `var(--module-*)`
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
+- [x] Zweryfikować wizualnie na kilku modułach (light mode) — kolory spójne, czytelne
+
+### 2.7 Ujednolicenie konwencji nazewnictwa w constantsStore ✅
+
+> Wybrano **Opcję A — camelCase everywhere** (styl TypeScript/Vue). Wszystkie SCREAMING_SNAKE_CASE stałe w `constantsStore.ts` zostały przemianowane na camelCase, wraz z ich zagnieżdżonymi właściwościami. Zaktualizowano wszystkie importy i użycia w logice, komponentach, layoutach i testach.
+
+- [x] Wybrać jedną konwencję: **camelCase everywhere**
+- [x] Zrefaktoryzować nazwy w `constantsStore.ts` (PARAMS→params, TAX_TYPES→taxTypes, AMOUNT_TYPES→amountTypes, APP→app, LOCALE_DATE→localeDate, AVAILABLE_YEARS→availableYears, MONTH_NAMES→monthNames, FULL_YEAR→fullYear, CASH_REGISTER_LIMIT→cashRegisterLimit, VAT_LIMIT→vatLimit, TAX_RATES→taxRates, RENTAL_TAX→rentalTax, itd.)
+- [x] Zaktualizować wszystkie importy i użycia w komponentach i logice (29 plików)
+- [x] Zaktualizować testy
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
+- [x] Uruchomić lint: `npm run lint` — 0 errors
+
+### 2.8 Wyczyścić nieużywane pliki w src/ ✅
+
+> Przeprowadzono audyt za pomocą `knip` + ręczny grep po importach. Znaleziono i usunięto 7 nieużywanych plików oraz 2 nieużywane eksporty.
+
+- [x] Przeprowadzić audyt nieużywanych plików (`knip` + ręczny grep)
+- [x] Usunąć potwierdzone nieużywane pliki:
+  - `src/composables/deepEqual.ts` — nieimportowany nigdzie
+  - `src/components/partials/ChooseYear.vue` — nieimportowany
+  - `src/components/partials/SalarySummaryTable.vue` — nieimportowany
+  - `src/components/partials/YearlySummaryTable.vue` — nieimportowany
+  - `src/components/ikeSavings/components/ResultFields.vue` — nieimportowany
+  - `src/components/salaryForUnusedHolidays/Form.vue` — zduplikowany (aktywny w `components/Form.vue`)
+  - `src/components/currencyConverter/interfaces/CurrencyConverterInputFields.ts` — nieimportowany
+- [x] Usunąć nieużywane eksporty:
+  - `getIkzeLimits` z `src/logic/ikzeLimits.ts`
+  - `getBillableHours` z `src/components/selfEmployment/logic/helpers.ts` (zmieniono na prywatną)
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
+- [x] Uruchomić lint: `npm run lint` — 0 errors
 
 ---
 
@@ -468,32 +472,34 @@ Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale 
 | `vue-router` | ^4.2.5 | **4.6.4** ✅ | — |
 | `pinia` | ^2.0.14 | **2.3.1** ✅ | — |
 
-### Pliki do migracji JS → TS
+### Pliki do migracji JS → TS ✅
 
-| Plik | Priorytet | Uwagi |
+| Plik | Priorytet | Status |
 |---|---|---|
-| `src/logic/employeeContributions.js` | Wysoki | Globalny stan → composable |
-| `src/logic/employerContributions.js` | Wysoki | Globalny stan → composable |
-| `src/logic/jointAccounting.js` | Wysoki | Dodać typowanie |
-| `src/use/currencyFormat.js` | Średni | Proste typowanie |
-| `src/use/deepEqual.js` | Niski | Możliwe zastąpienie |
+| `src/logic/employeeContributions.js` → `.ts` | Wysoki | ✅ Zmigrowany |
+| `src/logic/employerContributions.js` → `.ts` | Wysoki | ✅ Zmigrowany |
+| `src/logic/jointAccounting.js` → `.ts` | Wysoki | ✅ Zmigrowany |
+| `src/use/currencyFormat.js` → `src/composables/currencyFormat.ts` | Średni | ✅ Zmigrowany |
+| `src/use/deepEqual.js` → `src/composables/deepEqual.ts` | Niski | ✅ Zmigrowany → ❌ Usunięty (2.8 — nieużywany) |
 
-### Komponenty do przepisania (Options API → `<script setup>`)
+### Komponenty do przepisania (Options API → `<script setup>`) ✅
 
 | Komponent | Priorytet | Status |
 |---|---|---|
-| `src/App.vue` | Wysoki | Do zrobienia |
-| `src/components/partials/menu/Menu.vue` | Wysoki | Do zrobienia |
-| `src/components/partials/Chart.vue` | Wysoki | ✅ Przepisany na `<script setup>` (Milestone 1) |
+| `src/App.vue` | Wysoki | ✅ Przepisany (Milestone 2) |
+| `src/components/partials/menu/Menu.vue` | Wysoki | ✅ Przepisany (Milestone 2) |
+| `src/components/partials/Chart.vue` | Wysoki | ✅ Przepisany (Milestone 1) |
+| + 27 pozostałych komponentów | — | ✅ Wszystkie zmigrowane (Milestone 2) |
 
-### Duplikacje do eliminacji
+### Duplikacje do eliminacji ✅
 
-| Co | Gdzie | Rozwiązanie |
-|---|---|---|
-| Logika progu podatkowego w `handleSubmit` | `contractOfEmployment`, `selfEmployment` | Composable `useTaxThresholdNotification` |
-| `findGrossAmountUsingNetAmount` | `contractWork`, `contractOfMandate` | Wspólny `src/logic/findGrossAmountUsingNetAmount.ts` |
-| Stałe podatkowe / rate constants | `logic/constants.ts` + `composables/constants.ts` + hardcoded w kalkulatorach | **Priorytet** — ujednolicenie do jednego systemu (sekcja 2.3) |
-| Scroll do wyników | Wiele modułów | Composable `useScrollToResults` |
+| Co | Gdzie | Rozwiązanie | Status |
+|---|---|---|---|
+| Logika progu podatkowego | `contractOfEmployment`, `selfEmployment` | `src/composables/useTaxThresholdNotification.ts` | ✅ |
+| `findGrossAmountUsingNetAmount` | `contractWork`, `contractOfMandate`, `contractOfEmployment` | `src/logic/findGrossAmountUsingNetAmount.ts` | ✅ |
+| Stałe podatkowe / rate constants | `logic/constants.ts` + `composables/constants.ts` | Pinia store `src/stores/constantsStore.ts` | ✅ |
+| Scroll do wyników | 21 modułów | `src/composables/useScrollToResults.ts` | ✅ |
+| `sumMonthlyResults` | `src/logic/helpers.ts` | `src/logic/sumMonthlyResults.ts` | ✅ |
 
 ---
 
@@ -505,3 +511,37 @@ Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale 
 4. **Milestone 4** (UI/UX) - główna praca wizualna
 5. **Milestone 5** (Accessibility) - finalizacja po UI
 6. **Milestone 6** (Finalizacja) - testy, optymalizacja, release
+7. **Milestone 7** (Git Hooks i CI) - automatyzacja jakości kodu
+
+---
+
+## Milestone 7 - Git Hooks i CI
+
+> Cel: Zautomatyzować kontrolę jakości kodu, aby zapobiegać regresji i utrzymać spójność bazy kodu.
+
+### 7.1 Git Hooks (lokalne, via Husky + lint-staged)
+
+- [ ] Zainstalować `husky` i `lint-staged`
+- [ ] Skonfigurować hook `pre-commit`:
+  - `lint-staged` uruchamia ESLint (`--fix`) i Prettier na staged `.ts`, `.vue`, `.scss` plikach
+- [ ] Skonfigurować hook `pre-push`:
+  - Uruchomienie pełnego zestawu testów: `npx vitest run`
+- [ ] Skonfigurować hook `commit-msg`:
+  - Walidacja formatu commit message (Conventional Commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`)
+  - Zainstalować `@commitlint/cli` + `@commitlint/config-conventional`
+- [ ] Dodać skrypt `prepare` w `package.json` do automatycznej instalacji hooków po `npm install`
+
+### 7.2 GitHub Actions — CI pipeline
+
+- [ ] Stworzyć `.github/workflows/ci.yml`:
+  - **Trigger**: push na `main` / `develop`, pull request
+  - **Job: Lint** — `npm run lint`
+  - **Job: Test** — `npx vitest run`
+  - **Job: Build** — `npx quasar build -m pwa` (weryfikacja, czy build przechodzi)
+- [ ] Dodać badge statusu CI do `README.md`
+
+### 7.3 Dodatkowe narzędzia jakości (opcjonalne)
+
+- [ ] Rozważyć `knip` — wykrywanie nieużywanych plików, eksportów i zależności
+- [ ] Rozważyć Dependabot lub Renovate — automatyczne PR-y z aktualizacjami zależności
+- [ ] Rozważyć `vue-tsc --noEmit` w CI — pełna weryfikacja typów TypeScript

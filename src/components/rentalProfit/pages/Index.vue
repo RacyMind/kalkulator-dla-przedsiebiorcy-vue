@@ -6,7 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <QTabs
-      ref="qtabs"
+      ref="scrollTarget"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import {QTabs} from 'quasar'
-import {Ref, ref} from 'vue'
+import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useRentalProfitStore} from 'components/rentalProfit/store'
 import Advert from 'components/partials/Advert.vue'
@@ -62,7 +62,9 @@ import Form from 'components/rentalProfit/components/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ProjectionTable from 'components/rentalProfit/components/ProjectionTable.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 enum Tabs {
   AnnualSummary = 1,
@@ -79,9 +81,8 @@ breadcrumbStore.items = [
 ]
 
 const tab = ref(Tabs.AnnualSummary)
-const qtabs: Ref<QTabs | null> = ref(null)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 }
 </script>

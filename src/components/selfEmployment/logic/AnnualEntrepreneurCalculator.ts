@@ -3,7 +3,7 @@ import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {EntrepreneurCalculator} from 'components/selfEmployment/logic/EntrepreneurCalculator'
 import {EntrepreneurResult} from 'src/logic/interfaces/EntrepreneurResult'
-import {EntrepreneurTaxSystem} from 'src/composables/constants'
+import {EntrepreneurTaxSystem} from 'stores/constantsStore'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import helpers from 'src/logic/helpers'
 

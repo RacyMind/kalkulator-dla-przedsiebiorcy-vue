@@ -38,7 +38,7 @@
               </q-breadcrumbs>
             </div>
             <div class="xs-hide text-subtitle1">
-              {{ constants.APP.NAME }}
+              {{ constants.app.name }}
             </div>
           </div>
         </q-toolbar-title>
@@ -86,7 +86,8 @@ import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
+const constants = useConstantsStore()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)

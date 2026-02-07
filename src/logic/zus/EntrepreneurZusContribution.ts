@@ -1,4 +1,5 @@
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {ZusAccidentContribution} from 'src/logic/zus/traits/ZusAccidentContribution'
 import {ZusContribution} from 'src/logic/zus/ZusContribution'
 import {ZusFpContribution} from 'src/logic/zus/traits/ZusFpContribution'
@@ -18,7 +19,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
    * Returns the health contribution of the entrepreneur
    */
   public getHealthContribution(healthContributionBasis: number, taxSystem: EntrepreneurTaxSystem, monthIndex = this.settingStore.dateOfLawRules.getMonth(), yearlyIncome = 0, ignoreMinimumContribution = false): number {
-    const {wageStats} = useConstants()
+    const {wageStats} = storeToRefs(useConstantsStore())
 
     let year = this.settingStore.dateOfLawRules.getFullYear()
 
@@ -71,7 +72,7 @@ export class EntrepreneurZusContribution extends ZusContribution {
      * Returns the deductible health contribution of the entrepreneur
      */
   public getDeductibleHealthContribution(healthContribution: number, taxSystem: EntrepreneurTaxSystem, sumUpDeductibleHealthContribution = 0): number {
-    const { incomeTaxConstants } = useConstants()
+    const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
       switch (taxSystem) {
         case EntrepreneurTaxSystem.TaxScale:

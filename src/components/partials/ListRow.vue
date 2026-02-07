@@ -21,24 +21,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    inline: {
-      default: true,
-      type: Boolean,
-    },
-    name: {
-      required: true,
-      type: String,
-    },
-    nested: {
-      default: false,
-      type: Boolean,
-    },
-    value: {
-      required: true,
-    },
-  },
+<script setup lang="ts">
+interface Props {
+  inline?: boolean
+  name: string
+  nested?: boolean
+  value: string | number
 }
+
+withDefaults(defineProps<Props>(), {
+  inline: true,
+  nested: false,
+})
 </script>

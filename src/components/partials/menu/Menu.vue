@@ -110,51 +110,41 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {MenuItem} from 'components/partials/menu/interfaces/MenuItem'
 import {computed, ref} from 'vue'
 import Item from './Item.vue'
 import menuItems from 'components/partials/menu/menuItems'
-export default {
-  components: {
-    Item,
-  },
-  props: {
-    hideSearchInput: {
-      default: true,
-      required: false,
-      type: Boolean,
-    },
-  },
-  setup () {
-    const typedText = ref('')
 
-    const searchInLinks = (search:string, menuItems:MenuItem[]):MenuItem[] => {
-      search = search.toLowerCase().trim()
-
-      return menuItems.filter((menuItem:MenuItem):boolean=> {
-        return menuItem.title.toLowerCase().search(search) != -1 || menuItem.caption.toLowerCase().search(search) != -1
-      })
-    }
-
-    const visibleMenuItems = computed( () => {
-      if(!typedText.value) {
-        return menuItems
-      }
-
-      let menuItemsWithTypedText = {} as any
-
-      for (const [section, sectionItems] of Object.entries(menuItems)) {
-        menuItemsWithTypedText[section] = searchInLinks(typedText.value, sectionItems) as MenuItem[]
-      }
-
-      return menuItemsWithTypedText
-    })
-
-    return {
-      typedText,
-      visibleMenuItems,
-    }
-  },
+interface Props {
+  hideSearchInput?: boolean
 }
+
+withDefaults(defineProps<Props>(), {
+  hideSearchInput: true,
+})
+
+const typedText = ref('')
+
+const searchInLinks = (search:string, menuItems:MenuItem[]):MenuItem[] => {
+  search = search.toLowerCase().trim()
+
+  return menuItems.filter((menuItem:MenuItem):boolean=> {
+    return menuItem.title.toLowerCase().search(search) != -1 || menuItem.caption.toLowerCase().search(search) != -1
+  })
+}
+
+const visibleMenuItems = computed( () => {
+  if(!typedText.value) {
+    return menuItems
+  }
+
+  let menuItemsWithTypedText = {} as any
+
+  for (const [section, sectionItems] of Object.entries(menuItems)) {
+    menuItemsWithTypedText[section] = searchInLinks(typedText.value, sectionItems) as MenuItem[]
+  }
+
+  return menuItemsWithTypedText
+})
 </script>

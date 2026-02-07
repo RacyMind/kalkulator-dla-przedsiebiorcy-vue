@@ -1,6 +1,6 @@
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
 import {InvestmentResult} from 'components/investment/interfaces/InvestmentResult'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 /**
@@ -10,8 +10,9 @@ import helpers from 'src/logic/helpers'
  * @returns {InvestmentResult}
  */
 function getResult (input:InvestmentInputFields):InvestmentResult {
+  const constants = useConstantsStore()
   const grossAmount = helpers.round(input.amount * input.rate * input.monthCount / 12, 2)
-  const taxAmount = helpers.round(grossAmount * constants.TAX_RATES.BELKA_RATE / 100, 2)
+  const taxAmount = helpers.round(grossAmount * constants.taxRates.belkaRate / 100, 2)
   const netAmount = helpers.round(grossAmount - taxAmount,2)
 
   return {

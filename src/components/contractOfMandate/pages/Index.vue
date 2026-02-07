@@ -6,7 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <QTabs
-      ref="qtabs"
+      ref="scrollTarget"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -68,13 +68,12 @@
   </ModulePageLayout>
 </template>
 <script setup lang="ts">
-import {EventType, useEventStore} from 'stores/eventStore'
-import {QTabs} from 'quasar'
-import {Ref, computed, ref} from 'vue'
-import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
-import {useBreadcrumbStore} from 'stores/breadcrumbStore'
-import {useConstants} from 'src/composables/constants'
-import {useMandateContractStore} from 'components/contractOfMandate/store'
+import {checkTaxThresholdCrossing} from 'src/composables/useTaxThresholdNotification'
+import { QTabs } from 'quasar'
+import { computed, ref } from 'vue'
+import { lawRuleDateWatcher } from 'src/composables/lawRuleDate'
+import { useBreadcrumbStore } from 'stores/breadcrumbStore'
+import { useMandateContractStore } from 'components/contractOfMandate/store'
 import Advert from 'components/partials/Advert.vue'
 import EmployeeTabPanel from 'components/partials/tabPanel/EmployeeTabPanel.vue'
 import EmployerTabPanel from 'components/partials/tabPanel/EmployerTabPanel.vue'
@@ -82,7 +81,9 @@ import Form from 'components/contractOfMandate/components/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import SummaryTabPanel from 'components/partials/tabPanel/SummaryTabPanel.vue'
-import helpers from 'src/logic/helpers'
+import { useScrollToResults } from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 enum Tabs {
   Employee = 1,
@@ -94,8 +95,6 @@ const store = useMandateContractStore()
 store.monthlyInputFields = undefined
 
 const breadcrumbStore = useBreadcrumbStore()
-const eventStore = useEventStore()
-const { incomeTaxConstants } = useConstants()
 
 breadcrumbStore.items = [
   {
@@ -104,7 +103,6 @@ breadcrumbStore.items = [
 ]
 
 const tab = ref(Tabs.Summary)
-const qtabs:Ref<QTabs|null> = ref(null)
 
 const employeeResult = computed(() => store.employeeResult)
 const employerResult = computed(() => store.employerResult)
@@ -112,23 +110,8 @@ const employerResult = computed(() => store.employerResult)
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 
-  let sumUpTaxBasis = 0
-
-  try {
-    employeeResult.value?.monthlyResults.forEach((result, monthIndex) => {
-      sumUpTaxBasis += result.taxBasis
-
-      if (sumUpTaxBasis >= incomeTaxConstants.value.taxScale.taxThreshold) {
-        eventStore.events.push({
-          type: EventType.CrossingTaxThreshold,
-          sinceMonth: monthIndex,
-        })
-        throw new Error('Break the loop.')
-      }
-    })
-  } catch (error) {
-  }
+  checkTaxThresholdCrossing(employeeResult.value?.monthlyResults)
 }
 </script>

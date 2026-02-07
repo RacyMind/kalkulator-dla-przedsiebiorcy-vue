@@ -94,7 +94,8 @@
 <script setup lang="ts">
 
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -115,7 +116,7 @@ const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const settingStore = useSettingStore()
 const store = useUnregisteredCompanyStore()
-const { wageStats } = useConstants()
+const { wageStats } = storeToRefs(useConstantsStore())
 
 const revenue = useLocalStorage('unregisteredCompany/form/revenue', helpers.round(0.75 * wageStats.value.minimumWage()), { mergeDefaults: true })
 const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'unregisteredCompany/form/revenue')

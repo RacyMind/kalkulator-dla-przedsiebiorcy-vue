@@ -352,12 +352,13 @@
 
 <script setup lang="ts">
 import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {IncomeMode, InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
 import {getHourlyRevenue} from 'components/selfEmployment/logic/helpers'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -379,7 +380,7 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants, incomeTaxConstants } = useConstants()
+const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore())
 const store = useSelfEmploymentStore()
 
 const incomeTaxTypes = [

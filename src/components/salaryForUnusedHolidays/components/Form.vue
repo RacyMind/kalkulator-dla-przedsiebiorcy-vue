@@ -69,7 +69,8 @@
 </template>
 
 <script setup lang="ts">
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -85,7 +86,7 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const store = useSalaryForUnusedHolidayStore()
-const {wageStats} = useConstants()
+const {wageStats} = storeToRefs(useConstantsStore())
 
 const amount = useLocalStorage('salaryForUnusedHolidays/form/amount', wageStats.value.minimumWage, { mergeDefaults: true })
 const holidayHours = useLocalStorage('salaryForUnusedHolidays/form/holidayHours', 8 * 20, { mergeDefaults: true })

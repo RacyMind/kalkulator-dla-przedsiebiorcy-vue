@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import {computed} from 'vue'
-import {pln} from '../../../../use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
