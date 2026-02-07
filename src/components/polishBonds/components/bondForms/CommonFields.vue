@@ -37,8 +37,8 @@
     <div class="col">
       <q-toggle
         v-model="belkaTax"
-        checked-icon="check"
-        unchecked-icon="clear"
+        :checked-icon="matCheck"
+        :unchecked-icon="matClear"
         label="Podatek Belki"
       />
     </div>
@@ -50,6 +50,7 @@ import { useBondConstants } from '../../logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
 import helpers from 'src/logic/helpers'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const constants = useBondConstants()
 

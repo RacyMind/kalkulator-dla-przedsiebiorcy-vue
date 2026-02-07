@@ -23,7 +23,7 @@ export default defineConfig((ctx) => {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
-      publicPath: ctx.dev ? '' : 'app',
+      publicPath: ctx.dev ? '' : 'new',
       vueRouterMode: 'hash',
       typescript: {
         strict: true,
@@ -48,6 +48,17 @@ export default defineConfig((ctx) => {
               }
             },
           })
+        }
+
+        viteConf.build = viteConf.build || {}
+        viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
+        viteConf.build.rollupOptions.output = {
+          ...(viteConf.build.rollupOptions.output as object || {}),
+          manualChunks(id: string) {
+            if (id.includes('node_modules/quasar/')) return 'vendor-quasar'
+            if (id.includes('node_modules/vue') || id.includes('node_modules/pinia') || id.includes('node_modules/vue-router')) return 'vendor-vue'
+            if (id.includes('node_modules/chart.js') || id.includes('node_modules/vue-chartjs')) return 'vendor-charts'
+          },
         }
       },
     },
@@ -90,7 +101,6 @@ export default defineConfig((ctx) => {
       'roboto-font-latin-ext',
       'material-icons-outlined',
       'material-icons',
-      'mdi-v7',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -116,6 +126,32 @@ export default defineConfig((ctx) => {
       workboxOptions: {
         skipWaiting: true,
         clientsClaim: true,
+        runtimeCaching: [
+          {
+            urlPattern: /\.(?:woff2?|ttf|eot)$/,
+            handler: 'CacheFirst' as const,
+            options: {
+              cacheName: 'fonts',
+              expiration: { maxEntries: 20, maxAgeSeconds: 365 * 24 * 60 * 60 },
+            },
+          },
+          {
+            urlPattern: /\.(?:js|css)$/,
+            handler: 'StaleWhileRevalidate' as const,
+            options: {
+              cacheName: 'static-resources',
+              expiration: { maxEntries: 100, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
+          },
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
+            handler: 'CacheFirst' as const,
+            options: {
+              cacheName: 'images',
+              expiration: { maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
+          },
+        ],
       },
     },
 

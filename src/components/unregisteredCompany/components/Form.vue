@@ -29,8 +29,8 @@
         <div class="col">
           <q-toggle
             v-model="hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
           />
         </div>
@@ -71,8 +71,8 @@
         <div class="col">
           <q-toggle
             v-model="hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -107,6 +107,7 @@ import EachMonthAmountFields from 'components/partials/form/EachMonthAmountField
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import {matCheck, matClear} from 'src/icons'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import helpers from 'src/logic/helpers'
 

@@ -112,8 +112,8 @@
         <div class="col">
           <q-toggle
             v-model="deductLeave"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Odlicz urlop / zwolnienie"
           />
         </div>
@@ -143,8 +143,8 @@
         <div class="col">
           <q-toggle
             v-model="hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
             v-if="!isHourlyMode"
           />
@@ -174,8 +174,8 @@
         <div class="col">
           <q-toggle
             v-model="hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -211,8 +211,8 @@
         <div>
           <q-toggle
             v-model="hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
@@ -227,8 +227,8 @@
           <q-toggle
             v-model="hasTaxFreeAmount"
             label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
           />
         </div>
       </div>
@@ -238,8 +238,8 @@
         <div class="col">
           <q-toggle
             v-model="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
@@ -309,8 +309,8 @@
           <q-toggle
             v-model="isSickContribution"
             :disable="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -318,8 +318,8 @@
           <q-toggle
             v-model="isFpContribution"
             :disable="fpContributionIsDisabled"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -327,8 +327,8 @@
           <q-toggle
             v-model="zusRelief"
             :disable="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga na start"
           />
           <Tooltip class="q-ml-sm">
@@ -378,6 +378,7 @@ import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 

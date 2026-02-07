@@ -34,8 +34,8 @@
         <div class="col">
           <q-toggle
             v-model="contractWithEmployer"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Umowa z obecnym pracodawcą"
           />
         </div>
@@ -70,6 +70,7 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 

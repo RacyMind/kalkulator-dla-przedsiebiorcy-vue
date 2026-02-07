@@ -12,7 +12,7 @@
         ]">
         <template v-slot:append>
           <q-icon
-            name="event"
+            :name="matEvent"
             class="cursor-pointer">
           </q-icon>
         </template>
@@ -70,6 +70,7 @@ import {useRouter} from 'vue-router'
 import DatePopup from 'components/partials/DatePopup.vue'
 import npb from 'src/api/nbp'
 import validationRules from 'src/logic/validationRules'
+import {matEvent} from 'src/icons'
 
 const $q = useQuasar()
 const currencyRateStore = useCurrencyRateStore()
@@ -77,7 +78,7 @@ const router = useRouter()
 
 const columns = [
   {
-    align: 'left',
+    align: 'left' as const,
     field: (row: any) => row.currency,
     format: (val: string) => `${val}`,
     label: 'Waluty',
@@ -86,7 +87,7 @@ const columns = [
     style: 'max-width:130px; white-space: normal !important;word-wrap: break-word;',
   },
   {
-    align: 'left',
+    align: 'left' as const,
     field: (row: any) => row.code,
     format: (val: string) => `${val}`,
     label: 'Kod',
@@ -94,7 +95,7 @@ const columns = [
     required: true,
   },
   {
-    align: 'left',
+    align: 'left' as const,
     field: (row: any) => row.mid,
     format: (val: string) => `${val}`,
     label: 'Kurs średni',
@@ -126,9 +127,10 @@ watch(rateDate, () => {
   updateRates()
 })
 
-const openCurrency = (event:Event, row:any) => {
+const openCurrency = (_event:Event, row?:any) => {
+  const target = row ?? _event
   router.push({
-    path: `/kursy-walut/${row.code.toLowerCase()}`,
+    path: `/kursy-walut/${(target as any).code.toLowerCase()}`,
   })
 }
 

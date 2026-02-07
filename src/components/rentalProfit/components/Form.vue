@@ -136,8 +136,8 @@
         <div class="col-12">
           <q-toggle
             v-model="isSpouseSettlement"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Rozliczenie małżonków (próg 200 000 zł)"
           />
           <Tooltip>Zaznacz, jeśli składasz oświadczenie o opodatkowaniu całości przychodu z najmu u jednego z małżonków. Próg podwyższonej stawki rośnie do 200 000 zł</Tooltip>
@@ -157,6 +157,7 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 

@@ -13,7 +13,7 @@
           flat
           dense
           round
-          icon="menu"
+          :icon="matMenu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
@@ -32,7 +32,7 @@
               </router-link>
 
               <template v-if="breadcrumbStore.items.length">
-                <q-icon name="chevron_right"
+                <q-icon :name="matChevronRight"
                         class="q-mx-xs gt-xs" />
                 <q-breadcrumbs
                   active-color="white"
@@ -40,7 +40,7 @@
                   class="text-subtitle1 header-breadcrumbs"
                 >
                   <template v-slot:separator>
-                    <q-icon name="chevron_right" />
+                    <q-icon :name="matChevronRight" />
                   </template>
                   <q-breadcrumbs-el
                     v-for="item in breadcrumbStore.items"
@@ -94,7 +94,7 @@
             aria-label="Wesprzyj twórcę"
             @click="openModal = true"
           >
-            <q-icon name="o_favorite"
+            <q-icon :name="outlinedFavorite"
                     class="q-mr-sm" />
             Wesprzyj twórcę
           </q-btn>
@@ -136,6 +136,7 @@ import ScrollToTop from 'components/partials/ScrollToTop.vue'
 import {useConstantsStore} from 'stores/constantsStore'
 import {useTheme} from 'src/composables/useTheme'
 import {useRecentlyUsed} from 'src/composables/useRecentlyUsed'
+import {matMenu, matChevronRight, outlinedFavorite} from 'src/icons'
 
 const $q = useQuasar()
 const route = useRoute()

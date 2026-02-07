@@ -13,8 +13,8 @@
           <q-toggle
             v-model="isHourlyAmount"
             :disable="hasAmountForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Stawka godzinowa"
           />
         </div>
@@ -82,8 +82,8 @@
         <div class="col">
           <q-toggle
             v-model="hasAmountForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne wynagrodzenie w poszczególnych miesiącach"
           />
         </div>
@@ -98,8 +98,8 @@
         <div>
           <q-toggle
             v-model="hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
@@ -109,8 +109,8 @@
         <div>
           <q-toggle
             v-model="canLumpSumTaxBe"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Możliwy podatek zryczałtowany"
           />
           <Tooltip class="q-ml-sm">
@@ -188,6 +188,7 @@ import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vu
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 import helpers from 'src/logic/helpers'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 

@@ -18,8 +18,8 @@
         <div class="q-px-md q-py-sm">
           <q-toggle
             v-model="showAnnualResult"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Pokaż cały rok"
           />
         </div>
@@ -67,6 +67,7 @@ import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
 import {useUnregisteredCompanyStore} from 'components/unregisteredCompany/store'
+import {matCheck, matClear} from 'src/icons'
 import Advert from 'components/partials/Advert.vue'
 import Form from 'components/unregisteredCompany/components/Form.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'

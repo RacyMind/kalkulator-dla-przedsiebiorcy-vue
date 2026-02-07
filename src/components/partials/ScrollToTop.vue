@@ -5,7 +5,7 @@
       <q-btn
         v-show="visible"
         fab
-        icon="mdi-chevron-up"
+        :icon="mdiChevronUp"
         color="primary"
         aria-label="Powrót na górę"
         @click="scrollToTop"
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import {mdiChevronUp} from '@quasar/extras/mdi-v7'
 
 const visible = ref(false)
 const SCROLL_THRESHOLD = 300

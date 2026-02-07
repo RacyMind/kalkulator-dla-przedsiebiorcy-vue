@@ -14,7 +14,7 @@
         aria-required="true">
         <template v-slot:append>
           <q-icon
-            name="event"
+            :name="matEvent"
             class="cursor-pointer">
           </q-icon>
         </template>
@@ -34,6 +34,7 @@ import DatePopup from 'components/partials/DatePopup.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
+import {matEvent} from 'src/icons'
 
 const emit = defineEmits<{
   save: [input: VatLimitInputFields]

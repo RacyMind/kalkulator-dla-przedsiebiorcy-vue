@@ -74,8 +74,8 @@
         <div>
           <q-toggle
             v-model="isSickContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -83,8 +83,8 @@
           <q-toggle
             v-model="isFpContribution"
             :disable="chosenContributionBasis === ContributionBasises.Small"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -111,6 +111,7 @@ import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 

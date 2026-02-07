@@ -8,7 +8,7 @@
         unelevated
         @click="openModal = true">
         <q-icon
-          name="o_favorite"
+          :name="outlinedFavorite"
           class="q-mr-sm" />
         WESPRZYJ PROJEKT
       </q-btn>
@@ -34,6 +34,7 @@
 import {ref} from 'vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import logs from 'components/changeLogs/logs'
+import {outlinedFavorite} from 'src/icons'
 
 const openModal = ref(false)
 const currentYear = new Date().getFullYear()

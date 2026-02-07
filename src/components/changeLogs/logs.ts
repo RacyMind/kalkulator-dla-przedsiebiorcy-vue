@@ -1,6 +1,11 @@
 export default [
   {
-    content: '<ul><li>Dostępność WCAG AA — semantyczny HTML, nawigacja klawiaturą, atrybuty ARIA, weryfikacja kontrastu.</li><li>Dodano skip link „Przejdź do treści" dla nawigacji klawiaturą.</li><li>Dodano landmarki (main, nav, footer) i poprawiono hierarchię nagłówków.</li><li>Dodano aria-required na wymaganych polach formularzy.</li><li>Dodano aria-describedby łączące pola z komunikatami walidacji.</li><li>Dodano aria-expanded/aria-label na zwijanych sekcjach formularzy.</li><li>Dodano aria-label na przyciskach z ikonami i wykresach.</li><li>Dodano role=\"status\" na powiadomieniach o błędach walidacji.</li></ul>',
+    content: '<ul><li>Finalizacja wersji 6.4.0 — testy regresyjne, optymalizacja wydajności, synchronizacja wersji.</li><li>Dodano testy jednostkowe dla 8 kalkulatorów obligacji skarbowych (ROR, DOR, TOS, COI, EDO, ROS, ROD, OTS).</li><li>Zaktualizowano README z opisem projektu, listą modułów i stosem technologicznym.</li><li>Wyczyszczono nieużywany kod i zsynchronizowano wersję we wszystkich plikach konfiguracyjnych.</li></ul>',
+    publish_date: '2026-02-07',
+    version: '6.4.0',
+  },
+  {
+    content: '<ul><li>Dostępność WCAG AA — semantyczny HTML, nawigacja klawiaturą, atrybuty ARIA, weryfikacja kontrastu.</li><li>Dodano skip link „Przejdź do treści" dla nawigacji klawiaturą.</li><li>Dodano landmarki (main, nav, footer) i poprawiono hierarchię nagłówków.</li><li>Dodano aria-required na wymaganych polach formularzy.</li><li>Dodano aria-describedby łączące pola z komunikatami walidacji.</li><li>Dodano aria-expanded/aria-label na zwijanych sekcjach formularzy.</li><li>Dodano aria-label na przyciskach z ikonami i wykresach.</li><li>Dodano role="status" na powiadomieniach o błędach walidacji.</li></ul>',
     publish_date: '2026-02-15',
     version: '6.3.0',
   },
