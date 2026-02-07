@@ -8,8 +8,6 @@
       <Table/>
       <Advert/>
     </template>
-    <template #results>
-    </template>
   </ModulePageLayout>
 </template>
 

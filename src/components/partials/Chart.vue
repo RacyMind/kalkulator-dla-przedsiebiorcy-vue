@@ -1,13 +1,16 @@
 <template>
-  <component
-    :is="chartComponent"
-    :data="chartData"
-    :options="mergedOptions"
-    :width="400"
-  />
+  <div ref="chartContainer"
+       style="position: relative; width: 100%;">
+    <component
+      :is="chartComponent"
+      :key="containerWidth"
+      :data="chartData"
+      :options="mergedOptions"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
-import {computed} from 'vue'
+import {computed, ref, onMounted, onUnmounted} from 'vue'
 import {Dark} from 'quasar'
 import {Pie, Bar, Line, Doughnut} from 'vue-chartjs'
 import {
@@ -52,6 +55,27 @@ const props = defineProps({
   },
 })
 
+const chartContainer = ref<HTMLElement | null>(null)
+const containerWidth = ref(0)
+let resizeObserver: ResizeObserver | null = null
+
+onMounted(() => {
+  if (chartContainer.value) {
+    containerWidth.value = chartContainer.value.clientWidth
+    resizeObserver = new ResizeObserver((entries) => {
+      const w = Math.round(entries[0].contentRect.width)
+      if (Math.abs(w - containerWidth.value) > 20) {
+        containerWidth.value = w
+      }
+    })
+    resizeObserver.observe(chartContainer.value)
+  }
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+})
+
 const chartComponentMap: Record<string, any> = {
   pie: Pie,
   bar: Bar,
@@ -63,12 +87,27 @@ const chartComponent = computed(() => chartComponentMap[props.type] || Bar)
 
 const textColor = computed(() => Dark.isActive ? '#E0E0E0' : '#666666')
 
+const formatPln = (value: number) =>
+  value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
+
 const mergedOptions = computed(() => ({
   ...props.chartOptions,
   plugins: {
+    ...props.chartOptions?.plugins,
     legend: {
+      ...props.chartOptions?.plugins?.legend,
       labels: {
         color: textColor.value,
+      },
+    },
+    tooltip: {
+      ...props.chartOptions?.plugins?.tooltip,
+      callbacks: {
+        label: (context: any) => {
+          const label = context.label || ''
+          const raw = typeof context.parsed === 'number' ? context.parsed : (context.parsed?.y ?? context.raw)
+          return `${label}: ${formatPln(Number(raw))}`
+        },
       },
     },
   },

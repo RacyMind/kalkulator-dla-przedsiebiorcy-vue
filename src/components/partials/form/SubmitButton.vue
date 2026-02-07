@@ -4,12 +4,12 @@
       <div class="col-12">
         <q-btn
           type="submit"
-          class="full-width"
+          class="full-width submit-btn"
           color="primary"
-          size="md"
+          size="lg"
           label="Oblicz"
-          rounded
           unelevated
+          style="border-radius: var(--radius-md)"
           @click="eventStore.$reset()"
         />
       </div>

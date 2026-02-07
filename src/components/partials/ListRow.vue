@@ -10,7 +10,8 @@
       <q-item-label>{{ name }}</q-item-label>
     </q-item-section>
     <q-item-section v-if="inline"
-                    side>
+                    side
+                    style="color: inherit">
       <q-item-label>{{ value }}</q-item-label>
     </q-item-section>
 

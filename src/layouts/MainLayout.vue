@@ -1,5 +1,5 @@
 <template>
-  <q-layout :view="isDesktop ? 'lHh Lpr lFf' : 'lHh lpr lFf'">
+  <q-layout view="lHh Lpr lFf">
     <q-header
       class="bg-primary-brand"
       elevated
@@ -20,19 +20,20 @@
             <div class="row items-center">
               <router-link to="/"
                            class="text-white text-no-decoration row items-center">
-                <q-icon name="mdi-calculator"
-                        size="sm"
-                        class="q-mr-sm" />
+                <img src="~assets/app-icon-white.svg"
+                     alt=""
+                     style="width: 28px; height: 28px;"
+                     class="q-mr-sm" />
                 <span class="gt-xs">{{ constants.app.name }}</span>
               </router-link>
 
               <template v-if="breadcrumbStore.items.length">
                 <q-icon name="chevron_right"
-                        class="q-mx-xs" />
+                        class="q-mx-xs gt-xs" />
                 <q-breadcrumbs
                   active-color="white"
                   gutter="xs"
-                  class="text-subtitle1"
+                  class="text-subtitle1 header-breadcrumbs"
                 >
                   <template v-slot:separator>
                     <q-icon name="chevron_right" />
@@ -80,14 +81,14 @@
              style="border-top: 1px solid rgba(0,0,0,0.12)">
           <q-btn
             class="q-mb-sm"
-            color="teal-7"
+            color="red-7"
             rounded
             unelevated
             @click="openModal = true"
           >
-            <q-icon name="o_favorite_border"
+            <q-icon name="o_favorite"
                     class="q-mr-sm" />
-            Wesprzyj projekt
+            Wesprzyj twórcę
           </q-btn>
           <div class="text-caption text-grey q-mt-xs">
             v{{ constants.app.version }}
@@ -136,14 +137,16 @@ const openModal = ref(false)
 
 const isDesktop = computed(() => $q.screen.gt.md)
 
-watch(() => route.path, (path) => {
-  if (path !== '/' && breadcrumbStore.items.length) {
-    const lastBreadcrumb = breadcrumbStore.items[breadcrumbStore.items.length - 1]
-    addRecent(path, lastBreadcrumb.name)
-  }
-
+watch(() => route.path, () => {
   if (!isDesktop.value) {
     leftDrawerOpen.value = false
   }
 })
+
+watch(() => breadcrumbStore.items, (items) => {
+  if (route.path !== '/' && items.length) {
+    const lastBreadcrumb = items[items.length - 1]
+    addRecent(route.path, lastBreadcrumb.name)
+  }
+}, { deep: true })
 </script>

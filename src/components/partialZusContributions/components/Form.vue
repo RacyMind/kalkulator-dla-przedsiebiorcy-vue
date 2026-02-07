@@ -37,10 +37,10 @@
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-col-gutter-x-md">
-        <div class="col">
+        <div class="col-12 col-sm">
           <ZusContributionBasisSelect v-model="chosenContributionBasis"/>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="contributionBasis"
             :disable="chosenContributionBasis !== ContributionBasises.Custom"
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="row q-col-gutter-x-md q-mb-md">
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="accidentContributionRate"
             type="number"

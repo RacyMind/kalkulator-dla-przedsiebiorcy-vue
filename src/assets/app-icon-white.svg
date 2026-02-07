@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background rounded square (semi-transparent white) -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#FFFFFF" opacity="0.2"/>
+  <!-- Cross divider -->
+  <rect x="248" y="0" width="16" height="512" fill="#FFFFFF" opacity="0.15"/>
+  <rect x="0" y="248" width="512" height="16" fill="#FFFFFF" opacity="0.15"/>
+  <!-- Top-left: + symbol -->
+  <rect x="100" y="119" width="56" height="14" rx="7" fill="#FFFFFF"/>
+  <rect x="121" y="98" width="14" height="56" rx="7" fill="#FFFFFF"/>
+  <!-- Top-right: PIT text -->
+  <g fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="bold" font-size="52">
+    <text x="298" y="145">PIT</text>
+  </g>
+  <!-- Bottom-left: VAT text -->
+  <g fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="bold" font-size="52">
+    <text x="56" y="400">VAT</text>
+  </g>
+  <!-- Bottom-right: % symbol -->
+  <circle cx="350" cy="350" r="14" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="418" cy="418" r="14" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+  <rect x="342" y="378" width="110" height="6" rx="3" fill="#FFFFFF" transform="rotate(-45 397 381)"/>
+</svg>

@@ -42,9 +42,8 @@ breadcrumbStore.items = [
 ]
 
 const inputFields = ref(<VatLimitInputFields>{
-  startDate: null,
+  startDate: new Date(),
 })
-
 
 const save = (input: VatLimitInputFields) => {
   inputFields.value = input

@@ -1,63 +1,65 @@
 <template>
-  <q-card style="width: auto; max-width: 600px">
+  <q-card style="width: auto; max-width: 500px">
+    <q-card-section class="text-center q-pb-none">
+      <q-icon name="o_favorite"
+              size="32px"
+              color="red-7" />
+      <div class="text-h6 q-mt-xs">Wesprzyj projekt</div>
+    </q-card-section>
     <q-card-section>
       <p class="text-justify">
-        Cześć! Kalkulator finansowy rozwijam hobbystycznie w tak zwanych „po
-        godzinach”. W ramach projektu rozwijam swoją i Twoją wiedzę księgową. Jeżeli uważasz to narzędzie za
-        wartościowe, możesz wsesprzeć projekt na zrzutka.pl :)
+        Kalkulator finansowy rozwijam hobbystycznie po godzinach.
+        Jeżeli uważasz to narzędzie za wartościowe, możesz wesprzeć jego rozwój!
       </p>
-      <q-btn
-        label="Link do zrzutki"
-        no-caps
-        style="width: 75%;max-width:180px"
-        color="primary"
-        type="a"
-        href="https://zrzutka.pl/r4awyd"
-        class="q-mb-md q-mx-auto text-center block"
-        target="_blank"/>
-      <p class="text-justify">
-        Będzie mi miło jak udostępnisz kalkulator finansowy i pomożesz w jego promocji.
-      </p>
-      <div class="column items-center">
+      <div class="text-center q-mb-md">
         <q-btn
-          label="Facebook"
+          label="Wesprzyj na zrzutka.pl"
           no-caps
-          class="q-mb-sm"
-          style="width: 75%;max-width:180px"
+          style="width: 80%; max-width: 250px"
+          color="red-7"
+          unelevated
+          rounded
+          type="a"
+          href="https://zrzutka.pl/r4awyd"
+          target="_blank"/>
+      </div>
+      <q-separator class="q-my-md" />
+      <p class="text-justify text-caption q-mb-sm">
+        Możesz też pomóc udostępniając kalkulator:
+      </p>
+      <div class="row justify-center q-gutter-sm q-mb-md">
+        <q-btn
+          icon="mdi-facebook"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
           :href="`https://www.facebook.com/sharer/sharer.php?u=${url}`"
         />
         <q-btn
-          label="LinkedIn"
-          no-caps
-          class="q-mb-sm"
-          style="width: 75%;max-width:180px"
+          icon="mdi-linkedin"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
           :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.app.name}`"
         />
         <q-btn
-          label="Twitter"
-          no-caps
-          class="q-mb-md"
-          style="width: 75%;max-width:180px"
+          icon="mdi-twitter"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
           :href="`http://twitter.com/share?url=${url}&text=${constants.app.name}&hashtags=wynagrodzenie,finanse,kalkulator`"
         />
       </div>
-      <p  class="q-mb-none text-justify">
-        Jesteś programistą? Możesz wziąć aktywny udział w tworzeniu aplikacji. Zapraszam na <a href="https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue">GitHuba</a>.
-      </p>
-      <p  class="q-mb-none text-justify">
-        Dzięki za wsparcie! Kalkulator był, jest i będzie darmowy.
+      <p class="q-mb-none text-center text-caption">
+        Jesteś programistą? Zapraszam na <a href="https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue"
+                                            target="_blank">GitHuba</a>.<br>
+        Kalkulator był, jest i będzie darmowy.
       </p>
     </q-card-section>
   </q-card>

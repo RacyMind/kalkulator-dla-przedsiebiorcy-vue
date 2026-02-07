@@ -3,13 +3,10 @@
                     single-column>
     <template #form>
       <SectionHeader :level="2">
-        <q-icon name="o_insights"/>
         Wykres
       </SectionHeader>
       <Advert/>
       <PurchasingPowerOfMoneyStatistics/>
-    </template>
-    <template #results>
     </template>
   </ModulePageLayout>
 </template>

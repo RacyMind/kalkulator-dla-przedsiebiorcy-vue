@@ -1,5 +1,4 @@
 import {AvailableYear} from 'src/types/AvailableYear'
-import { scroll } from 'quasar'
 import {useConstantsStore} from 'stores/constantsStore'
 import {sumMonthlyResults} from 'src/logic/sumMonthlyResults'
 
@@ -9,11 +8,13 @@ import {sumMonthlyResults} from 'src/logic/sumMonthlyResults'
  * @param el
  */
 function scrollToElement (el:any) {
-  const { getScrollTarget, setVerticalScrollPosition } = scroll
-  const target = getScrollTarget(el)
-  const offset = el.offsetTop // do not subtract the el.scrollHeight here
-  const duration = 1000
-  setVerticalScrollPosition(target, offset, duration)
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  // If element is already visible in viewport, don't scroll
+  if (rect.top >= 0 && rect.top < window.innerHeight * 0.8) return
+  const headerOffset = 60
+  const elementPosition = rect.top + window.scrollY
+  window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' })
 }
 
 /**

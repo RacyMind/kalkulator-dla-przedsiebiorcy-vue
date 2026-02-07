@@ -27,8 +27,6 @@
         />
       </div>
     </template>
-    <template #results>
-    </template>
   </ModulePageLayout>
 </template>
 

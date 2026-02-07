@@ -14,7 +14,7 @@ export function useRecentlyUsed() {
   const recent = useLocalStorage<RecentModule[]>(STORAGE_KEY, [])
 
   const addRecent = (path: string, name: string) => {
-    const filtered = recent.value.filter(m => m.path !== path)
+    const filtered = recent.value.filter(m => m.path !== path && m.name !== name)
     filtered.unshift({ path, name, timestamp: Date.now() })
     recent.value = filtered.slice(0, MAX_RECENT)
   }

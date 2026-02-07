@@ -42,9 +42,8 @@ breadcrumbStore.items = [
 ]
 
 const inputFields = ref(<CashRegisterLimitInputFields>{
-  startDate: null,
+  startDate: new Date(),
 })
-
 
 const save = (input: CashRegisterLimitInputFields) => {
   inputFields.value = input

@@ -7,8 +7,6 @@
       </SectionHeader>
       <Form />
     </template>
-    <template #results>
-    </template>
   </ModulePageLayout>
 </template>
 

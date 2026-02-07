@@ -20,7 +20,6 @@
       </ListHeader>
       <EmployerResultList
         :result="monthlyResult" />
-      <Separator />
       <EmployerStatistics :result="monthlyResult" />
     </template>
   </div>
@@ -34,7 +33,6 @@ import AnnualEmployerResultList from 'components/partials/resultList/AnnualEmplo
 import EmployerResultList from 'components/partials/resultList/EmployerResultList.vue'
 import EmployerStatistics from 'components/partials/statistics/EmployerStatistics.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

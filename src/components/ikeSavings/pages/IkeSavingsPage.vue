@@ -13,13 +13,10 @@
         <IkeLimitWarning :result="store.result" />
         <ListHeader>Okres oszczędzania</ListHeader>
         <SavingsPeriodSection :result="store.result" />
-        <Separator />
         <ListHeader>Przewidywany kapitał</ListHeader>
         <CapitalSection :result="store.result" />
-        <Separator />
         <ListHeader>Oszczędność podatkowa</ListHeader>
         <TaxSavingSection :result="store.result" />
-        <Separator />
         <ListHeader>Emerytura</ListHeader>
         <PensionSection :result="store.result" />
       </div>
@@ -44,7 +41,6 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import PensionSection from '../components/results/PensionSection.vue'
 import SavingsPeriodSection from '../components/results/SavingsPeriodSection.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import TaxSavingSection from '../components/results/TaxSavingSection.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

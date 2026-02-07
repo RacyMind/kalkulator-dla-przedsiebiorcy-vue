@@ -38,7 +38,6 @@
             class="q-pa-md">
             Brak danych
           </div>
-          <Separator/>
           <Statistics v-if="store.jointResult" />
         </q-tab-panel>
         <q-tab-panel
@@ -84,7 +83,6 @@ import Form from 'components/accountingWithSpouse/components/Form.vue'
 import JointResultList from 'components/accountingWithSpouse/components/resultList/JointResultList.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import SpouseResultList from 'components/accountingWithSpouse/components/resultList/SpouseResultList.vue'
 import Statistics from 'components/accountingWithSpouse/components/Statistics.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'

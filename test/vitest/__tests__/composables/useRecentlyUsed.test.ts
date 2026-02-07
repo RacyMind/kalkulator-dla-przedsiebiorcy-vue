@@ -43,6 +43,17 @@ describe('useRecentlyUsed', () => {
     expect(recentModules.value[4].path).toBe('/b')
   })
 
+  it('deduplicates by name even with different path', () => {
+    const { recentModules, addRecent } = useRecentlyUsed()
+    addRecent('/limit-ewidencjonowania', 'Limit obrotu dla kasy fiskalnej')
+    addRecent('/faktura-vat', 'Faktura VAT')
+    addRecent('/limit-kasa-fiskalna', 'Limit obrotu dla kasy fiskalnej')
+    expect(recentModules.value).toHaveLength(2)
+    expect(recentModules.value[0].name).toBe('Limit obrotu dla kasy fiskalnej')
+    expect(recentModules.value[0].path).toBe('/limit-kasa-fiskalna')
+    expect(recentModules.value[1].name).toBe('Faktura VAT')
+  })
+
   it('orders by most recently added first', () => {
     const { recentModules, addRecent } = useRecentlyUsed()
     addRecent('/a', 'A')

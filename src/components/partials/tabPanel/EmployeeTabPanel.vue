@@ -22,7 +22,6 @@
         :result="monthlyResult"
         :month-index="0"
       />
-      <Separator />
       <EmployeeStatistics :result="monthlyResult" />
     </template>
   </div>
@@ -36,7 +35,6 @@ import AnnualEmployeeResultList from 'components/partials/resultList/AnnualEmplo
 import EmployeeResultList from 'components/partials/resultList/EmployeeResultList.vue'
 import EmployeeStatistics from 'components/partials/statistics/EmployeeStatistics.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

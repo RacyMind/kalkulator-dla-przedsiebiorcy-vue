@@ -29,7 +29,6 @@
           </ListHeader>
           <ResultList
             :result="store.result.annualResult" />
-          <Separator />
           <div
             v-for="(monthlyResult, index) in store.result.monthlyResults"
             :key="index">
@@ -38,7 +37,6 @@
             </ListHeader>
             <ResultList
               :result="monthlyResult" />
-            <Separator v-if="index < 11" />
           </div>
         </template>
         <template v-else>
@@ -50,7 +48,6 @@
           </ListHeader>
           <ResultList
             :result="store.result.monthlyResults[0]" />
-          <Separator />
           <Statistics
             :result="store.result.monthlyResults[0]" />
         </template>
@@ -76,7 +73,6 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/unregisteredCompany/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/unregisteredCompany/components/Statistics.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'

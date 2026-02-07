@@ -31,7 +31,6 @@
           class="q-pa-none">
           <template v-if="store.result">
             <AnnualResultList :result="store.result.annualResult" />
-            <Separator />
             <Statistics :result="store.result.annualResult" />
           </template>
           <div
@@ -53,7 +52,6 @@
               <MonthlyResultList
                 :result="monthlyResult"
                 :month="index" />
-              <Separator v-if="index < 11" />
             </div>
           </template>
           <div
@@ -84,7 +82,6 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyResultList from 'components/selfEmployment/components/MonthlyResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/selfEmployment/components/Statistics.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

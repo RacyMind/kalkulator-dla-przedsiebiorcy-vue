@@ -6,21 +6,11 @@
     :href="isExternalLink ? link: undefined"
     :to="!isExternalLink ? link : undefined"
     :class="className"
-    class="q-pa-none"
-    style="border-bottom: 1px solid white"
+    class="menu-item"
+    active-class="menu-item--active"
   >
-    <q-item-section
-      style="max-width:25px"
-    >
-      <div
-        class="s-bg bg-module"></div>
-    </q-item-section>
-
-    <q-item-section class="q-py-sm q-pr-sm">
+    <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -43,10 +33,3 @@ const props = withDefaults(defineProps<Props>(), {
 
 const isExternalLink = computed(() => props.link.includes('https://'))
 </script>
-<style lang="scss">
-.s-bg {
-  width: 100%;
-  height: 100%;
-  display: inline-block;
-}
-</style>

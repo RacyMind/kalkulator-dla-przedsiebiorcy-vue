@@ -1,31 +1,28 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="module-page module-page--padded">
     <div
       class="row q-col-gutter-md"
-      style="max-width: 1200px; margin: 0 auto;"
+      :style="containerStyle"
     >
       <div :class="formColumnClass">
-        <q-card flat
-                bordered
-                class="bg-surface"
-                style="border-radius: var(--radius-md)">
-          <q-card-section>
-            <slot name="form"></slot>
-          </q-card-section>
+        <q-card
+          flat
+          class="module-card module-card--padded"
+        >
+          <slot name="form"></slot>
         </q-card>
       </div>
-      <div :class="resultsColumnClass">
-        <q-card flat
-                bordered
-                class="bg-surface"
-                style="border-radius: var(--radius-md)">
-          <q-card-section>
-            <slot name="results"></slot>
-          </q-card-section>
+      <div v-if="$slots.results"
+           :class="resultsColumnClass">
+        <q-card
+          flat
+          class="module-card module-card--padded"
+        >
+          <slot name="results"></slot>
         </q-card>
       </div>
     </div>
-    <div style="max-width: 1200px; margin: 0 auto;">
+    <div :style="containerStyle">
       <Footer />
     </div>
   </q-page>
@@ -43,11 +40,17 @@ const props = withDefaults(defineProps<Props>(), {
   singleColumn: false,
 })
 
+const containerStyle = computed(() =>
+  props.singleColumn
+    ? 'max-width: 800px; margin: 0 auto;'
+    : 'max-width: 1400px; margin: 0 auto;',
+)
+
 const formColumnClass = computed(() =>
-  props.singleColumn ? 'col-12' : 'col-12 col-lg-5',
+  props.singleColumn ? 'col-12' : 'col-12 col-md-6',
 )
 
 const resultsColumnClass = computed(() =>
-  props.singleColumn ? 'col-12' : 'col-12 col-lg-7',
+  props.singleColumn ? 'col-12' : 'col-12 col-md-6',
 )
 </script>

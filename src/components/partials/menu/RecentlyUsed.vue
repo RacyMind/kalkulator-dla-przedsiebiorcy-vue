@@ -11,7 +11,8 @@
       :key="module.path"
       clickable
       :to="module.path"
-      class="q-pl-lg"
+      class="menu-item"
+      active-class="menu-item--active"
     >
       <q-item-section>
         <q-item-label>{{ module.name }}</q-item-label>

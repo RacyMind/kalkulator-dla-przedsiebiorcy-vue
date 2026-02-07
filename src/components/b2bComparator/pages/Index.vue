@@ -18,15 +18,12 @@
         <ListHeader>Skala podatkowa</ListHeader>
         <ResultList
           :result="store.taxScaleResult.annualResult" />
-        <Separator />
         <ListHeader>Podatek liniowy</ListHeader>
         <ResultList
           :result="store.flatTaxResult.annualResult" />
-        <Separator />
         <ListHeader>Podatek zryczałtowany</ListHeader>
         <ResultList
           :result="store.lumpSUmTaxResult.annualResult" />
-        <Separator />
         <Statistics
           :tax-scale="store.taxScaleResult.annualResult.income"
           :flat-tax="store.flatTaxResult.annualResult.income"
@@ -53,7 +50,6 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/b2bComparator/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components//b2bComparator/components/Statistics.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

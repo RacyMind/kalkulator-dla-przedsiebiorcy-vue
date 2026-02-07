@@ -1,7 +1,7 @@
 <template>
   <component
     :is="headingTag"
-    class="sectionHeader bg-brand q-py-xs q-px-md text-subtitle1 items-center q-my-none"
+    class="sectionHeader text-brand q-py-xs q-px-md text-subtitle1 q-my-none"
   >
     <slot />
   </component>

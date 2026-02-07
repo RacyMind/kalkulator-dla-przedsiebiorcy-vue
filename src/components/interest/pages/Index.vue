@@ -14,15 +14,19 @@
                      ref="scrollTarget">
         Podsumowanie
       </SectionHeader>
-      <Summary
-        :input="inputFields"
-      />
-      <SectionHeader :level="3">
-        Wykres
-      </SectionHeader>
-      <Statistics
-        :input="inputFields"
-      />
+      <template v-if="hasResult">
+        <Summary
+          :input="inputFields"
+        />
+        <Statistics
+          :input="inputFields"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
     </template>
   </ModulePageLayout>
 </template>
@@ -54,9 +58,11 @@ const inputFields = ref(<InterestInputFields>{
   rate: 0,
 })
 
+const hasResult = ref(false)
 
 const save = (input: InterestInputFields) => {
   inputFields.value = input
+  hasResult.value = true
   scrollToResults()
 }
 </script>

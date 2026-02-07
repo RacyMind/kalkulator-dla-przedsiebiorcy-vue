@@ -22,7 +22,7 @@
       <div
         v-if="isHourlyAmount"
         class="row items-center q-col-gutter-sm">
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="hourlyAmount"
             :autofocus="isHourlyAmount"
@@ -39,7 +39,7 @@
             lazy-rules="ondemand"
           />
         </div>
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="hourCount"
             :disable="hasAmountForEachMonth"

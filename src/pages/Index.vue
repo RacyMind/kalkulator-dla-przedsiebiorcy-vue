@@ -16,7 +16,7 @@
           </div>
           <div class="text-subtitle1 text-on-surface"
                style="color: var(--color-text-secondary)">
-            Kompleksowe narzędzia finansowe dla przedsiębiorców
+            Kompleksowe narzędzia finansowe dla każdego
           </div>
         </div>
       </div>
@@ -54,10 +54,14 @@
                 </div>
                 <div
                   v-if="item.caption"
-                  class="text-caption"
+                  class="text-caption q-mb-sm"
                   style="color: var(--color-text-secondary)"
                 >
                   {{ item.caption }}
+                </div>
+                <div class="text-caption text-weight-medium"
+                     style="color: var(--q-primary)">
+                  Przejdź →
                 </div>
               </q-card-section>
             </q-card>

@@ -10,6 +10,8 @@ export interface ChartColors {
   chart6: string
   chart7: string
   chart8: string
+  chart9: string
+  chart10: string
 }
 
 export interface ModuleColors {
@@ -23,13 +25,15 @@ export interface ModuleColors {
 
 const FALLBACK_CHART: ChartColors = {
   chart1: '#1565C0',
-  chart2: '#E65100',
+  chart2: '#FF6F00',
   chart3: '#2E7D32',
-  chart4: '#7B1FA2',
+  chart4: '#8E24AA',
   chart5: '#00897B',
-  chart6: '#C62828',
-  chart7: '#0277BD',
-  chart8: '#827717',
+  chart6: '#D32F2F',
+  chart7: '#F9A825',
+  chart8: '#5D4037',
+  chart9: '#C2185B',
+  chart10: '#546E7A',
 }
 
 const FALLBACK_MODULE: ModuleColors = {
@@ -59,6 +63,8 @@ function readChartColors(): ChartColors {
     chart6: getCssVar('--chart-6', FALLBACK_CHART.chart6),
     chart7: getCssVar('--chart-7', FALLBACK_CHART.chart7),
     chart8: getCssVar('--chart-8', FALLBACK_CHART.chart8),
+    chart9: getCssVar('--chart-9', FALLBACK_CHART.chart9),
+    chart10: getCssVar('--chart-10', FALLBACK_CHART.chart10),
   }
 }
 
