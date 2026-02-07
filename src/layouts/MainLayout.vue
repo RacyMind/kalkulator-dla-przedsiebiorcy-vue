@@ -1,5 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <a href="#main-content"
+       class="skip-to-content">Przejdź do treści</a>
     <q-header
       class="bg-primary-brand"
       elevated
@@ -7,6 +9,7 @@
       <q-toolbar>
         <q-btn
           v-if="!isDesktop"
+          ref="hamburgerRef"
           flat
           dense
           round
@@ -19,7 +22,8 @@
           <div class="row justify-between items-center">
             <div class="row items-center">
               <router-link to="/"
-                           class="text-white text-no-decoration row items-center">
+                           class="text-white text-no-decoration row items-center"
+                           :aria-label="constants.app.name + ' — strona główna'">
                 <img src="~assets/app-icon-white.svg"
                      alt=""
                      style="width: 28px; height: 28px;"
@@ -70,20 +74,24 @@
       :breakpoint="0"
       bordered
       content-class="bg-surface-variant"
+      aria-label="Panel boczny"
       @update:model-value="val => leftDrawerOpen = val"
     >
       <q-scroll-area class="fit">
-        <q-list>
-          <Menu :hide-search-input="false" />
-        </q-list>
+        <nav aria-label="Menu główne">
+          <q-list>
+            <Menu :hide-search-input="false" />
+          </q-list>
+        </nav>
 
-        <div class="text-center q-py-md"
-             style="border-top: 1px solid rgba(0,0,0,0.12)">
+        <footer class="text-center q-py-md"
+                style="border-top: 1px solid rgba(0,0,0,0.12)">
           <q-btn
             class="q-mb-sm"
             color="red-7"
             rounded
             unelevated
+            aria-label="Wesprzyj twórcę"
             @click="openModal = true"
           >
             <q-icon name="o_favorite"
@@ -93,7 +101,7 @@
           <div class="text-caption text-grey q-mt-xs">
             v{{ constants.app.version }}
           </div>
-        </div>
+        </footer>
       </q-scroll-area>
 
       <q-dialog v-model="openModal">
@@ -102,13 +110,17 @@
     </q-drawer>
 
     <q-page-container class="bg-surface-variant">
-      <router-view v-slot="{ Component }">
-        <transition name="fade-scale"
-                    mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-      <ScrollToTop />
+      <main id="main-content"
+            tabindex="-1">
+        <h1 class="sr-only">{{ breadcrumbStore.items.length ? breadcrumbStore.items[breadcrumbStore.items.length - 1].name : constants.app.name }}</h1>
+        <router-view v-slot="{ Component }">
+          <transition name="fade-scale"
+                      mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+        <ScrollToTop />
+      </main>
     </q-page-container>
   </q-layout>
 </template>
@@ -134,12 +146,19 @@ const {addRecent} = useRecentlyUsed()
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)
 const openModal = ref(false)
+const hamburgerRef = ref<InstanceType<typeof import('quasar').QBtn> | null>(null)
 
 const isDesktop = computed(() => $q.screen.gt.md)
 
 watch(() => route.path, () => {
   if (!isDesktop.value) {
     leftDrawerOpen.value = false
+  }
+})
+
+watch(leftDrawerOpen, (newVal, oldVal) => {
+  if (!newVal && oldVal && !isDesktop.value) {
+    hamburgerRef.value?.$el?.focus()
   }
 })
 

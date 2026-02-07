@@ -16,6 +16,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>Czysty czynsz najmu, bez opłat za media i czynsz administracyjny</Tooltip>
@@ -36,6 +37,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>Twoje wydatki jako wynajmującego (ubezpieczenie, naprawy, kredyt). NIE zmniejszają podatku ryczałtowego, ale wpływają na realny zysk netto</Tooltip>
@@ -56,6 +58,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>Kwoty, które najemca Ci płaci, a Ty przekazujesz dalej (spółdzielnia, dostawcy mediów). Zmniejszają przychód do opodatkowania ryczałtem</Tooltip>
@@ -78,6 +81,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(1), validationRules.maxValue(30)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>Na ile lat chcesz zobaczyć projekcję zysku z najmu</Tooltip>
@@ -98,6 +102,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(12)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>Ile miesięcy w roku przewidujesz bez najemcy. Przychód zmniejsza się proporcjonalnie, koszty utrzymania pozostają</Tooltip>
@@ -119,6 +124,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(100)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           >
             <template #append>
               <Tooltip>O ile procent rocznie planujesz podnosić czynsz. Stosowane w projekcji wieloletniej</Tooltip>

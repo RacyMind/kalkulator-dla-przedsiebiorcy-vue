@@ -55,6 +55,7 @@
             color="brand"
             :rules="[(val) => validationRules.requiredAmount(val) || true]"
             lazy-rules="ondemand"
+            aria-required="true"
             v-if="!isHourlyMode"
           />
           <q-input
@@ -84,6 +85,7 @@
               (val) => validationRules.minValue(0)(val) || true,
             ]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm">
@@ -100,6 +102,7 @@
               (val) => validationRules.minValue(0)(val) || true,
             ]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -267,6 +270,7 @@
               val => !!val || '* Wpisz kwotę',
             ]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>

@@ -70,6 +70,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>
@@ -87,6 +88,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(currentIkzeLimit)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>

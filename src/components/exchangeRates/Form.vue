@@ -15,7 +15,8 @@
               validationRules.required,
             ]"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
                 name="event"
@@ -37,7 +38,8 @@
               validationRules.required,
             ]"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
                 name="event"

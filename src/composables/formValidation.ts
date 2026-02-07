@@ -5,6 +5,7 @@ export const useFormValidation = () => {
     Notify.create({
       color: 'negative',
       message: 'Formularz zawiera błędy.',
+      attrs: { role: 'status' },
     })
   }
 

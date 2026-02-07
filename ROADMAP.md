@@ -339,51 +339,52 @@ Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale 
 
 ---
 
-## Milestone 5 - Accessibility (WCAG AA)
+## Milestone 5 - Accessibility (WCAG AA) ✅
 
+> **Status: UKOŃCZONY** (2026-02-07, branch `014-wcag-accessibility`)
 > Cel: Doprowadzić aplikację do zgodności z WCAG 2.1 na poziomie AA.
 
-### 5.1 Semantyczny HTML
+### 5.1 Semantyczny HTML ✅
 
-- [ ] `SectionHeader.vue` - zamienić `<div>` na odpowiedni heading (`<h2>`, `<h3>`) z prop `level`
-- [ ] `ListRow.vue` - użyć `<dl>` (definition list) lub `<table>` z `role` dla listy wyników
-- [ ] Menu sekcji - zamienić `<h6>` na semantyczne `<h2>`/`<h3>` z odpowiednią hierarchią
-- [ ] Dodać `<main>`, `<nav>`, `<aside>`, `<header>`, `<footer>` landmarks
-- [ ] Dodać `<section>` z `aria-labelledby` do każdej sekcji formularza
+- [x] `SectionHeader.vue` - zamienić `<div>` na odpowiedni heading (`<h2>`, `<h3>`) z prop `level`
+- [x] `ListRow.vue` - użyć `<dl>` (definition list) lub `<table>` z `role` dla listy wyników
+- [x] Menu sekcji - zamienić `<h6>` na semantyczne `<h2>`/`<h3>` z odpowiednią hierarchią
+- [x] Dodać `<main>`, `<nav>`, `<aside>`, `<header>`, `<footer>` landmarks
+- [x] Dodać `<section>` z `aria-labelledby` do każdej sekcji formularza
 
-### 5.2 Nawigacja klawiaturą
+### 5.2 Nawigacja klawiaturą ✅
 
-- [ ] Dodać `skip-to-content` link na początku strony
-- [ ] Upewnić się, że tab order jest logiczny we wszystkich formularzach
-- [ ] Dodać wyraźny focus ring (`:focus-visible`) na wszystkich interaktywnych elementach
-- [ ] Upewnić się, że drawer menu jest dostępny klawiaturą (Escape zamyka)
-- [ ] Upewnić się, że custom toggles/selects w formularzach obsługują klawiaturę
+- [x] Dodać `skip-to-content` link na początku strony
+- [x] Upewnić się, że tab order jest logiczny we wszystkich formularzach
+- [x] Dodać wyraźny focus ring (`:focus-visible`) na wszystkich interaktywnych elementach
+- [x] Upewnić się, że drawer menu jest dostępny klawiaturą (Escape zamyka)
+- [x] Upewnić się, że custom toggles/selects w formularzach obsługują klawiaturę
 
-### 5.3 Atrybuty ARIA
+### 5.3 Atrybuty ARIA ✅
 
-- [ ] Dodać `aria-label` do przycisków z ikonami (hamburger menu, toggle theme, expand/collapse)
-- [ ] Dodać `aria-expanded` do `FormSection.vue` i elementów zwijanych
-- [ ] Dodać `aria-live="polite"` do sekcji wyników (aktualizacja po obliczeniu)
-- [ ] Dodać `aria-describedby` do pól formularzy z walidacją
-- [ ] Dodać `role="status"` do powiadomień
+- [x] Dodać `aria-label` do przycisków z ikonami (hamburger menu, toggle theme, expand/collapse)
+- [x] Dodać `aria-expanded` do `FormSection.vue` i elementów zwijanych
+- [x] Dodać `aria-live="polite"` do sekcji wyników (aktualizacja po obliczeniu)
+- [x] Dodać `aria-describedby` do pól formularzy z walidacją
+- [x] Dodać `role="status"` do powiadomień
 
-### 5.4 Weryfikacja końcowa kontrastu kolorów
+### 5.4 Weryfikacja końcowa kontrastu kolorów ✅
 
 > Kontrast WCAG AA został uwzględniony przy projektowaniu palety (sekcja 2.6). Tutaj wykonujemy końcowy audyt automatyczny na gotowym UI.
 
-- [ ] Uruchomić axe-core / Lighthouse accessibility audit na wersji produkcyjnej
-- [ ] Zweryfikować automatycznie wykryte problemy kontrastowe i naprawić je w `_design-tokens.scss`
-- [ ] Zweryfikować kontrast w dark mode (axe-core z włączonym dark mode)
-- [ ] Sprawdzić `SectionHeader` — biały tekst na kolorowym tle (powinien być OK po sekcji 2.6, ale potwierdzić)
-- [ ] Udokumentować wyniki audytu (score Lighthouse Accessibility)
+- [x] Uruchomić axe-core / Lighthouse accessibility audit na wersji produkcyjnej
+- [x] Zweryfikować automatycznie wykryte problemy kontrastowe i naprawić je w `_design-tokens.scss`
+- [x] Zweryfikować kontrast w dark mode (axe-core z włączonym dark mode)
+- [x] Sprawdzić `SectionHeader` — biały tekst na kolorowym tle (powinien być OK po sekcji 2.6, ale potwierdzić)
+- [x] Udokumentować wyniki audytu (score Lighthouse Accessibility)
 
-### 5.5 Formularze dostępne
+### 5.5 Formularze dostępne ✅
 
-- [ ] Upewnić się, że każdy `q-input` ma `label` (nie placeholder jako label)
-- [ ] Dodać `aria-required="true"` do wymaganych pól
-- [ ] Upewnić się, że komunikaty walidacji są powiązane z polami przez `aria-describedby`
-- [ ] Dodać `autocomplete` atrybuty gdzie odpowiednie
-- [ ] Przetestować formularze z czytnikiem ekranowym (NVDA lub VoiceOver)
+- [x] Upewnić się, że każdy `q-input` ma `label` (nie placeholder jako label)
+- [x] Dodać `aria-required="true"` do wymaganych pól
+- [x] Upewnić się, że komunikaty walidacji są powiązane z polami przez `aria-describedby`
+- [x] Dodać `autocomplete` atrybuty gdzie odpowiednie
+- [x] Przetestować formularze z czytnikiem ekranowym (NVDA lub VoiceOver)
 
 ---
 

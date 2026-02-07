@@ -16,6 +16,7 @@
             :rules="[validationRules.requiredAmount]"
             hide-bottom-space
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -42,6 +43,7 @@
             hide-bottom-space
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>

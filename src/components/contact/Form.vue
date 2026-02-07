@@ -14,6 +14,7 @@
             :rules="[validationRules.required, validationRules.email]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-md-6">
@@ -46,6 +47,7 @@
         :rules="[validationRules.required]"
         lazy-rules="ondemand"
         hide-bottom-space
+        aria-required="true"
       />
     </FormSection>
     <div class="full-width bg-surface q-pa-md text-grey text-caption">

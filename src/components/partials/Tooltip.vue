@@ -5,7 +5,8 @@
     size="sm"
     padding="none"
     :color="props.color"
-    :icon="props.icon">
+    :icon="props.icon"
+    aria-label="Pomoc">
     <q-tooltip
       anchor="top middle"
       self="bottom middle"

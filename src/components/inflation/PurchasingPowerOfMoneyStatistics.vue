@@ -14,6 +14,7 @@
           color="brand"
           :rules="[validationRules.requiredAmount]"
           lazy-rules
+          aria-required="true"
         />
       </div>
       <div class="col-12 col-md-6 q-pl-md-sm">

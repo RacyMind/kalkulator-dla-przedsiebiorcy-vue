@@ -11,6 +11,8 @@
           rounded
           padding="xs"
           color="primary"
+          :aria-expanded="visible"
+          :aria-label="'Przełącz sekcję: ' + props.title"
           @click="visible = !visible">
           <q-icon
             v-if="visible"

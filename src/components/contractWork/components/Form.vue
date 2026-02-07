@@ -21,6 +21,7 @@
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <AmountTypeSelect

@@ -20,6 +20,7 @@
             color="brand"
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -32,6 +33,7 @@
             color="brand"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -47,6 +49,7 @@
             color="brand"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -60,6 +63,7 @@
             label="Wymiar czasu pracy"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>

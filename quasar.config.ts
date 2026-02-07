@@ -13,6 +13,7 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
       'google-analytics',
+      'aria-describedby',
       ...('capacitor' in ctx.mode ? ['admob'] : []),
     ],
 
