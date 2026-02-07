@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!isNativePlatform"
-    class="text-center bg-teal-1 q-py-md q-px-sm">
+    class="text-center bg-surface-variant q-py-md q-px-sm">
     <TaxDonation v-if="isTaxDonationTimeFrame() && Math.random() < 0.5" />
     <Donate v-else />
   </div>

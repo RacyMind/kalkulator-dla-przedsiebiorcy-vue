@@ -6,7 +6,7 @@
       :inline="false"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Wpłata podatku VAT"
       value="do 25. dnia miesiąca"
       :inline="false"
@@ -17,7 +17,7 @@
       :inline="false"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Rozliczenie PIT"
       value="do 30. kwietnia. W przypadku, gdy termin nie jest dniem roboczym termin zostaje przeniesiony na najbliższy dzień roboczy"
       :inline="false"

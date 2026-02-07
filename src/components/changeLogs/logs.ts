@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Dodano tryb ciemny (dark mode) z trzema opcjami: jasny, ciemny i automatyczny (zgodny z ustawieniami systemu).</li><li>Przycisk przełączania motywu w pasku nawigacji.</li><li>Wykresy automatycznie dostosowują kolory do wybranego motywu.</li><li>Zapobieganie migotaniu strony (FOUC) przy ładowaniu w trybie ciemnym.</li></ul>',
+    publish_date: '2026-02-07',
+    version: '6.1.0',
+  },
+  {
     content: '<ul><li>Refaktoryzacja kodu: migracja na Pinia, ujednolicenie systemu stałych, deduplikacja logiki (findGross, scrollToResults, taxThreshold), nowa paleta kolorów z tokenami CSS (light/dark mode), usunięcie katalogu src/use/.</li></ul>',
     publish_date: '2026-01-26',
     version: '6.0.0',

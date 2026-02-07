@@ -3,7 +3,7 @@
     class="q-py-md full-width"
     style="max-width:800px;"
   >
-    <div class="full-width bg-white">
+    <div class="full-width bg-surface">
       <slot></slot>
     </div>
     <Footer/>

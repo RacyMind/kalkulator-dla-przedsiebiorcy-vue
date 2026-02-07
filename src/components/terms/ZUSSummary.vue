@@ -6,7 +6,7 @@
       :inline="false"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Wpłata składek - dla płatników posiadających osobowość prawną"
       value="do 15. dnia następnego miesiąca"
       :inline="false"

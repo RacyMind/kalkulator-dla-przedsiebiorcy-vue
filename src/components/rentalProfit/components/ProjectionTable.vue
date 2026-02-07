@@ -28,7 +28,7 @@
         </tr>
       </tbody>
       <tfoot>
-        <tr class="text-bold bg-grey-2">
+        <tr class="text-bold bg-surface-elevated">
           <td class="text-left">Razem</td>
           <td class="text-right">{{ pln(props.result.summary.totalGrossRevenue) }}</td>
           <td class="text-right">{{ pln(props.result.summary.totalTax) }}</td>
