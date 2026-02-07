@@ -12,12 +12,18 @@
   </q-card>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
+interface LogEntry {
+  version: string
+  publish_date: string
+  content: string
+}
 
-export default defineComponent({
-  props: ['log'],
-})
+interface Props {
+  log: LogEntry
+}
+
+defineProps<Props>()
 </script>
 
 <style>

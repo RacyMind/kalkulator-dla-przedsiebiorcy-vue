@@ -63,20 +63,12 @@
   </q-card>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import constants from 'src/logic/constants'
+<script setup lang="ts">
+import {useConstantsStore} from 'stores/constantsStore'
 import ga from '../../logic/analytics'
 
-export default defineComponent({
-  setup() {
-    const url = 'https://kalkulatorfinansowy.app'
-    ga.logEvent('Modal', 'Open', 'Wsparcie')
+const constants = useConstantsStore()
 
-    return {
-      constants,
-      url,
-    }
-  },
-})
+const url = 'https://kalkulatorfinansowy.app'
+ga.logEvent('Modal', 'Open', 'Wsparcie')
 </script>

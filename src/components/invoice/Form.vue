@@ -45,71 +45,53 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {AmountType} from 'src/types/AmountType'
-import { InvoiceInputFields } from './interfaces/InvoiceInputFields'
+import {InvoiceInputFields} from './interfaces/InvoiceInputFields'
 import {VatTaxRate} from 'src/types/VatTaxRate'
-import {computed, defineComponent, ref} from 'vue'
+import {ref} from 'vue'
 import {useFormValidation} from 'src/composables/formValidation'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import validationRules from 'src/logic/validationRules'
 
-export default defineComponent({
-  components: {
-    FormSection,
-    SubmitButton,
+const constants = useConstantsStore()
+
+const emit = defineEmits<{
+  save: [input: InvoiceInputFields]
+}>()
+
+const {handleValidationError} = useFormValidation()
+const vatTaxRates = [
+  {
+    label: '0%',
+    value: 0,
   },
-  setup(props, context) {
-    const {handleValidationError} = useFormValidation()
-    const vatTaxRates = [
-      {
-        label: '0%',
-        value: 0,
-      },
-      {
-        label: '5%',
-        value: 0.05,
-      },
-      {
-        label: '8%',
-        value: 0.08,
-      },
-      {
-        label: '23%',
-        value: 0.23,
-      },
-    ]
-
-    const amount = ref(null)
-    const amountType = ref(constants.AMOUNT_TYPES.NET)
-    const taxRate = ref(vatTaxRates[vatTaxRates.length - 1])
-
-    const isDisabledButton = computed(() => {
-      return !amount.value || taxRate.value === null
-    })
-
-    const save = () => {
-      const input: InvoiceInputFields = {
-        amount: Number(amount.value),
-        amountType: amountType.value as AmountType,
-        taxRate: taxRate.value.value as VatTaxRate,
-      }
-      context.emit('save', input)
-    }
-
-    return {
-      amount,
-      amountType,
-      constants,
-      handleValidationError,
-      isDisabledButton,
-      save,
-      taxRate,
-      validationRules,
-      vatTaxRates,
-    }
+  {
+    label: '5%',
+    value: 0.05,
   },
-})
+  {
+    label: '8%',
+    value: 0.08,
+  },
+  {
+    label: '23%',
+    value: 0.23,
+  },
+]
+
+const amount = ref<number | null>(null)
+const amountType = ref(constants.AMOUNT_TYPES.NET)
+const taxRate = ref(vatTaxRates[vatTaxRates.length - 1])
+
+const save = () => {
+  const input: InvoiceInputFields = {
+    amount: Number(amount.value),
+    amountType: amountType.value as AmountType,
+    taxRate: taxRate.value.value as VatTaxRate,
+  }
+  emit('save', input)
+}
 </script>

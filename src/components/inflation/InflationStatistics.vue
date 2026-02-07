@@ -33,13 +33,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
-import {computed, defineComponent, ref, watch} from 'vue'
-import {useLineChart} from 'src/use/useLineChart'
+import {computed, ref, watch} from 'vue'
+import {useLineChart} from 'src/composables/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import inflation from './inflation'
+
+const constants = useConstantsStore()
 
 const chartOptions = {
   legend: {
@@ -61,70 +63,53 @@ const chartOptions = {
   },
 }
 
-export default defineComponent({
-  components: {
-    LineChart,
+const currentYear = new Date().getFullYear()
+const availableYears = [
+  {
+    label: 'Ostatnie 5 lat',
+    value: currentYear - 5,
   },
-  setup () {
-    const currentYear = new Date().getFullYear()
-    const availableYears = [
-      {
-        label: 'Ostatnie 5 lat',
-        value: currentYear - 5,
-      },
-      {
-        label: 'Ostatnie 10 lat',
-        value: currentYear - 10,
-      },
-      {
-        label: 'Ostatnie 20 lat',
-        value: currentYear - 20,
-      },
-    ]
-    const year = ref(availableYears[0].value)
-    const loading = ref(false)
-    const labels = ref([])
-    const values = ref([])
+  {
+    label: 'Ostatnie 10 lat',
+    value: currentYear - 10,
+  },
+  {
+    label: 'Ostatnie 20 lat',
+    value: currentYear - 20,
+  },
+]
+const year = ref(availableYears[0].value)
+const loading = ref(false)
+const labels = ref<string[]>([])
+const values = ref<Array<{x: Date, y: number}>>([])
 
-    const chartData = computed(() => useLineChart(
-        'Inflacja',
-        labels.value,
-        values.value,
-      ),
-    )
+const chartData = computed(() => useLineChart(
+    'Inflacja',
+    labels.value,
+    values.value,
+  ),
+)
 
-    const fetchData = () => {
-      loading.value = true
-      inflation.fetchInflationRates(year.value).then(response => {
-        labels.value = response.map((data: InflationEntry) => {
-          return `${constants.LOCALE_DATE.months[data.month - 1]} ${data.year}`
-        })
-        values.value = response.map((data: InflationEntry) => {
-          return {
-            x: new Date(`${data.year}-${data.month}-01`),
-            y: data.value,
-          }
-        })
-      }).finally(() => {
-        loading.value = false
-      })
-    }
-
-    fetchData()
-
-    watch(year, () => {
-      fetchData()
+const fetchData = () => {
+  loading.value = true
+  inflation.fetchInflationRates(year.value).then((response: InflationEntry[]) => {
+    labels.value = response.map((data: InflationEntry) => {
+      return `${constants.LOCALE_DATE.months[data.month - 1]} ${data.year}`
     })
+    values.value = response.map((data: InflationEntry) => {
+      return {
+        x: new Date(`${data.year}-${data.month}-01`),
+        y: data.value,
+      }
+    })
+  }).finally(() => {
+    loading.value = false
+  })
+}
 
-    return {
-      availableYears,
-      chartData,
-      chartOptions,
-      labels,
-      loading,
-      values,
-      year,
-    }
-  },
+fetchData()
+
+watch(year, () => {
+  fetchData()
 })
 </script>

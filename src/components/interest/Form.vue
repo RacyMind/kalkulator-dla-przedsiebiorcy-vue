@@ -101,100 +101,77 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {computed, defineComponent, ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {differenceInDays, parse} from 'date-fns'
 import {useFormValidation} from 'src/composables/formValidation'
 import DatePopup from 'components/partials/DatePopup.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import validationRules from 'src/logic/validationRules'
 
-export default defineComponent({
-  components: {
-    DatePopup,
-    FormSection,
-    SubmitButton,
-  },
-  setup(props, context) {
-    const {handleValidationError} = useFormValidation()
-    const amount = ref(null)
-    const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
+const constants = useConstantsStore()
 
-    const startDate = ref('')
-    const endDate = ref('')
+const emit = defineEmits<{
+  save: [input: InterestInputFields]
+}>()
 
-    const isBasicCapitalRate = ref(true)
-    const isBasicLateRate = ref(false)
+const {handleValidationError} = useFormValidation()
+const amount = ref<number | null>(null)
+const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
 
-    const formattedStartDate = computed( () => {
-      return parse(
-        startDate.value,
-        'dd.MM.yyyy',
-        new Date(),
-      )
-    })
+const startDate = ref('')
+const endDate = ref('')
 
-    const formattedEndDate = computed( () => {
-      return parse(
-        endDate.value,
-        'dd.MM.yyyy',
-        new Date(),
-      )
-    })
+const isBasicCapitalRate = ref(true)
+const isBasicLateRate = ref(false)
 
-    watch(isBasicCapitalRate, () => {
-      if(isBasicCapitalRate.value) {
-        isBasicLateRate.value = false
-        rate.value = constants.BASIC_CAPITAL_INTEREST_RATE
-      }
-    })
-
-    watch(isBasicLateRate, () => {
-      if(isBasicLateRate.value) {
-        isBasicCapitalRate.value = false
-        rate.value = constants.BASIC_LATE_INTEREST_RATE
-      }
-    })
-
-    watch(rate, () => {
-      isBasicCapitalRate.value = rate.value === constants.BASIC_CAPITAL_INTEREST_RATE
-      isBasicLateRate.value = rate.value === constants.BASIC_LATE_INTEREST_RATE
-    })
-
-    const isDisabledButton = computed(() => {
-      if(!amount.value || !rate.value || !startDate.value || !endDate.value) {
-        return true
-      }
-      return formattedStartDate.value >= formattedEndDate.value
-    })
-
-    const save = () => {
-      const input: InterestInputFields = {
-        amount: Number(amount.value),
-        dayCount: differenceInDays(
-          new Date(formattedEndDate.value),
-          new Date(formattedStartDate.value),
-        ),
-        rate: Number(rate.value) / 100,
-      }
-      context.emit('save', input)
-    }
-
-    return{
-      amount,
-      endDate,
-      handleValidationError,
-      isBasicCapitalRate,
-      isBasicLateRate,
-      isDisabledButton,
-      rate,
-      save,
-      startDate,
-      validationRules,
-    }
-  },
+const formattedStartDate = computed( () => {
+  return parse(
+    startDate.value,
+    'dd.MM.yyyy',
+    new Date(),
+  )
 })
+
+const formattedEndDate = computed( () => {
+  return parse(
+    endDate.value,
+    'dd.MM.yyyy',
+    new Date(),
+  )
+})
+
+watch(isBasicCapitalRate, () => {
+  if(isBasicCapitalRate.value) {
+    isBasicLateRate.value = false
+    rate.value = constants.BASIC_CAPITAL_INTEREST_RATE
+  }
+})
+
+watch(isBasicLateRate, () => {
+  if(isBasicLateRate.value) {
+    isBasicCapitalRate.value = false
+    rate.value = constants.BASIC_LATE_INTEREST_RATE
+  }
+})
+
+watch(rate, () => {
+  isBasicCapitalRate.value = rate.value === constants.BASIC_CAPITAL_INTEREST_RATE
+  isBasicLateRate.value = rate.value === constants.BASIC_LATE_INTEREST_RATE
+})
+
+const save = () => {
+  const input: InterestInputFields = {
+    amount: Number(amount.value),
+    dayCount: differenceInDays(
+      new Date(formattedEndDate.value),
+      new Date(formattedStartDate.value),
+    ),
+    rate: Number(rate.value) / 100,
+  }
+  emit('save', input)
+}
 </script>

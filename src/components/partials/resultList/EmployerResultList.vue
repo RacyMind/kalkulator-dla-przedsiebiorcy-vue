@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {computed} from 'vue'
-import {pln} from '../../../use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 

@@ -1,32 +1,30 @@
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 
-let year = helpers.getDefaultYear()
+let year: AvailableYear = helpers.getDefaultYear()
 
-let params = {
-  healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
-  healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
-  lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
-  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
-  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
-  sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
+function buildParams(selectedYear: AvailableYear) {
+  const constants = useConstantsStore()
+  return {
+    healthContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.HEALTH_RATE,
+    healthContributionRateForTaxOffice: constants.PARAMS[selectedYear].US.EMPLOYEE.HEALTH_RATE,
+    lumpSumUpToAmount: constants.PARAMS[selectedYear].LUMP_SUM_UP_TO_AMOUNT,
+    pensionContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.RENT_RATE,
+    sickContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.SICK_RATE,
+  }
 }
+
+let params = buildParams(year)
 
 /**
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
+function setYear (newYear: AvailableYear): void {
   year = newYear
-
-  params = {
-    healthContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.HEALTH_RATE,
-    healthContributionRateForTaxOffice: constants.PARAMS[year].US.EMPLOYEE.HEALTH_RATE,
-    lumpSumUpToAmount: constants.PARAMS[year].LUMP_SUM_UP_TO_AMOUNT,
-    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.RENT_RATE,
-    sickContributionRate: constants.PARAMS[year].ZUS.EMPLOYEE.SICK_RATE,
-  }
+  params = buildParams(year)
 }
 
 /**
@@ -35,7 +33,7 @@ function setYear (newYear) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculatePensionContribution (basisForRentAndPension) {
+function calculatePensionContribution (basisForRentAndPension: number): number {
   return helpers.round(params.pensionContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -45,7 +43,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculateDisabilityContribution (basisForRentAndPension) {
+function calculateDisabilityContribution (basisForRentAndPension: number): number {
   return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -55,7 +53,7 @@ function calculateDisabilityContribution (basisForRentAndPension) {
  * @param {number} grossAmount
  * @returns {number}
  */
-function calculateSickContribution (grossAmount) {
+function calculateSickContribution (grossAmount: number): number {
   return helpers.round(params.sickContributionRate / 100 * grossAmount, 2)
 }
 
@@ -65,7 +63,7 @@ function calculateSickContribution (grossAmount) {
  * @param {number} amount
  * @returns {number}
  */
-function calculateHealthContribution (amount) {
+function calculateHealthContribution (amount: number): number {
   return helpers.round(params.healthContributionRate / 100 * amount, 2)
 }
 
@@ -76,7 +74,7 @@ function calculateHealthContribution (amount) {
  * @param {number} accidentRate
  * @returns {number}
  */
-function calculateAccidentContribution (grossAMount, accidentRate) {
+function calculateAccidentContribution (grossAMount: number, accidentRate: number): number {
   return helpers.round(accidentRate * grossAMount, 2)
 }
 
@@ -87,7 +85,7 @@ function calculateAccidentContribution (grossAMount, accidentRate) {
  * @param {number} ppkRate
  * @returns {number}
  */
-function calculatePpkContribution (grossAmount, ppkRate) {
+function calculatePpkContribution (grossAmount: number, ppkRate: number): number {
   return helpers.round(ppkRate * grossAmount, 2)
 }
 
@@ -100,7 +98,7 @@ function calculatePpkContribution (grossAmount, ppkRate) {
  * @param {number} sickContribution
  * @returns {number}
  */
-function calculateGrossAmountMinusContributions (grossAmount, pensionContribution, rentContribution, sickContribution) {
+function calculateGrossAmountMinusContributions (grossAmount: number, pensionContribution: number, rentContribution: number, sickContribution: number): number {
   const contributions = pensionContribution + rentContribution + sickContribution
 
   return grossAmount - contributions
@@ -113,7 +111,7 @@ function calculateGrossAmountMinusContributions (grossAmount, pensionContributio
  * @param {number} grossAmountMinusContributions
  * @returns {number}
  */
-function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, grossAmountMinusContributions) {
+function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount: number, grossAmountMinusContributions: number): number {
   let healthRate = params.healthContributionRate / 100
 
   if (grossAmount > params.lumpSumUpToAmount) {
@@ -132,7 +130,7 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (grossAmount, gro
  * @param {number} healthContribution
  * @returns {number}
  */
-function sumContributions (pensionContribution, rentContribution, sickContribution, healthContribution) {
+function sumContributions (pensionContribution: number, rentContribution: number, sickContribution: number, healthContribution: number): number {
   return helpers.round(pensionContribution + rentContribution + sickContribution + healthContribution, 2)
 }
 

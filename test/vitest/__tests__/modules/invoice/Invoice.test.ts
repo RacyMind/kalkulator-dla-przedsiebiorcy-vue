@@ -1,7 +1,9 @@
 import { InvoiceInputFields } from 'components/invoice/interfaces/InvoiceInputFields'
 import { describe, expect, it } from 'vitest'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import invoice from 'components/invoice/invoice'
+
+const constants = useConstantsStore()
 
 const defaultInput: InvoiceInputFields = {
   amount: 10000,

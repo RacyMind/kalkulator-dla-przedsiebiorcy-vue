@@ -1,15 +1,15 @@
 import {ContributionCalculator} from 'components/partialZusContributions/logic/ContributionCalculator'
 import {InputFields} from 'components/partialZusContributions/interfaces/InputFields'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import { describe, expect, it } from 'vitest'
-import {useConstants} from 'src/composables/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 
 describe('The partial zus contribution basises', () => {
   setActivePinia(createPinia())
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
-  const { zusConstants } = useConstants()
+  const { zusConstants } = storeToRefs(useConstantsStore())
 
   const input: InputFields = {
     contributionBasis: zusConstants.value.entrepreneur.basises.big,

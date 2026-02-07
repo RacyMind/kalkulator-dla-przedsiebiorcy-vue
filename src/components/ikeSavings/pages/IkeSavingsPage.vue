@@ -6,7 +6,7 @@
     <FormFields @submit="handleSubmit" />
     <Advert />
     <div v-if="store.result"
-         ref="summary">
+         ref="scrollTarget">
       <IkeLimitWarning :result="store.result" />
       <ListHeader>Okres oszczędzania</ListHeader>
       <SavingsPeriodSection :result="store.result" />
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, nextTick, ref } from 'vue'
+import { nextTick } from 'vue'
 import { useBreadcrumbStore } from 'stores/breadcrumbStore'
 import { useIkeSavingsStore } from '../store'
 import Advert from 'components/partials/Advert.vue'
@@ -42,7 +42,9 @@ import SavingsPeriodSection from '../components/results/SavingsPeriodSection.vue
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 import TaxSavingSection from '../components/results/TaxSavingSection.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const store = useIkeSavingsStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -53,14 +55,13 @@ breadcrumbStore.items = [
   },
 ]
 
-const summary: Ref<HTMLElement | null> = ref(null)
 
 const handleSubmit = async () => {
   await nextTick()
-  if (!summary.value) {
+  if (!scrollTarget.value) {
     return
   }
 
-  helpers.scrollToElement(summary.value)
+  scrollToResults()
 }
 </script>

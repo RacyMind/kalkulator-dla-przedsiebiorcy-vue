@@ -1,7 +1,7 @@
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
 import {VatLimitResult} from 'components/vatLimit/interfaces/VatLimitResult'
 import {getDayOfYear, lastDayOfYear} from 'date-fns'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 function getResult(input:VatLimitInputFields):VatLimitResult {
@@ -9,6 +9,7 @@ function getResult(input:VatLimitInputFields):VatLimitResult {
     throw new Error('Date can not be null')
   }
 
+  const constants = useConstantsStore()
   const lastDayOfDateYear = lastDayOfYear(input.startDate)
   const dayOfYear = getDayOfYear(input.startDate)
   const daysOfYear = getDayOfYear(lastDayOfDateYear)

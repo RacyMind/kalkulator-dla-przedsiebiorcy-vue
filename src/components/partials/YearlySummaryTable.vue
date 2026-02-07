@@ -114,9 +114,23 @@
   </q-card>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref, watch} from 'vue'
-import constants from 'src/logic/constants'
+<script setup lang="ts">
+import {ref, watch} from 'vue'
+import {useConstantsStore} from 'stores/constantsStore'
+const constants = useConstantsStore()
+
+interface Props {
+  columns: any[]
+  rows: Array<Record<string, unknown>>
+  title?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: '',
+})
+const emit = defineEmits<{
+  grossAmountUpdated: [grossAmounts: number[]]
+}>()
 
 const monthLabels = [
   'Styczeń',
@@ -134,48 +148,22 @@ const monthLabels = [
   'Cały rok',
 ]
 
-export default defineComponent({
-  props: {
-    columns: {
-      required: true,
-      type: Array,
-    },
-    rows: {
-      required: true,
-      type: Array,
-    },
-    title: {
-      default: '',
-      required: false,
-      type: String,
-    },
+const editableRows = ref<Array<Record<string, unknown>>>([])
+
+watch(() => props.rows, (newVal) => {
+    editableRows.value = JSON.parse(JSON.stringify(newVal))
   },
-  setup (props, context) {
-    const editableRows = ref([])
-
-    watch(() => props.rows, (newVal) => {
-        editableRows.value = JSON.parse(JSON.stringify(newVal))
-      },
-      {
-        immediate: true,
-      },
-    )
-
-    watch(editableRows, () => {
-        const grossAmounts = editableRows.value.filter((row:object, index:number) => index !== constants.LOCALE_DATE.wholeYearIndex).map((row:any) => row.grossAmount)
-        context.emit('grossAmountUpdated', grossAmounts)
-      },
-      {
-        deep: true,
-      },
-    )
-
-    return {
-      constants,
-      editableRows,
-      monthLabels,
-    }
+  {
+    immediate: true,
   },
+)
 
-})
+watch(editableRows, () => {
+    const grossAmounts = editableRows.value.filter((_row, index) => index !== constants.LOCALE_DATE.wholeYearIndex).map((row: any) => row.grossAmount)
+    emit('grossAmountUpdated', grossAmounts)
+  },
+  {
+    deep: true,
+  },
+)
 </script>

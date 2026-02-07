@@ -1,28 +1,28 @@
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
+import {AvailableYear} from 'src/types/AvailableYear'
 
-let year = helpers.getDefaultYear()
+let year: AvailableYear = helpers.getDefaultYear()
 
-let params = {
-  fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
-  fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
-  pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
-  rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
+function buildParams(selectedYear: AvailableYear) {
+  const constants = useConstantsStore()
+  return {
+    fgspContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYER.FGSP_RATE,
+    fpContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYER.FP_RATE,
+    pensionContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYER.PENSION_RATE,
+    rentContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYER.RENT_RATE,
+  }
 }
+
+let params = buildParams(year)
 
 /**
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
+function setYear (newYear: AvailableYear): void {
   year = newYear
-
-  params = {
-    fgspContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FGSP_RATE,
-    fpContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.FP_RATE,
-    pensionContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[year].ZUS.EMPLOYER.RENT_RATE,
-  }
+  params = buildParams(year)
 }
 
 /**
@@ -31,7 +31,7 @@ function setYear (newYear) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculatePensionContribution (basisForRentAndPension) {
+function calculatePensionContribution (basisForRentAndPension: number): number {
   return helpers.round(params.pensionContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -41,7 +41,7 @@ function calculatePensionContribution (basisForRentAndPension) {
  * @param {number} basisForRentAndPension
  * @returns {number}
  */
-function calculateDisabilityContribution (basisForRentAndPension) {
+function calculateDisabilityContribution (basisForRentAndPension: number): number {
   return helpers.round(params.rentContributionRate / 100 * basisForRentAndPension, 2)
 }
 
@@ -51,7 +51,7 @@ function calculateDisabilityContribution (basisForRentAndPension) {
  * @param {number} grossAMount
  * @returns {number}
  */
-function calculateFpContribution (grossAMount) {
+function calculateFpContribution (grossAMount: number): number {
   return helpers.round(params.fpContributionRate / 100 * grossAMount, 2)
 }
 
@@ -61,7 +61,7 @@ function calculateFpContribution (grossAMount) {
  * @param {number} grossAMount
  * @returns {number}
  */
-function calculateFgspContribution (grossAMount) {
+function calculateFgspContribution (grossAMount: number): number {
   return helpers.round(params.fgspContributionRate / 100 * grossAMount, 2)
 }
 
@@ -72,7 +72,7 @@ function calculateFgspContribution (grossAMount) {
  * @param {number} accidentRate
  * @returns {number}
  */
-function calculateAccidentContribution (grossAMount, accidentRate) {
+function calculateAccidentContribution (grossAMount: number, accidentRate: number): number {
   return helpers.round(accidentRate * grossAMount, 2)
 }
 
@@ -83,7 +83,7 @@ function calculateAccidentContribution (grossAMount, accidentRate) {
  * @param {number} ppkRate
  * @returns {number}
  */
-function calculatePpkContribution (grossAmount, ppkRate) {
+function calculatePpkContribution (grossAmount: number, ppkRate: number): number {
   return helpers.round(ppkRate * grossAmount, 2)
 }
 

@@ -177,14 +177,15 @@
 import {ContributionBasises} from 'src/composables/contributionBasises'
 import {EntrepreneurFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 
-const { incomeTaxConstants } = useConstants()
+const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
 const fields = defineModel<EntrepreneurFormFields>({required: true})
 

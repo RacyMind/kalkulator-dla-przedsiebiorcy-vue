@@ -32,8 +32,12 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/invoice/Statistics.vue'
 import Summary from 'components/invoice/Summary.vue'
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
+import {useConstantsStore} from 'stores/constantsStore'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
+
+const constants = useConstantsStore()
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -48,10 +52,9 @@ const invoiceInputFields = ref(<InvoiceInputFields>{
   taxRate: 0,
 })
 
-const scrollTarget = ref(null) as any
 
 const save = (input: InvoiceInputFields) => {
   invoiceInputFields.value = input
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  scrollToResults()
 }
 </script>

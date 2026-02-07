@@ -17,33 +17,21 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import { pln } from 'src/use/currencyFormat'
+import {computed} from 'vue'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import invoice from './invoice'
 
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<InvoiceInputFields>,
-    },
-  },
-  setup(props: any) {
-    const result = computed(() => {
-      return invoice.getResult(props.input)
-    })
+interface Props {
+  input: InvoiceInputFields
+}
 
-    return {
-      pln,
-      result,
-    }
-  },
+const props = defineProps<Props>()
+
+const result = computed(() => {
+  return invoice.getResult(props.input)
 })
 </script>
 

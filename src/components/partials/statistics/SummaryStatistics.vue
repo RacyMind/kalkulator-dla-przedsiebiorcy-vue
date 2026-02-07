@@ -12,7 +12,7 @@
 import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import { computed } from 'vue'
-import {usePieChart} from 'src/use/usePieChart'
+import {usePieChart} from 'src/composables/usePieChart'
 import PieChart from 'components/partials/statistics/PieChart.vue'
 
 interface Props {

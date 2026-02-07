@@ -1,4 +1,4 @@
-function deepEqual (object1, object2) {
+function deepEqual<T> (object1: T, object2: T): boolean {
   if (object1 === null && object2 === null) {
     return true
   }
@@ -12,16 +12,16 @@ function deepEqual (object1, object2) {
     return false
   }
 
-  const keys1 = Object.keys(object1)
-  const keys2 = Object.keys(object2)
+  const keys1 = Object.keys(object1 as object)
+  const keys2 = Object.keys(object2 as object)
 
   if (keys1.length !== keys2.length) {
     return false
   }
 
   for (const key of keys1) {
-    const val1 = object1[key]
-    const val2 = object2[key]
+    const val1 = (object1 as Record<string, unknown>)[key]
+    const val2 = (object2 as Record<string, unknown>)[key]
     const areObjects = isObject(val1) && isObject(val2)
     if (
       (areObjects && !deepEqual(val1, val2)) ||
@@ -34,7 +34,7 @@ function deepEqual (object1, object2) {
   return true
 }
 
-function isObject (object) {
+function isObject (object: unknown): boolean {
   return object != null && typeof object === 'object'
 }
 

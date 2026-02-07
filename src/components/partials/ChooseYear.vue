@@ -10,33 +10,28 @@
   />
 </template>
 
-<script lang="ts">
-import {defineComponent, ref, watch} from 'vue'
-import constants from 'src/logic/constants'
-export default defineComponent({
-  props: {
-    modelValue: {
-      required: true,
-      type: Number,
-    },
-  },
-  setup(props, context) {
-    const year = ref(props.modelValue)
-    const years = constants.AVAILABLE_YEARS
+<script setup lang="ts">
+import {ref, watch} from 'vue'
+import {useConstantsStore} from 'stores/constantsStore'
+const constants = useConstantsStore()
 
-    watch(() => props.modelValue, () => {
-      year.value = props.modelValue
-    })
+interface Props {
+  modelValue: number
+}
 
-    const changeYear = () => {
-      context.emit('update:modelValue', year.value)
-    }
+const props = defineProps<Props>()
+const emit = defineEmits<{
+  'update:modelValue': [value: number]
+}>()
 
-    return {
-      changeYear,
-      year,
-      years,
-    }
-  },
+const year = ref(props.modelValue)
+const years = constants.AVAILABLE_YEARS
+
+watch(() => props.modelValue, () => {
+  year.value = props.modelValue
 })
+
+const changeYear = () => {
+  emit('update:modelValue', year.value)
+}
 </script>

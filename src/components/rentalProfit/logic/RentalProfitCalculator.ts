@@ -2,12 +2,13 @@ import {BasicCalculator} from 'src/logic/BasicCalculator'
 import {Calculator} from 'src/logic/interfaces/Calculator'
 import {InputFields} from 'components/rentalProfit/interfaces/InputFields'
 import {Result, Summary, YearResult} from 'components/rentalProfit/interfaces/Result'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class RentalProfitCalculator extends BasicCalculator<InputFields, Result> implements Calculator<InputFields, Result> {
 
   private calculateTax(taxableRevenue: number, isSpouseSettlement: boolean): number {
+    const constants = useConstantsStore()
     const threshold = isSpouseSettlement
       ? constants.RENTAL_TAX.SPOUSE_THRESHOLD
       : constants.RENTAL_TAX.THRESHOLD

@@ -22,7 +22,8 @@ import {AnnualEmployerResult} from 'src/logic/interfaces/AnnualEmployerResult'
 import EmployerResultList from 'components/partials/resultList/EmployerResultList.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import Separator from 'components/partials/Separator.vue'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
+const constants = useConstantsStore()
 
 interface Props {
   result: AnnualEmployerResult

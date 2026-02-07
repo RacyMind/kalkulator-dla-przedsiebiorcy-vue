@@ -4,13 +4,14 @@ import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {RodInputFields} from 'components/polishBonds/interfaces/RodInputFields'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class RodCalculator extends BasicCalculator<RodInputFields, Result> implements Calculator<RodInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const boughtBondAmount = this.getInputData().boughtBondCount * bondConstants.bondCost

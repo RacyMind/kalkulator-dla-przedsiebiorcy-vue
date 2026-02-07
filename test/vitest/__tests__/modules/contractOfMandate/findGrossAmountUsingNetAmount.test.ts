@@ -2,7 +2,7 @@ import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCal
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {createPinia, setActivePinia} from 'pinia'
-import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
+import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {useSettingStore} from 'stores/settingStore'
 
 describe('Find the gross amount using net amount on 1.11.2023', () => {
@@ -39,7 +39,14 @@ describe('Find the gross amount using net amount on 1.11.2023', () => {
       sumUpGrossAmount: 0,
     }
 
-    expect(findGrossAmountUsingNetAmount(new EmployeeCalculator(), amount * 0.5, amount * 2, amount, defaultInput, sumUpAmounts )).toBe(1273.49)
+    const calculator = new EmployeeCalculator()
+    expect(findGrossAmountUsingNetAmount(
+      (grossAmount) => {
+        defaultInput.grossAmount = grossAmount
+        return calculator.setSumUpAmounts(sumUpAmounts).setInputData(defaultInput).calculate().getResult()
+      },
+      amount * 0.5, amount * 2, amount,
+    )).toBe(1273.49)
   })
 
   it('The test without ZUS contributions', () => {
@@ -60,6 +67,13 @@ describe('Find the gross amount using net amount on 1.11.2023', () => {
       sumUpGrossAmount: 0,
     }
 
-    expect(findGrossAmountUsingNetAmount(new EmployeeCalculator(), amount * 0.5, amount * 2, amount, input, sumUpAmounts )).toBe(1000)
+    const calculator = new EmployeeCalculator()
+    expect(findGrossAmountUsingNetAmount(
+      (grossAmount) => {
+        input.grossAmount = grossAmount
+        return calculator.setSumUpAmounts(sumUpAmounts).setInputData(input).calculate().getResult()
+      },
+      amount * 0.5, amount * 2, amount,
+    )).toBe(1000)
   })
 })

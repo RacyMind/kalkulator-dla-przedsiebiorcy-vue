@@ -1,16 +1,21 @@
 import {AvailableYear} from 'src/types/AvailableYear'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 let year = helpers.getDefaultYear()
 
-let params = {
-  amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-  firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-  linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-  secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
-  taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
+function buildParams(selectedYear: AvailableYear) {
+  const constants = useConstantsStore()
+  return {
+    amountOfTaxThreshold: constants.PARAMS[selectedYear].AMOUNT_OF_TAX_THRESHOLD,
+    firstTaxRate: constants.PARAMS[selectedYear].TAX_RATES.FIRST_RATE / 100,
+    linearTaxRate: constants.PARAMS[selectedYear].TAX_RATES.LINEAR_RATE / 100,
+    secondTaxRate: constants.PARAMS[selectedYear].TAX_RATES.SECOND_RATE / 100,
+    taxReducingAmount: constants.PARAMS[selectedYear].TAX_REDUCING_AMOUNT,
+  }
 }
+
+let params = buildParams(year)
 
 /**
  * Sets parameters for the year
@@ -18,14 +23,7 @@ let params = {
  */
 function setParams (newYear:AvailableYear) {
   year = newYear
-
-  params = {
-    amountOfTaxThreshold: constants.PARAMS[year].AMOUNT_OF_TAX_THRESHOLD,
-    firstTaxRate: constants.PARAMS[year].TAX_RATES.FIRST_RATE / 100,
-    linearTaxRate: constants.PARAMS[year].TAX_RATES.LINEAR_RATE / 100,
-    secondTaxRate: constants.PARAMS[year].TAX_RATES.SECOND_RATE / 100,
-    taxReducingAmount: constants.PARAMS[year].TAX_REDUCING_AMOUNT,
-  }
+  params = buildParams(year)
 }
 /**
  * Calculates the income tax using general rules

@@ -1,6 +1,6 @@
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
 import {InvoiceResult} from 'components/invoice/interfaces/InvoiceResult'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 /**
@@ -43,6 +43,7 @@ function calculateTaxAmount (net:number, taxRate:number):number {
  * @return {InvoiceResult}
  */
 function getResult (input:InvoiceInputFields):InvoiceResult {
+  const constants = useConstantsStore()
   let netAmount = 0
   let grossAmount = 0
   let taxAmount = 0

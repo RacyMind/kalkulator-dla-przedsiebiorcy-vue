@@ -7,7 +7,7 @@
     <Advert />
 
     <QTabs
-      ref="qtabs"
+      ref="scrollTarget"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -62,7 +62,7 @@ import { EdoInputFields } from 'components/polishBonds/interfaces/EdoInputFields
 import { OtsCalculator } from 'components/polishBonds/logic/OtsCalculator'
 import { OtsInputFields } from 'components/polishBonds/interfaces/OtsInputFields'
 import { QTabs } from 'quasar'
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { Result } from 'components/polishBonds/interfaces/Result'
 import { RodCalculator } from 'components/polishBonds/logic/RodCalculator'
 import { RodInputFields } from 'components/polishBonds/interfaces/RodInputFields'
@@ -80,6 +80,9 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyDetailsList from 'components/polishBonds/components/MonthlyDetailsList.vue'
 import ResultList from 'components/polishBonds/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 import helpers from 'src/logic/helpers'
 
 enum Tabs {
@@ -97,7 +100,6 @@ breadcrumbStore.items = [
 ]
 
 const tab = ref(Tabs.Summary)
-const qtabs: Ref<QTabs | null> = ref(null)
 
 type Calculator<T, R> = {
   setInputData(inputFields: T): Calculator<T, R>
@@ -239,7 +241,7 @@ const calculateRod = () => {
 }
 
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 
   switch (store.selectedBondType) {
     case 'EDO':

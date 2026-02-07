@@ -6,7 +6,8 @@ import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
 import {SumUpAmounts} from 'components/contractOfEmployment/interfaces/SumUpAmounts'
 import {TaxScale} from 'src/logic/taxes/TaxScale'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeResult> implements Calculator<InputFields, EmployeeResult>{
@@ -29,7 +30,7 @@ export class EmployeeCalculator extends BasicCalculator<InputFields, EmployeeRes
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const { incomeTaxConstants } = useConstants()
+    const { incomeTaxConstants } = storeToRefs(useConstantsStore())
     let expenses = 0
 
     if(this.getInputData().grossAmount <= 0) {

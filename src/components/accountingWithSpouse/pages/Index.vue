@@ -6,7 +6,7 @@
     <Form @submit="handleSubmit" />
     <Advert />
     <QTabs
-      ref="qtabs"
+      ref="scrollTarget"
       v-model="tab"
       inline-label
       class="bg-primary text-white shadow-2"
@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import {QTabs} from 'quasar'
-import {Ref, ref} from 'vue'
+import {ref} from 'vue'
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
@@ -83,7 +83,9 @@ import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 import SpouseResultList from 'components/accountingWithSpouse/components/resultList/SpouseResultList.vue'
 import Statistics from 'components/accountingWithSpouse/components/Statistics.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 const store = useAccountingWithSpouseStore()
@@ -101,11 +103,10 @@ enum Tabs {
 }
 
 const tab = ref(Tabs.Joint)
-const qtabs:Ref<QTabs|null> = ref(null)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 }
 </script>

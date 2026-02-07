@@ -97,7 +97,8 @@
 <script setup lang="ts">
 import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
 import {ContributionCalculator} from 'components/partialZusContributions/logic/ContributionCalculator'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -116,7 +117,7 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants } = useConstants()
+const { zusConstants } = storeToRefs(useConstantsStore())
 const store = usePartialZusContributionStore()
 const settingStore = useSettingStore()
 

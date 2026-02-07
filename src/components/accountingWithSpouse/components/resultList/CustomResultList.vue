@@ -73,7 +73,7 @@
 import {CustomResult} from 'components/accountingWithSpouse/interfaces/CustomResult'
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

@@ -4,13 +4,14 @@ import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {RorInputFields} from 'components/polishBonds/interfaces/RorInputFields'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class RorCalculator extends BasicCalculator<RorInputFields, Result> implements Calculator<RorInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const monthCount = 12

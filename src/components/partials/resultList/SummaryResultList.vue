@@ -49,7 +49,7 @@ import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {EventType, useEventStore} from 'stores/eventStore'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import CrossingTaxThreshold from 'components/partials/notifications/CrossingTaxThreshold.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

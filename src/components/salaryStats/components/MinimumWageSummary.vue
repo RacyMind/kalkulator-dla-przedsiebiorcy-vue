@@ -53,13 +53,14 @@
 
 <script setup lang="ts">
 
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Separator from 'components/partials/Separator.vue'
 
-const {wageStats} = useConstants()
+const {wageStats} = storeToRefs(useConstantsStore())
 const settingStore = useSettingStore()
 </script>

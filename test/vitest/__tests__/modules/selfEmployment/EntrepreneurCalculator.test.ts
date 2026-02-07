@@ -1,5 +1,5 @@
 import {EntrepreneurCalculator} from 'components/selfEmployment/logic/EntrepreneurCalculator'
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {EntrepreneurZusContribution} from 'src/logic/zus/EntrepreneurZusContribution'
 import {FlatTax} from 'src/logic/taxes/FlatTax'
 import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
@@ -7,7 +7,7 @@ import {IncomeMode, InputFields} from 'components/selfEmployment/interfaces/Inpu
 import {LumpSumTax, LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {TaxScale} from 'src/logic/taxes/TaxScale'
 import {beforeEach, describe, expect, it} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import {getHourlyRevenue} from 'components/selfEmployment/logic/helpers'
 import {useSettingStore} from 'stores/settingStore'
 import helpers from 'src/logic/helpers'
@@ -18,7 +18,7 @@ describe('Entrepreneur Calculator of Self employment on 1.11.2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { incomeTaxConstants, zusConstants} = useConstants()
+  const { incomeTaxConstants, zusConstants} = storeToRefs(useConstantsStore())
 
   it('The invalid data', () => {
     expect(() => new EntrepreneurCalculator().getResult()).toThrowError('undefined')
@@ -603,7 +603,7 @@ describe('Entrepreneur Calculator of Self employment on 1.01.2026', () => {
   }
 
   const getHourlyInput = (revenue: number, leaveHours: number, deductLeave = true): InputFields => {
-    const { zusConstants } = useConstants()
+    const { zusConstants } = storeToRefs(useConstantsStore())
     return {
       revenue,
       incomeMode: IncomeMode.HourlyRate,
@@ -660,7 +660,7 @@ describe('Entrepreneur Calculator of Self employment on 1.01.2024', () => {
   })
 
   const getDefaultInput = ():InputFields => {
-    const { zusConstants} = useConstants()
+    const { zusConstants} = storeToRefs(useConstantsStore())
     return {
       revenue: 10000,
       expenses:0,

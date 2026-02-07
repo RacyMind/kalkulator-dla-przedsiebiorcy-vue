@@ -25,7 +25,9 @@ import Form from 'components/cashRegisterLimit/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/cashRegisterLimit/Summary.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -38,10 +40,9 @@ const inputFields = ref(<CashRegisterLimitInputFields>{
   startDate: null,
 })
 
-const scrollTarget = ref(null) as any
 
 const save = (input: CashRegisterLimitInputFields) => {
   inputFields.value = input
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  scrollToResults()
 }
 </script>

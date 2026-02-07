@@ -1,8 +1,8 @@
 .c-business, .c-company {
   .text-brand {
-    color: #B91C1C;
+    color: var(--module-business);
   }
   .bg-brand, .bg-module {
-    background: #B91C1C;
+    background: var(--module-business);
   }
 }

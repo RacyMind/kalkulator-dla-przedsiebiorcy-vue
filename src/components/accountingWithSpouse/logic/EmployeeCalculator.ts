@@ -5,7 +5,8 @@ import {EmployeeResult} from 'components/accountingWithSpouse/interfaces/Employe
 import {EmployeeZusContribution} from 'src/logic/zus/EmployeeZusContribution'
 import {EmployerZusContribution} from 'src/logic/zus/EmployerZusContribution'
 import {TaxScale} from 'src/logic/taxes/TaxScale'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, EmployeeResult> implements Calculator<EmployeeInputFields, EmployeeResult>{
@@ -14,7 +15,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
   protected readonly incomeTax: TaxScale
   constructor() {
     super()
-    const { incomeTaxConstants} = useConstants()
+    const { incomeTaxConstants} = storeToRefs(useConstantsStore())
 
     this.incomeTaxConstants = incomeTaxConstants
     this.employeeZus = new EmployeeZusContribution()
@@ -22,7 +23,7 @@ export class EmployeeCalculator extends BasicCalculator<EmployeeInputFields, Emp
   }
 
   protected getExpenses(basisForExpenses:number):number {
-    const { incomeTaxConstants } = useConstants()
+    const { incomeTaxConstants } = storeToRefs(useConstantsStore())
     let expenses = 0
 
 

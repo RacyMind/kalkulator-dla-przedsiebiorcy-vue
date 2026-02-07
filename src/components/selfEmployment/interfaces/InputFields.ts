@@ -1,4 +1,4 @@
-import {EntrepreneurTaxSystem} from 'src/composables/constants'
+import {EntrepreneurTaxSystem} from 'stores/constantsStore'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 
 export enum IncomeMode {

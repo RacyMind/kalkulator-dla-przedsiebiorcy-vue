@@ -13,9 +13,23 @@
   </q-popup-proxy>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref, watch} from 'vue'
+<script setup lang="ts">
+import {ref, watch} from 'vue'
 import {isFuture, isWeekend, parse} from 'date-fns'
+
+interface Props {
+  modelValue: string
+  onlyPastOrToday?: boolean
+  onlyWorkDays?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  onlyPastOrToday: false,
+  onlyWorkDays: false,
+})
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
 
 const polishLocalisation = {
   days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
@@ -24,55 +38,28 @@ const polishLocalisation = {
   months: 'Styczeń_Luty_Marzec_Kwiecień_Maj_Czerwiec_Lipiec_Sierpień_Wrzesień_Październik_Listopad_Grudzień_Cały rok'.split('_'),
   monthsShort: 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
 }
-export default defineComponent({
-  props: {
-    modelValue: {
-      required: true,
-      type: String,
-    },
-    onlyPastOrToday: {
-      defaut: false,
-      required: false,
-      type: Boolean,
-    },
-    onlyWorkDays: {
-      defaut: false,
-      required: false,
-      type: Boolean,
-    },
-  },
-  setup(props, context) {
-    const date = ref(props.modelValue)
-    const qDateProxyRef = ref(null) as any
 
-    watch(() => props.modelValue, () => {
-      date.value = props.modelValue
-    })
+const date = ref(props.modelValue)
+const qDateProxyRef = ref<InstanceType<typeof import('quasar')['QPopupProxy']> | null>(null)
 
-    const changeDate = () => {
-      qDateProxyRef.value.hide()
-      context.emit('update:modelValue', date.value)
-    }
-
-    const validDays = (dateStr: string) => {
-      const date = parse(dateStr,'y/MM/dd', new Date())
-
-      if (props.onlyPastOrToday && isFuture(date)) {
-        return false
-      }
-      if (props.onlyWorkDays && isWeekend(date)) {
-        return false
-      }
-      return true
-    }
-
-    return {
-      changeDate,
-      date,
-      polishLocalisation,
-      qDateProxyRef,
-      validDays,
-    }
-  },
+watch(() => props.modelValue, () => {
+  date.value = props.modelValue
 })
+
+const changeDate = () => {
+  qDateProxyRef.value?.hide()
+  emit('update:modelValue', date.value)
+}
+
+const validDays = (dateStr: string) => {
+  const date = parse(dateStr,'y/MM/dd', new Date())
+
+  if (props.onlyPastOrToday && isFuture(date)) {
+    return false
+  }
+  if (props.onlyWorkDays && isWeekend(date)) {
+    return false
+  }
+  return true
+}
 </script>

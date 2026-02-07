@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import {AnnualResult} from 'src/logic/interfaces/AnnualEntrepreneurResult'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {

@@ -52,47 +52,29 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
-import {computed, defineComponent, ref} from 'vue'
+import {ref} from 'vue'
 import {useFormValidation} from 'src/composables/formValidation'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
 
-export default defineComponent({
-  components: {
-    FormSection,
-    SubmitButton,
-  },
-  setup(props, context) {
-    const {handleValidationError} = useFormValidation()
-    const amount = ref(null)
-    const rate = ref(null)
-    const monthCount = ref(12)
+const emit = defineEmits<{
+  save: [input: InvestmentInputFields]
+}>()
 
-    const isDisabledButton = computed(() => {
-      return !amount.value || !rate.value || !monthCount.value
-    })
+const {handleValidationError} = useFormValidation()
+const amount = ref<number | null>(null)
+const rate = ref<number | null>(null)
+const monthCount = ref(12)
 
-    const save = () => {
-      const input: InvestmentInputFields = {
-        amount: Number(amount.value),
-        monthCount: Number(monthCount.value),
-        rate: Number(rate.value) / 100,
-      }
-      context.emit('save', input)
-    }
-
-    return{
-      amount,
-      handleValidationError,
-      isDisabledButton,
-      monthCount,
-      rate,
-      save,
-      validationRules,
-    }
-  },
-})
+const save = () => {
+  const input: InvestmentInputFields = {
+    amount: Number(amount.value),
+    monthCount: Number(monthCount.value),
+    rate: Number(rate.value) / 100,
+  }
+  emit('save', input)
+}
 </script>

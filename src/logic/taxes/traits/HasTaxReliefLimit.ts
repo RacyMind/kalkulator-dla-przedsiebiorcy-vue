@@ -1,4 +1,5 @@
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class HasTaxReliefLimit{
@@ -7,7 +8,7 @@ export class HasTaxReliefLimit{
    * Returns the salary amount over the tax relief limit. This amount is important for tax calculations
    */
   public geRevenueOverTaxReliefLimit(revenue: number, sumUpRevenue:number, hasTaxRelief:boolean): number{
-    const {incomeTaxConstants} = useConstants()
+    const {incomeTaxConstants} = storeToRefs(useConstantsStore())
 
     if(!hasTaxRelief) {
       return revenue

@@ -1,8 +1,8 @@
 import {EntrepreneurCalculator} from 'components/accountingWithSpouse/logic/EntrepreneurCalculator'
 import {EntrepreneurInputFields} from 'components/accountingWithSpouse/interfaces/EntrepreneurInputFields'
 import {beforeEach, describe, expect, it} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
-import {useConstants} from 'src/composables/constants'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 
 setActivePinia(createPinia())
@@ -18,7 +18,7 @@ describe('Entrepreneur Calculator in the module "Accounting with Spouse" on 1.1.
     const expensesAmounts:number[] = []
     const contributionBasises:number[] = []
 
-    const {  zusConstants} = useConstants()
+    const {  zusConstants} = storeToRefs(useConstantsStore())
 
     for(let i = 0; i < 12; i++) {
       revenues.push(revenue)

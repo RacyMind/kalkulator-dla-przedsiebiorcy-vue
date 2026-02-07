@@ -25,41 +25,23 @@
   </q-item>
 </template>
 
-<script lang="ts">
-import {computed, toRefs} from 'vue'
+<script setup lang="ts">
+import {computed} from 'vue'
 
-export default {
-  props: {
-    caption: {
-      default: '',
-      type: String,
-    },
-
-    className: {
-      default: '',
-      type: String,
-    },
-
-    link: {
-      default: '',
-      type: String,
-    },
-
-    title: {
-      required: true,
-      type: String,
-    },
-  },
-  setup(props: any) {
-    const {link} = toRefs(props)
-
-    const isExternalLink = computed(() => link.value.includes('https://'))
-
-    return {
-      isExternalLink,
-    }
-  },
+interface Props {
+  caption?: string
+  className?: string
+  link?: string
+  title: string
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  caption: '',
+  className: '',
+  link: '',
+})
+
+const isExternalLink = computed(() => props.link.includes('https://'))
 </script>
 <style lang="scss">
 .s-bg {

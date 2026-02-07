@@ -71,8 +71,8 @@
   </q-form>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, ref} from 'vue'
+<script setup lang="ts">
+import {computed, ref} from 'vue'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useQuasar} from 'quasar'
 import FormSection from 'components/partials/form/FormSection.vue'
@@ -80,78 +80,57 @@ import Separator from 'components/partials/Separator.vue'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 
-export default defineComponent({
-  components: {
-    FormSection,
-    Separator,
-  },
-  setup() {
-    const $q = useQuasar()
-    const {handleValidationError} = useFormValidation()
+const $q = useQuasar()
+const {handleValidationError} = useFormValidation()
 
-    const subjects =[
-      'Zaproponuj nową funkcjonalność',
-      'Zgłoś błąd',
-      'Inne',
-    ]
+const subjects =[
+  'Zaproponuj nową funkcjonalność',
+  'Zgłoś błąd',
+  'Inne',
+]
 
-    const email = ref(null)
-    const name = ref(null)
-    const subject = ref(null)
-    const message = ref(null)
-    const isSending = ref(false)
+const email = ref<string | null>(null)
+const name = ref<string | null>(null)
+const subject = ref<string | null>(null)
+const message = ref<string | null>(null)
+const isSending = ref(false)
 
-    const isDisabledButton = computed(() => {
-      if (isSending.value) {
-        return true
-      }
-      return !email.value || !subject.value || !message.value
-    })
-
-    const send = () => {
-      if (isSending.value) {
-        return
-      }
-
-      isSending.value = true
-
-      axios.post('https://kalkulatorfinansowy.app/contact.php',
-        {
-          email: email.value,
-          message: message.value,
-          name: name.value,
-          subject: subject.value,
-        }).then(() => {
-          $q.notify({
-            color: 'positive',
-            message: 'Wiadomość została wysłana',
-          })
-          email.value = null
-          name.value = null
-          subject.value = null
-          message.value = null
-        }).catch(error => {
-          $q.notify({
-            color: 'negative',
-            message: error.response.data,
-          })
-        }).finally(() => {
-          isSending.value = false
-        })
-    }
-
-    return {
-      email,
-      handleValidationError,
-      isDisabledButton,
-      isSending,
-      message,
-      name,
-      send,
-      subject,
-      subjects,
-      validationRules,
-    }
-  },
+const isDisabledButton = computed(() => {
+  if (isSending.value) {
+    return true
+  }
+  return !email.value || !subject.value || !message.value
 })
+
+const send = () => {
+  if (isSending.value) {
+    return
+  }
+
+  isSending.value = true
+
+  axios.post('https://kalkulatorfinansowy.app/contact.php',
+    {
+      email: email.value,
+      message: message.value,
+      name: name.value,
+      subject: subject.value,
+    }).then(() => {
+      $q.notify({
+        color: 'positive',
+        message: 'Wiadomość została wysłana',
+      })
+      email.value = null
+      name.value = null
+      subject.value = null
+      message.value = null
+    }).catch(error => {
+      $q.notify({
+        color: 'negative',
+        message: error.response.data,
+      })
+    }).finally(() => {
+      isSending.value = false
+    })
+}
 </script>

@@ -8,44 +8,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import { usePieChart } from 'src/use/usePieChart'
+import {computed} from 'vue'
+import {usePieChart} from 'src/composables/usePieChart'
 import PieChart from 'components/partials/statistics/PieChart.vue'
 import invoice from './invoice'
 
-export default defineComponent({
-  components: {
-    PieChart,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<InvoiceInputFields>,
-    },
-  },
-  setup(props) {
-    const labels:string[] =  [
-      'Kwota netto',
-      'Kwota podatku',
-    ]
+interface Props {
+  input: InvoiceInputFields
+}
 
-    const result = computed(() => invoice.getResult(props.input))
+const props = defineProps<Props>()
 
-    const chartData = computed(() => usePieChart(
-        labels,
-        [
-          result.value.netAmount,
-          result.value.taxAmount,
-        ],
-      ),
-    )
+const labels: string[] = [
+  'Kwota netto',
+  'Kwota podatku',
+]
 
-    return {
-      chartData,
-      result,
-    }
-  },
-})
+const result = computed(() => invoice.getResult(props.input))
+
+const chartData = computed(() => usePieChart(
+    labels,
+    [
+      result.value.netAmount,
+      result.value.taxAmount,
+    ],
+  ),
+)
 </script>

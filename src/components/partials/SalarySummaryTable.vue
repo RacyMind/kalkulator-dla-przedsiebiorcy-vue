@@ -43,15 +43,16 @@
   </div>
 </template>
 
-<script>
-import { pln } from 'src/use/currencyFormat'
+<script setup lang="ts">
+import {pln} from 'src/composables/currencyFormat'
 
-export default {
-  props: ['netAmount', 'totalZusContributions', 'totalPpkContributions', 'taxAmount', 'totalAmount'],
-  setup () {
-    return {
-      pln,
-    }
-  },
+interface Props {
+  netAmount: number
+  totalZusContributions: number
+  totalPpkContributions: number
+  taxAmount: number
+  totalAmount: number
 }
+
+defineProps<Props>()
 </script>

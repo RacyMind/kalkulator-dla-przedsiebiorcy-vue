@@ -17,50 +17,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import {PropType, computed, defineComponent} from 'vue'
+<script setup lang="ts">
 import {VatLimitInputFields} from 'components/vatLimit/interfaces/VatLimitInputFields'
-import { format } from 'date-fns'
-import { pln } from 'src/use/currencyFormat'
+import {computed} from 'vue'
+import {format} from 'date-fns'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import vatLimit from 'components/vatLimit/vatLimit'
 
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<VatLimitInputFields>,
-    },
-  },
-  setup (props) {
-    const result = computed(() => {
-      try {
-        return vatLimit.getResult(props.input)
-      }
-      catch {
-        return {
-          amount: 0,
-          daysToEndYear: 0,
-          startDate: null,
-        }
-      }
-    })
+interface Props {
+  input: VatLimitInputFields
+}
 
-    const formatDate = (date:Date|null) => {
-      if (!date) {
-        return null
-      }
-      return format(date, 'dd.MM.yyyy')
-    }
+const props = defineProps<Props>()
 
+const result = computed(() => {
+  try {
+    return vatLimit.getResult(props.input)
+  }
+  catch {
     return {
-      formatDate,
-      pln,
-      result,
+      amount: 0,
+      daysToEndYear: 0,
+      startDate: null,
     }
-  },
+  }
 })
+
+const formatDate = (date:Date|null) => {
+  if (!date) {
+    return null
+  }
+  return format(date, 'dd.MM.yyyy')
+}
 </script>

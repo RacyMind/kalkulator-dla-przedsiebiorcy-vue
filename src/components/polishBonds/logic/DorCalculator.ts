@@ -4,13 +4,14 @@ import {DorInputFields} from 'components/polishBonds/interfaces/DorInputFields'
 import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class DorCalculator extends BasicCalculator<DorInputFields, Result> implements Calculator<DorInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const monthCount = 24 // DOR bonds have a 2-year maturity period

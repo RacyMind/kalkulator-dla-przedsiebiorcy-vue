@@ -25,7 +25,9 @@ import Form from 'components/investment/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Summary from 'components/investment/Summary.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -40,10 +42,9 @@ const inputFields = ref(<InvestmentInputFields>{
   rate: 0,
 })
 
-const scrollTarget = ref(null) as any
 
 const save = (input: InvestmentInputFields) => {
   inputFields.value = input
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  scrollToResults()
 }
 </script>

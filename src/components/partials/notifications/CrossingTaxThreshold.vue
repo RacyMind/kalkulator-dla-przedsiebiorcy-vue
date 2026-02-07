@@ -7,9 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import Tooltip from 'components/partials/Tooltip.vue'
 
-const {incomeTaxConstants} = useConstants()
+const {incomeTaxConstants} = storeToRefs(useConstantsStore())
 </script>

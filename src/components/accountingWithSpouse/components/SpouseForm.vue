@@ -38,7 +38,8 @@ import {
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {computed} from 'vue'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useLocalStorage} from '@vueuse/core'
 import CustomFields from 'components/accountingWithSpouse/components/CustomFields.vue'
 import EmployeeFields from 'components/accountingWithSpouse/components/EmployeeFields.vue'
@@ -50,7 +51,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { wageStats, zusConstants } = useConstants()
+const { wageStats, zusConstants } = storeToRefs(useConstantsStore())
 const store = useAccountingWithSpouseStore()
 
 const title = computed(() => props.spouse === Spouse.Husband ? 'Mąż' : 'Żona')

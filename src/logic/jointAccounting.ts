@@ -1,12 +1,28 @@
 import helpers from 'src/logic/helpers'
 import taxes from './taxes'
+import {AvailableYear} from 'src/types/AvailableYear'
+
+interface SpouseData {
+  grossAmount: number
+  basisForTax: number
+  amountOfDeductionOfHealthContributionFromTax: number
+  contributionTotal: number
+  isAidForMiddleClass?: boolean
+}
+
+interface JointResult {
+  basisForTax: number
+  grossAmount: number
+  netAmount: number
+  taxAmount: number
+}
 
 /**
  * Sets parameters for the year
  * @param newYear
  */
-function setYear (newYear) {
-  taxes.setYear(newYear)
+function setYear (newYear: AvailableYear): void {
+  taxes.setParams(newYear)
 }
 
 /**
@@ -16,7 +32,7 @@ function setYear (newYear) {
  * @param {number} spouseGrossAmount
  * @returns {number}
  */
-function calculateGrossAMount (myGrossAmount, spouseGrossAmount) {
+function calculateGrossAMount (myGrossAmount: number, spouseGrossAmount: number): number {
   return myGrossAmount + spouseGrossAmount
 }
 
@@ -26,7 +42,7 @@ function calculateGrossAMount (myGrossAmount, spouseGrossAmount) {
  * @param {number} jointBasisForTax
  * @returns {number}
  */
-function calculateBasisForTax (jointBasisForTax) {
+function calculateBasisForTax (jointBasisForTax: number): number {
   return helpers.round(jointBasisForTax / 2, 2)
 }
 
@@ -37,7 +53,7 @@ function calculateBasisForTax (jointBasisForTax) {
  * @param {number} spouseAmountOfDeductionOfHealthContributionFromTax
  * @returns {number}
  */
-function calculateAmountOfDeductionOfHealthContributionFromTax (myAmountOfDeductionOfHealthContributionFromTax, spouseAmountOfDeductionOfHealthContributionFromTax) {
+function calculateAmountOfDeductionOfHealthContributionFromTax (myAmountOfDeductionOfHealthContributionFromTax: number, spouseAmountOfDeductionOfHealthContributionFromTax: number): number {
   return myAmountOfDeductionOfHealthContributionFromTax + spouseAmountOfDeductionOfHealthContributionFromTax
 }
 
@@ -53,19 +69,14 @@ function calculateAmountOfDeductionOfHealthContributionFromTax (myAmountOfDeduct
  * @returns {number}
  */
 function calculateTaxAmount (
-  myGrossAmount,
-  spouseGrossAmount,
-  basisForTax,
-  amountOfDeductionOfHealthContributionFromTax,
-  isAidForMiddleClass,
-  isFreeAmount,
-) {
-  let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingTaxScales(myGrossAmount + spouseGrossAmount, basisForTax, 0, isFreeAmount, 0, false, true, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
-
-  if (isAidForMiddleClass) {
-    taxAmount -= taxes.calculateAidForMiddleClass(myGrossAmount, true)
-    taxAmount -= taxes.calculateAidForMiddleClass(spouseGrossAmount, true)
-  }
+  myGrossAmount: number,
+  spouseGrossAmount: number,
+  basisForTax: number,
+  amountOfDeductionOfHealthContributionFromTax: number,
+  isAidForMiddleClass: boolean,
+  isFreeAmount: boolean,
+): number {
+  let taxAmount = helpers.round(taxes.calculateIncomeTaxUsingTaxScales(myGrossAmount + spouseGrossAmount, basisForTax, 0, isFreeAmount, 0, false, true) * 2 - amountOfDeductionOfHealthContributionFromTax)
 
   if (taxAmount < 0) {
     taxAmount = 0
@@ -82,7 +93,7 @@ function calculateTaxAmount (
  * @param {number} contributionTotal
  * @returns {number}
  */
-function calculateNetAmount (grossAmount, taxAmount, contributionTotal) {
+function calculateNetAmount (grossAmount: number, taxAmount: number, contributionTotal: number): number {
   return grossAmount - taxAmount - contributionTotal
 }
 
@@ -93,7 +104,7 @@ function calculateNetAmount (grossAmount, taxAmount, contributionTotal) {
  * @param {Object} spouseData
  * @returns {{netAmount: number, basisForTax: number, grossAmount: number, taxAmount: number}}
  */
-function getResult (myData, spouseData) {
+function getResult (myData: SpouseData, spouseData: SpouseData): JointResult {
   let isAidForMiddleClass = false
   const isFreeAmount = true
 
@@ -104,21 +115,6 @@ function getResult (myData, spouseData) {
   }
 
   const commonBasisForTax = myData.basisForTax + spouseData.basisForTax
-
-/*  let amountToCalculateTax = 0
-
-  if (isAidForBigFamily) {
-    let limitFreeAmountOfTax = params.grossAmountLimitForAid * 2
-
-      limitFreeAmountOfTax += params.freeAmountOfTax * 2
-
-    if (grossAmount > limitFreeAmountOfTax) {
-      amountToCalculateTax = commonBasisForTax
-    }
-    isFreeAmount = false
-  } else {
-    amountToCalculateTax = commonBasisForTax
-  } */
 
   const basisForTax = calculateBasisForTax(commonBasisForTax)
   const amountOfDeductionOfHealthContributionFromTax = calculateAmountOfDeductionOfHealthContributionFromTax(myData.amountOfDeductionOfHealthContributionFromTax, spouseData.amountOfDeductionOfHealthContributionFromTax)

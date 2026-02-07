@@ -54,11 +54,12 @@
   </q-form>
 </template>
 <script setup lang="ts">
-import {AmountTypes, useConstants} from 'src/composables/constants'
+import {AmountTypes, useConstantsStore} from 'stores/constantsStore'
+import {storeToRefs} from 'pinia'
 import {ContractWorkCalculator} from 'components/contractWork/logic/ContractWorkCalculator'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
 import {InputFields} from 'components/contractWork/interfaces/InputFields'
-import {findGrossAmountUsingNetAmount} from 'components/contractWork/logic/findGrossAmountUsingNetAmount'
+import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {useContractWorkStore} from 'components/contractWork/store'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -71,7 +72,7 @@ import validationRules from 'src/logic/validationRules'
 
 const emit = defineEmits(['submit'])
 
-const { incomeTaxConstants, wageStats } = useConstants()
+const { incomeTaxConstants, wageStats } = storeToRefs(useConstantsStore())
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const store = useContractWorkStore()
@@ -106,7 +107,14 @@ const handleFormSubmit = () => {
   if(amountType.value === AmountTypes.Net) {
     let netAmount = amount.value
 
-    basicInputFields.grossAmount = findGrossAmountUsingNetAmount(new ContractWorkCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, basicInputFields)
+    const calculator = new ContractWorkCalculator()
+    basicInputFields.grossAmount = findGrossAmountUsingNetAmount(
+      (grossAmount) => {
+        basicInputFields.grossAmount = grossAmount
+        return calculator.setInputData(basicInputFields).calculate().getResult()
+      },
+      0.5 * netAmount, 2 * netAmount, netAmount,
+    )
   }
 
   store.inputFields = basicInputFields

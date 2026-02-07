@@ -1,13 +1,13 @@
 import {AnnualEntrepreneurCalculator} from 'components/selfEmployment/logic/AnnualEntrepreneurCalculator'
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
 import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import {describe, expect, it} from 'vitest'
 import {useSettingStore} from 'stores/settingStore'
 
 const annualInput = (monthlyInput:InputFields, isSMallZus = false):InputFields[] => {
   const input:InputFields[] = []
-  const { zusConstants} = useConstants()
+  const { zusConstants} = storeToRefs(useConstantsStore())
 
   for(let i = 0; i < 12; i++) {
     input.push({
@@ -25,7 +25,7 @@ describe(' AnnualEntrepreneur Calculator of Self employment in 2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { zusConstants} = useConstants()
+  const { zusConstants} = storeToRefs(useConstantsStore())
 
   it('The invalid data', () => {
     expect(() => new AnnualEntrepreneurCalculator().getResult()).toThrowError('undefined')
