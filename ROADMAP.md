@@ -239,102 +239,103 @@ Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale 
 
 ---
 
-## Milestone 4 - Nowoczesny UI/UX
+## Milestone 4 - Nowoczesny UI/UX ✅
 
+> **Status: UKOŃCZONY** (2026-02-07, branch `013-modern-ui-ux`)
 > Cel: Odświeżyć interfejs użytkownika - responsywny layout, nowoczesne komponenty, lepsza nawigacja, dashboard.
 
-### 4.1 Rozszerzenie Design Tokens o typografię i spacing
+### 4.1 Rozszerzenie Design Tokens o typografię i spacing ✅
 
 > Paleta kolorów została zdefiniowana w sekcji 2.6 i jest już zaimplementowana. Tutaj rozszerzamy design system o typografię i spacing.
 
-- [ ] Dodać CSS custom properties dla spacing (`--space-xs`, `--space-sm`, `--space-md`, `--space-lg`, `--space-xl`)
-- [ ] Dodać CSS custom properties dla border-radius (`--radius-sm`, `--radius-md`, `--radius-lg`)
-- [ ] Ujednolicić typografię — użyć Quasar typography classes konsystentnie
-- [ ] Ewentualne drobne korekty kolorów, jeśli nowy layout tego wymaga (dokumentować w `_design-tokens.scss`)
+- [x] Dodać CSS custom properties dla spacing (`--space-xs`, `--space-sm`, `--space-md`, `--space-lg`, `--space-xl`)
+- [x] Dodać CSS custom properties dla border-radius (`--radius-sm`, `--radius-md`, `--radius-lg`)
+- [x] Ujednolicić typografię — użyć Quasar typography classes konsystentnie
+- [x] Ewentualne drobne korekty kolorów, jeśli nowy layout tego wymaga (dokumentować w `_design-tokens.scss`)
 
-### 4.2 Nowy MainLayout - responsywny
+### 4.2 Nowy MainLayout - responsywny ✅
 
-- [ ] Przeprojektować `src/layouts/MainLayout.vue`:
+- [x] Przeprojektować `src/layouts/MainLayout.vue`:
   - Mobile (<600px): hamburger menu → drawer, pełna szerokość contentu
   - Tablet (600-1200px): opcjonalny mini-drawer, content z paddingiem
   - Desktop (>1200px): stały sidebar z menu, content w centralnej kolumnie
   - Ultra-wide (>2560px): max-width na kontenerze, wycentrowany
-- [ ] Nowy header:
+- [x] Nowy header:
   - Logo + nazwa aplikacji (z linkiem do strony głównej)
   - Breadcrumbs (istniejące)
   - Przełącznik motywu (light/dark)
   - Hamburger menu (mobile only)
-- [ ] Nowy drawer/sidebar:
+- [x] Nowy drawer/sidebar:
   - Zamienić `<h6>` + `v-for` na `q-expansion-item` per sekcja
   - Dodać ikony do sekcji menu
   - Dodać search input z `q-input` (istniejący, ale ulepszyć)
   - Dodać stopkę drawera z wersją aplikacji i linkiem "Wesprzyj projekt"
-- [ ] Nowy page-container:
+- [x] Nowy page-container:
   - Użyć `q-page` z Quasar padding
   - Responsywne max-width zamiast hardcodowanego 800px
 
-### 4.3 Nowa strona główna - Dashboard
+### 4.3 Nowa strona główna - Dashboard ✅
 
-- [ ] Przeprojektować `src/pages/Index.vue`:
+- [x] Przeprojektować `src/pages/Index.vue`:
   - Hero section z logo i krótkim opisem
   - Siatka kafelków (`q-card`) z modułami pogrupowanymi w sekcje
   - Każdy kafelek: ikona + nazwa + krótki opis + kolor modułu
   - Responsywna siatka: 1 kolumna (mobile), 2 kolumny (tablet), 3 kolumny (desktop)
-- [ ] Dodać animacje wejścia (intersection observer + CSS transitions)
-- [ ] Dodać sekcję "Ostatnio używane" (opcjonalnie, z localStorage)
+- [x] Dodać animacje wejścia (intersection observer + CSS transitions)
+- [x] Dodać sekcję "Ostatnio używane" (opcjonalnie, z localStorage)
 
-### 4.4 Nowy ModulePageLayout
+### 4.4 Nowy ModulePageLayout ✅
 
-- [ ] Przeprojektować `src/components/partials/ModulePageLayout.vue`:
+- [x] Przeprojektować `src/components/partials/ModulePageLayout.vue`:
   - Użyć `q-card` z `q-card-section` dla grup treści
   - Responsywny layout:
     - Mobile: jedna kolumna (formularz → wyniki → wykres)
     - Desktop: dwie kolumny (formularz po lewej, wyniki + wykres po prawej)
   - Subtlety: lekkie cienie, zaokrąglone rogi, padding
-- [ ] Zaktualizować `SectionHeader.vue`:
+- [x] Zaktualizować `SectionHeader.vue`:
   - Użyć semantycznego `<h2>` / `<h3>` zamiast `<div>`
   - Stylizacja z Quasar classes zamiast custom CSS
 
-### 4.5 Nowe komponenty formularzy
+### 4.5 Nowe komponenty formularzy ✅
 
-- [ ] Zaktualizować `FormSection.vue`:
+- [x] Zaktualizować `FormSection.vue`:
   - Użyć `q-expansion-item` zamiast custom toggle
   - Lepsza stylizacja tytułów sekcji
-- [ ] Zaktualizować `SubmitButton.vue`:
+- [x] Zaktualizować `SubmitButton.vue`:
   - Nowoczesny wygląd przycisku (gradient lub filled z zaokrągleniem)
   - Disclaimer w bardziej dyskretnym stylu (mniejszy tekst, collapse)
-- [ ] Zaktualizować pola formularzy:
+- [x] Zaktualizować pola formularzy:
   - Spójne użycie `outlined` lub `filled` variant na `q-input`
   - Dodanie `hint` text gdzie pomocny
   - Lepsze ikony i prefix/suffix
 
-### 4.6 Nowe komponenty wyników
+### 4.6 Nowe komponenty wyników ✅
 
-- [ ] Przeprojektować `ListRow.vue`:
+- [x] Przeprojektować `ListRow.vue`:
   - Użyć `q-item` / `q-list` zamiast custom div
   - Lepsza stylizacja highlighted row (gradient lub kolor tła)
   - Opcjonalny tooltip z wyjaśnieniem pozycji
-- [ ] Przeprojektować wyświetlanie wyników:
+- [x] Przeprojektować wyświetlanie wyników:
   - Grupowanie w karty (`q-card`)
   - Animacje przy zmianie wartości (transition)
   - Opcjonalne wyświetlanie procentów obok kwot
 
-### 4.7 Nowoczesne wykresy
+### 4.7 Nowoczesne wykresy ✅
 
-- [ ] Zamienić PieChart na Donut chart (nowoczesniejszy wygląd)
-- [ ] Dodać interaktywne tooltips na wykresach
-- [ ] Dodać animacje przy ładowaniu wykresów
-- [ ] Dodać opcję BarChart jako alternatywę do PieChart/Donut
-- [ ] Responsywne wykresy (auto-resize na zmianę rozmiaru okna)
-- [ ] Kolory wykresów zgodne z paletą modułu
+- [x] Zamienić PieChart na Donut chart (nowoczesniejszy wygląd)
+- [x] Dodać interaktywne tooltips na wykresach
+- [x] Dodać animacje przy ładowaniu wykresów
+- [x] Dodać opcję BarChart jako alternatywę do PieChart/Donut
+- [x] Responsywne wykresy (auto-resize na zmianę rozmiaru okna)
+- [x] Kolory wykresów zgodne z paletą modułu
 
-### 4.8 Nawigacja i UX
+### 4.8 Nawigacja i UX ✅
 
-- [ ] Dodać smooth scroll do wyników po kliknięciu "Oblicz"
-- [ ] Dodać `q-page-sticky` z przyciskiem "Powrót na górę" (scroll-to-top)
-- [ ] Dodać loading skeleton na lazy-loaded modułach
-- [ ] Dodać subtle animacje przejść między stronami (`q-transition`)
-- [ ] Dodać `q-banner` lub `q-notification` dla powiadomień o progu podatkowym (zamiast eventStore)
+- [x] Dodać smooth scroll do wyników po kliknięciu "Oblicz"
+- [x] Dodać `q-page-sticky` z przyciskiem "Powrót na górę" (scroll-to-top)
+- [x] Dodać loading skeleton na lazy-loaded modułach
+- [x] Dodać subtle animacje przejść między stronami (`q-transition`)
+- [x] Dodać `q-banner` lub `q-notification` dla powiadomień o progu podatkowym (zamiast eventStore)
 
 ---
 

@@ -33,6 +33,7 @@ const targets = [
 
   // Source favicon
   { name: 'favicon-512x512.png', size: 512, dir: 'src/assets' },
+  { name: 'favicon-512x512.png', size: 512, dir: 'public/icons' },
 ]
 
 console.log(`Generating icons from ${svgPath}...\n`)

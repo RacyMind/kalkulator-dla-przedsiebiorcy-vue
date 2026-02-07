@@ -126,12 +126,12 @@
 **Independent Test**: Open app in browser — verify new favicon in tab. Install PWA on phone — verify new icon on home screen. Check `manifest.json` theme_color.
 
 - [x] T030 [US9] Design new `src/assets/app-icon.svg` — use `#1565C0` as primary color, modern clean style, keep PIT/VAT/+/% motif for brand recognition
-- [ ] T031 [US9] Run `node scripts/generate-icons.mjs` to generate all PNG variants in `public/icons/` (favicons 16/32/96/128/512, PWA 128/192/256/384/512, Apple 120/152/167/180, MS 144)
-- [ ] T032 [P] [US9] Update `public/favicon.ico` and `public/icons/safari-pinned-tab.svg` with new design
-- [ ] T033 [P] [US9] Update `src/assets/favicon-512x512.png` with new icon
+- [x] T031 [US9] Run `node scripts/generate-icons.mjs` to generate all PNG variants in `public/icons/` (favicons 16/32/96/128/512, PWA 128/192/256/384/512, Apple 120/152/167/180, MS 144)
+- [x] T032 [P] [US9] Update `public/favicon.ico` and `public/icons/safari-pinned-tab.svg` with new design
+- [x] T033 [P] [US9] Update `src/assets/favicon-512x512.png` with new icon
 - [x] T034 [US9] Update `src-pwa/manifest.json` — set `background_color` and `theme_color` to `#1565C0`
-- [ ] T035 [P] [US9] Update Capacitor iOS assets: `src-capacitor/ios/App/App/Assets.xcassets/AppIcon.appiconset/` (all sizes) and `Splash.imageset/` (3 sizes)
-- [ ] T036 [P] [US9] Update Apple launch screens in `public/icons/` (10 `apple-launch-*` files) with new branding colors
+- [x] T035 [P] [US9] Update Capacitor iOS assets: `src-capacitor/ios/App/App/Assets.xcassets/AppIcon.appiconset/` (all sizes) and `Splash.imageset/` (3 sizes)
+- [x] T036 [P] [US9] Update Apple launch screens in `public/icons/` (10 `apple-launch-*` files) with new branding colors
 
 **Checkpoint**: New icon visible in browser tab, PWA manifest updated, all icon variants generated
 
