@@ -4,7 +4,12 @@
   "webDir": "www",
   "plugins": {
     "StatusBar": {
-      "overlaysWebView": false
+      "overlaysWebView": false,
+      "backgroundColor": "#1565C0",
+      "style": "LIGHT"
+    },
+    "SplashScreen": {
+      "backgroundColor": "#1565C0"
     }
   }
 }
