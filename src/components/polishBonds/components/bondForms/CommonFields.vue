@@ -13,6 +13,7 @@
           (val) => val >= 1 || 'Minimalna wartość to 1'
         ]"
         lazy-rules="ondemand"
+        aria-required="true"
       />
     </div>
     <div class="col-12 col-md-6">
@@ -27,6 +28,7 @@
         color="brand"
         :rules="[validationRules.required]"
         lazy-rules="ondemand"
+        aria-required="true"
       />
     </div>
   </div>

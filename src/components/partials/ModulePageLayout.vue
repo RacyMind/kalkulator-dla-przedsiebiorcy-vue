@@ -13,7 +13,8 @@
         </q-card>
       </div>
       <div v-if="$slots.results"
-           :class="resultsColumnClass">
+           :class="resultsColumnClass"
+           aria-live="polite">
         <q-card
           flat
           class="module-card module-card--padded"

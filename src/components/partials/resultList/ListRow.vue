@@ -1,5 +1,6 @@
 <template>
   <div
+    role="listitem"
     class="s-row row justify-between q-px-md q-py-sm items-center"
     :class="{
       'bg-primary text-white -highlighted': props.highlight,

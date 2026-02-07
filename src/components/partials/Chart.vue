@@ -1,5 +1,7 @@
 <template>
   <div ref="chartContainer"
+       role="img"
+       :aria-label="ariaLabel"
        style="position: relative; width: 100%;">
     <component
       :is="chartComponent"
@@ -52,6 +54,11 @@ const props = defineProps({
   type: {
     required: true,
     type: String,
+  },
+  ariaLabel: {
+    required: false,
+    type: String,
+    default: 'Wykres danych',
   },
 })
 

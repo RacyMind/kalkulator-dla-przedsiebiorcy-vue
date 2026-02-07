@@ -18,6 +18,7 @@
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-md-6">
@@ -33,6 +34,7 @@
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>
@@ -66,7 +68,8 @@
             :rules="[validationRules.required]"
             data-testid="startDate"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
                 name="event"
@@ -85,7 +88,8 @@
             :rules="[validationRules.required]"
             data-testid="endDate"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
                 name="event"

@@ -14,6 +14,7 @@
             :rules="[validationRules.required, validationRules.minValue(18), validationRules.maxValue(100)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -28,6 +29,7 @@
             :rules="[validationRules.required, validationRules.greaterThan(currentAge), validationRules.maxValue(100)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>
@@ -61,6 +63,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -95,6 +98,7 @@
             :rules="[validationRules.required, validationRules.minValue(-20), validationRules.maxValue(30)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -109,6 +113,7 @@
             :rules="[validationRules.required, validationRules.minValue(1), validationRules.maxValue(50)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>

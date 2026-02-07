@@ -1,5 +1,6 @@
 <template>
   <q-item
+    role="listitem"
     :class="[
       { 'q-pl-lg': nested },
       highlighted ? 'bg-primary-brand text-on-surface' : '',

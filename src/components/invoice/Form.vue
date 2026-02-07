@@ -17,6 +17,7 @@
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
           <div class="q-mt-sm block">
             <q-radio

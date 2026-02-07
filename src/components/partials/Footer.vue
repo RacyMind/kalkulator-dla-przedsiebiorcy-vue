@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pt-md text-center text-grey">
+  <div class="q-pt-md text-center footer-text">
     <div>
       <q-btn
         class="q-mb-sm lt-md"
@@ -17,7 +17,7 @@
         Wersja {{ appVersion }}<br>
         Stworzone przez <a
           href="https://lukasz-socha.pl"
-          class="text-grey"
+          class="footer-text"
           target="_blank">
           Łukasz Socha
         </a>

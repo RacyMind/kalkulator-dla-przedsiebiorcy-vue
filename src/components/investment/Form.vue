@@ -17,6 +17,7 @@
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-md-4">
@@ -31,6 +32,7 @@
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-md-4">
@@ -44,6 +46,7 @@
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>

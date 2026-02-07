@@ -1,5 +1,43 @@
 // app global css in SCSS form
 @import "design-tokens";
+
+// Accessibility: Skip-to-content link
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+
+  &:focus-visible {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+  }
+}
+
+// Accessibility: Screen-reader only (visually hidden)
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Accessibility: Global focus ring for keyboard navigation
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
 @import "transitions";
 @import "objects/breadcrumbs";
 @import "objects/sectionHeader";
@@ -19,6 +57,7 @@
 .bg-surface-elevated { background: var(--color-surface-elevated) !important; }
 .bg-primary-brand { background: var(--color-primary) !important; }
 .text-on-surface { color: var(--color-text-primary) !important; }
+.footer-text { color: var(--color-text-secondary) !important; }
 
 .module-card {
   background: var(--color-surface) !important;

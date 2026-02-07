@@ -12,6 +12,7 @@
         color="brand"
         :rules="[validationRules.required]"
         lazy-rules="ondemand"
+        aria-required="true"
       />
     </div>
   </div>
