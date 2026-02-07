@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header
       v-if="breadcrumbStore.items.length"
-      class="bg-red-8"
+      class="bg-primary-brand"
       elevated>
       <q-toolbar>
         <q-btn
@@ -42,13 +42,23 @@
             </div>
           </div>
         </q-toolbar-title>
+        <q-btn
+          flat
+          dense
+          round
+          :icon="themeIcon"
+          :aria-label="themeTooltip"
+          @click="cycleTheme"
+        >
+          <q-tooltip>{{ themeTooltip }}</q-tooltip>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       bordered
-      content-class="bg-grey-2"
+      content-class="bg-surface-variant"
     >
       <q-list>
         <Menu :hide-search-input="false" />
@@ -71,7 +81,7 @@
     </q-drawer>
 
     <q-page-container
-      class="flex flex-center bg-teal-1"
+      class="flex flex-center bg-surface-variant"
       :class="{
         'q-pt-lg': !breadcrumbStore.items.length
       }"
@@ -87,7 +97,10 @@ import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import {useConstantsStore} from 'stores/constantsStore'
+import {useTheme} from 'src/composables/useTheme'
+
 const constants = useConstantsStore()
+const {themeIcon, themeTooltip, cycleTheme} = useTheme()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)

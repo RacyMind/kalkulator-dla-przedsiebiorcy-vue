@@ -1,4 +1,5 @@
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
+import {Dark} from 'quasar'
 
 export interface ChartColors {
   chart1: string
@@ -86,6 +87,10 @@ export function useChartColors() {
   const refresh = () => {
     version.value++
   }
+
+  watch(() => Dark.isActive, () => {
+    setTimeout(() => refresh(), 50)
+  })
 
   return { chartColors, moduleColors, refresh }
 }

@@ -28,6 +28,17 @@
     <!-- End Google Tag Manager -->
   </head>
   <body>
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('themeMode');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === '"dark"' || ((!stored || stored === '"auto"') && prefersDark)) {
+            document.body.classList.add('body--dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
     <!-- quasar:entry-point -->
   </body>
 </html>

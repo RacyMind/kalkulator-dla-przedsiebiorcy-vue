@@ -5,7 +5,7 @@
       :value="pln(result.netAmount)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Kwota podatku"
       :value="pln(result.taxAmount)"
     />

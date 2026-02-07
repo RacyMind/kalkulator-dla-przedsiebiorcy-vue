@@ -12,6 +12,13 @@
 @import "components/percentage";
 @import "components/work";
 
+// Dark-mode-aware utility classes (consume design tokens from _design-tokens.scss)
+.bg-surface { background: var(--color-surface) !important; }
+.bg-surface-variant { background: var(--color-surface-variant) !important; }
+.bg-surface-elevated { background: var(--color-surface-elevated) !important; }
+.bg-primary-brand { background: var(--color-primary) !important; }
+.text-on-surface { color: var(--color-text-primary) !important; }
+
 a{
   color: $primary;
   text-decoration: none;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="full-width bg-white q-pa-md text-grey text-caption">
+    <div class="full-width bg-surface q-pa-md text-grey text-caption">
       <p class="q-mb-sm">Twórca aplikacji dokłada wszelkich starań, by obliczenia były poprawne. Niemniej wszelkie obliczenia mają charakter orientacyjny. Twórca nie ponosi odpowiedzialności za ewentualne szkody powstałe podczas używania danych z aplikacji.</p>
       <p class="q-mb-none">
         Korzystając z aplikacji akceptujesz <router-link class="text-grey "

@@ -98,6 +98,7 @@ export default defineConfig((ctx) => {
       iconSet: 'material-icons',
       lang: 'pl',
       plugins: [
+        'Dark',
         'Notify',
       ],
     },

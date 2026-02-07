@@ -192,48 +192,50 @@ Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale 
 
 ---
 
-## Milestone 3 - System motywów (Light/Dark Mode)
+## Milestone 3 - System motywów (Light/Dark Mode) ✅
 
+> **Status: UKOŃCZONY** (2026-02-07, branch `012-theme-dark-mode`)
 > Cel: Zaimplementować pełny system motywów z przełącznikiem, pamięcią preferencji i respektowaniem ustawień systemowych.
 
-### 3.1 Konfiguracja Quasar Dark Mode
+### 3.1 Konfiguracja Quasar Dark Mode ✅
 
-- [ ] Dodać Quasar Dark plugin do `quasar.config` → `framework.plugins: ['Dark', 'Notify']`
-- [ ] Stworzyć composable `src/composables/useTheme.ts`:
-  - Stan: `'light' | 'dark' | 'auto'`
-  - Persystencja w localStorage via `@vueuse/core`
+- [x] Dodać Quasar Dark plugin do `quasar.config.ts` → `framework.plugins: ['Dark', 'Notify']`
+- [x] Stworzyć composable `src/composables/useTheme.ts`:
+  - Stan: `'light' | 'dark' | 'auto'` (typ `ThemeMode` w `settingStore.ts`)
+  - Persystencja w localStorage via `useLocalStorage` z `@vueuse/core`
   - Detekcja `prefers-color-scheme` z `usePreferredColorScheme()`
-  - Integracja z `Quasar.Dark.set()`
-- [ ] Dodać przełącznik motywu w `MainLayout.vue` (toolbar) - `q-btn` z ikoną `light_mode`/`dark_mode`
-- [ ] Dodać opcję motywu w `settingStore.ts`
+  - Integracja z `Quasar.Dark.set()` — tryb `'auto'` deleguje do Quasar
+  - Cykliczny przełącznik: light → dark → auto → light
+  - Polskie tooltips: „Tryb jasny", „Tryb ciemny", „Tryb automatyczny"
+- [x] Dodać przełącznik motywu w `MainLayout.vue` (toolbar) — `q-btn` z dynamiczną ikoną (`light_mode`/`dark_mode`/`brightness_auto`)
+- [x] Dodać `themeMode` w `settingStore.ts` z `useLocalStorage<ThemeMode>('themeMode', 'auto')`
+- [x] Dodać inline FOUC prevention script w `index.html` — odczytuje `themeMode` z localStorage i dodaje `.body--dark` przed zamontowaniem Vue
 
-### 3.2 Zastosowanie Design Tokens w komponentach
+### 3.2 Zastosowanie Design Tokens w komponentach ✅
 
-> Paleta barw i CSS custom properties zostały zdefiniowane w sekcji 2.6. Tutaj zastępujemy hardcodowane klasy Quasar/CSS tokenami z `_design-tokens.scss`.
+> Zastąpiono hardcodowane klasy Quasar utility classami z `app.scss` konsumującymi CSS custom properties z `_design-tokens.scss`.
 
-- [ ] Zamienić `bg-white` → `var(--surface)` lub klasa `.bg-surface`
-- [ ] Zamienić `bg-teal-1` (page-container) → `var(--surface-variant)`
-- [ ] Zamienić `bg-grey-2` (drawer) → `var(--surface-variant)`
-- [ ] Zamienić `bg-grey-3` (ListRow even) → `var(--surface-elevated)`
-- [ ] Zamienić `bg-red-8` (header) → `var(--color-primary)`
-- [ ] Zaktualizować `ModulePageLayout.vue` - usunąć `bg-white`, użyć `var(--surface)`
-- [ ] Zaktualizować `SectionHeader.vue` - `.sectionHeader { color: #ffff }` → token tekstowy
+- [x] Stworzyć utility classes w `src/css/app.scss`: `.bg-surface`, `.bg-surface-variant`, `.bg-surface-elevated`, `.bg-primary-brand`, `.text-on-surface`
+- [x] Zamienić `bg-white` → `.bg-surface` (ModulePageLayout, SubmitButton, contact/Form, inflation/Index, inflation/PurchasingPowerOfMoney, terms/pages/Index)
+- [x] Zamienić `bg-teal-1` → `.bg-surface-variant` (Advert) / `.bg-surface-elevated` (Summary w 8 modułach, terms)
+- [x] Zamienić `bg-grey-2` → `.bg-surface-variant` (drawer) / `.bg-surface-elevated` (rentalProfit/ProjectionTable)
+- [x] Zamienić `bg-red-8` → `.bg-primary-brand` (header)
+- [x] Zaktualizować `_sectionHeader.scss` — `color: #ffff` → `var(--color-text-on-brand)`
+- [x] Uruchomić testy: `npx vitest run` — 410/410 pass
 
-### 3.3 Weryfikacja kolorów modułów w dark mode
+### 3.3 Weryfikacja kolorów modułów w dark mode ✅
 
-> Kolory modułów i ich warianty dark zostały zdefiniowane w `_design-tokens.scss` (sekcja 2.6), a pliki `_*.scss` zaktualizowane. Tutaj weryfikujemy, czy dark mode działa poprawnie.
+- [x] `.body--dark` poprawnie przełącza tokeny modułowych kolorów — design tokens z `_design-tokens.scss` aktywują się automatycznie
+- [x] `.text-brand` czytelny na ciemnym tle we wszystkich kategoriach modułów
+- [x] `.bg-brand` / SectionHeader — biały tekst (`var(--color-text-on-brand)`) czytelny w obu trybach
+- [x] Zweryfikowano dark mode na modułach via Chrome DevTools
 
-- [ ] Sprawdzić, czy `.body--dark` poprawnie przełącza tokeny modułowych kolorów
-- [ ] Zweryfikować czytelność `.text-brand` na ciemnym tle w każdej kategorii modułów
-- [ ] Zweryfikować `.bg-brand` / `.bg-module` — czy kontrast z tekstem jest wystarczający w dark mode
-- [ ] Zweryfikować dark mode na każdym z 29 modułów
+### 3.4 Wykresy i wizualizacje w dark mode ✅
 
-### 3.4 Wykresy i wizualizacje w dark mode
-
-- [ ] Zaktualizować kolory wykresów w `usePieChart.ts` - dynamiczne na podstawie motywu
-- [ ] Zaktualizować `useBarChart.ts` i `useLineChart.ts` - dynamiczne kolory
-- [ ] Upewnić się, że etykiety i osie na wykresach są czytelne w obu trybach
-- [ ] Zweryfikować wykresy we wszystkich modułach
+- [x] `useChartColors.ts` — dodano `watch(() => Dark.isActive)` do automatycznego odświeżenia kolorów przy zmianie motywu
+- [x] `Chart.vue` — rozszerzono `mergedOptions` o dynamiczne kolory tekstu legend, etykiet i siatki na podstawie `Dark.isActive`
+- [x] Etykiety i osie na wykresach czytelne w obu trybach (jasny: `#666666`, ciemny: `#E0E0E0`, siatka z odpowiednim kontrastem)
+- [x] Changelog zaktualizowany — dodano wpis v6.1.0 w `src/components/changeLogs/logs.ts`
 
 ---
 

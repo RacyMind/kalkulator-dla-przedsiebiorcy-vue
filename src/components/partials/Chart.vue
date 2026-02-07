@@ -8,6 +8,7 @@
 </template>
 <script lang="ts" setup>
 import {computed} from 'vue'
+import {Dark} from 'quasar'
 import {Pie, Bar, Line, Doughnut} from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -60,8 +61,26 @@ const chartComponentMap: Record<string, any> = {
 
 const chartComponent = computed(() => chartComponentMap[props.type] || Bar)
 
+const textColor = computed(() => Dark.isActive ? '#E0E0E0' : '#666666')
+
 const mergedOptions = computed(() => ({
   ...props.chartOptions,
-  plugins: {},
+  plugins: {
+    legend: {
+      labels: {
+        color: textColor.value,
+      },
+    },
+  },
+  scales: props.type === 'pie' || props.type === 'doughnut' ? undefined : {
+    x: {
+      ticks: { color: textColor.value },
+      grid: { color: Dark.isActive ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' },
+    },
+    y: {
+      ticks: { color: textColor.value },
+      grid: { color: Dark.isActive ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' },
+    },
+  },
 }))
 </script>

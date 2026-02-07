@@ -5,7 +5,7 @@
       :value="pln(result.amount)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Odsetki"
       :value="pln(result.interestAmount)"
     />

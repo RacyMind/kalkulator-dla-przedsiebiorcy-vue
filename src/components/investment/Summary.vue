@@ -5,7 +5,7 @@
       :value="pln(result.capital)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Zysk brutto"
       :value="pln(result.grossAmount)"
     />
@@ -14,7 +14,7 @@
       :value="pln(result.taxAmount)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Zysk netto"
       :value="pln(result.netAmount)"
     />
