@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: auto; max-width: 500px">
     <q-card-section class="text-center q-pb-none">
-      <q-icon name="o_favorite"
+      <q-icon :name="outlinedFavorite"
               size="32px"
               color="red-7" />
       <div class="text-h6 q-mt-xs">Przekaż 1,5% podatku</div>
@@ -17,7 +17,8 @@
       </p>
       <q-card flat
               bordered
-              class="q-pa-md text-center bg-grey-1">
+              class="q-pa-md text-center"
+              :class="Dark.isActive ? 'bg-grey-9 text-grey-2' : 'bg-grey-1 text-grey-9'">
         <div class="text-weight-bold">KRS: 0000270809</div>
         <div class="text-weight-bold">Cel szczególny: Socha, 15548</div>
       </q-card>
@@ -29,7 +30,9 @@
 </template>
 
 <script lang="ts" setup>
+import {Dark} from 'quasar'
 import ga from '../../logic/analytics'
+import {outlinedFavorite} from 'src/icons'
 
 ga.logEvent('Modal', 'Open', 'Wsparcie autora')
 </script>

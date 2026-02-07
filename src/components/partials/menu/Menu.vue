@@ -12,7 +12,7 @@
       dense
     >
       <template v-slot:prepend>
-        <q-icon name="search" />
+        <q-icon :name="matSearch" />
       </template>
     </q-input>
 
@@ -44,6 +44,8 @@ import {useRoute} from 'vue-router'
 import Item from './Item.vue'
 import RecentlyUsed from './RecentlyUsed.vue'
 import menuItems from 'components/partials/menu/menuItems'
+import {mdiDomain, mdiCashMultiple, mdiBriefcase, mdiPiggyBank, mdiCurrencyUsd, mdiInformation, mdiApplication} from '@quasar/extras/mdi-v7'
+import {matSearch} from 'src/icons'
 
 interface Props {
   hideSearchInput?: boolean
@@ -56,13 +58,13 @@ withDefaults(defineProps<Props>(), {
 const route = useRoute()
 
 const sections = [
-  { key: 'company', label: 'Firma', icon: 'mdi-domain' },
-  { key: 'taxes', label: 'Podatki i rozliczenia', icon: 'mdi-cash-multiple' },
-  { key: 'work', label: 'Praca', icon: 'mdi-briefcase' },
-  { key: 'savings', label: 'Oszczędzanie', icon: 'mdi-piggy-bank' },
-  { key: 'currencies', label: 'Waluty', icon: 'mdi-currency-usd' },
-  { key: 'info', label: 'Informacje', icon: 'mdi-information' },
-  { key: 'app', label: 'Aplikacja', icon: 'mdi-application' },
+  { key: 'company', label: 'Firma', icon: mdiDomain },
+  { key: 'taxes', label: 'Podatki i rozliczenia', icon: mdiCashMultiple },
+  { key: 'work', label: 'Praca', icon: mdiBriefcase },
+  { key: 'savings', label: 'Oszczędzanie', icon: mdiPiggyBank },
+  { key: 'currencies', label: 'Waluty', icon: mdiCurrencyUsd },
+  { key: 'info', label: 'Informacje', icon: mdiInformation },
+  { key: 'app', label: 'Aplikacja', icon: mdiApplication },
 ]
 
 const isSectionActive = (sectionKey: string): boolean => {

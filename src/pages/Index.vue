@@ -78,17 +78,18 @@
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Footer from 'components/partials/Footer.vue'
 import menuItems from 'components/partials/menu/menuItems'
+import {mdiDomain, mdiCashMultiple, mdiBriefcase, mdiPiggyBank, mdiCurrencyUsd, mdiInformation} from '@quasar/extras/mdi-v7'
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = []
 
 const dashboardSections = [
-  { key: 'company', label: 'Firma', icon: 'mdi-domain', color: 'var(--module-business)', items: menuItems.company },
-  { key: 'taxes', label: 'Podatki i rozliczenia', icon: 'mdi-cash-multiple', color: 'var(--module-taxes)', items: menuItems.taxes },
-  { key: 'work', label: 'Praca', icon: 'mdi-briefcase', color: 'var(--module-work)', items: menuItems.work },
-  { key: 'savings', label: 'Oszczędzanie', icon: 'mdi-piggy-bank', color: 'var(--module-percentage)', items: menuItems.savings },
-  { key: 'currencies', label: 'Waluty', icon: 'mdi-currency-usd', color: 'var(--module-currencies)', items: menuItems.currencies },
-  { key: 'info', label: 'Informacje', icon: 'mdi-information', color: 'var(--module-informator)', items: menuItems.info },
+  { key: 'company', label: 'Firma', icon: mdiDomain, color: 'var(--module-business)', items: menuItems.company },
+  { key: 'taxes', label: 'Podatki i rozliczenia', icon: mdiCashMultiple, color: 'var(--module-taxes)', items: menuItems.taxes },
+  { key: 'work', label: 'Praca', icon: mdiBriefcase, color: 'var(--module-work)', items: menuItems.work },
+  { key: 'savings', label: 'Oszczędzanie', icon: mdiPiggyBank, color: 'var(--module-percentage)', items: menuItems.savings },
+  { key: 'currencies', label: 'Waluty', icon: mdiCurrencyUsd, color: 'var(--module-currencies)', items: menuItems.currencies },
+  { key: 'info', label: 'Informacje', icon: mdiInformation, color: 'var(--module-informator)', items: menuItems.info },
 ]
 </script>
 

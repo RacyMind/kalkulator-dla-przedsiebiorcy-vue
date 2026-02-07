@@ -42,6 +42,8 @@
         <div class="col-12 col-md-6">
           <q-toggle
             v-model="isBasicCapitalRate"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             class="q-mt-sm"
             data-testid="basic-capital-rate"
             label="Ustawowe odsetki kapitałowe"
@@ -50,6 +52,8 @@
         <div class="col-12 col-md-6">
           <q-toggle
             v-model="isBasicLateRate"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             class="q-mt-sm"
             data-testid="basic-late-rate"
             label="Ustawowe odsetki za opóźnienie"
@@ -72,7 +76,7 @@
             aria-required="true">
             <template v-slot:append>
               <q-icon
-                name="event"
+                :name="matEvent"
                 class="cursor-pointer">
               </q-icon>
             </template>
@@ -92,7 +96,7 @@
             aria-required="true">
             <template v-slot:append>
               <q-icon
-                name="event"
+                :name="matEvent"
                 class="cursor-pointer">
               </q-icon>
             </template>
@@ -115,6 +119,7 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import {useConstantsStore} from 'stores/constantsStore'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear, matEvent} from 'src/icons'
 
 const constants = useConstantsStore()
 
@@ -124,7 +129,7 @@ const emit = defineEmits<{
 
 const {handleValidationError} = useFormValidation()
 const amount = ref<number | null>(null)
-const rate = ref(constants.BASIC_CAPITAL_INTEREST_RATE)
+const rate = ref(constants.basicCapitalInterestRate)
 
 const startDate = ref('')
 const endDate = ref('')
@@ -151,20 +156,20 @@ const formattedEndDate = computed( () => {
 watch(isBasicCapitalRate, () => {
   if(isBasicCapitalRate.value) {
     isBasicLateRate.value = false
-    rate.value = constants.BASIC_CAPITAL_INTEREST_RATE
+    rate.value = constants.basicCapitalInterestRate
   }
 })
 
 watch(isBasicLateRate, () => {
   if(isBasicLateRate.value) {
     isBasicCapitalRate.value = false
-    rate.value = constants.BASIC_LATE_INTEREST_RATE
+    rate.value = constants.basicLateInterestRate
   }
 })
 
 watch(rate, () => {
-  isBasicCapitalRate.value = rate.value === constants.BASIC_CAPITAL_INTEREST_RATE
-  isBasicLateRate.value = rate.value === constants.BASIC_LATE_INTEREST_RATE
+  isBasicCapitalRate.value = rate.value === constants.basicCapitalInterestRate
+  isBasicLateRate.value = rate.value === constants.basicLateInterestRate
 })
 
 const save = () => {

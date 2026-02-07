@@ -1,7 +1,7 @@
 <template>
   <q-expansion-item
     v-if="recentModules.length"
-    icon="mdi-history"
+    :icon="mdiHistory"
     label="Ostatnio używane"
     default-opened
     header-class="text-weight-bold"
@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { useRecentlyUsed } from 'src/composables/useRecentlyUsed'
+import {mdiHistory} from '@quasar/extras/mdi-v7'
 
 const { recentModules } = useRecentlyUsed()
 </script>

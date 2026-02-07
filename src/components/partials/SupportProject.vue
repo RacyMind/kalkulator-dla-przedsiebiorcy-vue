@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: auto; max-width: 500px">
     <q-card-section class="text-center q-pb-none">
-      <q-icon name="o_favorite"
+      <q-icon :name="outlinedFavorite"
               size="32px"
               color="red-7" />
       <div class="text-h6 q-mt-xs">Wesprzyj projekt</div>
@@ -29,7 +29,7 @@
       </p>
       <div class="row justify-center q-gutter-sm q-mb-md">
         <q-btn
-          icon="mdi-facebook"
+          :icon="mdiFacebook"
           round
           flat
           color="primary"
@@ -38,7 +38,7 @@
           :href="`https://www.facebook.com/sharer/sharer.php?u=${url}`"
         />
         <q-btn
-          icon="mdi-linkedin"
+          :icon="mdiLinkedin"
           round
           flat
           color="primary"
@@ -47,7 +47,7 @@
           :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.app.name}`"
         />
         <q-btn
-          icon="mdi-twitter"
+          :icon="mdiTwitter"
           round
           flat
           color="primary"
@@ -68,6 +68,8 @@
 <script setup lang="ts">
 import {useConstantsStore} from 'stores/constantsStore'
 import ga from '../../logic/analytics'
+import {mdiFacebook, mdiLinkedin, mdiTwitter} from '@quasar/extras/mdi-v7'
+import {outlinedFavorite} from 'src/icons'
 
 const constants = useConstantsStore()
 

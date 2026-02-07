@@ -18,6 +18,8 @@
 </template>
 
 <script lang="ts" setup>
+import {matHelp} from 'src/icons'
+
 const props = defineProps({
   color: {
     type: String,
@@ -27,7 +29,7 @@ const props = defineProps({
   icon: {
     type: String,
     required: false,
-    default: 'help',
+    default: matHelp,
   },
 })
 </script>

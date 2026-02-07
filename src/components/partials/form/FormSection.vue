@@ -17,11 +17,11 @@
           <q-icon
             v-if="visible"
             color="primary"
-            name="expand_less"/>
+            :name="matExpandLess"/>
           <q-icon
             v-else
             color="primary"
-            name="expand_more"/>
+            :name="matExpandMore"/>
         </q-btn>
       </div>
     </div>
@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import Separator from 'components/partials/Separator.vue'
+import {matExpandLess, matExpandMore} from 'src/icons'
 
 const props = defineProps({
   title: String,

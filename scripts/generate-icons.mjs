@@ -1,3 +1,4 @@
+ 
 import sharp from 'sharp'
 import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'

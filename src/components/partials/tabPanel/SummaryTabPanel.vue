@@ -3,8 +3,8 @@
     <div class="q-px-md q-py-sm">
       <q-toggle
         v-model="showAnnualResult"
-        checked-icon="check"
-        unchecked-icon="clear"
+        :checked-icon="matCheck"
+        :unchecked-icon="matClear"
         label="Pokaż cały rok"
       />
     </div>
@@ -42,6 +42,7 @@ import AnnualSummaryResultList from 'components/partials/resultList/AnnualSummar
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import SummaryResultList from 'components/partials/resultList/SummaryResultList.vue'
 import SummaryStatistics from 'components/partials/statistics/SummaryStatistics.vue'
+import {matCheck, matClear} from 'src/icons'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

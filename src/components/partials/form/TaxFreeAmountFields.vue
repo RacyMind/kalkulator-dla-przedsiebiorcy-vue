@@ -5,8 +5,8 @@
         <q-toggle
           v-model="hasTaxFreeAmount"
           label="Kwota wolna od podatku"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
         />
         <Tooltip class="q-ml-sm">
           Kwota wolna jest odliczana od podatku równomiernie w każdym miesiącu roku.
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import {matCheck, matClear} from 'src/icons'
 
 interface Props {
   hasTaxFreeAmount: boolean
