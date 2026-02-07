@@ -31,56 +31,56 @@ export const useConstantsStore = defineStore('constantsStore', () => {
 
   // --- Static constants ---
 
-  const APP = {
-    NAME: 'Kalkulator finansowy',
-    VERSION: '5.11.0',
+  const app = {
+    name: 'Kalkulator finansowy',
+    version: '5.11.0',
   }
 
-  const AMOUNT_TYPES = {
-    GROSS: 'gross' as AmountType,
-    NET: 'net' as AmountType,
+  const amountTypes = {
+    gross: 'gross' as AmountType,
+    net: 'net' as AmountType,
   }
 
-  const TAX_TYPES = {
-    GENERAL: 'general' as IncomeTaxType,
-    LINEAR: 'linear' as IncomeTaxType,
-    LUMP_SUM: 'lumpSum' as IncomeTaxType,
+  const taxTypes = {
+    general: 'general' as IncomeTaxType,
+    linear: 'linear' as IncomeTaxType,
+    lumpSum: 'lumpSum' as IncomeTaxType,
   }
 
-  const AVAILABLE_YEARS: AvailableYear[] = [2021, 2022, 2023, 2024, 2025, 2026]
+  const availableYears: AvailableYear[] = [2021, 2022, 2023, 2024, 2025, 2026]
 
-  const CONTRACT_OF_EMPLOYMENT = {
-    AUTHOR_EXPENSES_RATE: 0.5,
-    EXPENSES_IF_YOU_WORK_WHERE_YOU_DONT_LIVE: 300,
-    EXPENSES_IF_YOU_WORK_WHERE_YOU_LIVE: 250,
+  const contractOfEmployment = {
+    authorExpensesRate: 0.5,
+    expensesIfYouWorkWhereYouDontLive: 300,
+    expensesIfYouWorkWhereYouLive: 250,
   }
 
-  const CONTRACT_OF_MANDATE = {
-    AUTHOR_EXPENSES_RATE: 0.5,
-    EXPENSES_RATE: 0.2,
+  const contractOfMandate = {
+    authorExpensesRate: 0.5,
+    expensesRate: 0.2,
   }
 
-  const CONTRACT_WORK = {
-    EXPENSES_20: 0.2,
-    EXPENSES_50: 0.5,
+  const contractWork = {
+    expenses20: 0.2,
+    expenses50: 0.5,
   }
 
-  const PPK = {
-    EMPLOYEE: { DEFAULT_RATE: 2, MAXIMUM_RATE: 4, MINIMUM_RATE: 0.5 },
-    EMPLOYER: { DEFAULT_RATE: 1.5, MAXIMUM_RATE: 4, MINIMUM_RATE: 1.5 },
+  const ppk = {
+    employee: { defaultRate: 2, maximumRate: 4, minimumRate: 0.5 },
+    employer: { defaultRate: 1.5, maximumRate: 4, minimumRate: 1.5 },
   }
 
-  const VAT_LIMIT = 200000
-  const CASH_REGISTER_LIMIT = 20000
+  const vatLimit = 200000
+  const cashRegisterLimit = 20000
 
-  const RENTAL_TAX = {
-    LUMP_SUM_RATE: 0.085,
-    LUMP_SUM_RATE_ABOVE_THRESHOLD: 0.125,
-    THRESHOLD: 100000,
-    SPOUSE_THRESHOLD: 200000,
+  const rentalTax = {
+    lumpSumRate: 0.085,
+    lumpSumRateAboveThreshold: 0.125,
+    threshold: 100000,
+    spouseThreshold: 200000,
   }
 
-  const LOCALE_DATE = {
+  const localeDate = {
     days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split('_'),
     daysShort: 'niedz._pon._wt._śr._czw._pt._sob.'.split('_'),
     firstDayOfWeek: 1,
@@ -89,24 +89,24 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     wholeYearIndex: 12,
   }
 
-  const MONTH_NAMES = [
+  const monthNames = [
     'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
     'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień',
   ]
 
-  const FULL_YEAR = 'Cały rok'
+  const fullYear = 'Cały rok'
 
-  const BASIC_CAPITAL_INTEREST_RATE = 7.5
-  const BASIC_LATE_INTEREST_RATE = 9.5
+  const basicCapitalInterestRate = 7.5
+  const basicLateInterestRate = 9.5
 
-  const TAX_RATES = {
-    BELKA_RATE: 19,
-    FIRST_RATE: 17,
-    LINEAR_RATE: 19,
-    SECOND_RATE: 32,
+  const taxRates = {
+    belkaRate: 19,
+    firstRate: 17,
+    linearRate: 19,
+    secondRate: 32,
   }
 
-  const TAX_RATES_FOR_LAMP_SUM = [
+  const taxRatesForLumpSum = [
     { label: '2%', value: 2 },
     { label: '3%', value: 3 },
     { label: '5,5%', value: 5.5 },
@@ -117,39 +117,39 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     { label: '17%', value: 17 },
   ]
 
-  const LUMP_SUM_UP_TO_AMOUNT = 200
-  const MINIMUM_SALARY = 2800
-  const FREE_AMOUNT_FOR_TAX = 525.12 / 12
-  const LIMIT_BASIC_AMOUNT_FOR_ZUS = 157770
-  const ACCIDENT_RATE = 1.67
-  const AMOUNT_OF_TAX_THRESHOLD = 85528
-  const AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD = 120000
-  const POLSKI_LAD_FREE_AMOUNT_FOR_TAX = 5100 / 12
+  const lumpSumUpToAmount = 200
+  const minimumSalary = 2800
+  const freeAmountForTax = 525.12 / 12
+  const limitBasicAmountForZus = 157770
+  const accidentRate = 1.67
+  const amountOfTaxThreshold = 85528
+  const amountOfPolskiLadTaxThreshold = 120000
+  const polskiLadFreeAmountForTax = 5100 / 12
 
-  const US = {
-    EMPLOYEE: { HEALTH_RATE: 7.75, POLSKI_LAD_HEALTH_RATE: 0 },
-    OWNER: { HEALTH_RATE: 7.75, POLSKI_LAD_HEALTH_RATE: 0 },
+  const us = {
+    employee: { healthRate: 7.75, polskiLadHealthRate: 0 },
+    owner: { healthRate: 7.75, polskiLadHealthRate: 0 },
   }
 
-  const ZUS = {
-    EMPLOYEE: { HEALTH_RATE: 9, PENSION_RATE: 9.76, RENT_RATE: 1.5, SICK_RATE: 2.45 },
-    EMPLOYER: { FGSP_RATE: 0.1, FP_RATE: 2.45, PENSION_RATE: 9.76, RENT_RATE: 6.5 },
-    OWNER: {
-      BASIS_AMOUNT_FOR_HEALTH: 4242.38,
-      BIG_AMOUNT: 3553.2,
-      FP_RATE: 2.45,
-      HEALTH_RATE: 9,
-      PENSION_RATE: 19.52,
-      RENT_RATE: 8,
-      SICK_RATE: 2.45,
-      SMALL_AMOUNT: 903,
+  const zus = {
+    employee: { healthRate: 9, pensionRate: 9.76, rentRate: 1.5, sickRate: 2.45 },
+    employer: { fgspRate: 0.1, fpRate: 2.45, pensionRate: 9.76, rentRate: 6.5 },
+    owner: {
+      basisAmountForHealth: 4242.38,
+      bigAmount: 3553.2,
+      fpRate: 2.45,
+      healthRate: 9,
+      pensionRate: 19.52,
+      rentRate: 8,
+      sickRate: 2.45,
+      smallAmount: 903,
     },
   }
 
 
-  const AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE = {
-    CONTRACT_OF_EMPLOYMENT: 'contactOfEmployment',
-    SELF_EMPLOYMENT: 'selfEmployment',
+  const availableFormsOfAccountingForMarriage = {
+    contractOfEmployment: 'contactOfEmployment',
+    selfEmployment: 'selfEmployment',
   }
 
   // --- Year-dependent computed getters ---
@@ -283,42 +283,39 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     }
   })
 
-  // Legacy compatibility: PARAMS map (used by old logic/constants consumers)
-  const PARAMS = YEAR_PARAMS
+  const params = YEAR_PARAMS
 
   return {
-    // Static constants
-    APP,
-    AMOUNT_TYPES,
-    AVAILABLE_FORMS_OF_ACCOUNTING_FOR_MARIAGE,
-    AVAILABLE_YEARS,
-    BASIC_CAPITAL_INTEREST_RATE,
-    BASIC_LATE_INTEREST_RATE,
-    ACCIDENT_RATE,
-    AMOUNT_OF_POLSKI_LAD_TAX_THRESHOLD,
-    AMOUNT_OF_TAX_THRESHOLD,
-    CASH_REGISTER_LIMIT,
-    CONTRACT_OF_EMPLOYMENT,
-    CONTRACT_OF_MANDATE,
-    CONTRACT_WORK,
-    FREE_AMOUNT_FOR_TAX,
-    FULL_YEAR,
-    LIMIT_BASIC_AMOUNT_FOR_ZUS,
-    LOCALE_DATE,
-    LUMP_SUM_UP_TO_AMOUNT,
-    MINIMUM_SALARY,
-    MONTH_NAMES,
-    PARAMS,
-    POLSKI_LAD_FREE_AMOUNT_FOR_TAX,
-    PPK,
-    RENTAL_TAX,
-    TAX_RATES,
-    TAX_RATES_FOR_LAMP_SUM,
-    TAX_TYPES,
-    US,
-    VAT_LIMIT,
-    ZUS,
-    // Year-dependent computed
+    app,
+    amountTypes,
+    availableFormsOfAccountingForMarriage,
+    availableYears,
+    basicCapitalInterestRate,
+    basicLateInterestRate,
+    accidentRate,
+    amountOfPolskiLadTaxThreshold,
+    amountOfTaxThreshold,
+    cashRegisterLimit,
+    contractOfEmployment,
+    contractOfMandate,
+    contractWork,
+    freeAmountForTax,
+    fullYear,
+    limitBasicAmountForZus,
+    localeDate,
+    lumpSumUpToAmount,
+    minimumSalary,
+    monthNames,
+    params,
+    polskiLadFreeAmountForTax,
+    ppk,
+    rentalTax,
+    taxRates,
+    taxRatesForLumpSum,
+    taxTypes,
+    us,
+    vatLimit,
+    zus,
     incomeTaxConstants,
     wageStats,
     yearParams,

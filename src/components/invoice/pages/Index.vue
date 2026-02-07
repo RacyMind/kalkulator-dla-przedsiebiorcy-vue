@@ -48,7 +48,7 @@ breadcrumbStore.items = [
 
 const invoiceInputFields = ref(<InvoiceInputFields>{
   amount: 0,
-  amountType: constants.AMOUNT_TYPES.NET,
+  amountType: constants.amountTypes.net,
   taxRate: 0,
 })
 

@@ -7,11 +7,11 @@ let year = helpers.getDefaultYear()
 function buildParams(selectedYear: AvailableYear) {
   const constants = useConstantsStore()
   return {
-    amountOfTaxThreshold: constants.PARAMS[selectedYear].AMOUNT_OF_TAX_THRESHOLD,
-    firstTaxRate: constants.PARAMS[selectedYear].TAX_RATES.FIRST_RATE / 100,
-    linearTaxRate: constants.PARAMS[selectedYear].TAX_RATES.LINEAR_RATE / 100,
-    secondTaxRate: constants.PARAMS[selectedYear].TAX_RATES.SECOND_RATE / 100,
-    taxReducingAmount: constants.PARAMS[selectedYear].TAX_REDUCING_AMOUNT,
+    amountOfTaxThreshold: constants.params[selectedYear].AMOUNT_OF_TAX_THRESHOLD,
+    firstTaxRate: constants.params[selectedYear].TAX_RATES.FIRST_RATE / 100,
+    linearTaxRate: constants.params[selectedYear].TAX_RATES.LINEAR_RATE / 100,
+    secondTaxRate: constants.params[selectedYear].TAX_RATES.SECOND_RATE / 100,
+    taxReducingAmount: constants.params[selectedYear].TAX_REDUCING_AMOUNT,
   }
 }
 

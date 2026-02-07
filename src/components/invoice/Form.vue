@@ -21,12 +21,12 @@
           <div class="q-mt-sm block">
             <q-radio
               v-model="amountType"
-              :val="constants.AMOUNT_TYPES.NET"
+              :val="constants.amountTypes.net"
               label="netto"
             />
             <q-radio
               v-model="amountType"
-              :val="constants.AMOUNT_TYPES.GROSS"
+              :val="constants.amountTypes.gross"
               label="brutto"
             />
           </div>
@@ -83,7 +83,7 @@ const vatTaxRates = [
 ]
 
 const amount = ref<number | null>(null)
-const amountType = ref(constants.AMOUNT_TYPES.NET)
+const amountType = ref(constants.amountTypes.net)
 const taxRate = ref(vatTaxRates[vatTaxRates.length - 1])
 
 const save = () => {

@@ -7,12 +7,12 @@ let year: AvailableYear = helpers.getDefaultYear()
 function buildParams(selectedYear: AvailableYear) {
   const constants = useConstantsStore()
   return {
-    healthContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.HEALTH_RATE,
-    healthContributionRateForTaxOffice: constants.PARAMS[selectedYear].US.EMPLOYEE.HEALTH_RATE,
-    lumpSumUpToAmount: constants.PARAMS[selectedYear].LUMP_SUM_UP_TO_AMOUNT,
-    pensionContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.PENSION_RATE,
-    rentContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.RENT_RATE,
-    sickContributionRate: constants.PARAMS[selectedYear].ZUS.EMPLOYEE.SICK_RATE,
+    healthContributionRate: constants.params[selectedYear].ZUS.EMPLOYEE.HEALTH_RATE,
+    healthContributionRateForTaxOffice: constants.params[selectedYear].US.EMPLOYEE.HEALTH_RATE,
+    lumpSumUpToAmount: constants.params[selectedYear].LUMP_SUM_UP_TO_AMOUNT,
+    pensionContributionRate: constants.params[selectedYear].ZUS.EMPLOYEE.PENSION_RATE,
+    rentContributionRate: constants.params[selectedYear].ZUS.EMPLOYEE.RENT_RATE,
+    sickContributionRate: constants.params[selectedYear].ZUS.EMPLOYEE.SICK_RATE,
   }
 }
 

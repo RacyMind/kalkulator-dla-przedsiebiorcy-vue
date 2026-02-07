@@ -37,11 +37,11 @@ function getDefaultYear ():AvailableYear {
   const constants = useConstantsStore()
   const currentYear: AvailableYear = <AvailableYear> new Date().getFullYear()
 
-  if (constants.AVAILABLE_YEARS.includes(currentYear)) {
+  if (constants.availableYears.includes(currentYear)) {
     return currentYear
   }
 
-  return <AvailableYear> constants.AVAILABLE_YEARS[constants.AVAILABLE_YEARS.length - 1]
+  return <AvailableYear> constants.availableYears[constants.availableYears.length - 1]
 }
 
 function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeType) {

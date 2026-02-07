@@ -14,7 +14,7 @@ function getResult(input:VatLimitInputFields):VatLimitResult {
   const dayOfYear = getDayOfYear(input.startDate)
   const daysOfYear = getDayOfYear(lastDayOfDateYear)
   const daysToEndYear = daysOfYear - dayOfYear + 1
-  const amount = helpers.round(constants.VAT_LIMIT * daysToEndYear / daysOfYear, 2)
+  const amount = helpers.round(constants.vatLimit * daysToEndYear / daysOfYear, 2)
 
   return {
     amount: amount,

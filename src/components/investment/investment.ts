@@ -12,7 +12,7 @@ import helpers from 'src/logic/helpers'
 function getResult (input:InvestmentInputFields):InvestmentResult {
   const constants = useConstantsStore()
   const grossAmount = helpers.round(input.amount * input.rate * input.monthCount / 12, 2)
-  const taxAmount = helpers.round(grossAmount * constants.TAX_RATES.BELKA_RATE / 100, 2)
+  const taxAmount = helpers.round(grossAmount * constants.taxRates.belkaRate / 100, 2)
   const netAmount = helpers.round(grossAmount - taxAmount,2)
 
   return {

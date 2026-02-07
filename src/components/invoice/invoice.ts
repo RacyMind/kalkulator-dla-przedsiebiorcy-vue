@@ -49,12 +49,12 @@ function getResult (input:InvoiceInputFields):InvoiceResult {
   let taxAmount = 0
 
   switch (input.amountType) {
-    case constants.AMOUNT_TYPES.NET:
+    case constants.amountTypes.net:
       netAmount = input.amount
       taxAmount = calculateTaxAmount(netAmount, input.taxRate)
       grossAmount = calculateGrossAmount(netAmount, taxAmount)
       break
-    case constants.AMOUNT_TYPES.GROSS:
+    case constants.amountTypes.gross:
       grossAmount = input.amount
       netAmount = calculateNetAmount(grossAmount, input.taxRate)
       taxAmount = calculateTaxAmount(netAmount, input.taxRate)

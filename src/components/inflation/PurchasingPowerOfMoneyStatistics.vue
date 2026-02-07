@@ -117,7 +117,7 @@ const fetchData = () => {
   loading.value = true
   inflation.fetchInflationRates(year.value, 'lastMonth').then((response: InflationEntry[]) => {
     labels.value = response.map((data: InflationEntry) => {
-      return `${constants.LOCALE_DATE.months[data.month - 1]} ${data.year}`
+      return `${constants.localeDate.months[data.month - 1]} ${data.year}`
     })
 
     let currentValue = amount.value

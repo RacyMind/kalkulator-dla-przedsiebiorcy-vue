@@ -7,7 +7,7 @@ const constants = useConstantsStore()
 
 const defaultInput: InvoiceInputFields = {
   amount: 10000,
-  amountType: constants.AMOUNT_TYPES.NET,
+  amountType: constants.amountTypes.net,
   taxRate: 0.23,
 }
 
@@ -55,7 +55,7 @@ describe('invoice', () => {
   it('Gross amount, 23% VAT', () => {
     const result = invoice.getResult({
       ...defaultInput,
-      amountType: constants.AMOUNT_TYPES.GROSS,
+      amountType: constants.amountTypes.gross,
     })
 
     expect(result.taxAmount).toBe(1869.92)
@@ -66,7 +66,7 @@ describe('invoice', () => {
   it('Gross amount, 8% VAT', () => {
     const result = invoice.getResult({
       ...defaultInput,
-      amountType: constants.AMOUNT_TYPES.GROSS,
+      amountType: constants.amountTypes.gross,
       taxRate: 0.08,
     })
 
@@ -78,7 +78,7 @@ describe('invoice', () => {
   it('Gross amount, 5% VAT', () => {
     const result = invoice.getResult({
       ...defaultInput,
-      amountType: constants.AMOUNT_TYPES.GROSS,
+      amountType: constants.amountTypes.gross,
       taxRate: 0.05,
     })
 
@@ -90,7 +90,7 @@ describe('invoice', () => {
   it('Gross amount, 0% VAT', () => {
     const result = invoice.getResult({
       ...defaultInput,
-      amountType: constants.AMOUNT_TYPES.GROSS,
+      amountType: constants.amountTypes.gross,
       taxRate: 0,
     })
 
@@ -102,7 +102,7 @@ describe('invoice', () => {
   it('Gross amount, 0 amount', () => {
     const result = invoice.getResult({
       ...defaultInput,
-      amountType: constants.AMOUNT_TYPES.GROSS,
+      amountType: constants.amountTypes.gross,
       amount: 0,
     })
 

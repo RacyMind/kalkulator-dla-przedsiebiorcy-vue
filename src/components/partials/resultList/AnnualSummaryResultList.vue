@@ -1,7 +1,7 @@
 <template>
   <div v-if="employeeResult">
     <ListHeader>
-      {{ constants.FULL_YEAR }}
+      {{ constants.fullYear }}
     </ListHeader>
     <SummaryResultList
       :employee-result="props.employeeResult.annualResult"
@@ -11,7 +11,7 @@
       v-for="(monthlyResult, index) in props.employeeResult.monthlyResults"
       :key="index">
       <ListHeader>
-        {{ constants.MONTH_NAMES[index] }}
+        {{ constants.monthNames[index] }}
       </ListHeader>
       <SummaryResultList
         :employee-result="monthlyResult"
