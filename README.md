@@ -1,3 +1,5 @@
+![CI](https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue/actions/workflows/ci.yml/badge.svg?branch=main)
+
 # Kalkulator finansowy
 
 Bezpłatny kalkulator finansowy umożliwiający obliczenie wynagrodzeń z umowy o pracę, umowy zlecenie, umowy o dzieło, samozatrudnienia (B2B) i wielu innych. Uwzględnia aktualne przepisy podatkowe i składki ZUS.
@@ -9,6 +11,7 @@ Bezpłatny kalkulator finansowy umożliwiający obliczenie wynagrodzeń z umowy 
 Aplikacja zawiera **29 modułów kalkulatorów**:
 
 ### Wynagrodzenia
+
 - **Umowa o pracę** — brutto/netto z pełnym rozliczeniem ZUS i podatku
 - **Umowa zlecenie** — kalkulator dla zleceniobiorcy i zleceniodawcy
 - **Umowa o dzieło** — z uwzględnieniem kosztów uzyskania przychodu
@@ -17,6 +20,7 @@ Aplikacja zawiera **29 modułów kalkulatorów**:
 - **Rozliczenie z małżonkiem** — wspólne rozliczenie PIT
 
 ### Finanse i inwestycje
+
 - **Lokata** — kalkulator oprocentowania lokat
 - **Odsetki** — obliczanie odsetek ustawowych i umownych
 - **Inflacja** — wpływ inflacji na siłę nabywczą
@@ -29,6 +33,7 @@ Aplikacja zawiera **29 modułów kalkulatorów**:
 - **Zysk z najmu** — kalkulator rentowności najmu
 
 ### Działalność gospodarcza
+
 - **Faktura VAT** — generowanie i obliczanie faktur
 - **Limit kasy fiskalnej** — sprawdzenie obowiązku ewidencji
 - **Limit zwolnienia z VAT** — weryfikacja progu VAT
@@ -37,12 +42,14 @@ Aplikacja zawiera **29 modułów kalkulatorów**:
 - **Rzeczywisty koszt zakupu** — analiza kosztów z uwzględnieniem podatku
 
 ### Inne
+
 - **Zasiłek chorobowy** — obliczanie wysokości zasiłku
 - **Ekwiwalent za urlop** — kalkulator ekwiwalentu
 - **Informacje o wynagrodzeniu** — statystyki płac
 - **Terminy US/ZUS/PFRON** — kalendarz terminów
 
 ### Dodatkowe funkcje
+
 - 🌙 **Tryb ciemny** — jasny, ciemny i automatyczny (zgodny z systemem)
 - ♿ **Dostępność WCAG AA** — nawigacja klawiaturą, atrybuty ARIA, kontrast
 - 📱 **Responsywność** — pełna obsługa mobile, tablet i desktop
@@ -66,35 +73,42 @@ Aplikacja zawiera **29 modułów kalkulatorów**:
 ## Rozwój
 
 ### Wymagania
+
 - Node.js 18+
 - npm
 
 ### Instalacja
+
 ```bash
 npm install
 ```
 
 ### Uruchomienie (tryb deweloperski)
+
 ```bash
 npm start
 ```
 
 ### Testy
+
 ```bash
 npm run test:unit
 ```
 
 ### Build produkcyjny (PWA)
+
 ```bash
 npm run build
 ```
 
 ### Build Android
+
 ```bash
 npm run build:android
 ```
 
 ### Linting i formatowanie
+
 ```bash
 npm run lint
 npm run format
