@@ -1,65 +1,67 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <QTabs
-      ref="scrollTarget"
-      v-model="tab"
-      inline-label
-      class="bg-primary text-white shadow-2"
-      :breakpoint="0"
-      align="justify">
-      <q-tab
-        :name="Tabs.AnnualSummary"
-        label="Cały rok" />
-      <q-tab
-        :name="Tabs.EachMonth"
-        label="Poszczególne miesiące" />
-    </QTabs>
-    <q-tab-panels
-      v-model="tab"
-      animated
-      swipeable>
-      <q-tab-panel
-        :name="Tabs.AnnualSummary"
-        class="q-pa-none">
-        <template v-if="store.result">
-          <AnnualResultList :result="store.result.annualResult" />
-          <Separator />
-          <Statistics :result="store.result.annualResult" />
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.EachMonth"
-        class="q-pa-none">
-        <template v-if="store.result">
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <QTabs
+        ref="scrollTarget"
+        v-model="tab"
+        inline-label
+        class="bg-primary text-white shadow-2"
+        :breakpoint="0"
+        align="justify">
+        <q-tab
+          :name="Tabs.AnnualSummary"
+          label="Cały rok" />
+        <q-tab
+          :name="Tabs.EachMonth"
+          label="Poszczególne miesiące" />
+      </QTabs>
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable>
+        <q-tab-panel
+          :name="Tabs.AnnualSummary"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <AnnualResultList :result="store.result.annualResult" />
+            <Statistics :result="store.result.annualResult" />
+          </template>
           <div
-            v-for="(monthlyResult, index) in store.result.monthlyResults"
-            :key="index">
-            <ListHeader>
-              {{ monthNames[index] }}
-            </ListHeader>
-            <MonthlyResultList
-              :result="monthlyResult"
-              :month="index" />
-            <Separator v-if="index < 11" />
+            v-else
+            class="q-pa-md">
+            Brak danych
           </div>
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-    </q-tab-panels>
+        </q-tab-panel>
+        <q-tab-panel
+          :name="Tabs.EachMonth"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <div
+              v-for="(monthlyResult, index) in store.result.monthlyResults"
+              :key="index">
+              <ListHeader>
+                {{ monthNames[index] }}
+              </ListHeader>
+              <MonthlyResultList
+                :result="monthlyResult"
+                :month="index" />
+            </div>
+          </template>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -80,7 +82,6 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyResultList from 'components/selfEmployment/components/MonthlyResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/selfEmployment/components/Statistics.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

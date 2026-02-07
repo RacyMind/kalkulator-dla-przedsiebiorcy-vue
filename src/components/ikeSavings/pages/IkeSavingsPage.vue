@@ -1,29 +1,30 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <FormFields @submit="handleSubmit" />
-    <Advert />
-    <div v-if="store.result"
-         ref="scrollTarget">
-      <IkeLimitWarning :result="store.result" />
-      <ListHeader>Okres oszczędzania</ListHeader>
-      <SavingsPeriodSection :result="store.result" />
-      <Separator />
-      <ListHeader>Przewidywany kapitał</ListHeader>
-      <CapitalSection :result="store.result" />
-      <Separator />
-      <ListHeader>Oszczędność podatkowa</ListHeader>
-      <TaxSavingSection :result="store.result" />
-      <Separator />
-      <ListHeader>Emerytura</ListHeader>
-      <PensionSection :result="store.result" />
-    </div>
-    <div v-else
-         class="q-pa-md">
-      Brak danych
-    </div>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <FormFields @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <div v-if="store.result"
+           ref="scrollTarget">
+        <IkeLimitWarning :result="store.result" />
+        <ListHeader>Okres oszczędzania</ListHeader>
+        <SavingsPeriodSection :result="store.result" />
+        <ListHeader>Przewidywany kapitał</ListHeader>
+        <CapitalSection :result="store.result" />
+        <ListHeader>Oszczędność podatkowa</ListHeader>
+        <TaxSavingSection :result="store.result" />
+        <ListHeader>Emerytura</ListHeader>
+        <PensionSection :result="store.result" />
+      </div>
+      <div v-else
+           class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -40,7 +41,6 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import PensionSection from '../components/results/PensionSection.vue'
 import SavingsPeriodSection from '../components/results/SavingsPeriodSection.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import TaxSavingSection from '../components/results/TaxSavingSection.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

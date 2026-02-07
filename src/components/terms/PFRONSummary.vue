@@ -6,7 +6,6 @@
       :inline="false"
     />
     <ListRow
-      class="bg-surface-elevated"
       name="Termin składania wniosku Wn-D"
       value="do 25. dnia następnego miesiąca"
       :inline="false"

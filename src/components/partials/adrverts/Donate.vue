@@ -1,15 +1,16 @@
 <template>
   <div>
     <div>
-      Rozwój kalkulatora to setki godzin pracy. Jeżeli uważasz aplikację za wartościową, możesz wesprzeć twórcę :-)
+      Ten kalkulator jest darmowy dzięki Twojemu wsparciu. Pomóż go rozwijać!
     </div>
     <q-btn
-      label="Wesprzyj projekt"
+      label="Wesprzyj twórcę"
       no-caps
       class="q-mt-sm"
-      style="width: 75%;max-width:180px"
-      color="primary"
-      outline
+      style="width: 80%; max-width: 220px"
+      color="red-7"
+      unelevated
+      rounded
       @click="openModal = true"
     />
 

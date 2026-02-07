@@ -1,25 +1,21 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-info"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-surface">
-      <SectionHeader>
-        <q-icon name="o_insights"/>
+  <ModulePageLayout class="c-info"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
         Wykres
       </SectionHeader>
       <Advert/>
       <InflationStatistics/>
-    </div>
-    <Footer/>
-  </q-page>
+    </template>
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/partials/Footer.vue'
 import InflationStatistics from 'components/inflation/InflationStatistics.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 
 const breadcrumbStore = useBreadcrumbStore()

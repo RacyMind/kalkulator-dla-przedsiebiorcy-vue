@@ -70,7 +70,7 @@
       <div
         v-if="isHourlyMode"
         class="row q-col-gutter-md q-mt-md">
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="hourlyRate"
             type="number"
@@ -86,7 +86,7 @@
             lazy-rules="ondemand"
           />
         </div>
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="plannedHours"
             type="number"

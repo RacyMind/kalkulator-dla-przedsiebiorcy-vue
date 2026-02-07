@@ -1,24 +1,33 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="inputFields"
-    />
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <Statistics
-      :input="inputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template v-if="hasResult">
+        <Summary
+          :input="inputFields"
+        />
+        <Statistics
+          :input="inputFields"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -49,9 +58,11 @@ const inputFields = ref(<InterestInputFields>{
   rate: 0,
 })
 
+const hasResult = ref(false)
 
 const save = (input: InterestInputFields) => {
   inputFields.value = input
+  hasResult.value = true
   scrollToResults()
 }
 </script>

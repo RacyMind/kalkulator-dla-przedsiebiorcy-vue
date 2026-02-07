@@ -1,6 +1,6 @@
 import {useChartColors} from 'src/composables/useChartColors'
 
-export function usePieChart(labels: string[], values: number[]) {
+export function usePieChart(labels: string[], values: number[], cutout = '60%') {
   const { chartColors } = useChartColors()
   const colors = Object.values(chartColors.value)
 
@@ -8,6 +8,7 @@ export function usePieChart(labels: string[], values: number[]) {
     datasets: [{
       backgroundColor: colors.slice(0, values.length),
       data: values,
+      cutout,
     }],
     labels: labels,
   }

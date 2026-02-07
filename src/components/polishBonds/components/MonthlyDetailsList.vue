@@ -50,7 +50,6 @@
           {{ pln(monthlyResult.accumulatedRealProfit) }}
         </template>
       </ListRow>
-      <Separator v-if="index < props.result.monthlyResults.length - 1 && hasPayout(props.result.monthlyResults[index + 1])" />
     </div>
   </div>
 </template>
@@ -62,7 +61,6 @@ import { pln } from 'src/composables/currencyFormat'
 
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
-import Separator from 'components/partials/Separator.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

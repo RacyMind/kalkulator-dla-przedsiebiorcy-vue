@@ -1,5 +1,6 @@
 // app global css in SCSS form
 @import "design-tokens";
+@import "transitions";
 @import "objects/breadcrumbs";
 @import "objects/sectionHeader";
 @import "objects/chart";
@@ -19,14 +20,125 @@
 .bg-primary-brand { background: var(--color-primary) !important; }
 .text-on-surface { color: var(--color-text-primary) !important; }
 
+.module-card {
+  background: var(--color-surface) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  transition: box-shadow 0.2s ease;
+  overflow-x: hidden;
+}
+
+.advert-card {
+  border: 1px dashed var(--color-primary) !important;
+  border-radius: var(--radius-md) !important;
+  background: transparent !important;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.advert-heart {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.25); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(1); }
+}
+
+.body--dark .module-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
 a{
   color: $primary;
   text-decoration: none;
 }
 
-@media screen and (max-width:600px) {
-  .q-dialog__inner--minimized{
+// Header breadcrumbs
+@media screen and (max-width: 599px) {
+  .header-breadcrumbs {
+    font-size: 0.85rem;
+    max-width: calc(100vw - 140px);
+    overflow: hidden;
+  }
+
+  .header-breadcrumbs .c-breadcrumbs__element {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Menu items
+.menu-item {
+  min-height: 36px;
+  padding: 4px 16px !important;
+  font-size: 0.875rem;
+  border-radius: var(--radius-md);
+  margin: 2px 8px;
+}
+
+.menu-item--active {
+  background: rgba(21, 101, 192, 0.12) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600;
+}
+
+.body--dark .menu-item--active {
+  background: rgba(66, 165, 245, 0.15) !important;
+}
+
+// Tooltip styling
+.q-tooltip {
+  background: var(--q-primary) !important;
+  color: #fff !important;
+  font-size: 0.8rem;
+}
+
+// Hide horizontal scrollbar on animated tab panels
+.q-tab-panels,
+.q-tab-panels .q-panel {
+  overflow-x: hidden !important;
+}
+
+// Responsive module layout
+.module-page--padded {
+  padding: 8px;
+}
+.module-card--padded {
+  padding: 8px;
+}
+@media (min-width: 600px) {
+  .module-page--padded {
+    padding: 16px;
+  }
+  .module-card--padded {
+    padding: 16px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .q-dialog__inner--minimized {
     padding: 0;
+  }
+
+  .q-tabs .q-tab {
+    font-size: 0.7rem;
+    padding: 0 8px;
+    min-height: 36px;
+  }
+
+  // Neutralize gutter on module layout columns
+  .module-page--padded > .q-col-gutter-md {
+    margin-left: 0;
+    row-gap: 8px;
+
+    > [class*="col"] {
+      padding-left: 0;
+    }
   }
 
 }

@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Nowy dashboard z kafelkami modułów pogrupowanymi w 6 sekcji.</li><li>Responsywny układ z panelem bocznym (stały na desktopie, wysuwany na mobile).</li><li>Dwukolumnowy układ stron modułów (formularz + wyniki).</li><li>Nowa ikona aplikacji z kolorem #1565C0.</li><li>Nowoczesny przycisk „Oblicz" i ujednolicone formularze.</li><li>Wykresy donut z animacjami i tooltipami.</li><li>Przycisk „Powrót na górę" przy przewijaniu.</li><li>Animacje przejść między stronami (fade+scale).</li><li>Lista ostatnio używanych modułów w menu bocznym.</li></ul>',
+    publish_date: '2026-02-14',
+    version: '6.2.0',
+  },
+  {
     content: '<ul><li>Dodano tryb ciemny (dark mode) z trzema opcjami: jasny, ciemny i automatyczny (zgodny z ustawieniami systemu).</li><li>Przycisk przełączania motywu w pasku nawigacji.</li><li>Wykresy automatycznie dostosowują kolory do wybranego motywu.</li><li>Zapobieganie migotaniu strony (FOUC) przy ładowaniu w trybie ciemnym.</li></ul>',
     publish_date: '2026-02-07',
     version: '6.1.0',

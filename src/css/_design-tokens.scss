@@ -23,24 +23,39 @@
   --color-text-secondary: #616161;
   --color-text-on-brand: #FFFFFF;
 
-  // Module brands
-  --module-work: #B45309;
-  --module-business: #B91C1C;
-  --module-taxes: #C2410C;
-  --module-currencies: #0D9488;
-  --module-percentage: #15803D;
-  --module-informator: #0369A1;
-  --module-app: #6D28D9;
+  // Module brands — monochromatic blue gradient (dark→light)
+  // Order: Firma → Podatki → Praca → Oszczędzanie → Waluty → Informacje
+  --module-business: #0D47A1;
+  --module-taxes: #1565C0;
+  --module-work: #1976D2;
+  --module-percentage: #1E88E5;
+  --module-currencies: #2196F3;
+  --module-informator: #42A5F5;
+  --module-app: #0D47A1;
 
-  // Chart colors
+  // Chart colors (max contrast, no similar hues)
   --chart-1: #1565C0;
-  --chart-2: #E65100;
+  --chart-2: #FF6F00;
   --chart-3: #2E7D32;
-  --chart-4: #7B1FA2;
+  --chart-4: #8E24AA;
   --chart-5: #00897B;
-  --chart-6: #C62828;
-  --chart-7: #0277BD;
-  --chart-8: #827717;
+  --chart-6: #D32F2F;
+  --chart-7: #F9A825;
+  --chart-8: #5D4037;
+  --chart-9: #C2185B;
+  --chart-10: #546E7A;
+
+  // Spacing
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  // Border radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 }
 
 .body--dark {
@@ -57,7 +72,7 @@
 
   // Surface
   --color-surface: #121212;
-  --color-surface-variant: #1E1E1E;
+  --color-surface-variant: #2A2A2A;
   --color-surface-elevated: #2C2C2C;
 
   // Text
@@ -65,22 +80,37 @@
   --color-text-secondary: #9E9E9E;
   --color-text-on-brand: #FFFFFF;
 
-  // Module brands (lighter for dark backgrounds)
-  --module-work: #F59E0B;
-  --module-business: #EF4444;
-  --module-taxes: #F97316;
-  --module-currencies: #2DD4BF;
-  --module-percentage: #34D399;
-  --module-informator: #38BDF8;
-  --module-app: #A78BFA;
+  // Module brands — lighter blue gradient (dark→light) for dark backgrounds
+  // Order: Firma → Podatki → Praca → Oszczędzanie → Waluty → Informacje
+  --module-business: #42A5F5;
+  --module-taxes: #5CB8FF;
+  --module-work: #64B5F6;
+  --module-percentage: #82B1FF;
+  --module-currencies: #90CAF9;
+  --module-informator: #BBDEFB;
+  --module-app: #42A5F5;
 
-  // Chart colors (lighter for dark backgrounds)
-  --chart-1: #42A5F5;
-  --chart-2: #FF9800;
-  --chart-3: #66BB6A;
+  // Chart colors (lighter for dark backgrounds, max contrast)
+  --chart-1: #64B5F6;
+  --chart-2: #FFB74D;
+  --chart-3: #81C784;
   --chart-4: #CE93D8;
   --chart-5: #4DB6AC;
   --chart-6: #EF5350;
-  --chart-7: #29B6F6;
-  --chart-8: #C0CA33;
+  --chart-7: #FFF176;
+  --chart-8: #A1887F;
+  --chart-9: #F48FB1;
+  --chart-10: #90A4AE;
+
+  // Spacing
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  // Border radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 }

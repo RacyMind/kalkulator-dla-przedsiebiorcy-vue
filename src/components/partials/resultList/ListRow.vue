@@ -32,6 +32,6 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .s-row:not(.-highlighted):nth-child(even){
-  background-color: $grey-3
+  background-color: var(--color-surface-variant);
 }
 </style>

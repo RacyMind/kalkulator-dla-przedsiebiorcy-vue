@@ -4,7 +4,6 @@
       {{ constants.fullYear }}
     </ListHeader>
     <EmployerResultList :result="props.result.annualResult" />
-    <Separator />
     <div
       v-for="(monthlyResult, index) in props.result.monthlyResults"
       :key="index">
@@ -12,7 +11,6 @@
         {{ constants.monthNames[index] }}
       </ListHeader>
       <EmployerResultList :result="monthlyResult" />
-      <Separator v-if="index < 11" />
     </div>
   </div>
 </template>
@@ -21,7 +19,6 @@
 import {AnnualEmployerResult} from 'src/logic/interfaces/AnnualEmployerResult'
 import EmployerResultList from 'components/partials/resultList/EmployerResultList.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import {useConstantsStore} from 'stores/constantsStore'
 const constants = useConstantsStore()
 

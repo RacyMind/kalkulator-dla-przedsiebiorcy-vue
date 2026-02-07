@@ -1,17 +1,22 @@
 <template>
-  <ModulePageLayout class="c-info">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <FormSection
-      v-if="availableDates.length > 1"
-      title="Data obowiązywania przepisów"
-      hide-separator
-    >
-      <LawRuleDate />
-    </FormSection>
-    <Advert/>
-    <MinimumWageSummary />
+  <ModulePageLayout class="c-info"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <FormSection
+        v-if="availableDates.length > 1"
+        title="Data obowiązywania przepisów"
+        hide-separator
+      >
+        <LawRuleDate />
+      </FormSection>
+      <Advert/>
+    </template>
+    <template #results>
+      <MinimumWageSummary />
+    </template>
   </ModulePageLayout>
 </template>
 

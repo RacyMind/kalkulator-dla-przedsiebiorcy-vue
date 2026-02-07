@@ -1,39 +1,41 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <SectionHeader
-      ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <template
-      v-if="store.taxScaleResult && store.flatTaxResult && store.lumpSUmTaxResult">
-      <ListHeader>Skala podatkowa</ListHeader>
-      <ResultList
-        :result="store.taxScaleResult.annualResult" />
-      <Separator />
-      <ListHeader>Podatek liniowy</ListHeader>
-      <ResultList
-        :result="store.flatTaxResult.annualResult" />
-      <Separator />
-      <ListHeader>Podatek zryczałtowany</ListHeader>
-      <ResultList
-        :result="store.lumpSUmTaxResult.annualResult" />
-      <Separator />
-      <Statistics
-        :tax-scale="store.taxScaleResult.annualResult.income"
-        :flat-tax="store.flatTaxResult.annualResult.income"
-        :lump-sum-tax="store.lumpSUmTaxResult.annualResult.income"
-      />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
     </template>
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
+    <template #results>
+      <SectionHeader
+        :level="2"
+        ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template
+        v-if="store.taxScaleResult && store.flatTaxResult && store.lumpSUmTaxResult">
+        <ListHeader>Skala podatkowa</ListHeader>
+        <ResultList
+          :result="store.taxScaleResult.annualResult" />
+        <ListHeader>Podatek liniowy</ListHeader>
+        <ResultList
+          :result="store.flatTaxResult.annualResult" />
+        <ListHeader>Podatek zryczałtowany</ListHeader>
+        <ResultList
+          :result="store.lumpSUmTaxResult.annualResult" />
+        <Statistics
+          :tax-scale="store.taxScaleResult.annualResult.income"
+          :flat-tax="store.flatTaxResult.annualResult.income"
+          :lump-sum-tax="store.lumpSUmTaxResult.annualResult.income"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -48,7 +50,6 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/b2bComparator/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components//b2bComparator/components/Statistics.vue'
 import {useScrollToResults} from 'src/composables/useScrollToResults'
 

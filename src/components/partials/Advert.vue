@@ -1,9 +1,16 @@
 <template>
   <div
     v-if="!isNativePlatform"
-    class="text-center bg-surface-variant q-py-md q-px-sm">
-    <TaxDonation v-if="isTaxDonationTimeFrame() && Math.random() < 0.5" />
-    <Donate v-else />
+    class="advert-wrapper q-mt-md">
+    <q-card flat
+            class="advert-card text-center q-pa-md">
+      <q-icon name="mdi-heart"
+              size="24px"
+              color="red"
+              class="q-mb-xs advert-heart" />
+      <TaxDonation v-if="isTaxDonationTimeFrame() && Math.random() < 0.5" />
+      <Donate v-else />
+    </q-card>
   </div>
 </template>
 <script lang="ts" setup>

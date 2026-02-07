@@ -1,16 +1,20 @@
 <template>
   <ModulePageLayout class="c-currencies">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @scroll="scrollTo"
-    />
-    <Advert/>
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <CurrencyStatistics/>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @scroll="scrollTo"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2">
+        Wykres
+      </SectionHeader>
+      <CurrencyStatistics/>
+    </template>
   </ModulePageLayout>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <SectionHeader>
+  <SectionHeader :level="3">
     <slot />
   </SectionHeader>
 </template>

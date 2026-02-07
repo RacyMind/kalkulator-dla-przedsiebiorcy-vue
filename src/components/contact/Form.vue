@@ -53,16 +53,16 @@
         Podane przez Ciebie w formularzu kontaktowym dane zostaną wykorzystane w celu kontaktu zwrotnego. Ponadto, Twoje dane zostaną zapisane w bazie administratora w celu archiwizacji wymienianej z Tobą korespondencji. Administratorem danych osobowych będzie Racy Mind Łukasz Socha, ul. Puławska 15/7, 24-300 Opole Lubelskie, NIP: 717-181-21-16. Będziesz mieć prawo żądania dostępu do danych osobowych, ich sprostowania, usunięcia oraz przenoszenia. Jeżeli uznasz, że Twoje dane przetwarzane są niezgodnie z prawem, będziesz mógł wnieść skargę do organu nadzorczego. Podanie danych jest dobrowolne, ale niezbędne, by przesłać formularz kontaktowy.
       </p>
     </div>
-    <Separator />
-    <div class="row">
+    <div class="row q-pt-md">
       <div class="col-12">
         <q-btn
           type="submit"
           class="full-width"
-          color="teal-4"
+          color="primary"
           size="md"
           label="Wyślij"
-          square
+          rounded
+          unelevated
           :loading="isSending"
           :disable="isDisabledButton"
         />
@@ -76,7 +76,6 @@ import {computed, ref} from 'vue'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useQuasar} from 'quasar'
 import FormSection from 'components/partials/form/FormSection.vue'
-import Separator from 'components/partials/Separator.vue'
 import axios from 'axios'
 import validationRules from 'src/logic/validationRules'
 

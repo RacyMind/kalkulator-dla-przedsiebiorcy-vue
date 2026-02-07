@@ -1,18 +1,23 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="inputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <Summary
+        :input="inputFields"
+      />
+    </template>
   </ModulePageLayout>
 </template>
 

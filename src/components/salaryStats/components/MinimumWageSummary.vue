@@ -23,8 +23,6 @@
         </template>
       </ListRow>
     </div>
-    <Separator />
-
     <SectionHeader
       ref="summary"
       class="bg-primary">
@@ -59,7 +57,6 @@ import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 
 const {wageStats} = storeToRefs(useConstantsStore())
 const settingStore = useSettingStore()

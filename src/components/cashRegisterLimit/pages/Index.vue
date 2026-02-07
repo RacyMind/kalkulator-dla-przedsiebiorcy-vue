@@ -1,18 +1,23 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="inputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <Summary
+        :input="inputFields"
+      />
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -37,9 +42,8 @@ breadcrumbStore.items = [
 ]
 
 const inputFields = ref(<CashRegisterLimitInputFields>{
-  startDate: null,
+  startDate: new Date(),
 })
-
 
 const save = (input: CashRegisterLimitInputFields) => {
   inputFields.value = input

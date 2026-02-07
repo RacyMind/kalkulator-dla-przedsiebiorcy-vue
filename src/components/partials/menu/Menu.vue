@@ -8,104 +8,31 @@
       label="Szukaj..."
       color="brand"
       clearable
+      outlined
+      dense
     >
       <template v-slot:prepend>
         <q-icon name="search" />
       </template>
     </q-input>
-    <template v-if="visibleMenuItems.company.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Firma
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.company"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
-    <template v-if="visibleMenuItems.taxes.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Podatki i rozliczenia
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.taxes"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
-    <template v-if="visibleMenuItems.work.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Praca
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.work"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
-    <template v-if="visibleMenuItems.savings.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Oszczędzanie
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.savings"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
 
-    <template v-if="visibleMenuItems.currencies.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Waluty
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.currencies"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
+    <RecentlyUsed />
 
-    <template v-if="visibleMenuItems.info.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
+    <template v-for="section in sections"
+              :key="section.key">
+      <q-expansion-item
+        v-if="visibleMenuItems[section.key]?.length"
+        :icon="section.icon"
+        :label="section.label"
+        :default-opened="isSectionActive(section.key)"
+        header-class="text-weight-bold"
       >
-        Informacje
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.info"
-        :key="link.title"
-        v-bind="link"
-      />
-    </template>
-
-    <template v-if="visibleMenuItems.app.length">
-      <h6
-        class="q-my-md"
-        style="margin-left: 32px;"
-      >
-        Aplikacja
-      </h6>
-      <Item
-        v-for="link in visibleMenuItems.app"
-        :key="link.title"
-        v-bind="link"
-      />
+        <Item
+          v-for="link in visibleMenuItems[section.key]"
+          :key="link.title"
+          v-bind="link"
+        />
+      </q-expansion-item>
     </template>
   </div>
 </template>
@@ -113,7 +40,9 @@
 <script setup lang="ts">
 import {MenuItem} from 'components/partials/menu/interfaces/MenuItem'
 import {computed, ref} from 'vue'
+import {useRoute} from 'vue-router'
 import Item from './Item.vue'
+import RecentlyUsed from './RecentlyUsed.vue'
 import menuItems from 'components/partials/menu/menuItems'
 
 interface Props {
@@ -123,6 +52,23 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   hideSearchInput: true,
 })
+
+const route = useRoute()
+
+const sections = [
+  { key: 'company', label: 'Firma', icon: 'mdi-domain' },
+  { key: 'taxes', label: 'Podatki i rozliczenia', icon: 'mdi-cash-multiple' },
+  { key: 'work', label: 'Praca', icon: 'mdi-briefcase' },
+  { key: 'savings', label: 'Oszczędzanie', icon: 'mdi-piggy-bank' },
+  { key: 'currencies', label: 'Waluty', icon: 'mdi-currency-usd' },
+  { key: 'info', label: 'Informacje', icon: 'mdi-information' },
+  { key: 'app', label: 'Aplikacja', icon: 'mdi-application' },
+]
+
+const isSectionActive = (sectionKey: string): boolean => {
+  const items = (menuItems as Record<string, MenuItem[]>)[sectionKey] || []
+  return items.some((item: MenuItem) => route.path === item.link || route.path.startsWith(item.link + '/'))
+}
 
 const typedText = ref('')
 

@@ -1,70 +1,74 @@
 <template>
   <ModulePageLayout class="c-work">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <QTabs
-      ref="scrollTarget"
-      v-model="tab"
-      inline-label
-      class="bg-primary text-white shadow-2"
-      :breakpoint="0"
-      align="justify">
-      <q-tab
-        :name="Tabs.Summary"
-        label="Podsumowanie" />
-      <q-tab
-        :name="Tabs.Employee"
-        label="Pracownik" />
-      <q-tab
-        :name="Tabs.Employer"
-        label="Pracodawca" />
-    </QTabs>
-    <q-tab-panels
-      v-model="tab"
-      animated
-      swipeable>
-      <q-tab-panel
-        :name="Tabs.Summary"
-        class="q-pa-none">
-        <SummaryTabPanel
-          v-if="employeeResult && employerResult"
-          :employee-result="employeeResult"
-          :employer-result="employerResult"
-        />
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.Employee"
-        class="q-pa-none">
-        <EmployeeTabPanel
-          v-if="employeeResult"
-          :result="employeeResult" />
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.Employer"
-        class="q-pa-none">
-        <EmployerTabPanel
-          v-if="employerResult"
-          :result="employerResult"/>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-    </q-tab-panels>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <QTabs
+        ref="scrollTarget"
+        v-model="tab"
+        inline-label
+        class="bg-primary text-white shadow-2"
+        :breakpoint="0"
+        align="justify">
+        <q-tab
+          :name="Tabs.Summary"
+          label="Podsumowanie" />
+        <q-tab
+          :name="Tabs.Employee"
+          label="Pracownik" />
+        <q-tab
+          :name="Tabs.Employer"
+          label="Pracodawca" />
+      </QTabs>
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable>
+        <q-tab-panel
+          :name="Tabs.Summary"
+          class="q-pa-none">
+          <SummaryTabPanel
+            v-if="employeeResult && employerResult"
+            :employee-result="employeeResult"
+            :employer-result="employerResult"
+          />
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+        <q-tab-panel
+          :name="Tabs.Employee"
+          class="q-pa-none">
+          <EmployeeTabPanel
+            v-if="employeeResult"
+            :result="employeeResult" />
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+        <q-tab-panel
+          :name="Tabs.Employer"
+          class="q-pa-none">
+          <EmployerTabPanel
+            v-if="employerResult"
+            :result="employerResult"/>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
   </ModulePageLayout>
 </template>
 <script setup lang="ts">

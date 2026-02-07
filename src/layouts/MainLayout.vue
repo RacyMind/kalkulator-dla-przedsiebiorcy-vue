@@ -1,11 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header
-      v-if="breadcrumbStore.items.length"
       class="bg-primary-brand"
-      elevated>
+      elevated
+    >
       <q-toolbar>
         <q-btn
+          v-if="!isDesktop"
           flat
           dense
           round
@@ -13,35 +14,43 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
+
         <q-toolbar-title>
-          <div class="row justify-between">
-            <div>
-              <q-breadcrumbs
-                active-color="white"
-                gutter="xs"
-                class="text-subtitle1">
-                <template v-slot:separator>
-                  <q-icon
-                    name="chevron_right"
+          <div class="row justify-between items-center">
+            <div class="row items-center">
+              <router-link to="/"
+                           class="text-white text-no-decoration row items-center">
+                <img src="~assets/app-icon-white.svg"
+                     alt=""
+                     style="width: 28px; height: 28px;"
+                     class="q-mr-sm" />
+                <span class="gt-xs">{{ constants.app.name }}</span>
+              </router-link>
+
+              <template v-if="breadcrumbStore.items.length">
+                <q-icon name="chevron_right"
+                        class="q-mx-xs gt-xs" />
+                <q-breadcrumbs
+                  active-color="white"
+                  gutter="xs"
+                  class="text-subtitle1 header-breadcrumbs"
+                >
+                  <template v-slot:separator>
+                    <q-icon name="chevron_right" />
+                  </template>
+                  <q-breadcrumbs-el
+                    v-for="item in breadcrumbStore.items"
+                    :key="item.name"
+                    :label="item.name"
+                    :to="item.to"
+                    class="c-breadcrumbs__element"
                   />
-                </template>
-                <q-breadcrumbs-el
-                  icon="home"
-                  to="/" />
-                <q-breadcrumbs-el
-                  v-for="item in breadcrumbStore.items"
-                  :key="item.name"
-                  :label="item.name"
-                  :to="item.to"
-                  class="c-breadcrumbs__element"
-                />
-              </q-breadcrumbs>
-            </div>
-            <div class="xs-hide text-subtitle1">
-              {{ constants.app.name }}
+                </q-breadcrumbs>
+              </template>
             </div>
           </div>
         </q-toolbar-title>
+
         <q-btn
           flat
           dense
@@ -56,53 +65,88 @@
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      :model-value="isDesktop || leftDrawerOpen"
+      :overlay="!isDesktop"
+      :breakpoint="0"
       bordered
       content-class="bg-surface-variant"
+      @update:model-value="val => leftDrawerOpen = val"
     >
-      <q-list>
-        <Menu :hide-search-input="false" />
-        <div class="text-center">
-          <q-btn
-            class="q-my-md"
-            color="teal-7"
-            @click="openModal = true">
-            <q-icon
-              name="o_favorite_border"
-              class="q-mr-sm"/>
-            Wesprzyj projekt
-          </q-btn>
-        </div>
+      <q-scroll-area class="fit">
+        <q-list>
+          <Menu :hide-search-input="false" />
+        </q-list>
 
-        <q-dialog v-model="openModal">
-          <SupportProject/>
-        </q-dialog>
-      </q-list>
+        <div class="text-center q-py-md"
+             style="border-top: 1px solid rgba(0,0,0,0.12)">
+          <q-btn
+            class="q-mb-sm"
+            color="red-7"
+            rounded
+            unelevated
+            @click="openModal = true"
+          >
+            <q-icon name="o_favorite"
+                    class="q-mr-sm" />
+            Wesprzyj twórcę
+          </q-btn>
+          <div class="text-caption text-grey q-mt-xs">
+            v{{ constants.app.version }}
+          </div>
+        </div>
+      </q-scroll-area>
+
+      <q-dialog v-model="openModal">
+        <SupportProject />
+      </q-dialog>
     </q-drawer>
 
-    <q-page-container
-      class="flex flex-center bg-surface-variant"
-      :class="{
-        'q-pt-lg': !breadcrumbStore.items.length
-      }"
-    >
-      <router-view/>
+    <q-page-container class="bg-surface-variant">
+      <router-view v-slot="{ Component }">
+        <transition name="fade-scale"
+                    mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+      <ScrollToTop />
     </q-page-container>
   </q-layout>
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {ref, watch, computed} from 'vue'
+import {useRoute} from 'vue-router'
+import {useQuasar} from 'quasar'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
+import ScrollToTop from 'components/partials/ScrollToTop.vue'
 import {useConstantsStore} from 'stores/constantsStore'
 import {useTheme} from 'src/composables/useTheme'
+import {useRecentlyUsed} from 'src/composables/useRecentlyUsed'
 
+const $q = useQuasar()
+const route = useRoute()
 const constants = useConstantsStore()
 const {themeIcon, themeTooltip, cycleTheme} = useTheme()
+const {addRecent} = useRecentlyUsed()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)
 const openModal = ref(false)
+
+const isDesktop = computed(() => $q.screen.gt.md)
+
+watch(() => route.path, () => {
+  if (!isDesktop.value) {
+    leftDrawerOpen.value = false
+  }
+})
+
+watch(() => breadcrumbStore.items, (items) => {
+  if (route.path !== '/' && items.length) {
+    const lastBreadcrumb = items[items.length - 1]
+    addRecent(route.path, lastBreadcrumb.name)
+  }
+}, { deep: true })
 </script>
