@@ -1,24 +1,29 @@
 <template>
   <ModulePageLayout class="c-taxes">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="invoiceInputFields"
-    />
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <Statistics
-      :input="invoiceInputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <Summary
+        :input="invoiceInputFields"
+      />
+      <SectionHeader :level="3">
+        Wykres
+      </SectionHeader>
+      <Statistics
+        :input="invoiceInputFields"
+      />
+    </template>
   </ModulePageLayout>
 </template>
 

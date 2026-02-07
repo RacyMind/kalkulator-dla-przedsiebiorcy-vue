@@ -1,27 +1,34 @@
 <template>
-  <ModulePageLayout class="c-app">
-    <SectionHeader>
-      Historia zmian
-    </SectionHeader>
-    <Advert/>
-    <div
-      v-for="log in logItems"
-      :key="log.version">
-      <ChangeLog
-        :log="log"
-      />
-      <q-separator v-if="log !== logItems[logItems.length - 1]"/>
-    </div>
+  <ModulePageLayout class="c-app"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
+        Historia zmian
+      </SectionHeader>
+      <Advert/>
+      <div
+        v-for="log in logItems"
+        :key="log.version">
+        <ChangeLog
+          :log="log"
+        />
+        <q-separator v-if="log !== logItems[logItems.length - 1]"/>
+      </div>
 
-    <div class="text-center q-py-md">
-      <q-btn
-        v-if="!showAll"
-        color="teal-4"
-        size="md"
-        label="Pokaż wszystko"
-        @click="showAll = true"
-      />
-    </div>
+      <div class="text-center q-py-md">
+        <q-btn
+          v-if="!showAll"
+          color="primary"
+          size="md"
+          label="Pokaż wszystko"
+          rounded
+          unelevated
+          @click="showAll = true"
+        />
+      </div>
+    </template>
+    <template #results>
+    </template>
   </ModulePageLayout>
 </template>
 

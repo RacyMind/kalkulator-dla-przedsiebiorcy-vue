@@ -10,11 +10,22 @@
 import Chart from 'components/partials/Chart.vue'
 
 const props = defineProps({
-  chartData: Object,
+  chartData: {
+    type: Object,
+    required: true,
+  },
   chartOptions: {
     type: Object,
     required: false,
-    default: () => { return {} },
+    default: () => ({
+      responsive: true,
+      maintainAspectRatio: true,
+      animation: { animateRotate: true, duration: 600 },
+      plugins: {
+        tooltip: { enabled: true },
+        legend: { position: 'bottom' },
+      },
+    }),
   },
 })
 </script>

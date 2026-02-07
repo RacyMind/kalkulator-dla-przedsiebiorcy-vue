@@ -1,10 +1,15 @@
 <template>
-  <ModulePageLayout class="c-currencies">
-    <SectionHeader>
-      Kursy walut
-    </SectionHeader>
-    <Table/>
-    <Advert/>
+  <ModulePageLayout class="c-currencies"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
+        Kursy walut
+      </SectionHeader>
+      <Table/>
+      <Advert/>
+    </template>
+    <template #results>
+    </template>
   </ModulePageLayout>
 </template>
 

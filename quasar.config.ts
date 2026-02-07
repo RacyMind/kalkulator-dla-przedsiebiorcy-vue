@@ -89,11 +89,16 @@ export default defineConfig((ctx) => {
       'roboto-font-latin-ext',
       'material-icons-outlined',
       'material-icons',
+      'mdi-v7',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        brand: {
+          primary: '#1565C0',
+        },
+      },
       cssAddon: true,
       iconSet: 'material-icons',
       lang: 'pl',

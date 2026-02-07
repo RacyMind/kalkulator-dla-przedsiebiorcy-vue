@@ -1,25 +1,32 @@
 <template>
   <ModulePageLayout class="c-work">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <SectionHeader
-      ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <template
-      v-if="store.result">
-      <ResultList :result="store.result" />
-      <Separator />
-      <Statistics :result="store.result" />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
     </template>
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
+    <template #results>
+      <SectionHeader
+        :level="2"
+        ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template
+        v-if="store.result">
+        <q-list>
+          <ResultList :result="store.result" />
+        </q-list>
+        <Separator />
+        <Statistics :result="store.result" />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 

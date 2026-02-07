@@ -1,19 +1,17 @@
 <template>
-  <q-page
-    class="q-py-md full-width c-info"
-    style="max-width:800px;"
-  >
-    <div class="full-width bg-surface">
-      <SectionHeader>
+  <ModulePageLayout class="c-info"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
         Terminy w US
       </SectionHeader>
       <USSummary/>
-      <SectionHeader>
+      <SectionHeader :level="2">
         Terminy w ZUS
       </SectionHeader>
       <ZUSSummary/>
       <Advert/>
-      <SectionHeader>
+      <SectionHeader :level="2">
         Terminy w PFRON
       </SectionHeader>
       <PFRONSummary/>
@@ -22,15 +20,16 @@
         style="font-size:0.8rem;">
         Ostatnia aktualizacja: 02.01.2022 r.
       </p>
-    </div>
-    <Footer/>
-  </q-page>
+    </template>
+    <template #results>
+    </template>
+  </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
-import Footer from 'components/partials/Footer.vue'
+import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import PFRONSummary from 'components/terms/PFRONSummary.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import USSummary from 'components/terms/USSummary.vue'

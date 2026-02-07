@@ -1,54 +1,57 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-
-    <QTabs
-      ref="scrollTarget"
-      v-model="tab"
-      inline-label
-      class="bg-primary text-white shadow-2"
-      :breakpoint="0"
-      align="justify">
-      <q-tab
-        :name="Tabs.Summary"
-        label="Podsumowanie" />
-      <q-tab
-        :name="Tabs.Payouts"
-        label="Wypłaty" />
-    </QTabs>
-    <q-tab-panels
-      v-model="tab"
-      animated
-      swipeable>
-      <q-tab-panel
-        :name="Tabs.Summary"
-        class="q-pa-none">
-        <template v-if="store.result">
-          <ResultList :result="store.result" />
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.Payouts"
-        class="q-pa-none">
-        <template v-if="store.result">
-          <MonthlyDetailsList :result="store.result" />
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-    </q-tab-panels>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <QTabs
+        ref="scrollTarget"
+        v-model="tab"
+        inline-label
+        class="bg-primary text-white shadow-2"
+        :breakpoint="0"
+        align="justify">
+        <q-tab
+          :name="Tabs.Summary"
+          label="Podsumowanie" />
+        <q-tab
+          :name="Tabs.Payouts"
+          label="Wypłaty" />
+      </QTabs>
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable>
+        <q-tab-panel
+          :name="Tabs.Summary"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <ResultList :result="store.result" />
+          </template>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+        <q-tab-panel
+          :name="Tabs.Payouts"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <MonthlyDetailsList :result="store.result" />
+          </template>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
   </ModulePageLayout>
 </template>
 
