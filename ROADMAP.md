@@ -150,6 +150,42 @@
 - [ ] Uporządkować folder `src/use/` - przenieść composables do `src/composables/` dla spójności
 - [ ] Uruchomić testy: `npx vitest run`
 
+### 2.6 Design Tokens — jednolita paleta barw
+
+> **PRIORYTET**: Ustalenie pełnej palety kolorów **raz**, z uwzględnieniem wymagań dark mode (M3), nowoczesnego UI (M4) i kontrastu WCAG AA (M5). Kolejne milestone'y tylko konsumują te tokeny — nie projektują kolorów od nowa.
+
+**Audyt obecnego stanu** — kolory są w 3 niespójnych źródłach:
+
+| Źródło | Rola | Przykład |
+|---|---|---|
+| `src/css/quasar.variables.scss` | Quasar global | `$primary: #d12526`, `$secondary: #26A69A` |
+| `src/logic/constants.ts → COLORS` | Wykresy + moduły (JS) | `CONTRACT_OF_EMPLOYMENT: '#ed6d13'`, `CHART1: '#e32514'` |
+| `src/css/components/_*.scss` (7 plików) | Brand per moduł (CSS) | `.text-brand { color: #B45309 }` (work) |
+
+Wartości są niespójne — np. moduł "work" ma `#ed6d13` w constants.ts, ale `#B45309` w SCSS.
+
+- [ ] Zaprojektować pełną paletę Design Tokens:
+  - **Primary brand**: zachować `#d12526` lub skorygować pod WCAG AA (kontrast ≥ 4.5:1 na białym / ≥ 4.5:1 na ciemnym tle)
+  - **Secondary / Accent**: nowe, spójne kolory (zastępują `$secondary: #26A69A`, `$accent: #9C27B0`)
+  - **Powierzchnie (light)**: `--surface`, `--surface-variant`, `--surface-elevated` (zastępują `bg-white`, `bg-teal-1`, `bg-grey-2`, `bg-grey-3`)
+  - **Powierzchnie (dark)**: ciemne warianty tych samych tokenów
+  - **Kolory modułów** (6 kategorii): work, business/company, taxes, currencies, percentage/savings, informator/info, app
+  - **Kolory wykresów** (CHART1–CHART8): spójna paleta danych, czytelna w light i dark mode
+  - **Semantyczne**: positive, negative, info, warning (zachować lub skorygować obecne)
+- [ ] Zweryfikować kontrast WCAG AA dla wszystkich par kolor–tło (narzędzie: WebAIM Contrast Checker lub axe-core):
+  - Tekst na powierzchni: ≥ 4.5:1
+  - Tekst na module brand bg: ≥ 4.5:1
+  - UI components (ikony, obramowania): ≥ 3:1
+- [ ] Stworzyć plik `src/css/_design-tokens.scss` z CSS custom properties:
+  - Tokeny light mode (`:root`)
+  - Tokeny dark mode (`.body--dark` lub `@media (prefers-color-scheme: dark)`)
+  - Tokeny modułów (`.c-work`, `.c-business`, `.c-taxes`, itd.)
+- [ ] Zaktualizować `src/css/quasar.variables.scss` — zmapować `$primary`, `$secondary`, `$accent` na nowe wartości
+- [ ] Zaktualizować `src/logic/constants.ts → COLORS` — zmapować na nowe wartości z palety (lub usunąć na rzecz CSS variables + composable `useChartColors`)
+- [ ] Zaktualizować 7 plików `src/css/components/_*.scss` — zamienić hardcodowane hex na `var(--module-brand-*)` z `_design-tokens.scss`
+- [ ] Uruchomić testy: `npx vitest run`
+- [ ] Zweryfikować wizualnie na kilku modułach (light mode) — kolory spójne, czytelne
+
 ---
 
 ## Milestone 3 - System motywów (Light/Dark Mode)
@@ -167,26 +203,25 @@
 - [ ] Dodać przełącznik motywu w `MainLayout.vue` (toolbar) - `q-btn` z ikoną `light_mode`/`dark_mode`
 - [ ] Dodać opcję motywu w `settingStore.ts`
 
-### 3.2 Eliminacja hardcodowanych kolorów
+### 3.2 Zastosowanie Design Tokens w komponentach
 
-- [ ] Zamienić `bg-white` → `bg-card` / CSS custom property `var(--surface-color)`
-- [ ] Zamienić `bg-teal-1` (page-container) → Quasar dark-aware klasa
-- [ ] Zamienić `bg-grey-2` (drawer) → dark-aware
-- [ ] Zamienić `bg-grey-3` (ListRow even) → dark-aware
-- [ ] Zamienić `bg-red-8` (header) → zmienną kolorystyczną
-- [ ] Zaktualizować `ModulePageLayout.vue` - usunąć `bg-white`, użyć `q-card` lub dark-aware klasy
-- [ ] Zaktualizować `SectionHeader.vue` - `.sectionHeader { color: #ffff }` → Quasar text class
+> Paleta barw i CSS custom properties zostały zdefiniowane w sekcji 2.6. Tutaj zastępujemy hardcodowane klasy Quasar/CSS tokenami z `_design-tokens.scss`.
 
-### 3.3 Kolory modułów kompatybilne z dark mode
+- [ ] Zamienić `bg-white` → `var(--surface)` lub klasa `.bg-surface`
+- [ ] Zamienić `bg-teal-1` (page-container) → `var(--surface-variant)`
+- [ ] Zamienić `bg-grey-2` (drawer) → `var(--surface-variant)`
+- [ ] Zamienić `bg-grey-3` (ListRow even) → `var(--surface-elevated)`
+- [ ] Zamienić `bg-red-8` (header) → `var(--color-primary)`
+- [ ] Zaktualizować `ModulePageLayout.vue` - usunąć `bg-white`, użyć `var(--surface)`
+- [ ] Zaktualizować `SectionHeader.vue` - `.sectionHeader { color: #ffff }` → token tekstowy
 
-- [ ] Zdefiniować CSS custom properties dla kolorów modułów (`--module-brand`, `--module-bg`)
-- [ ] Zaktualizować `src/css/components/_work.scss` - zamienić hardcodowane kolory na CSS variables
-- [ ] Zaktualizować `src/css/components/_business.scss` - analogicznie
-- [ ] Zaktualizować `src/css/components/_taxes.scss` - analogicznie
-- [ ] Zaktualizować `src/css/components/_currencies.scss` - analogicznie
-- [ ] Zaktualizować `src/css/components/_percentage.scss` - analogicznie
-- [ ] Zaktualizować `src/css/components/_informator.scss` - analogicznie
-- [ ] Zaktualizować `src/css/components/_app.scss` - analogicznie
+### 3.3 Weryfikacja kolorów modułów w dark mode
+
+> Kolory modułów i ich warianty dark zostały zdefiniowane w `_design-tokens.scss` (sekcja 2.6), a pliki `_*.scss` zaktualizowane. Tutaj weryfikujemy, czy dark mode działa poprawnie.
+
+- [ ] Sprawdzić, czy `.body--dark` poprawnie przełącza tokeny modułowych kolorów
+- [ ] Zweryfikować czytelność `.text-brand` na ciemnym tle w każdej kategorii modułów
+- [ ] Zweryfikować `.bg-brand` / `.bg-module` — czy kontrast z tekstem jest wystarczający w dark mode
 - [ ] Zweryfikować dark mode na każdym z 29 modułów
 
 ### 3.4 Wykresy i wizualizacje w dark mode
@@ -202,16 +237,14 @@
 
 > Cel: Odświeżyć interfejs użytkownika - responsywny layout, nowoczesne komponenty, lepsza nawigacja, dashboard.
 
-### 4.1 Nowy system kolorów i typografii
+### 4.1 Rozszerzenie Design Tokens o typografię i spacing
 
-- [ ] Zaprojektować nową paletę kolorów (zachować red `#d12526` jako primary, ale odświeżyć sekundarne)
-- [ ] Zaktualizować `src/css/quasar.variables.scss`:
-  - Nowy `$primary` - odświeżony czerwony
-  - Nowy `$secondary` - nowoczesny odcień
-  - Nowy `$accent` - komplementarny kolor
-  - Dodać zmienne dla powierzchni, kart, obramowań
-- [ ] Dodać CSS custom properties dla spacing i border-radius (konsystentny design system)
-- [ ] Ujednolicić typografię - użyć Quasar typography classes konsystentnie
+> Paleta kolorów została zdefiniowana w sekcji 2.6 i jest już zaimplementowana. Tutaj rozszerzamy design system o typografię i spacing.
+
+- [ ] Dodać CSS custom properties dla spacing (`--space-xs`, `--space-sm`, `--space-md`, `--space-lg`, `--space-xl`)
+- [ ] Dodać CSS custom properties dla border-radius (`--radius-sm`, `--radius-md`, `--radius-lg`)
+- [ ] Ujednolicić typografię — użyć Quasar typography classes konsystentnie
+- [ ] Ewentualne drobne korekty kolorów, jeśli nowy layout tego wymaga (dokumentować w `_design-tokens.scss`)
 
 ### 4.2 Nowy MainLayout - responsywny
 
@@ -327,14 +360,15 @@
 - [ ] Dodać `aria-describedby` do pól formularzy z walidacją
 - [ ] Dodać `role="status"` do powiadomień
 
-### 5.4 Kontrast kolorów
+### 5.4 Weryfikacja końcowa kontrastu kolorów
 
-- [ ] Zweryfikować kontrast primary color `#d12526` na białym tle (4.5:1 minimum)
-- [ ] Zweryfikować kontrast teal-4 (przyciski, sekcje) na białym i ciemnym tle
-- [ ] Zweryfikować kontrast kolorów modułowych (`.bg-brand`) z tekstem
-- [ ] Zweryfikować kontrast w dark mode
-- [ ] Naprawić `SectionHeader` - biały tekst na kolorowym tle - sprawdzić kontrast
-- [ ] Użyć narzędzia (axe-core, Lighthouse) do automatycznego audytu
+> Kontrast WCAG AA został uwzględniony przy projektowaniu palety (sekcja 2.6). Tutaj wykonujemy końcowy audyt automatyczny na gotowym UI.
+
+- [ ] Uruchomić axe-core / Lighthouse accessibility audit na wersji produkcyjnej
+- [ ] Zweryfikować automatycznie wykryte problemy kontrastowe i naprawić je w `_design-tokens.scss`
+- [ ] Zweryfikować kontrast w dark mode (axe-core z włączonym dark mode)
+- [ ] Sprawdzić `SectionHeader` — biały tekst na kolorowym tle (powinien być OK po sekcji 2.6, ale potwierdzić)
+- [ ] Udokumentować wyniki audytu (score Lighthouse Accessibility)
 
 ### 5.5 Formularze dostępne
 
