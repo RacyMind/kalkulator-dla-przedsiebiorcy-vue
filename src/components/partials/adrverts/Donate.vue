@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div>
-      Ten kalkulator jest darmowy dzięki Twojemu wsparciu. Pomóż go rozwijać!
-    </div>
+    <div>Kalkulator jest i zawsze będzie darmowy. Wesprzyj jego rozwój!</div>
     <q-btn
       label="Wesprzyj twórcę"
       no-caps
@@ -20,8 +18,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
-import SupportProject from 'components/partials/SupportProject.vue'
+import { ref } from 'vue';
+import SupportProject from 'components/partials/SupportProject.vue';
 
-const openModal = ref(false)
+const openModal = ref(false);
 </script>
