@@ -25,7 +25,7 @@
       </div>
       <q-separator class="q-my-md" />
       <p class="text-justify text-caption q-mb-sm">
-        Podziel się z innymi – pomóż im oszczędzać:
+        Możesz też pomóc udostępniając kalkulator:
       </p>
       <div class="row justify-center q-gutter-sm q-mb-md">
         <q-btn
