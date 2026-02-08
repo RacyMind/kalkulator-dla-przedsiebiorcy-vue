@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalkulator IKE 2026 – Symulacja oszczędności emerytalnych</title>
+  <meta name="description" content="Darmowy kalkulator IKE 2026. Sprawdź ile zaoszczędzisz na Indywidualnym Koncie Emerytalnym. Symuluj wpłaty, stopę zwrotu i prognozowany kapitał bez podatku Belki.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Łukasz Socha">
+  <link rel="canonical" href="https://kalkulatorfinansowy.app/kalkulator-ike/">
+  <meta name="theme-color" content="#1565C0">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kalkulator IKE 2026 – Symulacja oszczędności emerytalnych">
+  <meta property="og:description" content="Darmowy kalkulator IKE 2026. Sprawdź ile zaoszczędzisz na Indywidualnym Koncie Emerytalnym. Symuluj wpłaty i prognozowany kapitał.">
+  <meta property="og:image" content="https://kalkulatorfinansowy.app/images/og-image.png">
+  <meta property="og:url" content="https://kalkulatorfinansowy.app/kalkulator-ike/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Kalkulator finansowy">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kalkulator IKE 2026 – Symulacja oszczędności emerytalnych">
+  <meta name="twitter:description" content="Darmowy kalkulator IKE 2026. Sprawdź ile zaoszczędzisz na Indywidualnym Koncie Emerytalnym.">
+  <meta name="twitter:image" content="https://kalkulatorfinansowy.app/images/og-image.png">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="../images/app-icon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../images/favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../dist/style.css">
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Strona główna",
+        "item": "https://kalkulatorfinansowy.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Kalkulator IKE",
+        "item": "https://kalkulatorfinansowy.app/kalkulator-ike/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: HowTo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Jak obliczyć oszczędności na IKE",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Podaj swój wiek",
+        "text": "Wpisz aktualny wiek oraz planowany wiek rozpoczęcia wypłat z IKE (minimum 60 lat)."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Ustal wysokość wpłat",
+        "text": "Podaj planowaną miesięczną lub roczną wpłatę na IKE. Pamiętaj o rocznym limicie wpłat."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Wybierz stopę zwrotu",
+        "text": "Ustaw oczekiwaną roczną stopę zwrotu z inwestycji (np. 5-8% dla funduszy akcyjnych)."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Sprawdź prognozę",
+        "text": "Kalkulator pokaże prognozowany kapitał, sumę wpłat, zysk z inwestycji i miesięczną wypłatę emerytalną."
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MKR8Z54');</script>
+</head>
+<body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKR8Z54" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <!-- Sticky Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="https://kalkulatorfinansowy.app/" class="flex items-center gap-2 no-underline" aria-label="Kalkulator finansowy — strona główna">
+        <img src="../images/app-icon.svg" alt="" width="36" height="36" aria-hidden="true">
+        <span class="hidden sm:inline text-lg font-bold text-gray-900 dark:text-white">Kalkulator finansowy</span>
+      </a>
+      <a href="https://kalkulatorfinansowy.app/app/" class="inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-medium rounded-lg transition-colors text-sm no-underline">
+        Przejdź do kalkulatora
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-[#1565C0] to-[#0D47A1]">
+    <div class="max-w-6xl mx-auto px-4">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <ol class="flex text-sm text-blue-200">
+          <li><a href="../" class="hover:text-white no-underline">Strona główna</a></li>
+          <li class="mx-2">/</li>
+          <li class="text-white">Kalkulator IKE</li>
+        </ol>
+      </nav>
+      <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <div class="flex-1 text-center md:text-left">
+          <h1 class="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">Kalkulator IKE 2026 — oszczędności emerytalne</h1>
+          <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-lg">Zaplanuj swoją emeryturę z Indywidualnym Kontem Emerytalnym. Sprawdź ile zgromadzisz kapitału przy regularnych wpłatach — bez podatku Belki.</p>
+          <a href="https://kalkulatorfinansowy.app/app/#/kalkulator-ike" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-[#1565C0] font-bold rounded-lg hover:bg-blue-50 transition-colors text-base no-underline">
+            Przejdź do kalkulatora IKE
+          </a>
+        </div>
+        <div class="flex-1">
+          <div class="bg-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+            <div class="flex items-center gap-1.5 px-3 py-2 bg-gray-800 border-b border-gray-700">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+              <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/kalkulator-ike</span>
+            </div>
+            <picture>
+              <source srcset="../images/modules/kalkulator-ike.webp" type="image/webp">
+              <img src="../images/modules/kalkulator-ike.png" alt="Kalkulator IKE — symulacja oszczędności emerytalnych z prognozą kapitału" width="1280" height="800" loading="lazy" class="w-full h-auto">
+            </picture>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article>
+      <section class="py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">Czym jest IKE — Indywidualne Konto Emerytalne?</h2>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">IKE (Indywidualne Konto Emerytalne) to jeden z trzech filarów dobrowolnego oszczędzania na emeryturę w Polsce, obok IKZE i PPK. Jest to konto inwestycyjne z wyjątkową korzyścią podatkową — <strong>zyski z inwestycji na IKE są zwolnione z 19% podatku od zysków kapitałowych</strong> (tzw. podatku Belki), pod warunkiem wypłaty po ukończeniu 60. roku życia.</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">IKE można prowadzić w różnych formach: jako rachunek maklerski, fundusz inwestycyjny, lokatę bankową, rachunek w dobrowolnym funduszu emerytalnym lub ubezpieczenie na życie z funduszem kapitałowym. Każda osoba może posiadać tylko jedno IKE.</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">W 2026 roku roczny limit wpłat na IKE wynosi <strong>28 260,00 zł</strong> (trzykrotność prognozowanego przeciętnego miesięcznego wynagrodzenia). To znacząca kwota, która przy regularnym inwestowaniu przez kilkadziesiąt lat może zbudować pokaźny kapitał emerytalny.</p>
+        </div>
+      </section>
+
+      <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">Korzyści podatkowe IKE — ile zaoszczędzisz?</h2>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">Główną zaletą IKE jest <strong>zwolnienie z podatku Belki (19%)</strong> od zysków kapitałowych. W praktyce oznacza to, że cały zysk z inwestycji — dywidendy, odsetki, wzrost wartości jednostek — trafia do Ciebie w całości, bez potrąceń podatkowych.</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">Przykład: jeśli przez 30 lat wpłacasz po 1000 zł miesięcznie przy średniej stopie zwrotu 7% rocznie, zgromadzisz około <strong>1 220 000 zł</strong>. Na zwykłym rachunku maklerskim podatek Belki pochłonąłby ponad <strong>100 000 zł</strong> z Twoich zysków. Na IKE ta kwota zostaje u Ciebie.</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">Warunek: wypłata musi nastąpić po ukończeniu 60. roku życia (lub 55 lat w przypadku nabycia uprawnień emerytalnych). Wcześniejsza wypłata (zwrot) oznacza konieczność zapłacenia podatku Belki od zysków.</p>
+        </div>
+      </section>
+
+      <section class="py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">Limit wpłat na IKE w 2026 roku</h2>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">Roczny limit wpłat na IKE jest ustalany corocznie i wynosi trzykrotność prognozowanego przeciętnego miesięcznego wynagrodzenia w gospodarce narodowej. W 2026 roku limit ten wynosi:</p>
+          <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4 space-y-2">
+            <li><strong>Limit roczny IKE 2026: 28 260,00 zł</strong></li>
+            <li><strong>Limit miesięczny (orientacyjny): 2 355,00 zł</strong></li>
+          </ul>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">Wpłaty na IKE można dokonywać w dowolnych kwotach i terminach w ciągu roku — nie ma obowiązku regularnych wpłat. Ważne jest jedynie nieprzekroczenie rocznego limitu. Niewykorzystany limit nie przechodzi na następny rok.</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">Dla porównania: limit wpłat na IKZE w 2026 roku wynosi 11 304,00 zł (lub 16 956,00 zł dla osób prowadzących działalność gospodarczą). IKE oferuje zatem znacznie wyższy limit wpłat (28 260 zł)</p>
+        </div>
+      </section>
+
+      <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">IKE vs IKZE vs PPK — co wybrać?</h2>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">Każdy z trzech programów emerytalnych ma inne zalety:</p>
+          <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4 space-y-2">
+            <li><strong>IKE</strong> — brak podatku Belki przy wypłacie po 60. roku życia. Wyższy limit wpłat. Brak ulgi podatkowej przy wpłacie.</li>
+            <li><strong>IKZE</strong> — wpłaty odliczasz od podstawy opodatkowania PIT (ulga podatkowa). Przy wypłacie płacisz zryczałtowany 10% podatek. Niższy limit wpłat.</li>
+            <li><strong>PPK</strong> — dopłaty od pracodawcy (1,5% wynagrodzenia) i państwa (250 zł rocznie). Automatyczne zapisy, ale można zrezygnować.</li>
+          </ul>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">Optymalną strategią jest korzystanie ze wszystkich trzech programów jednocześnie — najpierw IKZE (dla ulgi podatkowej), potem IKE (dla zwolnienia z Belki), a PPK jako dodatek z dopłatami pracodawcy. Nasz kalkulator IKE pomoże Ci zaplanować tę część strategii.</p>
+        </div>
+      </section>
+
+      <section class="py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Jak działa kalkulator IKE?</h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">Nasz kalkulator IKE pozwala zasymulować długoterminowe oszczędzanie na emeryturę. Podajesz swój wiek, planowaną miesięczną wpłatę, oczekiwaną stopę zwrotu i wiek rozpoczęcia wypłat. Kalkulator oblicza prognozowany kapitał na koniec okresu oszczędzania, sumę wpłat, zysk z inwestycji oraz szacunkową miesięczną wypłatę emerytalną. Wszystko z uwzględnieniem zwolnienia z podatku Belki.</p>
+        </div>
+      </section>
+    </article>
+
+    <!-- CTA -->
+    <section class="py-12 md:py-16 bg-gradient-to-br from-[#1565C0] to-[#0D47A1] text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Zaplanuj oszczędności na IKE</h2>
+        <p class="text-blue-100 mb-8 text-lg">Sprawdź ile zgromadzisz na emeryturę. Kalkulator jest darmowy i nie wymaga rejestracji.</p>
+        <a href="https://kalkulatorfinansowy.app/app/#/kalkulator-ike" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-[#1565C0] font-bold rounded-lg hover:bg-blue-50 transition-colors text-base no-underline">
+          Oblicz teraz — za darmo
+        </a>
+      </div>
+    </section>
+
+    <!-- Related calculators -->
+    <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Powiązane kalkulatory</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <a href="../kalkulator-ikze/" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden no-underline">
+            <div class="h-36 bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+              <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Kalkulator IKZE</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Oblicz ulgę podatkową z wpłat na IKZE i porównaj z IKE.</p>
+            </div>
+          </a>
+          <a href="../obligacje-skarbowe/" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden no-underline">
+            <div class="h-36 bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center">
+              <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"/></svg>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Obligacje skarbowe</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Porównaj zysk z różnych rodzajów obligacji skarbowych.</p>
+            </div>
+          </a>
+          <a href="../kalkulator-b2b/" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden no-underline">
+            <div class="h-36 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+              <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"/></svg>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Kalkulator B2B</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Oblicz wynagrodzenie netto na działalności gospodarczej.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-10 bg-gray-900 text-gray-400">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <h3 class="text-white font-bold mb-3">Kalkulatory</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="../kalkulator-b2b/" class="hover:text-white transition-colors no-underline">Kalkulator B2B</a></li>
+            <li><a href="../kalkulator-umowa-o-prace/" class="hover:text-white transition-colors no-underline">Kalkulator umowy o pracę</a></li>
+            <li><a href="../kalkulator-umowa-zlecenie/" class="hover:text-white transition-colors no-underline">Kalkulator umowy zlecenie</a></li>
+            <li><a href="../kalkulator-umowa-o-dzielo/" class="hover:text-white transition-colors no-underline">Kalkulator umowy o dzieło</a></li>
+            <li><a href="../kalkulator-ike/" class="hover:text-white transition-colors no-underline">Kalkulator IKE</a></li>
+            <li><a href="../kalkulator-ikze/" class="hover:text-white transition-colors no-underline">Kalkulator IKZE</a></li>
+            <li><a href="../obligacje-skarbowe/" class="hover:text-white transition-colors no-underline">Obligacje skarbowe</a></li>
+            <li><a href="../kalkulator-vat/" class="hover:text-white transition-colors no-underline">Kalkulator VAT</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-bold mb-3">Aplikacja</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="https://kalkulatorfinansowy.app/app/" class="hover:text-white transition-colors no-underline">Przejdź do kalkulatora</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=racyMind.kalkulator" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">Google Play</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-bold mb-3">Autor</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="https://lukasz-socha.pl/" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">lukasz-socha.pl</a></li>
+            <li><a href="https://buycoffee.to/lukaszsocha" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">☕ Wesprzyj projekt</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center border-t border-gray-800 pt-6">
+        <p class="text-xs text-gray-500">© 2013–2026 Kalkulator finansowy</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
