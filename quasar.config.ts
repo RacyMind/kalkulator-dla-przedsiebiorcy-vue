@@ -1,6 +1,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
+import 'dotenv/config';
 import { defineConfig } from '#q-app/wrappers';
 
 export default defineConfig((ctx) => {
@@ -25,6 +26,10 @@ export default defineConfig((ctx) => {
       },
       publicPath: ctx.dev ? '' : 'app',
       vueRouterMode: 'hash',
+      env: {
+        VITE_GTM_ID: process.env.VITE_GTM_ID,
+        VITE_ADSENSE_PUBLISHER_ID: process.env.VITE_ADSENSE_PUBLISHER_ID,
+      },
       typescript: {
         strict: true,
         vueShim: true,
@@ -34,21 +39,35 @@ export default defineConfig((ctx) => {
           const capacitorStubs = [
             '@capacitor/core',
             '@capacitor-community/admob',
+            '@capacitor-firebase/analytics',
           ];
           const STUB_PREFIX = '\0capacitor-stub:';
 
           viteConf.plugins = viteConf.plugins || [];
           viteConf.plugins.push({
             name: 'capacitor-stub',
+            enforce: 'pre' as const,
             resolveId(id: string) {
-              if (capacitorStubs.includes(id)) {
+              if (
+                capacitorStubs.some(
+                  (stub) => id === stub || id.startsWith(stub + '/'),
+                )
+              ) {
                 return STUB_PREFIX + id;
               }
             },
             load(id: string) {
-              if (id.startsWith(STUB_PREFIX)) {
-                return 'export const Capacitor = { isNativePlatform: () => false }; export default {};';
+              if (!id.startsWith(STUB_PREFIX)) {
+                return;
               }
+              const stubId = id.slice(STUB_PREFIX.length);
+              if (stubId === '@capacitor/core') {
+                return 'export const Capacitor = { isNativePlatform: () => false }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};';
+              }
+              if (stubId === '@capacitor-firebase/analytics') {
+                return 'export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve() }; export default {};';
+              }
+              return 'export default {};';
             },
           });
         }

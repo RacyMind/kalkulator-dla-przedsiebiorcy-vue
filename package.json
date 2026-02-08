@@ -32,6 +32,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@capacitor-firebase/analytics": "^6.3.1",
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@quasar/app-vite": "^2.4.0",
