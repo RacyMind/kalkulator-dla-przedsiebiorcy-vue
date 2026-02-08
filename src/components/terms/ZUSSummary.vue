@@ -6,7 +6,6 @@
       :inline="false"
     />
     <ListRow
-      class="bg-teal-1"
       name="Wpłata składek - dla płatników posiadających osobowość prawną"
       value="do 15. dnia następnego miesiąca"
       :inline="false"
@@ -18,13 +17,6 @@
     />
   </div>
 </template>
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script setup lang="ts">
 import ListRow from 'components/partials/ListRow.vue'
-
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-})
 </script>

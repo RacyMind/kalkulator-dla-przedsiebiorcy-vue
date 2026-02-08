@@ -5,7 +5,7 @@
       :value="pln(result.amount)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Odsetki"
       :value="pln(result.interestAmount)"
     />
@@ -21,32 +21,20 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import { pln } from 'src/use/currencyFormat'
+import {computed} from 'vue'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import interest from 'components/interest/interest'
 
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<InterestInputFields>,
-    },
-  },
-  setup(props: any) {
-    const result = computed(() => {
-      return interest.getResult(props.input)
-    })
+interface Props {
+  input: InterestInputFields
+}
 
-    return {
-      pln,
-      result,
-    }
-  },
+const props = defineProps<Props>()
+
+const result = computed(() => {
+  return interest.getResult(props.input)
 })
 </script>

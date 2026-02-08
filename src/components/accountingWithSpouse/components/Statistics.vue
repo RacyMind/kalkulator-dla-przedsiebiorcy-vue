@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
-import {useBarChart} from 'src/use/useBarChart'
+import {useBarChart} from 'src/composables/useBarChart'
 import BarChart from 'components/partials/statistics/BarChart.vue'
 
 const store = useAccountingWithSpouseStore()

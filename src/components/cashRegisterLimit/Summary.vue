@@ -5,7 +5,7 @@
       :value="formatDate(result.startDate)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Liczba dni sprzedaży do końca roku"
       :value="result.daysToEndYear"
     />
@@ -17,50 +17,37 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import { format } from 'date-fns'
-import { pln } from 'src/use/currencyFormat'
+import {computed} from 'vue'
+import {format} from 'date-fns'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import cashRegisterLimit from 'components/cashRegisterLimit/cashRegisterLimit'
 
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<CashRegisterLimitInputFields>,
-    },
-  },
-  setup (props) {
-    const result = computed(() => {
-      try {
-        return cashRegisterLimit.getResult(props.input)
-      }
-      catch {
-        return {
-          amount: 0,
-          daysToEndYear: 0,
-          startDate: null,
-        }
-      }
-    })
+interface Props {
+  input: CashRegisterLimitInputFields
+}
 
-    const formatDate = (date:Date|null) => {
-      if (!date) {
-        return null
-      }
-      return format(date, 'dd.MM.yyyy')
-    }
+const props = defineProps<Props>()
 
+const result = computed(() => {
+  try {
+    return cashRegisterLimit.getResult(props.input)
+  }
+  catch {
     return {
-      formatDate,
-      pln,
-      result,
+      amount: 0,
+      daysToEndYear: 0,
+      startDate: null,
     }
-  },
+  }
 })
+
+const formatDate = (date:Date|null) => {
+  if (!date) {
+    return null
+  }
+  return format(date, 'dd.MM.yyyy')
+}
 </script>

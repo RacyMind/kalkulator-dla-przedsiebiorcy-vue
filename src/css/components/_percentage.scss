@@ -1,8 +1,8 @@
 .c-percentage, .c-savings {
   .text-brand {
-    color: #15803D;
+    color: var(--module-percentage);
   }
   .bg-brand, .bg-module {
-    background: #15803D;
+    background: var(--module-percentage);
   }
 }

@@ -15,10 +15,11 @@
               validationRules.required,
             ]"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
-                name="event"
+                :name="matEvent"
                 class="cursor-pointer"/>
             </template>
             <DatePopup
@@ -37,10 +38,11 @@
               validationRules.required,
             ]"
             lazy-rules="ondemand"
-            hide-bottom-space>
+            hide-bottom-space
+            aria-required="true">
             <template v-slot:append>
               <q-icon
-                name="event"
+                :name="matEvent"
                 class="cursor-pointer"/>
             </template>
             <DatePopup
@@ -66,6 +68,7 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import npb from 'src/api/nbp'
 import validationRules from 'src/logic/validationRules'
+import {matEvent} from 'src/icons'
 
 const $q = useQuasar()
 const currencyRateStore = useCurrencyRateStore()

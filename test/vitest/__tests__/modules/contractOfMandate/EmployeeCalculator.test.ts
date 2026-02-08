@@ -1,8 +1,8 @@
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import {describe, expect, it } from 'vitest'
-import {useConstants} from 'src/composables/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 
 describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
@@ -10,7 +10,7 @@ describe('Employee Calculator of Contract of Mandate on 1.11.2023', () => {
   const settingStore = useSettingStore()
   settingStore.dateOfLawRules = new Date(2023,11,1)
 
-  const { incomeTaxConstants} = useConstants()
+  const { incomeTaxConstants} = storeToRefs(useConstantsStore())
 
   it('The invalid data', () => {
     expect(() => new EmployeeCalculator().getResult()).toThrowError('undefined')

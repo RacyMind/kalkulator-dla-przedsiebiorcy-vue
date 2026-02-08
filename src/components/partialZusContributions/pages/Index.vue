@@ -1,27 +1,31 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <SectionHeader
-      ref="summary">
-      Podsumowanie
-    </SectionHeader>
-    <ResultList
-      v-if="store.result"
-      :result="store.result" />
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <SectionHeader
+        :level="2"
+        ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <ResultList
+        v-if="store.result"
+        :result="store.result" />
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
 <script setup lang="ts">
-import {Ref, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
@@ -30,7 +34,9 @@ import Form from 'components/partialZusContributions/components/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/partialZusContributions/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 const store = usePartialZusContributionStore()
@@ -41,11 +47,10 @@ breadcrumbStore.items = [
   },
 ]
 
-const summary:Ref<InstanceType<typeof SectionHeader>|null> = ref(null)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(summary?.value.$el)
+  scrollToResults()
 }
 </script>

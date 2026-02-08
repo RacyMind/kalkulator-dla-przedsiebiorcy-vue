@@ -10,10 +10,11 @@
         label="Data rozpoczęcia sprzedaży"
         :rules="[validationRules.required]"
         lazy-rules="ondemand"
-        hide-bottom-space>
+        hide-bottom-space
+        aria-required="true">
         <template v-slot:append>
           <q-icon
-            name="event"
+            :name="matEvent"
             class="cursor-pointer">
           </q-icon>
         </template>
@@ -24,48 +25,32 @@
   </q-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {CashRegisterLimitInputFields} from 'components/cashRegisterLimit/interfaces/CashRegisterLimitInputFields'
-import {computed, defineComponent, ref} from 'vue'
+import {ref} from 'vue'
 import {format, parse} from 'date-fns'
 import {useFormValidation} from 'src/composables/formValidation'
 import DatePopup from 'components/partials/DatePopup.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
+import {matEvent} from 'src/icons'
 
-export default defineComponent({
-  components: {
-    DatePopup,
-    FormSection,
-    SubmitButton,
-  },
-  setup(props, context) {
-    const {handleValidationError} = useFormValidation()
-    const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
+const emit = defineEmits<{
+  save: [input: CashRegisterLimitInputFields]
+}>()
 
-    const isDisabledButton = computed(() => {
-      return !startDate.value
-    })
+const {handleValidationError} = useFormValidation()
+const startDate = ref(format(new Date(), 'dd.MM.yyyy'))
 
-    const save = () => {
-      const input: CashRegisterLimitInputFields = {
-        startDate: parse(
-          startDate.value,
-          'dd.MM.yyyy',
-          new Date(),
-        ),
-      }
-      context.emit('save', input)
-    }
-
-    return {
-      handleValidationError,
-      isDisabledButton,
-      save,
-      startDate,
-      validationRules,
-    }
-  },
-})
+const save = () => {
+  const input: CashRegisterLimitInputFields = {
+    startDate: parse(
+      startDate.value,
+      'dd.MM.yyyy',
+      new Date(),
+    ),
+  }
+  emit('save', input)
+}
 </script>

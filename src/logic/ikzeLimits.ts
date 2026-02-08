@@ -44,6 +44,3 @@ export function getIkzeLimit(dateOfLawRules: Date, status: IkzeLimitStatus): num
   return limits.employmentContract
 }
 
-export function getIkzeLimits(dateOfLawRules: Date): IkzeLimits {
-  return getLimitsForYear(dateOfLawRules.getFullYear())
-}

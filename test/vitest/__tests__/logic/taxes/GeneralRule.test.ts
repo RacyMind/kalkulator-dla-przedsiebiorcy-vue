@@ -1,7 +1,7 @@
 import {TaxScale} from 'src/logic/taxes/TaxScale'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import { describe, expect, it } from 'vitest'
-import {useConstants} from 'src/composables/constants'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 
 
@@ -12,7 +12,7 @@ describe('Income tax using General Rules in 2023', () => {
 
   const taxScale = new TaxScale()
 
-  const { incomeTaxConstants} = useConstants()
+  const { incomeTaxConstants} = storeToRefs(useConstantsStore())
 
   it('the tax relief limit', () => {
     expect(taxScale.geRevenueOverTaxReliefLimit(incomeTaxConstants.value.taxReliefLimit, 0, true)).toBe(0)

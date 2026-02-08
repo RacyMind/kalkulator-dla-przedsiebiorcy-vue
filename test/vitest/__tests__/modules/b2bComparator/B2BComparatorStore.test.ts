@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, it} from 'vitest'
-import {createPinia, setActivePinia} from 'pinia'
+import {createPinia, setActivePinia, storeToRefs} from 'pinia'
 import {useB2BComparatorStore} from 'components/b2bComparator/store'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
-import {useConstants} from 'src/composables/constants'
 
 import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
@@ -33,7 +33,7 @@ describe('B2B Comparator store in 2026', () => {
 
   it('calculates results for all tax systems', () => {
     const store = useB2BComparatorStore()
-    const {zusConstants} = useConstants()
+    const {zusConstants} = storeToRefs(useConstantsStore())
 
     store.monthlyInputFields = createMonthlyInput({
       revenue: 10000,

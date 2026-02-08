@@ -1,9 +1,12 @@
 <template>
-  <ModulePageLayout class="c-app">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form />
+  <ModulePageLayout class="c-app"
+                    single-column>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form />
+    </template>
   </ModulePageLayout>
 </template>
 

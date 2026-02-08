@@ -21,6 +21,7 @@
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
         <AmountTypeSelect
@@ -33,8 +34,8 @@
         <div class="col">
           <q-toggle
             v-model="contractWithEmployer"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Umowa z obecnym pracodawcą"
           />
         </div>
@@ -54,11 +55,12 @@
   </q-form>
 </template>
 <script setup lang="ts">
-import {AmountTypes, useConstants} from 'src/composables/constants'
+import {AmountTypes, useConstantsStore} from 'stores/constantsStore'
+import {storeToRefs} from 'pinia'
 import {ContractWorkCalculator} from 'components/contractWork/logic/ContractWorkCalculator'
 import {ExpenseRate} from 'components/contractWork/types/ExpenseRate'
 import {InputFields} from 'components/contractWork/interfaces/InputFields'
-import {findGrossAmountUsingNetAmount} from 'components/contractWork/logic/findGrossAmountUsingNetAmount'
+import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
 import {useContractWorkStore} from 'components/contractWork/store'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -68,10 +70,11 @@ import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 
-const { incomeTaxConstants, wageStats } = useConstants()
+const { incomeTaxConstants, wageStats } = storeToRefs(useConstantsStore())
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const store = useContractWorkStore()
@@ -106,7 +109,14 @@ const handleFormSubmit = () => {
   if(amountType.value === AmountTypes.Net) {
     let netAmount = amount.value
 
-    basicInputFields.grossAmount = findGrossAmountUsingNetAmount(new ContractWorkCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, basicInputFields)
+    const calculator = new ContractWorkCalculator()
+    basicInputFields.grossAmount = findGrossAmountUsingNetAmount(
+      (grossAmount) => {
+        basicInputFields.grossAmount = grossAmount
+        return calculator.setInputData(basicInputFields).calculate().getResult()
+      },
+      0.5 * netAmount, 2 * netAmount, netAmount,
+    )
   }
 
   store.inputFields = basicInputFields

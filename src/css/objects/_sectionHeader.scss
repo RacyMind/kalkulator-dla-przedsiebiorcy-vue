@@ -1,3 +1,31 @@
 .sectionHeader {
-  color: #ffff;
+  background: none !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h2.sectionHeader {
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-bottom: 2px solid currentColor;
+}
+
+h3.sectionHeader {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.module-separator {
+  height: 5px !important;
+  background: var(--color-surface-variant) !important;
+  margin: var(--space-md) -8px;
+  border: none !important;
+}
+
+@media (min-width: 600px) {
+  .module-separator {
+    margin: var(--space-md) -16px;
+  }
 }

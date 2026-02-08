@@ -1,13 +1,15 @@
 {
   "name": "kalkulator-finansowy",
-  "version": "5.11.0",
+  "version": "6.0.0",
   "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
   "private": true,
   "dependencies": {
+    "@capacitor-community/admob": "^6.2.0",
     "@capacitor/android": "^6.2.1",
     "@capacitor/app": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.3"
   }
 }

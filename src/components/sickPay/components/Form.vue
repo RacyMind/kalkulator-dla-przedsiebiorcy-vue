@@ -16,6 +16,7 @@
             :rules="[validationRules.requiredAmount]"
             hide-bottom-space
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -42,6 +43,7 @@
             hide-bottom-space
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -52,7 +54,8 @@
 
 <script setup lang="ts">
 import {SickPayRate} from 'components/sickPay/types/SickPayRate'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLocalStorage} from '@vueuse/core'
 import {useSIckPayStore} from 'components/sickPay/store'
@@ -63,7 +66,7 @@ import validationRules from 'src/logic/validationRules'
 const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
-const {wageStats} = useConstants()
+const {wageStats} = storeToRefs(useConstantsStore())
 const store = useSIckPayStore()
 
 const sickTaxRates = [

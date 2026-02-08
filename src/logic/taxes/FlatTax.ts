@@ -1,12 +1,13 @@
 import {HasTaxReliefLimit} from 'src/logic/taxes/traits/HasTaxReliefLimit'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class FlatTax{
   protected readonly incomeTaxConstants
 
   public constructor() {
-    const { incomeTaxConstants} = useConstants()
+    const { incomeTaxConstants} = storeToRefs(useConstantsStore())
     this.incomeTaxConstants = incomeTaxConstants
   }
   public getIncomeTax(taxBasis:number):number {
@@ -14,6 +15,6 @@ export class FlatTax{
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface FlatTax extends HasTaxReliefLimit {}
 helpers.applyMixins(FlatTax, [HasTaxReliefLimit])

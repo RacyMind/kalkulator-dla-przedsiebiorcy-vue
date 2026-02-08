@@ -29,8 +29,8 @@
         <div class="col">
           <q-toggle
             v-model="hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
           />
         </div>
@@ -58,8 +58,8 @@
         <div class="col">
           <q-toggle
             v-model="hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -79,8 +79,8 @@
         <div>
           <q-toggle
             v-model="hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
@@ -93,8 +93,8 @@
           <q-toggle
             v-model="hasTaxFreeAmount"
             label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
           />
         </div>
       </div>
@@ -104,8 +104,8 @@
         <div class="col">
           <q-toggle
             v-model="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
@@ -173,8 +173,8 @@
           <q-toggle
             v-model="isSickContribution"
             :disable="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -182,8 +182,8 @@
           <q-toggle
             v-model="isFpContribution"
             :disable="fpContributionIsDisabled"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -199,9 +199,10 @@ import {ContributionBasises, useContributionBasis} from 'src/composables/contrib
 import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useB2BComparatorStore} from 'components/b2bComparator/store'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -214,12 +215,13 @@ import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
-const { zusConstants, incomeTaxConstants } = useConstants()
+const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore())
 const store = useB2BComparatorStore()
 
 // the revenue and expenses section

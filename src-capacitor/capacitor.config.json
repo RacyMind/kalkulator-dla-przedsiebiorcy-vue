@@ -1,5 +1,15 @@
 {
   "appId": "racyMind.kalkulator",
-  "appName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2026",
-  "webDir": "www"
+  "appName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B",
+  "webDir": "www",
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "backgroundColor": "#1565C0",
+      "style": "LIGHT"
+    },
+    "SplashScreen": {
+      "backgroundColor": "#1565C0"
+    }
+  }
 }

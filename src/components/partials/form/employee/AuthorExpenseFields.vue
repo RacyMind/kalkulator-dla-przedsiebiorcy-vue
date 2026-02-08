@@ -4,8 +4,8 @@
       <div class="col">
         <q-toggle
           v-model="areAuthorExpenses"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Autorskie koszty uzyskania przychodu (50%)"
         />
       </div>
@@ -37,8 +37,8 @@
         <q-toggle
           v-if="areAuthorExpenses"
           v-model="hasPercentageForEachMonth"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Różne wartości procentowe w poszczególnych miesiącach"
         />
       </div>
@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 import EachMonthPercentageFields from 'components/partials/form/EachMonthPercentageFields.vue'
+import {matCheck, matClear} from 'src/icons'
 
 interface Props {
   areAuthorExpenses: boolean

@@ -1,8 +1,8 @@
 .c-currencies {
   .text-brand {
-    color: #0D9488;
+    color: var(--module-currencies);
   }
   .bg-brand, .bg-module {
-    background: #0D9488;
+    background: var(--module-currencies);
   }
 }

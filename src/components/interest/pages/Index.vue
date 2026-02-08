@@ -1,24 +1,33 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="inputFields"
-    />
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <Statistics
-      :input="inputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template v-if="hasResult">
+        <Summary
+          :input="inputFields"
+        />
+        <Statistics
+          :input="inputFields"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -32,7 +41,9 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/interest/Statistics.vue'
 import Summary from 'components/interest/Summary.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -47,10 +58,11 @@ const inputFields = ref(<InterestInputFields>{
   rate: 0,
 })
 
-const scrollTarget = ref(null) as any
+const hasResult = ref(false)
 
 const save = (input: InterestInputFields) => {
   inputFields.value = input
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  hasResult.value = true
+  scrollToResults()
 }
 </script>

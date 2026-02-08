@@ -1,45 +1,46 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <SectionHeader
-      ref="summary">
-      Podsumowanie
-    </SectionHeader>
-    <template
-      v-if="store.taxScaleResult && store.flatTaxResult && store.lumpSUmTaxResult">
-      <list-header>Skala podatkowa</list-header>
-      <ResultList
-        :result="store.taxScaleResult.annualResult" />
-      <Separator />
-      <list-header>Podatek liniowy</list-header>
-      <ResultList
-        :result="store.flatTaxResult.annualResult" />
-      <Separator />
-      <list-header>Podatek zryczałtowany</list-header>
-      <ResultList
-        :result="store.lumpSUmTaxResult.annualResult" />
-      <Separator />
-      <Statistics
-        :tax-scale="store.taxScaleResult.annualResult.income"
-        :flat-tax="store.flatTaxResult.annualResult.income"
-        :lump-sum-tax="store.lumpSUmTaxResult.annualResult.income"
-      />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
     </template>
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
+    <template #results>
+      <SectionHeader
+        :level="2"
+        ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template
+        v-if="store.taxScaleResult && store.flatTaxResult && store.lumpSUmTaxResult">
+        <ListHeader>Skala podatkowa</ListHeader>
+        <ResultList
+          :result="store.taxScaleResult.annualResult" />
+        <ListHeader>Podatek liniowy</ListHeader>
+        <ResultList
+          :result="store.flatTaxResult.annualResult" />
+        <ListHeader>Podatek zryczałtowany</ListHeader>
+        <ResultList
+          :result="store.lumpSUmTaxResult.annualResult" />
+        <Statistics
+          :tax-scale="store.taxScaleResult.annualResult.income"
+          :flat-tax="store.flatTaxResult.annualResult.income"
+          :lump-sum-tax="store.lumpSUmTaxResult.annualResult.income"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
 <script setup lang="ts">
 
-import {Ref, ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useB2BComparatorStore} from 'components/b2bComparator/store'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
@@ -49,9 +50,10 @@ import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/b2bComparator/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components//b2bComparator/components/Statistics.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 const store = useB2BComparatorStore()
@@ -62,11 +64,10 @@ breadcrumbStore.items = [
   },
 ]
 
-const summary:Ref<InstanceType<typeof SectionHeader>|null> = ref(null)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(summary?.value.$el)
+  scrollToResults()
 }
 </script>

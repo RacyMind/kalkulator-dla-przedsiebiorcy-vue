@@ -1,5 +1,4 @@
 <template>
   <q-separator
-    size="8px"
-    color="teal-1" />
+    class="module-separator" />
 </template>

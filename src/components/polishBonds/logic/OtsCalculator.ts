@@ -4,13 +4,14 @@ import {MonthlyResult} from 'components/polishBonds/interfaces/MonthlyResult'
 import {OtsInputFields} from 'components/polishBonds/interfaces/OtsInputFields'
 import {Result} from 'components/polishBonds/interfaces/Result'
 import {useBondConstants} from 'components/polishBonds/logic/BondConstants'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class OtsCalculator extends BasicCalculator<OtsInputFields, Result> implements Calculator<OtsInputFields, Result> {
 
   public calculate(): this {
-    const constants = useConstants()
+    const constants = storeToRefs(useConstantsStore())
     const bondConstants = useBondConstants()
 
     const monthCount = 3

@@ -7,39 +7,39 @@
       <ListHeader>
         Miesiąc {{ index + 1 }}
       </ListHeader>
-      <list-row>
+      <ListRow>
         <template #name>
           Wypłata
         </template>
         <template #value>
           {{ pln(monthlyResult.payout) }}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           Skumulowane odsetki
         </template>
         <template #value>
           {{ pln(monthlyResult.accumulatedInterest) }}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           Skumulowany podatek Belki
         </template>
         <template #value>
           {{ pln(monthlyResult.accumulatedTaxAmount) }}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           Skumulowany zysk
         </template>
         <template #value>
           {{ pln(monthlyResult.accumulatedProfit) }}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           Skumulowany zysk realny
           <Tooltip class="q-ml-sm">
@@ -49,8 +49,7 @@
         <template #value>
           {{ pln(monthlyResult.accumulatedRealProfit) }}
         </template>
-      </list-row>
-      <Separator v-if="index < props.result.monthlyResults.length - 1 && hasPayout(props.result.monthlyResults[index + 1])" />
+      </ListRow>
     </div>
   </div>
 </template>
@@ -58,11 +57,10 @@
 <script setup lang="ts">
 import { MonthlyResult } from 'components/polishBonds/interfaces/MonthlyResult'
 import { Result } from 'components/polishBonds/interfaces/Result'
-import { pln } from 'src/use/currencyFormat'
+import { pln } from 'src/composables/currencyFormat'
 
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
-import Separator from 'components/partials/Separator.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 
 interface Props {

@@ -1,8 +1,6 @@
 import {AvailableYear} from 'src/types/AvailableYear'
-import {ContractOfEmploymentEmployeeSingleResult} from 'components/contractOfEmployment/interfaces/ContractOfEmploymentEmployeeSingleResult'
-import {ContractOfMandateEmployeeSingleResult} from 'components/contractOfMandate/interfaces/ContractOfMandateEmployeeSingleResult'
-import { scroll } from 'quasar'
-import constants from 'src/logic/constants'
+import {useConstantsStore} from 'stores/constantsStore'
+import {sumMonthlyResults} from 'src/logic/sumMonthlyResults'
 
 /**
  * Scrolls to the element
@@ -10,11 +8,13 @@ import constants from 'src/logic/constants'
  * @param el
  */
 function scrollToElement (el:any) {
-  const { getScrollTarget, setVerticalScrollPosition } = scroll
-  const target = getScrollTarget(el)
-  const offset = el.offsetTop // do not subtract the el.scrollHeight here
-  const duration = 1000
-  setVerticalScrollPosition(target, offset, duration)
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  // If element is already visible in viewport, don't scroll
+  if (rect.top >= 0 && rect.top < window.innerHeight * 0.8) return
+  const headerOffset = 60
+  const elementPosition = rect.top + window.scrollY
+  window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' })
 }
 
 /**
@@ -35,13 +35,14 @@ function round (value:number, precision = 0):number {
  * @returns {AvailableYear}
  */
 function getDefaultYear ():AvailableYear {
+  const constants = useConstantsStore()
   const currentYear: AvailableYear = <AvailableYear> new Date().getFullYear()
 
-  if (constants.AVAILABLE_YEARS.includes(currentYear)) {
+  if (constants.availableYears.includes(currentYear)) {
     return currentYear
   }
 
-  return <AvailableYear> constants.AVAILABLE_YEARS[constants.AVAILABLE_YEARS.length - 1]
+  return <AvailableYear> constants.availableYears[constants.availableYears.length - 1]
 }
 
 function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeType) {
@@ -50,35 +51,6 @@ function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeT
   }, 0)
 }
 
-function  sumMonthlyResults(monthlyResults:ContractOfEmploymentEmployeeSingleResult[]|ContractOfMandateEmployeeSingleResult[]) {
-  return {
-    basisForRentAndPensionContributions: round(monthlyResults.map(result => result.basisForRentAndPensionContributions)
-      .reduce((current, sum) => current + sum, 0), 2),
-    basisForTax: monthlyResults.map(result => result.basisForTax)
-      .reduce((current, sum) => current + sum, 0),
-    contributionTotal: round(monthlyResults.map(result => result.contributionTotal)
-      .reduce((current, sum) => current + sum, 0), 2),
-    disabilityContribution: round(monthlyResults.map(result => result.disabilityContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    expenses: round(monthlyResults.map(result => result.expenses)
-      .reduce((current, sum) => current + sum, 0), 2),
-    grossAmount: round(monthlyResults.map(result => result.grossAmount)
-      .reduce((current, sum) => current + sum, 0), 2),
-    healthContribution: round(monthlyResults.map(result => result.healthContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    netAmount: round(monthlyResults.map(result => result.netAmount)
-      .reduce((current, sum) => current + sum, 0), 2),
-    pensionContribution: round(monthlyResults.map(result => result.pensionContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    ppkContribution: round(monthlyResults.map(result => result.ppkContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    sickContribution: round(monthlyResults.map(result => result.sickContribution)
-      .reduce((current, sum) => current + sum, 0), 2),
-    taxAmount: monthlyResults.map(result => result.taxAmount)
-      .reduce((current, sum) => current + sum, 0),
-  }
-
-}
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
   constructors.forEach((baseCtor) => {

@@ -20,6 +20,7 @@
             color="brand"
             :rules="[validationRules.requiredAmount]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -32,6 +33,7 @@
             color="brand"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -47,6 +49,7 @@
             color="brand"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
         <div class="col-12 col-sm-6">
@@ -60,6 +63,7 @@
             label="Wymiar czasu pracy"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -69,7 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -85,7 +90,7 @@ const emit = defineEmits(['submit'])
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const store = useSalaryForUnusedHolidayStore()
-const {wageStats} = useConstants()
+const {wageStats} = storeToRefs(useConstantsStore())
 
 const amount = useLocalStorage('salaryForUnusedHolidays/form/amount', wageStats.value.minimumWage, { mergeDefaults: true })
 const holidayHours = useLocalStorage('salaryForUnusedHolidays/form/holidayHours', 8 * 20, { mergeDefaults: true })

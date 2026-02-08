@@ -24,8 +24,8 @@
         <div class="col">
           <q-toggle
             v-model="fields.hasAmountForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne wynagrodzenie w poszczególnych miesiącach"
           />
         </div>
@@ -40,8 +40,8 @@
         <div>
           <q-toggle
             v-model="fields.hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
@@ -51,8 +51,8 @@
         <div>
           <q-toggle
             v-model="fields.workInLivePlace"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Praca w miejscu zamieszkania"
           />
         </div>
@@ -96,8 +96,9 @@
 
 import {ContributionScheme} from 'components/accountingWithSpouse/logic/ContributionScheme'
 import {EmployeeFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {watch} from 'vue'
 import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
@@ -105,10 +106,11 @@ import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
+import {matCheck, matClear} from 'src/icons'
 
 const fields = defineModel<EmployeeFormFields>({required: true})
 
-const { incomeTaxConstants } = useConstants()
+const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
 const contributionSchemeOptions = [
   {

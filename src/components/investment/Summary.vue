@@ -5,7 +5,7 @@
       :value="pln(result.capital)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Zysk brutto"
       :value="pln(result.grossAmount)"
     />
@@ -14,7 +14,7 @@
       :value="pln(result.taxAmount)"
     />
     <ListRow
-      class="bg-teal-1"
+      class="bg-surface-elevated"
       name="Zysk netto"
       :value="pln(result.netAmount)"
     />
@@ -26,32 +26,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import {InvoiceInputFields} from 'components/invoice/interfaces/InvoiceInputFields'
-import {PropType, computed, defineComponent} from 'vue'
-import { pln } from 'src/use/currencyFormat'
+<script setup lang="ts">
+import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
+import {computed} from 'vue'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/ListRow.vue'
 import investment from 'components/investment/investment'
 
-export default defineComponent({
-  components: {
-    ListRow,
-  },
-  props: {
-    input: {
-      required: true,
-      type: Object as PropType<InvoiceInputFields>,
-    },
-  },
-  setup(props: any) {
-    const result = computed(() => {
-      return investment.getResult(props.input)
-    })
+interface Props {
+  input: InvestmentInputFields
+}
 
-    return {
-      pln,
-      result,
-    }
-  },
+const props = defineProps<Props>()
+
+const result = computed(() => {
+  return investment.getResult(props.input)
 })
 </script>

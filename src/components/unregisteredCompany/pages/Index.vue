@@ -1,80 +1,84 @@
 <template>
   <ModulePageLayout class="c-company">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-    <SectionHeader
-      ref="summary">
-      Podsumowanie
-    </SectionHeader>
-    <template
-      v-if="store.result">
-      <div class="q-px-md q-py-sm">
-        <q-toggle
-          v-model="showAnnualResult"
-          checked-icon="check"
-          unchecked-icon="clear"
-          label="Pokaż cały rok"
-        />
-      </div>
-      <template v-if="showAnnualResult">
-        <ListHeader>
-          {{ fullYear }}
-        </ListHeader>
-        <ResultList
-          :result="store.result.annualResult" />
-        <Separator />
-        <div
-          v-for="(monthlyResult, index) in store.result.monthlyResults"
-          :key="index">
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <SectionHeader
+        :level="2"
+        ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template
+        v-if="store.result">
+        <div class="q-px-md q-py-sm">
+          <q-toggle
+            v-model="showAnnualResult"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
+            label="Pokaż cały rok"
+          />
+        </div>
+        <template v-if="showAnnualResult">
           <ListHeader>
-            {{ monthNames[index] }}
+            {{ fullYear }}
           </ListHeader>
           <ResultList
-            :result="monthlyResult" />
-          <Separator v-if="index < 11" />
-        </div>
+            :result="store.result.annualResult" />
+          <div
+            v-for="(monthlyResult, index) in store.result.monthlyResults"
+            :key="index">
+            <ListHeader>
+              {{ monthNames[index] }}
+            </ListHeader>
+            <ResultList
+              :result="monthlyResult" />
+          </div>
+        </template>
+        <template v-else>
+          <ListHeader>
+            Jeden miesiąc
+            <Tooltip color="white">
+              Do obliczeń brana jest pod uwagę kwota z 1. miesiąca
+            </Tooltip>
+          </ListHeader>
+          <ResultList
+            :result="store.result.monthlyResults[0]" />
+          <Statistics
+            :result="store.result.monthlyResults[0]" />
+        </template>
       </template>
-      <template v-else>
-        <ListHeader>
-          Jeden miesiąc
-          <Tooltip color="white">
-            Do obliczeń brana jest pod uwagę kwota z 1. miesiąca
-          </Tooltip>
-        </ListHeader>
-        <ResultList
-          :result="store.result.monthlyResults[0]" />
-        <Separator />
-        <Statistics
-          :result="store.result.monthlyResults[0]" />
-      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
     </template>
-    <div
-      v-else
-      class="q-pa-md">
-      Brak danych
-    </div>
   </ModulePageLayout>
 </template>
 
 <script setup lang="ts">
-import {Ref, ref} from 'vue'
+import {ref} from 'vue'
 import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useMonths} from 'src/composables/months'
 import {useUnregisteredCompanyStore} from 'components/unregisteredCompany/store'
+import {matCheck, matClear} from 'src/icons'
 import Advert from 'components/partials/Advert.vue'
 import Form from 'components/unregisteredCompany/components/Form.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import ResultList from 'components/unregisteredCompany/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 import Statistics from 'components/unregisteredCompany/components/Statistics.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 
 const breadcrumbStore = useBreadcrumbStore()
 const store = useUnregisteredCompanyStore()
@@ -86,12 +90,11 @@ breadcrumbStore.items = [
   },
 ]
 
-const summary:Ref<InstanceType<typeof SectionHeader>|null> = ref(null)
 const showAnnualResult = ref(false)
 
 lawRuleDateWatcher(store)
 
 const handleSubmit = () => {
-  helpers.scrollToElement(summary?.value.$el)
+  scrollToResults()
 }
 </script>

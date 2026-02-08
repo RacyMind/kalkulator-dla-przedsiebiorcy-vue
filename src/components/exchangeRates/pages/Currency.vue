@@ -1,21 +1,24 @@
 <template>
   <ModulePageLayout class="c-currencies">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @scroll="scrollTo"
-    />
-    <Advert/>
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <CurrencyStatistics/>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @scroll="scrollTo"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2">
+        Wykres
+      </SectionHeader>
+      <CurrencyStatistics/>
+    </template>
   </ModulePageLayout>
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
 import {useBreadcrumbStore} from 'stores/breadcrumbStore'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
 import {useRoute} from 'vue-router'
@@ -24,7 +27,9 @@ import CurrencyStatistics from 'components/exchangeRates/CurrencyStatistics.vue'
 import Form from 'components/exchangeRates/Form.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import helpers from 'src/logic/helpers'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollToResults } = useScrollToResults()
 
 const currencyRateStore = useCurrencyRateStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -42,9 +47,8 @@ breadcrumbStore.items = [
 
 currencyRateStore.currencyRate = null
 
-const scrollTarget = ref(null) as any
 
 const scrollTo = () => {
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  scrollToResults()
 }
 </script>

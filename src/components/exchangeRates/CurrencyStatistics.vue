@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import {computed} from 'vue'
 import {useCurrencyRateStore} from 'stores/currency-rate-store'
-import {useLineChart} from 'src/use/useLineChart'
+import {useLineChart} from 'src/composables/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
 
 const currencyRateStore = useCurrencyRateStore()

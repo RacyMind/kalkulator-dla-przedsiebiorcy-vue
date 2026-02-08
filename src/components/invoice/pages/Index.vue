@@ -1,24 +1,33 @@
 <template>
   <ModulePageLayout class="c-taxes">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form
-      @save="save"
-    />
-    <Advert/>
-    <SectionHeader ref="scrollTarget">
-      Podsumowanie
-    </SectionHeader>
-    <Summary
-      :input="invoiceInputFields"
-    />
-    <SectionHeader>
-      Wykres
-    </SectionHeader>
-    <Statistics
-      :input="invoiceInputFields"
-    />
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form
+        @save="save"
+      />
+      <Advert/>
+    </template>
+    <template #results>
+      <SectionHeader :level="2"
+                     ref="scrollTarget">
+        Podsumowanie
+      </SectionHeader>
+      <template v-if="hasResult">
+        <Summary
+          :input="invoiceInputFields"
+        />
+        <Statistics
+          :input="invoiceInputFields"
+        />
+      </template>
+      <div
+        v-else
+        class="q-pa-md">
+        Brak danych
+      </div>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -32,8 +41,12 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/invoice/Statistics.vue'
 import Summary from 'components/invoice/Summary.vue'
-import constants from 'src/logic/constants'
-import helpers from 'src/logic/helpers'
+import {useConstantsStore} from 'stores/constantsStore'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
+
+const constants = useConstantsStore()
 
 const breadcrumbStore = useBreadcrumbStore()
 breadcrumbStore.items = [
@@ -44,14 +57,15 @@ breadcrumbStore.items = [
 
 const invoiceInputFields = ref(<InvoiceInputFields>{
   amount: 0,
-  amountType: constants.AMOUNT_TYPES.NET,
+  amountType: constants.amountTypes.net,
   taxRate: 0,
 })
 
-const scrollTarget = ref(null) as any
+const hasResult = ref(false)
 
 const save = (input: InvoiceInputFields) => {
   invoiceInputFields.value = input
-  helpers.scrollToElement(scrollTarget?.value?.$el)
+  hasResult.value = true
+  scrollToResults()
 }
 </script>

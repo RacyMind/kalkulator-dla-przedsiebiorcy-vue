@@ -1,21 +1,23 @@
 <template>
-  <div class="text-teal-7 q-pt-md text-center">
+  <div class="q-pt-md text-center footer-text">
     <div>
       <q-btn
-        class="q-mb-sm"
-        color="teal-7"
+        class="q-mb-sm lt-md"
+        color="red-7"
+        rounded
+        unelevated
         @click="openModal = true">
         <q-icon
-          name="o_favorite_border"
+          :name="outlinedFavorite"
           class="q-mr-sm" />
-        Wesprzyj projekt
+        WESPRZYJ PROJEKT
       </q-btn>
       <div style="font-size: 0.75rem;">
         &copy; 2011-{{ currentYear }} Kalkulator finansowy<br>
         Wersja {{ appVersion }}<br>
         Stworzone przez <a
-          href="https://www.linkedin.com/in/%C5%82ukasz-socha-30083841/"
-          class="text-teal-7"
+          href="https://lukasz-socha.pl"
+          class="footer-text"
           target="_blank">
           Łukasz Socha
         </a>
@@ -32,6 +34,7 @@
 import {ref} from 'vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import logs from 'components/changeLogs/logs'
+import {outlinedFavorite} from 'src/icons'
 
 const openModal = ref(false)
 const currentYear = new Date().getFullYear()

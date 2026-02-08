@@ -29,8 +29,8 @@
         <div class="col">
           <q-toggle
             v-model="hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
           />
         </div>
@@ -71,8 +71,8 @@
         <div class="col">
           <q-toggle
             v-model="hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -94,7 +94,8 @@
 <script setup lang="ts">
 
 import {InputFields} from 'components/unregisteredCompany/interfaces/InputFields'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -106,6 +107,7 @@ import EachMonthAmountFields from 'components/partials/form/EachMonthAmountField
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import {matCheck, matClear} from 'src/icons'
 import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
 import helpers from 'src/logic/helpers'
 
@@ -115,7 +117,7 @@ const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const settingStore = useSettingStore()
 const store = useUnregisteredCompanyStore()
-const { wageStats } = useConstants()
+const { wageStats } = storeToRefs(useConstantsStore())
 
 const revenue = useLocalStorage('unregisteredCompany/form/revenue', helpers.round(0.75 * wageStats.value.minimumWage()), { mergeDefaults: true })
 const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'unregisteredCompany/form/revenue')

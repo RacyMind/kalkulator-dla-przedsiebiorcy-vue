@@ -5,23 +5,14 @@
     :chart-data="chartData"
   />
 </template>
-<script lang="ts">
-
-import {defineComponent} from 'vue'
+<script setup lang="ts">
+import type {ChartData, ChartOptions} from 'chart.js'
 import Chart from 'components/partials/Chart.vue'
-export default defineComponent({
-  components: {
-    Chart,
-  },
-  props: {
-    chartData: {
-      required: true,
-      type: Object,
-    },
-    chartOptions: {
-      required: false,
-      type: Object,
-    },
-  },
-})
+
+interface Props {
+  chartData: ChartData
+  chartOptions?: ChartOptions
+}
+
+defineProps<Props>()
 </script>

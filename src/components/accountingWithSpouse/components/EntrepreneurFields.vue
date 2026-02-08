@@ -24,8 +24,8 @@
         <div class="col">
           <q-toggle
             v-model="fields.hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
           />
         </div>
@@ -54,8 +54,8 @@
         <div class="col">
           <q-toggle
             v-model="fields.hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -70,8 +70,8 @@
         <div>
           <q-toggle
             v-model="fields.hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
@@ -85,8 +85,8 @@
         <div class="col">
           <q-toggle
             v-model="fields.hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
@@ -153,8 +153,8 @@
           <q-toggle
             v-model="fields.isSickContribution"
             :disable="fields.hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -162,8 +162,8 @@
           <q-toggle
             v-model="fields.isFpContribution"
             :disable="fpContributionIsDisabled"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -177,14 +177,16 @@
 import {ContributionBasises} from 'src/composables/contributionBasises'
 import {EntrepreneurFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
+import {matCheck, matClear} from 'src/icons'
 
-const { incomeTaxConstants } = useConstants()
+const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
 const fields = defineModel<EntrepreneurFormFields>({required: true})
 

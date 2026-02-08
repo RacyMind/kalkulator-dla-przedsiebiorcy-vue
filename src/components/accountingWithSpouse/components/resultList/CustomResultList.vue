@@ -1,30 +1,30 @@
 <template>
   <div v-if="result">
-    <list-row>
+    <ListRow>
       <template #name>
         Przychód
       </template>
       <template #value>
         {{ pln(result.revenue)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Koszty
       </template>
       <template #value>
         {{ pln(result.expenses)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania
       </template>
       <template #value>
         {{ pln(result.taxBasis)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         <div class="row items-center">
           Podatek dochodowy
@@ -33,39 +33,39 @@
       <template #value>
         {{ pln(result.taxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składki ZUS
       </template>
       <template #value>
         {{ pln(result.totalContributions) }}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Składka zdrowotna
       </template>
       <template #value>
         {{ pln(result.healthContributions)}}
       </template>
-    </list-row>
-    <list-row nested>
+    </ListRow>
+    <ListRow nested>
       <template #name>
         Pozostałe składki ZUS
       </template>
       <template #value>
         {{ pln(result.socialContributions)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Dochód
       </template>
       <template #value>
         {{ pln(result.income)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 
@@ -73,7 +73,7 @@
 import {CustomResult} from 'components/accountingWithSpouse/interfaces/CustomResult'
 import {Spouse} from 'components/accountingWithSpouse/logic/Spouse'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useAccountingWithSpouseStore} from 'components/accountingWithSpouse/store'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

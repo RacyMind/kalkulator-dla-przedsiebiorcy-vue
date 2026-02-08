@@ -70,6 +70,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>
@@ -87,6 +88,7 @@
             :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(currentIkzeLimit)]"
             lazy-rules="ondemand"
             hide-bottom-space
+            aria-required="true"
           />
         </div>
       </div>
@@ -101,7 +103,7 @@ import {IkzeTaxSystem} from 'components/ikzeTaxRelief/types/IkzeTaxSystem'
 import {InputFields} from 'components/ikzeTaxRelief/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useIkzeTaxReliefStore} from 'components/ikzeTaxRelief/store'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'

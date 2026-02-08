@@ -4,32 +4,32 @@
       <div class="col-6 col-sm-3">
         <q-toggle
           v-model="isHealthContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka zdrowotna"
         />
       </div>
       <div class="col-6 col-sm-3">
         <q-toggle
           v-model="isDisabilityContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka rentowa"
         />
       </div>
       <div class="col-6 col-sm-3">
         <q-toggle
           v-model="isPensionContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka emerytalna"
         />
       </div>
       <div class="col-6 col-sm-3">
         <q-toggle
           v-model="isSickContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka chorobowa"
         />
       </div>
@@ -38,8 +38,8 @@
         class="col-6 col-sm-auto">
         <q-toggle
           v-model="isFpContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka na Fundusz Pracy"
         />
       </div>
@@ -48,8 +48,8 @@
         class="col-6 col-sm-auto">
         <q-toggle
           v-model="isFgspContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka na FGŚP"
         />
       </div>
@@ -73,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import {matCheck, matClear} from 'src/icons'
+
 const isHealthContribution = defineModel<boolean>('isHealthContribution', {required: true})
 const isDisabilityContribution = defineModel<boolean>('isDisabilityContribution', {required: true})
 const isPensionContribution = defineModel<boolean>('isPensionContribution', {required: true})

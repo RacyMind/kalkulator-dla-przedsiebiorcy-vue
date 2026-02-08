@@ -5,7 +5,8 @@
     size="sm"
     padding="none"
     :color="props.color"
-    :icon="props.icon">
+    :icon="props.icon"
+    aria-label="Pomoc">
     <q-tooltip
       anchor="top middle"
       self="bottom middle"
@@ -17,6 +18,8 @@
 </template>
 
 <script lang="ts" setup>
+import {matHelp} from 'src/icons'
+
 const props = defineProps({
   color: {
     type: String,
@@ -26,7 +29,7 @@ const props = defineProps({
   icon: {
     type: String,
     required: false,
-    default: 'help',
+    default: matHelp,
   },
 })
 </script>

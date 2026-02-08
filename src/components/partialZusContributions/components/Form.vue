@@ -37,10 +37,10 @@
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-col-gutter-x-md">
-        <div class="col">
+        <div class="col-12 col-sm">
           <ZusContributionBasisSelect v-model="chosenContributionBasis"/>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="contributionBasis"
             :disable="chosenContributionBasis !== ContributionBasises.Custom"
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="row q-col-gutter-x-md q-mb-md">
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="accidentContributionRate"
             type="number"
@@ -74,8 +74,8 @@
         <div>
           <q-toggle
             v-model="isSickContribution"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -83,8 +83,8 @@
           <q-toggle
             v-model="isFpContribution"
             :disable="chosenContributionBasis === ContributionBasises.Small"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -97,7 +97,8 @@
 <script setup lang="ts">
 import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
 import {ContributionCalculator} from 'components/partialZusContributions/logic/ContributionCalculator'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -110,13 +111,14 @@ import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants } = useConstants()
+const { zusConstants } = storeToRefs(useConstantsStore())
 const store = usePartialZusContributionStore()
 const settingStore = useSettingStore()
 

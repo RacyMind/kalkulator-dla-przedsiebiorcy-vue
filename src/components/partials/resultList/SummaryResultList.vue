@@ -1,14 +1,14 @@
 <template>
   <div v-if="employeeResult && employerResult">
-    <list-row>
+    <ListRow>
       <template #name>
         Wynagrodzenie netto
       </template>
       <template #value>
         {{ pln(employeeResult.netAmount) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Zaliczka na podatek dochodowy
         <CrossingTaxThreshold v-if="showCrossingTaxThresholdWarning" />
@@ -16,31 +16,31 @@
       <template #value>
         {{ pln(employeeResult.taxAmount) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składki ZUS
       </template>
       <template #value>
         {{ pln(totalZusContributions) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składki na PPK
       </template>
       <template #value>
         {{ pln(totalPpkContributions) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Suma kosztów pracodawcy
       </template>
       <template #value>
         {{ pln(employerResult.totalAmount) }}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ import {EmployeeResult} from 'src/logic/interfaces/EmployeeResult'
 import {EmployerResult} from 'src/logic/interfaces/EmployerResult'
 import {EventType, useEventStore} from 'stores/eventStore'
 import {computed} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import CrossingTaxThreshold from 'components/partials/notifications/CrossingTaxThreshold.vue'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 

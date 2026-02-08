@@ -31,6 +31,18 @@
       </div>
     </FormSection>
     <FormSection title="Przychód">
+      <div class="row q-mb-md">
+        <div class="col">
+          <q-select
+            v-model="incomeMode"
+            :options="incomeModeOptions"
+            emit-value
+            map-options
+            color="brand"
+            label="Tryb przychodu"
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <q-input
@@ -41,8 +53,87 @@
             label="Przychód (bez VAT)"
             suffix="zł"
             color="brand"
+            :rules="[(val) => validationRules.requiredAmount(val) || true]"
+            lazy-rules="ondemand"
+            aria-required="true"
+            v-if="!isHourlyMode"
+          />
+          <q-input
+            v-else
+            :model-value="hourlyRevenue"
+            label="Przychód (wyliczony)"
+            suffix="zł"
+            color="brand"
+            readonly
+          />
+        </div>
+      </div>
+      <div
+        v-if="isHourlyMode"
+        class="row q-col-gutter-md q-mt-md">
+        <div class="col-12 col-sm">
+          <q-input
+            v-model.number="hourlyRate"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Stawka godzinowa"
+            suffix="zł"
+            color="brand"
             :rules="[
-              val => !!val || '* Wpisz kwotę',
+              (val) => validationRules.requiredAmount(val) || true,
+              (val) => validationRules.minValue(0)(val) || true,
+            ]"
+            lazy-rules="ondemand"
+            aria-required="true"
+          />
+        </div>
+        <div class="col-12 col-sm">
+          <q-input
+            v-model.number="plannedHours"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Planowana liczba godzin"
+            suffix="h"
+            color="brand"
+            :rules="[
+              (val) => validationRules.requiredAmount(val) || true,
+              (val) => validationRules.minValue(0)(val) || true,
+            ]"
+            lazy-rules="ondemand"
+            aria-required="true"
+          />
+        </div>
+      </div>
+      <div
+        v-if="isHourlyMode"
+        class="row q-mt-md">
+        <div class="col">
+          <q-toggle
+            v-model="deductLeave"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
+            label="Odlicz urlop / zwolnienie"
+          />
+        </div>
+      </div>
+      <div
+        v-if="isHourlyMode && deductLeave"
+        class="row q-mt-md">
+        <div class="col">
+          <q-input
+            v-model.number="leaveHours"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Godziny urlopu / zwolnienia"
+            suffix="h"
+            color="brand"
+            :rules="[
+              (val) => validationRules.requiredAmount(val) || true,
+              (val) => validationRules.minValue(0)(val) || true,
+              (val) => validationRules.lessThan(plannedHours || 0)(val) || true,
             ]"
             lazy-rules="ondemand"
           />
@@ -52,14 +143,15 @@
         <div class="col">
           <q-toggle
             v-model="hasRevenueForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne przychody w poszczególnych miesiącach"
+            v-if="!isHourlyMode"
           />
         </div>
       </div>
       <EachMonthAmountFields
-        v-if="hasRevenueForEachMonth"
+        v-if="hasRevenueForEachMonth && !isHourlyMode"
         v-model="monthlyRevenues"
         :disable-until-month="businessHasStartedBeforeThisYear ? null : businessStartedInMonth"
       />
@@ -82,8 +174,8 @@
         <div class="col">
           <q-toggle
             v-model="hasExpensesForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne koszty w poszczególnych miesiącach"
           />
         </div>
@@ -119,8 +211,8 @@
         <div>
           <q-toggle
             v-model="hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
@@ -135,8 +227,8 @@
           <q-toggle
             v-model="hasTaxFreeAmount"
             label="Kwota wolna od podatku"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
           />
         </div>
       </div>
@@ -146,8 +238,8 @@
         <div class="col">
           <q-toggle
             v-model="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Zatrudniony na umowę o pracę"
           />
           <Tooltip class="q-ml-sm">
@@ -178,6 +270,7 @@
               val => !!val || '* Wpisz kwotę',
             ]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -216,8 +309,8 @@
           <q-toggle
             v-model="isSickContribution"
             :disable="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka chorobowa"
           />
         </div>
@@ -225,8 +318,8 @@
           <q-toggle
             v-model="isFpContribution"
             :disable="fpContributionIsDisabled"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Składka na Fundusz Pracy"
           />
         </div>
@@ -234,8 +327,8 @@
           <q-toggle
             v-model="zusRelief"
             :disable="hasEmploymentContract"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga na start"
           />
           <Tooltip class="q-ml-sm">
@@ -263,11 +356,13 @@
 
 <script setup lang="ts">
 import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
-import {EntrepreneurTaxSystem, useConstants} from 'src/composables/constants'
-import {InputFields} from 'components/selfEmployment/interfaces/InputFields'
+import {storeToRefs} from 'pinia'
+import {EntrepreneurTaxSystem, useConstantsStore} from 'stores/constantsStore'
+import {IncomeMode, InputFields} from 'components/selfEmployment/interfaces/InputFields'
 import {LumpSumTaxRate} from 'src/logic/taxes/LumpSumTax'
 import {computed, watch} from 'vue'
-import {pln} from 'src/use/currencyFormat'
+import {getHourlyRevenue} from 'components/selfEmployment/logic/helpers'
+import {pln} from 'src/composables/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
 import {useLocalStorage} from '@vueuse/core'
@@ -282,13 +377,15 @@ import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
-const { zusConstants, incomeTaxConstants } = useConstants()
+const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore())
 const store = useSelfEmploymentStore()
 
 const incomeTaxTypes = [
@@ -306,6 +403,17 @@ const incomeTaxTypes = [
   },
 ]
 
+const incomeModeOptions = [
+  {
+    label: 'Miesięczny przychód',
+    value: IncomeMode.MonthlyRevenue,
+  },
+  {
+    label: 'Stawka godzinowa',
+    value: IncomeMode.HourlyRate,
+  },
+]
+
 // the business run period section
 const businessHasStartedBeforeThisYear = useLocalStorage('selfEmployment/form/businessHasStartedBeforeThisYear', true, { mergeDefaults: true })
 const businessStartedInMonth = useLocalStorage('selfEmployment/form/businessStartedInMonth', new Date().getMonth(), { mergeDefaults: true })
@@ -319,6 +427,11 @@ const revenue = useLocalStorage('selfEmployment/form/revenue', 10000, { mergeDef
 const { monthlyAmounts: monthlyRevenues, hasAmountForEachMonth: hasRevenueForEachMonth } = useMonthlyAmounts(revenue, 'selfEmployment/form/revenue')
 const expenses = useLocalStorage('selfEmployment/form/expenses', 0, { mergeDefaults: true })
 const { monthlyAmounts: monthlyExpenses, hasAmountForEachMonth: hasExpensesForEachMonth } = useMonthlyAmounts(expenses, 'selfEmployment/form/expenses')
+const incomeMode = useLocalStorage<IncomeMode>('selfEmployment/form/incomeMode', IncomeMode.MonthlyRevenue, { mergeDefaults: true })
+const hourlyRate = useLocalStorage('selfEmployment/form/hourlyRate', 120, { mergeDefaults: true })
+const plannedHours = useLocalStorage('selfEmployment/form/plannedHours', 160, { mergeDefaults: true })
+const deductLeave = useLocalStorage('selfEmployment/form/deductLeave', false, { mergeDefaults: true })
+const leaveHours = useLocalStorage('selfEmployment/form/leaveHours', 0, { mergeDefaults: true })
 
 // the income tax section
 const hasTaxRelief = useLocalStorage('selfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
@@ -335,6 +448,11 @@ const fpContributionIsDisabled = computed(() => chosenContributionBasis.value ==
 const zusRelief = useLocalStorage('selfEmployment/form/zusRelief', false, { mergeDefaults: true })
 const zusReliefUntil = useLocalStorage('selfEmployment/form/zusReliefUntil', 5, { mergeDefaults: true })
 const previousMonthHealthContributionBasis = useLocalStorage('selfEmployment/form/previousMonthHealthContributionBasis', 0, { mergeDefaults: true })
+const isHourlyMode = computed(() => incomeMode.value === IncomeMode.HourlyRate)
+const hourlyRevenue = computed(() => {
+  const effectiveLeaveHours = deductLeave.value ? leaveHours.value ?? 0 : 0
+  return helpers.round(getHourlyRevenue(hourlyRate.value ?? 0, plannedHours.value ?? 0, effectiveLeaveHours), 2)
+})
 
 watch(chosenContributionBasis, () => {
   if(chosenContributionBasis.value === ContributionBasises.Small) {
@@ -350,6 +468,12 @@ watch(hasEmploymentContract, () => {
 })
 watch(businessStartedInMonth, () => {
   zusReliefUntil.value = Math.min(11, businessStartedInMonth.value + 5)
+})
+watch(incomeMode, () => {
+  if (isHourlyMode.value) {
+    hasRevenueForEachMonth.value = false
+    monthlyRevenues.value = []
+  }
 })
 
 const getContributionBasis = (currentMonth: number): number => {
@@ -370,12 +494,22 @@ const getContributionBasis = (currentMonth: number): number => {
 }
 
 const handleFormSubmit = () => {
-  if (!revenue.value) {
+  if (!isHourlyMode.value && !revenue.value) {
     return
   }
 
+  const effectiveLeaveHours = deductLeave.value ? leaveHours.value ?? 0 : 0
+  const calculatedRevenue = isHourlyMode.value
+    ? helpers.round(getHourlyRevenue(hourlyRate.value ?? 0, plannedHours.value ?? 0, effectiveLeaveHours), 2)
+    : revenue.value
+
   const basicInputFields: InputFields = {
-    revenue: revenue.value,
+    revenue: calculatedRevenue,
+    incomeMode: incomeMode.value,
+    hourlyRate: hourlyRate.value ?? 0,
+    plannedHours: plannedHours.value ?? 0,
+    deductLeave: deductLeave.value,
+    leaveHours: effectiveLeaveHours,
     expenses: expenses.value ? expenses.value : 0,
     lossFromPreviousMonth: 0,
     taxSystem: incomeTaxType.value,
@@ -402,7 +536,7 @@ const handleFormSubmit = () => {
       monthIndex: i,
     }
 
-    if(hasRevenueForEachMonth.value) {
+    if(hasRevenueForEachMonth.value && !isHourlyMode.value) {
       inputFields.revenue = monthlyRevenues.value[i]
     }
     if(hasExpensesForEachMonth.value) {

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import {formatToCurrency} from 'src/use/currencyFormat'
+import {formatToCurrency} from 'src/composables/currencyFormat'
 import {useCurrencyConverterStore} from 'stores/currency-converter-store'
 import ListRow from 'components/partials/ListRow.vue'
 

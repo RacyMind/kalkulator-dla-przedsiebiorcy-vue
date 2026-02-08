@@ -12,7 +12,6 @@ const defaultInput: OtsInputFields = {
   belkaTax: true,
   yearlyInflationRate: 0.03,
   interestRate: 0.03,
-  initialInterestRate: 0.03,
 }
 
 const getResult = (input: OtsInputFields): Result => {

@@ -6,60 +6,58 @@
       Minimalna pensja
     </SectionHeader>
     <div>
-      <list-row>
+      <ListRow>
         <template #name>
           styczeń - czerwiec
         </template>
         <template #value>
           {{ pln(wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), 0))}}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           lipiec - grudzień
         </template>
         <template #value>
           {{ pln(wageStats.minimumWage(settingStore.dateOfLawRules.getFullYear(), 6))}}
         </template>
-      </list-row>
+      </ListRow>
     </div>
-    <Separator />
-
     <SectionHeader
       ref="summary"
       class="bg-primary">
       Minimalna stawka za godzinę
     </SectionHeader>
     <div>
-      <list-row>
+      <ListRow>
         <template #name>
           styczeń - czerwiec
         </template>
         <template #value>
           {{ pln(wageStats.minimumHourlyWage(settingStore.dateOfLawRules.getFullYear(), 0))}}
         </template>
-      </list-row>
-      <list-row>
+      </ListRow>
+      <ListRow>
         <template #name>
           lipiec - grudzień
         </template>
         <template #value>
           {{ pln(wageStats.minimumHourlyWage(settingStore.dateOfLawRules.getFullYear(), 6))}}
         </template>
-      </list-row>
+      </ListRow>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import {useSettingStore} from 'stores/settingStore'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import Separator from 'components/partials/Separator.vue'
 
-const {wageStats} = useConstants()
+const {wageStats} = storeToRefs(useConstantsStore())
 const settingStore = useSettingStore()
 </script>

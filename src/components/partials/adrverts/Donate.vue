@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div>
-      Rozwój kalkulatora to setki godzin pracy. Jeżeli uważasz aplikację za wartościową, możesz wesprzeć twórcę :-)
-    </div>
+    <div>Kalkulator jest i zawsze będzie darmowy. Wesprzyj jego rozwój!</div>
     <q-btn
-      label="Wesprzyj projekt"
+      label="Wesprzyj twórcę"
       no-caps
       class="q-mt-sm"
-      style="width: 75%;max-width:180px"
-      color="primary"
-      outline
+      style="width: 80%; max-width: 220px"
+      color="red-7"
+      unelevated
+      rounded
       @click="openModal = true"
     />
 
@@ -19,8 +18,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
-import SupportProject from 'components/partials/SupportProject.vue'
+import { ref } from 'vue';
+import SupportProject from 'components/partials/SupportProject.vue';
 
-const openModal = ref(false)
+const openModal = ref(false);
 </script>

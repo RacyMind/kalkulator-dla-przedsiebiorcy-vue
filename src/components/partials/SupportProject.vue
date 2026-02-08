@@ -1,82 +1,82 @@
 <template>
-  <q-card style="width: auto; max-width: 600px">
+  <q-card style="width: auto; max-width: 500px">
+    <q-card-section class="text-center q-pb-none">
+      <q-icon :name="outlinedFavorite" size="32px" color="red-7" />
+      <div class="text-h6 q-mt-xs">Wesprzyj projekt</div>
+    </q-card-section>
     <q-card-section>
       <p class="text-justify">
-        Cześć! Kalkulator finansowy rozwijam hobbystycznie w tak zwanych „po
-        godzinach”. W ramach projektu rozwijam swoją i Twoją wiedzę księgową. Jeżeli uważasz to narzędzie za
-        wartościowe, możesz wsesprzeć projekt na zrzutka.pl :)
+        Kalkulator finansowy to darmowe narzędzie, które rozwijam po godzinach.
+        Dzięki Twojemu wsparciu mogę dodawać nowe funkcje i utrzymywać aktualne
+        dane!
       </p>
-      <q-btn
-        label="Link do zrzutki"
-        no-caps
-        style="width: 75%;max-width:180px"
-        color="primary"
-        type="a"
-        href="https://zrzutka.pl/r4awyd"
-        class="q-mb-md q-mx-auto text-center block"
-        target="_blank"/>
-      <p class="text-justify">
-        Będzie mi miło jak udostępnisz kalkulator finansowy i pomożesz w jego promocji.
-      </p>
-      <div class="column items-center">
+      <div class="text-center q-mb-md">
         <q-btn
-          label="Facebook"
+          label="Wesprzyj na zrzutka.pl"
           no-caps
-          class="q-mb-sm"
-          style="width: 75%;max-width:180px"
+          style="width: 80%; max-width: 250px"
+          color="red-7"
+          unelevated
+          rounded
+          type="a"
+          href="https://zrzutka.pl/r4awyd"
+          target="_blank"
+        />
+      </div>
+      <q-separator class="q-my-md" />
+      <p class="text-justify text-caption q-mb-sm">
+        Możesz też pomóc udostępniając kalkulator:
+      </p>
+      <div class="row justify-center q-gutter-sm q-mb-md">
+        <q-btn
+          :icon="mdiFacebook"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
           :href="`https://www.facebook.com/sharer/sharer.php?u=${url}`"
         />
         <q-btn
-          label="LinkedIn"
-          no-caps
-          class="q-mb-sm"
-          style="width: 75%;max-width:180px"
+          :icon="mdiLinkedin"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
-          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${constants.APP.NAME}`"
+          :href="`https://www.linkedin.com/shareArticle?mini=true&url=${url}`"
         />
         <q-btn
-          label="Twitter"
-          no-caps
-          class="q-mb-md"
-          style="width: 75%;max-width:180px"
+          :icon="xIcon"
+          round
+          flat
           color="primary"
-          outline
           type="a"
           target="_blank"
-          :href="`http://twitter.com/share?url=${url}&text=${constants.APP.NAME}&hashtags=wynagrodzenie,finanse,kalkulator`"
+          :href="`https://x.com/intent/tweet?url=${url}&text=Twój darmowy kalkulator wynagrodzeń – sprawdź ile zarobisz na rękę!&hashtags=kalkulator,finanse,wynagrodzenie,B2B`"
         />
       </div>
-      <p  class="q-mb-none text-justify">
-        Jesteś programistą? Możesz wziąć aktywny udział w tworzeniu aplikacji. Zapraszam na <a href="https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue">GitHuba</a>.
-      </p>
-      <p  class="q-mb-none text-justify">
-        Dzięki za wsparcie! Kalkulator był, jest i będzie darmowy.
+      <p class="q-mb-none text-center text-caption">
+        Jesteś programistą? Zapraszam na
+        <a
+          href="https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue"
+          target="_blank"
+          >GitHuba</a
+        >.<br />
+        Kalkulator był, jest i będzie darmowy.
       </p>
     </q-card-section>
   </q-card>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import constants from 'src/logic/constants'
-import ga from '../../logic/analytics'
+<script setup lang="ts">
+import ga from '../../logic/analytics';
+import { mdiFacebook, mdiLinkedin } from '@quasar/extras/mdi-v7';
+import { outlinedFavorite } from 'src/icons';
 
-export default defineComponent({
-  setup() {
-    const url = 'https://kalkulatorfinansowy.app'
-    ga.logEvent('Modal', 'Open', 'Wsparcie')
+const xIcon =
+  'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z';
 
-    return {
-      constants,
-      url,
-    }
-  },
-})
+const url = 'https://kalkulatorfinansowy.app/app';
+ga.logEvent('Modal', 'Open', 'Wsparcie');
 </script>

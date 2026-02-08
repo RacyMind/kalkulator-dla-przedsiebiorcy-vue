@@ -4,8 +4,8 @@
       <div class="col">
         <q-toggle
           v-model="isPpkContribution"
-          checked-icon="check"
-          unchecked-icon="clear"
+          :checked-icon="matCheck"
+          :unchecked-icon="matClear"
           label="Składka na Pracownicze Plany Kapitałowe"
         />
       </div>
@@ -53,7 +53,9 @@
 
 <script setup lang="ts">
 import {computed} from 'vue'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
+import {matCheck, matClear} from 'src/icons'
 
 interface Props {
   isPpkContribution: boolean
@@ -67,7 +69,7 @@ const emit = defineEmits([
   'update:employeePpkContributionRate',
 ])
 
-const { zusConstants } = useConstants()
+const { zusConstants } = storeToRefs(useConstantsStore())
 
 const isPpkContribution = computed({
   get() {

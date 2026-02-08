@@ -1,8 +1,8 @@
 .c-work {
   .text-brand {
-    color: #B45309;
+    color: var(--module-work);
   }
   .bg-brand, .bg-module {
-    background: #B45309;
+    background: var(--module-work);
   }
 }

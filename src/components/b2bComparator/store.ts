@@ -1,6 +1,6 @@
 import {AnnualEntrepreneurCalculator} from 'components/selfEmployment/logic/AnnualEntrepreneurCalculator'
 import {InputFields as EntrepreneurInputFields} from 'components/selfEmployment/interfaces/InputFields'
-import {EntrepreneurTaxSystem} from 'src/composables/constants'
+import {EntrepreneurTaxSystem} from 'stores/constantsStore'
 import {InputFields} from 'components/b2bComparator/interfaces/InputFields'
 import {acceptHMRUpdate, defineStore} from 'pinia'
 

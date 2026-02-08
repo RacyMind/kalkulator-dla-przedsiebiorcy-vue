@@ -14,6 +14,7 @@
             color="brand"
             :rules="[validationRules.required]"
             lazy-rules="ondemand"
+            aria-required="true"
           />
         </div>
       </div>
@@ -54,7 +55,9 @@ import DorForm from 'components/polishBonds/components/bondForms/DorForm.vue'
 import EdoForm from 'components/polishBonds/components/bondForms/EdoForm.vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import OtsForm from 'components/polishBonds/components/bondForms/OtsForm.vue'
+import RodForm from 'components/polishBonds/components/bondForms/RodForm.vue'
 import RorForm from 'components/polishBonds/components/bondForms/RorForm.vue'
+import RosForm from 'components/polishBonds/components/bondForms/RosForm.vue'
 import SubmitButton from 'src/components/partials/form/SubmitButton.vue'
 import TosForm from 'components/polishBonds/components/bondForms/TosForm.vue'
 import validationRules from 'src/logic/validationRules'
@@ -74,7 +77,9 @@ const bondTypeOptions = [
   { label: 'DOR - Obligacje 2-letnie', value: 'DOR' },
   { label: 'TOS - Obligacje 3-letnie', value: 'TOS' },
   { label: 'COI - Obligacje 4-letnie', value: 'COI' },
+  { label: 'ROS - Obligacje 6-letnie', value: 'ROS' },
   { label: 'EDO - Obligacje 10-letnie', value: 'EDO' },
+  { label: 'ROD - Obligacje 12-letnie', value: 'ROD' },
 ]
 
 const bondForm = computed(() => {
@@ -91,6 +96,10 @@ const bondForm = computed(() => {
       return RorForm
     case 'DOR':
       return DorForm
+    case 'ROS':
+      return RosForm
+    case 'ROD':
+      return RodForm
     default:
       return EdoForm
   }
@@ -171,6 +180,18 @@ const handleFormSubmit = () => {
         ...commonFields,
         initialInterestRate: bondFormRefValue.initialInterestRate,
         nbpReferenceRates: bondFormRefValue.nbpReferenceRates,
+      }
+      break
+    case 'ROS':
+      store.rosInputFields = {
+        ...commonFields,
+        initialInterestRate: bondFormRefValue.initialInterestRate,
+      }
+      break
+    case 'ROD':
+      store.rodInputFields = {
+        ...commonFields,
+        initialInterestRate: bondFormRefValue.initialInterestRate,
       }
       break
   }

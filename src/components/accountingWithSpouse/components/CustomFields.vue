@@ -37,8 +37,8 @@
         <div>
           <q-toggle
             v-model="fields.hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa dla przychodu"
           />
           <Tooltip class="q-ml-sm">
@@ -81,12 +81,14 @@
 <script setup lang="ts">
 
 import {CustomFormFields} from 'components/accountingWithSpouse/interfaces/FormFields'
-import {pln} from 'src/use/currencyFormat'
-import {useConstants} from 'src/composables/constants'
+import {pln} from 'src/composables/currencyFormat'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import FormSubSection from 'components/partials/form/FormSubSection.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
+import {matCheck, matClear} from 'src/icons'
 
-const { incomeTaxConstants } = useConstants()
+const { incomeTaxConstants } = storeToRefs(useConstantsStore())
 
 const fields = defineModel<CustomFormFields>({required: true})
 </script>

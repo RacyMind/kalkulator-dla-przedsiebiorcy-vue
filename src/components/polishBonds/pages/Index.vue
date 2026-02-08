@@ -1,54 +1,57 @@
 <template>
   <ModulePageLayout class="c-savings">
-    <SectionHeader>
-      Wypełnij formularz
-    </SectionHeader>
-    <Form @submit="handleSubmit" />
-    <Advert />
-
-    <q-tabs
-      ref="qtabs"
-      v-model="tab"
-      inline-label
-      class="bg-primary text-white shadow-2"
-      :breakpoint="0"
-      align="justify">
-      <q-tab
-        :name="Tabs.Summary"
-        label="Podsumowanie" />
-      <q-tab
-        :name="Tabs.Payouts"
-        label="Wypłaty" />
-    </q-tabs>
-    <q-tab-panels
-      v-model="tab"
-      animated
-      swipeable>
-      <q-tab-panel
-        :name="Tabs.Summary"
-        class="q-pa-none">
-        <template v-if="store.result">
-          <ResultList :result="store.result" />
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-      <q-tab-panel
-        :name="Tabs.Payouts"
-        class="q-pa-none">
-        <template v-if="store.result">
-          <MonthlyDetailsList :result="store.result" />
-        </template>
-        <div
-          v-else
-          class="q-pa-md">
-          Brak danych
-        </div>
-      </q-tab-panel>
-    </q-tab-panels>
+    <template #form>
+      <SectionHeader :level="2">
+        Wypełnij formularz
+      </SectionHeader>
+      <Form @submit="handleSubmit" />
+      <Advert />
+    </template>
+    <template #results>
+      <QTabs
+        ref="scrollTarget"
+        v-model="tab"
+        inline-label
+        class="bg-primary text-white shadow-2"
+        :breakpoint="0"
+        align="justify">
+        <q-tab
+          :name="Tabs.Summary"
+          label="Podsumowanie" />
+        <q-tab
+          :name="Tabs.Payouts"
+          label="Wypłaty" />
+      </QTabs>
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable>
+        <q-tab-panel
+          :name="Tabs.Summary"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <ResultList :result="store.result" />
+          </template>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+        <q-tab-panel
+          :name="Tabs.Payouts"
+          class="q-pa-none">
+          <template v-if="store.result">
+            <MonthlyDetailsList :result="store.result" />
+          </template>
+          <div
+            v-else
+            class="q-pa-md">
+            Brak danych
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
   </ModulePageLayout>
 </template>
 
@@ -62,10 +65,14 @@ import { EdoInputFields } from 'components/polishBonds/interfaces/EdoInputFields
 import { OtsCalculator } from 'components/polishBonds/logic/OtsCalculator'
 import { OtsInputFields } from 'components/polishBonds/interfaces/OtsInputFields'
 import { QTabs } from 'quasar'
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { Result } from 'components/polishBonds/interfaces/Result'
+import { RodCalculator } from 'components/polishBonds/logic/RodCalculator'
+import { RodInputFields } from 'components/polishBonds/interfaces/RodInputFields'
 import { RorCalculator } from 'components/polishBonds/logic/RorCalculator'
 import { RorInputFields } from 'components/polishBonds/interfaces/RorInputFields'
+import { RosCalculator } from 'components/polishBonds/logic/RosCalculator'
+import { RosInputFields } from 'components/polishBonds/interfaces/RosInputFields'
 import { TosCalculator } from 'components/polishBonds/logic/TosCalculator'
 import { TosInputFields } from 'components/polishBonds/interfaces/TosInputFields'
 import { useBreadcrumbStore } from 'stores/breadcrumbStore'
@@ -76,6 +83,9 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyDetailsList from 'components/polishBonds/components/MonthlyDetailsList.vue'
 import ResultList from 'components/polishBonds/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
+import {useScrollToResults} from 'src/composables/useScrollToResults'
+
+const { scrollTarget, scrollToResults } = useScrollToResults()
 import helpers from 'src/logic/helpers'
 
 enum Tabs {
@@ -93,7 +103,6 @@ breadcrumbStore.items = [
 ]
 
 const tab = ref(Tabs.Summary)
-const qtabs: Ref<QTabs | null> = ref(null)
 
 type Calculator<T, R> = {
   setInputData(inputFields: T): Calculator<T, R>
@@ -206,8 +215,36 @@ const calculateDor = () => {
   useCalculator(new DorCalculator(), inputFields)
 }
 
+const calculateRos = () => {
+  const common = prepareCommonInputFields()
+  const form = store.rosInputFields
+
+  if (!common || !form) return
+
+  const inputFields: RosInputFields = {
+    ...common,
+    initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
+  }
+
+  useCalculator(new RosCalculator(), inputFields)
+}
+
+const calculateRod = () => {
+  const common = prepareCommonInputFields()
+  const form = store.rodInputFields
+
+  if (!common || !form) return
+
+  const inputFields: RodInputFields = {
+    ...common,
+    initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
+  }
+
+  useCalculator(new RodCalculator(), inputFields)
+}
+
 const handleSubmit = () => {
-  helpers.scrollToElement(qtabs?.value?.$el)
+  scrollToResults()
 
   switch (store.selectedBondType) {
     case 'EDO':
@@ -227,6 +264,12 @@ const handleSubmit = () => {
       break
     case 'DOR':
       calculateDor()
+      break
+    case 'ROS':
+      calculateRos()
+      break
+    case 'ROD':
+      calculateRod()
       break
   }
 }

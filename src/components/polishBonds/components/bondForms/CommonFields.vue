@@ -13,6 +13,7 @@
           (val) => val >= 1 || 'Minimalna wartość to 1'
         ]"
         lazy-rules="ondemand"
+        aria-required="true"
       />
     </div>
     <div class="col-12 col-md-6">
@@ -27,6 +28,7 @@
         color="brand"
         :rules="[validationRules.required]"
         lazy-rules="ondemand"
+        aria-required="true"
       />
     </div>
   </div>
@@ -35,8 +37,8 @@
     <div class="col">
       <q-toggle
         v-model="belkaTax"
-        checked-icon="check"
-        unchecked-icon="clear"
+        :checked-icon="matCheck"
+        :unchecked-icon="matClear"
         label="Podatek Belki"
       />
     </div>
@@ -48,6 +50,7 @@ import { useBondConstants } from '../../logic/BondConstants'
 import { useLocalStorage } from '@vueuse/core'
 import helpers from 'src/logic/helpers'
 import validationRules from 'src/logic/validationRules'
+import {matCheck, matClear} from 'src/icons'
 
 const constants = useBondConstants()
 

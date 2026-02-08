@@ -1,67 +1,67 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Limit IKZE
       </template>
       <template #value>
         {{ pln(props.result.ikzeLimit) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Wpłata na IKZE
       </template>
       <template #value>
         {{ pln(props.result.ikzeContribution) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania przed IKZE
       </template>
       <template #value>
         {{ pln(props.result.taxBaseBeforeRelief) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podstawa opodatkowania po IKZE
       </template>
       <template #value>
         {{ pln(props.result.taxBaseAfterRelief) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek przed IKZE
       </template>
       <template #value>
         {{ pln(props.result.taxBeforeRelief) }}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek po IKZE
       </template>
       <template #value>
         {{ pln(props.result.taxAfterRelief) }}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Oszczędność podatkowa
       </template>
       <template #value>
         {{ pln(props.result.taxSaving) }}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 
 <script setup lang="ts">
 import {Result} from 'components/ikzeTaxRelief/interfaces/Result'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {

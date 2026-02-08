@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 
 import { defineConfig } from 'vitest/config'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
@@ -20,7 +20,10 @@ export default defineConfig({
       'logic': fileURLToPath(new URL('./src/logic', import.meta.url)),
       'pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
       'router': fileURLToPath(new URL('./src/router', import.meta.url)),
+      'services': fileURLToPath(new URL('./src/services', import.meta.url)),
       'stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
+      '@capacitor-community/admob': fileURLToPath(new URL('./src/services/admob/__mocks__/admob.ts', import.meta.url)),
+      '@capacitor/core': fileURLToPath(new URL('./src/services/admob/__mocks__/capacitor-core.ts', import.meta.url)),
       '~': fileURLToPath(new URL('./', import.meta.url)),
     },
   },

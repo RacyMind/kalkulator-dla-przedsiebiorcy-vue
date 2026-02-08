@@ -3,7 +3,8 @@ import {Calculator} from 'src/logic/interfaces/Calculator'
 import {InputFields} from 'components/contractWork/interfaces/InputFields'
 import {Result} from 'components/contractWork/interfaces/Result'
 import {TaxScale} from 'src/logic/taxes/TaxScale'
-import {useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {useConstantsStore} from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 
 export class ContractWorkCalculator extends BasicCalculator<InputFields, Result> implements Calculator<InputFields, Result>{
@@ -12,7 +13,7 @@ export class ContractWorkCalculator extends BasicCalculator<InputFields, Result>
 
   constructor() {
     super()
-    const { incomeTaxConstants} = useConstants()
+    const { incomeTaxConstants} = storeToRefs(useConstantsStore())
 
     this.incomeTaxConstants = incomeTaxConstants
     this.incomeTax = new TaxScale()

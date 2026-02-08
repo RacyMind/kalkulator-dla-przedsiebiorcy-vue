@@ -1,59 +1,59 @@
 <template>
   <div v-if="props.result">
-    <list-row>
+    <ListRow>
       <template #name>
         Cena
       </template>
       <template #value>
         {{ pln(props.result.price)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek VAT
       </template>
       <template #value>
         {{ pln(props.result.vatTaxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek VAT do odliczenia
       </template>
       <template #value>
         {{ pln(props.result.deductedVatTaxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Podatek dochodowy do odliczenia
       </template>
       <template #value>
         {{ pln(props.result.deductedIncomeTaxAmount)}}
       </template>
-    </list-row>
-    <list-row>
+    </ListRow>
+    <ListRow>
       <template #name>
         Składka zdrowotna
       </template>
       <template #value>
         {{ pln(props.result.healthContribution)}}
       </template>
-    </list-row>
-    <list-row highlight>
+    </ListRow>
+    <ListRow highlight>
       <template #name>
         Zaoszczędzona kwota
       </template>
       <template #value>
         {{ pln(props.result.savedAmount)}}
       </template>
-    </list-row>
+    </ListRow>
   </div>
 </template>
 
 <script setup lang="ts">
 import {Result} from 'components/realBoughtCosts/interfaces/Result'
-import {pln} from 'src/use/currencyFormat'
+import {pln} from 'src/composables/currencyFormat'
 import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {

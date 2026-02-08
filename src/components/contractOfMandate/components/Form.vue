@@ -13,8 +13,8 @@
           <q-toggle
             v-model="isHourlyAmount"
             :disable="hasAmountForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Stawka godzinowa"
           />
         </div>
@@ -22,7 +22,7 @@
       <div
         v-if="isHourlyAmount"
         class="row items-center q-col-gutter-sm">
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="hourlyAmount"
             :autofocus="isHourlyAmount"
@@ -39,7 +39,7 @@
             lazy-rules="ondemand"
           />
         </div>
-        <div class="col">
+        <div class="col-12 col-sm">
           <q-input
             v-model.number="hourCount"
             :disable="hasAmountForEachMonth"
@@ -82,8 +82,8 @@
         <div class="col">
           <q-toggle
             v-model="hasAmountForEachMonth"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Różne wynagrodzenie w poszczególnych miesiącach"
           />
         </div>
@@ -98,8 +98,8 @@
         <div>
           <q-toggle
             v-model="hasTaxRelief"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
@@ -109,8 +109,8 @@
         <div>
           <q-toggle
             v-model="canLumpSumTaxBe"
-            checked-icon="check"
-            unchecked-icon="clear"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
             label="Możliwy podatek zryczałtowany"
           />
           <Tooltip class="q-ml-sm">
@@ -162,11 +162,12 @@
   </q-form>
 </template>
 <script setup lang="ts">
-import {AmountTypes, useConstants} from 'src/composables/constants'
+import {storeToRefs} from 'pinia'
+import {AmountTypes, useConstantsStore} from 'stores/constantsStore'
 import {EmployeeCalculator} from 'components/contractOfMandate/logic/EmployeeCalculator'
 import {InputFields} from 'components/contractOfMandate/interfaces/InputFields'
-import {findGrossAmountUsingNetAmount} from 'components/contractOfMandate/logic/findGrossAmountUsingNetAmount'
-import {pln} from '../../../use/currencyFormat'
+import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
+import {pln} from 'src/composables/currencyFormat'
 import {useFormValidation} from 'src/composables/formValidation'
 import {useHourlyAmount} from 'src/composables/hourlyAmount'
 import {useLawRuleDate} from 'src/composables/lawRuleDate'
@@ -187,13 +188,14 @@ import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vu
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 import helpers from 'src/logic/helpers'
+import {matCheck, matClear} from 'src/icons'
 
 const emit = defineEmits(['submit'])
 
 const store = useMandateContractStore()
 const {handleValidationError} = useFormValidation()
 const { availableDates } = useLawRuleDate()
-const { zusConstants, incomeTaxConstants, wageStats } = useConstants()
+const { zusConstants, incomeTaxConstants, wageStats } = storeToRefs(useConstantsStore())
 
 enum ContributionSchemes {
   Unemployed = 1,
@@ -363,7 +365,14 @@ const handleFormSubmit = () => {
         netAmount = Number(monthlyAmounts.value[i])
       }
 
-      inputFields.grossAmount = findGrossAmountUsingNetAmount(new EmployeeCalculator(), 0.5 * netAmount, 2 * netAmount, netAmount, inputFields, sumUpAmounts)
+      const calculator = new EmployeeCalculator()
+      inputFields.grossAmount = findGrossAmountUsingNetAmount(
+        (grossAmount) => {
+          inputFields.grossAmount = grossAmount
+          return calculator.setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getResult()
+        },
+        0.5 * netAmount, 2 * netAmount, netAmount,
+      )
       sumUpAmounts = new EmployeeCalculator(true).setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getSumUpAmounts()
     }
 
