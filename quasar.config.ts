@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-import { defineConfig } from '#q-app/wrappers'
+import { defineConfig } from '#q-app/wrappers';
 
 export default defineConfig((ctx) => {
   return {
@@ -23,7 +23,7 @@ export default defineConfig((ctx) => {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
-      publicPath: ctx.dev ? '' : 'new',
+      publicPath: ctx.dev ? '' : 'app',
       vueRouterMode: 'hash',
       typescript: {
         strict: true,
@@ -31,35 +31,47 @@ export default defineConfig((ctx) => {
       },
       extendViteConf(viteConf) {
         if (!('capacitor' in ctx.mode)) {
-          const capacitorStubs = ['@capacitor/core', '@capacitor-community/admob']
-          const STUB_PREFIX = '\0capacitor-stub:'
+          const capacitorStubs = [
+            '@capacitor/core',
+            '@capacitor-community/admob',
+          ];
+          const STUB_PREFIX = '\0capacitor-stub:';
 
-          viteConf.plugins = viteConf.plugins || []
+          viteConf.plugins = viteConf.plugins || [];
           viteConf.plugins.push({
             name: 'capacitor-stub',
             resolveId(id: string) {
               if (capacitorStubs.includes(id)) {
-                return STUB_PREFIX + id
+                return STUB_PREFIX + id;
               }
             },
             load(id: string) {
               if (id.startsWith(STUB_PREFIX)) {
-                return 'export const Capacitor = { isNativePlatform: () => false }; export default {};'
+                return 'export const Capacitor = { isNativePlatform: () => false }; export default {};';
               }
             },
-          })
+          });
         }
 
-        viteConf.build = viteConf.build || {}
-        viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
+        viteConf.build = viteConf.build || {};
+        viteConf.build.rollupOptions = viteConf.build.rollupOptions || {};
         viteConf.build.rollupOptions.output = {
-          ...(viteConf.build.rollupOptions.output as object || {}),
+          ...((viteConf.build.rollupOptions.output as object) || {}),
           manualChunks(id: string) {
-            if (id.includes('node_modules/quasar/')) return 'vendor-quasar'
-            if (id.includes('node_modules/vue') || id.includes('node_modules/pinia') || id.includes('node_modules/vue-router')) return 'vendor-vue'
-            if (id.includes('node_modules/chart.js') || id.includes('node_modules/vue-chartjs')) return 'vendor-charts'
+            if (id.includes('node_modules/quasar/')) return 'vendor-quasar';
+            if (
+              id.includes('node_modules/vue') ||
+              id.includes('node_modules/pinia') ||
+              id.includes('node_modules/vue-router')
+            )
+              return 'vendor-vue';
+            if (
+              id.includes('node_modules/chart.js') ||
+              id.includes('node_modules/vue-chartjs')
+            )
+              return 'vendor-charts';
           },
-        }
+        };
       },
     },
 
@@ -72,9 +84,7 @@ export default defineConfig((ctx) => {
     cordova: {},
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: [
-      'app.scss',
-    ],
+    css: ['app.scss'],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
@@ -113,10 +123,7 @@ export default defineConfig((ctx) => {
       cssAddon: true,
       iconSet: 'material-icons',
       lang: 'pl',
-      plugins: [
-        'Dark',
-        'Notify',
-      ],
+      plugins: ['Dark', 'Notify'],
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
@@ -157,10 +164,8 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
-      middlewares: [
-        'render',
-      ],
+      middlewares: ['render'],
       prodPort: 3000,
     },
-  }
-})
+  };
+});
