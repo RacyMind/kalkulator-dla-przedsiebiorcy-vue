@@ -131,7 +131,6 @@ export default defineConfig((ctx) => {
       workboxMode: 'GenerateSW',
       manifestFilename: './manifest.json',
       workboxOptions: {
-        skipWaiting: true,
         clientsClaim: true,
         runtimeCaching: [
           {

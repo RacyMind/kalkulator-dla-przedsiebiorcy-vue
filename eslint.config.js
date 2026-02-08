@@ -82,6 +82,7 @@ export default [
       'babel.config.js',
       'src-pwa/.eslintrc.js',
       'eslint.config.js',
+      'scripts/**',
     ],
   },
 

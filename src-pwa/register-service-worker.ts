@@ -1,86 +1,44 @@
-import { register } from 'register-service-worker'
-
-// The ready(), registered(), cached(), updatefound() and updated()
-// events passes a ServiceWorkerRegistration instance in their arguments.
-// ServiceWorkerRegistration: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration
+import { register } from 'register-service-worker';
+import { Notify } from 'quasar';
 
 register(process.env.SERVICE_WORKER_FILE, {
-  // The registrationOptions object will be passed as the second argument
-  // to ServiceWorkerContainer.register()
-  // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register#Parameter
+  ready() {},
 
-  // registrationOptions: { scope: './' },
+  registered() {},
 
-  ready (/* registration */) {
-    // console.log('Service worker is active.')
-  },
+  cached() {},
 
-  registered (/* registration */) {
-    // console.log('Service worker has been registered.')
-  },
+  updatefound() {},
 
-  cached (/* registration */) {
-    // console.log('Content has been cached for offline use.')
-  },
-
-  updatefound (/* registration */) {
-    /*
+  updated(registration) {
     Notify.create({
-      closeBtn: 'Odśwież',
+      message: 'Nowa wersja kalkulatora jest dostępna.',
       icon: 'cloud_download',
-      message: 'Nowa wersja kalkulatora jest dostępna. Odśwież, by  wczytać',
-      onDismiss () {
-        navigator.serviceWorker.getRegistrations().then(function (regi,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      timeout: 10000,
-    })*/
-    // console.log('New content is downloading.')
+      color: 'primary',
+      timeout: 0,
+      actions: [
+        {
+          label: 'Odśwież',
+          color: 'white',
+          handler: () => {
+            const waiting = registration.waiting;
+            if (waiting) {
+              waiting.postMessage({ type: 'SKIP_WAITING' });
+              waiting.addEventListener('statechange', (e) => {
+                if ((e.target as ServiceWorker).state === 'activated') {
+                  window.location.reload();
+                }
+              });
+            } else {
+              window.location.reload();
+            }
+          },
+        },
+      ],
+    });
   },
 
-  updated (/* registration */) {
-    // console.log('New content is available; please refresh.')
-  },
+  offline() {},
 
-  offline () {
-    // console.log('No internet connection found. App is running in offline mode.')
-  },
-
-  error (/* err */) {
-    // console.error('Error during service worker registration:', err)
-  },
-})
+  error() {},
+});

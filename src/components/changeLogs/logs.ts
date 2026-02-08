@@ -1,45 +1,9 @@
 export default [
   {
     content:
-      '<ul><li>Dodano kompletne meta tagi Open Graph i Twitter/X Cards dla lepszego podglądu przy udostępnianiu w social media.</li><li>Dodano dedykowaną grafikę OG (1200×630 px) wyświetlaną przy udostępnianiu linku.</li><li>Zamieniono przycisk Twittera na X w sekcji „Wesprzyj projekt".</li><li>Dopracowano teksty udostępniania i CTA w sekcji wsparcia.</li><li>Dodano tagi SEO: canonical, robots, author.</li></ul>',
+      '<ul><li>Nowy dashboard z kafelkami modułów pogrupowanymi w sekcje i responsywny panel boczny.</li><li>Dwukolumnowy układ stron modułów (formularz + wyniki) i nowa ikona aplikacji.</li><li>Tryb ciemny (dark mode) z trzema opcjami: jasny, ciemny i automatyczny.</li><li>Poprawiono dostępność WCAG AA — semantyczny HTML, nawigacja klawiaturą, atrybuty ARIA.</li><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja pobiera dane automatycznie z API Eurostat/ECB.</li><li>Dodano moduł Kalkulator zysku z najmu.</li><li>Dodano meta tagi Open Graph i Twitter/X Cards dla lepszego udostępniania w social media.</li><li>Refaktoryzacja kodu: migracja na Pinia, ujednolicenie stałych, nowa paleta kolorów.</li></ul>',
     publish_date: '2026-02-08',
-    version: '6.5.0',
-  },
-  {
-    content:
-      '<ul><li>Finalizacja wersji 6.4.0 — testy regresyjne, optymalizacja wydajności, synchronizacja wersji.</li><li>Dodano testy jednostkowe dla 8 kalkulatorów obligacji skarbowych (ROR, DOR, TOS, COI, EDO, ROS, ROD, OTS).</li><li>Zaktualizowano README z opisem projektu, listą modułów i stosem technologicznym.</li><li>Wyczyszczono nieużywany kod i zsynchronizowano wersję we wszystkich plikach konfiguracyjnych.</li></ul>',
-    publish_date: '2026-02-07',
-    version: '6.4.0',
-  },
-  {
-    content:
-      '<ul><li>Dostępność WCAG AA — semantyczny HTML, nawigacja klawiaturą, atrybuty ARIA, weryfikacja kontrastu.</li><li>Dodano skip link „Przejdź do treści" dla nawigacji klawiaturą.</li><li>Dodano landmarki (main, nav, footer) i poprawiono hierarchię nagłówków.</li><li>Dodano aria-required na wymaganych polach formularzy.</li><li>Dodano aria-describedby łączące pola z komunikatami walidacji.</li><li>Dodano aria-expanded/aria-label na zwijanych sekcjach formularzy.</li><li>Dodano aria-label na przyciskach z ikonami i wykresach.</li><li>Dodano role="status" na powiadomieniach o błędach walidacji.</li></ul>',
-    publish_date: '2026-02-15',
-    version: '6.3.0',
-  },
-  {
-    content:
-      '<ul><li>Nowy dashboard z kafelkami modułów pogrupowanymi w 6 sekcji.</li><li>Responsywny układ z panelem bocznym (stały na desktopie, wysuwany na mobile).</li><li>Dwukolumnowy układ stron modułów (formularz + wyniki).</li><li>Nowa ikona aplikacji z kolorem #1565C0.</li><li>Nowoczesny przycisk „Oblicz" i ujednolicone formularze.</li><li>Wykresy donut z animacjami i tooltipami.</li><li>Przycisk „Powrót na górę" przy przewijaniu.</li><li>Animacje przejść między stronami (fade+scale).</li><li>Lista ostatnio używanych modułów w menu bocznym.</li></ul>',
-    publish_date: '2026-02-14',
-    version: '6.2.0',
-  },
-  {
-    content:
-      '<ul><li>Dodano tryb ciemny (dark mode) z trzema opcjami: jasny, ciemny i automatyczny (zgodny z ustawieniami systemu).</li><li>Przycisk przełączania motywu w pasku nawigacji.</li><li>Wykresy automatycznie dostosowują kolory do wybranego motywu.</li><li>Zapobieganie migotaniu strony (FOUC) przy ładowaniu w trybie ciemnym.</li></ul>',
-    publish_date: '2026-02-07',
-    version: '6.1.0',
-  },
-  {
-    content:
-      '<ul><li>Refaktoryzacja kodu: migracja na Pinia, ujednolicenie systemu stałych, deduplikacja logiki (findGross, scrollToResults, taxThreshold), nowa paleta kolorów z tokenami CSS (light/dark mode), usunięcie katalogu src/use/.</li></ul>',
-    publish_date: '2026-01-26',
     version: '6.0.0',
-  },
-  {
-    content:
-      '<ul><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej wraz z odliczeniem urlopu/zwolnienia w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja i Siła nabywcza pieniądza pobiera teraz dane automatycznie z publicznego API Eurostat/ECB (HICP). Dane nie wymagają już ręcznej aktualizacji.</li><li>Dodano moduł Kalkulator zysku z najmu.</li></ul>',
-    publish_date: '2026-01-25',
-    version: '5.12.0',
   },
   {
     content:
