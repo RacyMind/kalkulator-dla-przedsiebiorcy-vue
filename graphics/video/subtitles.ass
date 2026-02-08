@@ -1,0 +1,28 @@
+[Script Info]
+Title: Kalkulator finansowy - Promo
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Title,Arial,56,&H00FFFFFF,&H000000FF,&H00D27619,&HC0D27619,-1,0,0,0,100,100,2,0,3,20,0,2,60,60,100,1
+Style: Desc,Arial,38,&H00FFFFFF,&H000000FF,&H00D27619,&HC0D27619,0,0,0,0,100,100,1,0,3,16,0,2,60,60,40,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:05.50,0:00:07.50,Title,,0,0,0,,{\fad(400,400)}Umowa o pracę
+Dialogue: 0,0:00:05.50,0:00:07.50,Desc,,0,0,0,,{\fad(400,400)}Wypełnij formularz i oblicz wynagrodzenie
+Dialogue: 0,0:00:08.00,0:00:11.00,Title,,0,0,0,,{\fad(400,400)}Wynagrodzenie netto i brutto
+Dialogue: 0,0:00:08.00,0:00:11.00,Desc,,0,0,0,,{\fad(400,400)}Składki ZUS, podatek, koszty pracodawcy
+Dialogue: 0,0:00:13.00,0:00:16.00,Title,,0,0,0,,{\fad(400,400)}Porównywarka B2B
+Dialogue: 0,0:00:13.00,0:00:16.00,Desc,,0,0,0,,{\fad(400,400)}Porównaj formy opodatkowania
+Dialogue: 0,0:00:16.50,0:00:19.00,Title,,0,0,0,,{\fad(400,400)}Samozatrudnienie
+Dialogue: 0,0:00:16.50,0:00:19.00,Desc,,0,0,0,,{\fad(400,400)}Oblicz dochód z działalności B2B
+Dialogue: 0,0:00:21.50,0:00:24.50,Title,,0,0,0,,{\fad(400,400)}Faktura VAT
+Dialogue: 0,0:00:21.50,0:00:24.50,Desc,,0,0,0,,{\fad(400,400)}Przelicz kwoty netto ↔ brutto
+Dialogue: 0,0:00:25.00,0:00:28.00,Title,,0,0,0,,{\fad(400,400)}Obligacje skarbowe
+Dialogue: 0,0:00:25.00,0:00:28.00,Desc,,0,0,0,,{\fad(400,400)}Oblicz zysk z obligacji EDO, COI i innych
+Dialogue: 0,0:00:30.00,0:00:32.00,Title,,0,0,0,,{\fad(400,400)}...i wiele więcej!
+Dialogue: 0,0:00:30.00,0:00:32.00,Desc,,0,0,0,,{\fad(400,400)}IKE, IKZE, kursy walut, zasiłki
