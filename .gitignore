@@ -32,3 +32,7 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# Landing page build tools
+/landing-page/tailwindcss.exe
+/landing-page/dist/
