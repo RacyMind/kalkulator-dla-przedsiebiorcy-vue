@@ -40,12 +40,16 @@ onMounted(async () => {
   if (!canShow) return;
 
   showAd.value = true;
+
+  if (adSenseService.adPushed) return;
+
   await adSenseService.loadScript();
   await nextTick();
 
   try {
     window.adsbygoogle = window.adsbygoogle || [];
     window.adsbygoogle.push({});
+    adSenseService.markAdPushed();
   } catch {
     showAd.value = false;
   }
