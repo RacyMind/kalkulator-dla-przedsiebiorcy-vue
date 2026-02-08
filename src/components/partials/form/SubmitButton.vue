@@ -14,20 +14,28 @@
         />
       </div>
     </div>
-    <div class="full-width q-pa-sm text-caption"
-         style="color: var(--color-text-secondary)">
+    <div
+      class="full-width q-pa-sm text-caption"
+      style="color: var(--color-text-secondary)"
+    >
       <p class="q-mb-none">
-        Obliczenia mają charakter orientacyjny.
-        <router-link style="text-decoration: underline; color: var(--color-text-secondary)"
-                     to="/polityka-prywatnosci">
-          Polityka prywatności
+        Twórca aplikacji dokłada wszelkich starań, by obliczenia były poprawne.
+        Niemniej wszelkie obliczenia mają charakter orientacyjny. Twórca nie
+        ponosi odpowiedzialności za ewentualne szkody powstałe podczas używania
+        danych z aplikacji.<br />
+        Korzystając z aplikacji akceptujesz
+        <router-link
+          style="text-decoration: underline; color: var(--color-text-secondary)"
+          to="/polityka-prywatnosci"
+        >
+          politykę prywatności
         </router-link>
       </p>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import {useEventStore} from 'stores/eventStore'
+import { useEventStore } from 'stores/eventStore';
 
-const eventStore = useEventStore()
+const eventStore = useEventStore();
 </script>
