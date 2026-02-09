@@ -6,5 +6,5 @@ export const AD_CONFIG: AdConfig = {
   position: AdBannerPosition.BOTTOM_CENTER,
   adSize: AdBannerSize.ADAPTIVE_BANNER,
   isTesting: process.env.NODE_ENV !== 'production',
-  noAdPages: ['/', '/polityka-prywatnosci', '/kontakt', '/historia-zmian'],
+  noAdPages: ['/polityka-prywatnosci', '/kontakt', '/historia-zmian'],
 };

@@ -1,6 +1,5 @@
 <template>
-  <q-page-sticky position="bottom-right"
-                 :offset="[18, 18]">
+  <q-page-sticky v-if="!isNative" position="bottom-right" :offset="[18, 18]">
     <transition name="fade-scale">
       <q-btn
         v-show="visible"
@@ -17,20 +16,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import {mdiChevronUp} from '@quasar/extras/mdi-v7'
+import { ref, onMounted, onUnmounted } from 'vue';
+import { mdiChevronUp } from '@quasar/extras/mdi-v7';
+import { Capacitor } from '@capacitor/core';
 
-const visible = ref(false)
-const SCROLL_THRESHOLD = 300
+const isNative = Capacitor.isNativePlatform();
+const visible = ref(false);
+const SCROLL_THRESHOLD = 300;
 
 const onScroll = () => {
-  visible.value = window.scrollY > SCROLL_THRESHOLD
-}
+  visible.value = window.scrollY > SCROLL_THRESHOLD;
+};
 
 const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
-onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }));
+onUnmounted(() => window.removeEventListener('scroll', onScroll));
 </script>
