@@ -1,7 +1,5 @@
 <template>
-  <q-form
-    @validation-error="handleValidationError"
-    @submit.prevent="save">
+  <q-form @validation-error="handleValidationError" @submit.prevent="save">
     <FormSection title="Kwota i odsetki">
       <div class="row items-start q-col-gutter-sm">
         <div class="col-12 col-md-6">
@@ -73,12 +71,10 @@
             data-testid="startDate"
             lazy-rules="ondemand"
             hide-bottom-space
-            aria-required="true">
+            aria-required="true"
+          >
             <template v-slot:append>
-              <q-icon
-                :name="matEvent"
-                class="cursor-pointer">
-              </q-icon>
+              <q-icon :name="matEvent" class="cursor-pointer"> </q-icon>
             </template>
             <DatePopup v-model="startDate" />
           </q-input>
@@ -93,12 +89,10 @@
             data-testid="endDate"
             lazy-rules="ondemand"
             hide-bottom-space
-            aria-required="true">
+            aria-required="true"
+          >
             <template v-slot:append>
-              <q-icon
-                :name="matEvent"
-                class="cursor-pointer">
-              </q-icon>
+              <q-icon :name="matEvent" class="cursor-pointer"> </q-icon>
             </template>
             <DatePopup v-model="endDate" />
           </q-input>
@@ -110,67 +104,62 @@
 </template>
 
 <script setup lang="ts">
-import {InterestInputFields} from 'components/interest/interfaces/InterestInputFields'
-import {computed, ref, watch} from 'vue'
-import {differenceInDays, parse} from 'date-fns'
-import {useFormValidation} from 'src/composables/formValidation'
-import DatePopup from 'components/partials/DatePopup.vue'
-import FormSection from 'components/partials/form/FormSection.vue'
-import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import {useConstantsStore} from 'stores/constantsStore'
-import validationRules from 'src/logic/validationRules'
-import {matCheck, matClear, matEvent} from 'src/icons'
+import { InterestInputFields } from 'components/interest/interfaces/InterestInputFields';
+import { computed, ref, watch } from 'vue';
+import { differenceInDays, parse } from 'date-fns';
+import { useFormValidation } from 'src/composables/formValidation';
+import DatePopup from 'components/partials/DatePopup.vue';
+import FormSection from 'components/partials/form/FormSection.vue';
+import SubmitButton from 'components/partials/form/SubmitButton.vue';
+import { useConstantsStore } from 'stores/constantsStore';
+import validationRules from 'src/logic/validationRules';
+import { matCheck, matClear, matEvent } from 'src/icons';
+import { useReviewPrompt } from 'src/composables/useReviewPrompt';
 
-const constants = useConstantsStore()
+const constants = useConstantsStore();
+
+const { incrementCalculationCount } = useReviewPrompt();
 
 const emit = defineEmits<{
-  save: [input: InterestInputFields]
-}>()
+  save: [input: InterestInputFields];
+}>();
 
-const {handleValidationError} = useFormValidation()
-const amount = ref<number | null>(null)
-const rate = ref(constants.basicCapitalInterestRate)
+const { handleValidationError } = useFormValidation();
+const amount = ref<number | null>(null);
+const rate = ref(constants.basicCapitalInterestRate);
 
-const startDate = ref('')
-const endDate = ref('')
+const startDate = ref('');
+const endDate = ref('');
 
-const isBasicCapitalRate = ref(true)
-const isBasicLateRate = ref(false)
+const isBasicCapitalRate = ref(true);
+const isBasicLateRate = ref(false);
 
-const formattedStartDate = computed( () => {
-  return parse(
-    startDate.value,
-    'dd.MM.yyyy',
-    new Date(),
-  )
-})
+const formattedStartDate = computed(() => {
+  return parse(startDate.value, 'dd.MM.yyyy', new Date());
+});
 
-const formattedEndDate = computed( () => {
-  return parse(
-    endDate.value,
-    'dd.MM.yyyy',
-    new Date(),
-  )
-})
+const formattedEndDate = computed(() => {
+  return parse(endDate.value, 'dd.MM.yyyy', new Date());
+});
 
 watch(isBasicCapitalRate, () => {
-  if(isBasicCapitalRate.value) {
-    isBasicLateRate.value = false
-    rate.value = constants.basicCapitalInterestRate
+  if (isBasicCapitalRate.value) {
+    isBasicLateRate.value = false;
+    rate.value = constants.basicCapitalInterestRate;
   }
-})
+});
 
 watch(isBasicLateRate, () => {
-  if(isBasicLateRate.value) {
-    isBasicCapitalRate.value = false
-    rate.value = constants.basicLateInterestRate
+  if (isBasicLateRate.value) {
+    isBasicCapitalRate.value = false;
+    rate.value = constants.basicLateInterestRate;
   }
-})
+});
 
 watch(rate, () => {
-  isBasicCapitalRate.value = rate.value === constants.basicCapitalInterestRate
-  isBasicLateRate.value = rate.value === constants.basicLateInterestRate
-})
+  isBasicCapitalRate.value = rate.value === constants.basicCapitalInterestRate;
+  isBasicLateRate.value = rate.value === constants.basicLateInterestRate;
+});
 
 const save = () => {
   const input: InterestInputFields = {
@@ -180,7 +169,8 @@ const save = () => {
       new Date(formattedStartDate.value),
     ),
     rate: Number(rate.value) / 100,
-  }
-  emit('save', input)
-}
+  };
+  incrementCalculationCount();
+  emit('save', input);
+};
 </script>

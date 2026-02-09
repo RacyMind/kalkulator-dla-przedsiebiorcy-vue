@@ -15,7 +15,7 @@ export default defineConfig((ctx) => {
     boot: [
       'google-analytics',
       'aria-describedby',
-      ...('capacitor' in ctx.mode ? ['admob'] : []),
+      ...('capacitor' in ctx.mode ? ['admob', 'review-prompt'] : []),
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
@@ -39,6 +39,7 @@ export default defineConfig((ctx) => {
           const capacitorStubs = [
             '@capacitor/core',
             '@capacitor-community/admob',
+            '@capacitor-community/in-app-review',
             '@capacitor-firebase/analytics',
           ];
           const STUB_PREFIX = '\0capacitor-stub:';

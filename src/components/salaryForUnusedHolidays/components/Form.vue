@@ -1,10 +1,12 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection
       v-if="availableDates.length > 1"
-      title="Data obowiązywania przepisów">
+      title="Data obowiązywania przepisów"
+    >
       <LawRuleDate />
     </FormSection>
     <FormSection title="Informacje o zatrudnieniu i urlopie">
@@ -73,29 +75,46 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia'
-import {useConstantsStore} from 'stores/constantsStore'
-import {useFormValidation} from 'src/composables/formValidation'
-import {useLawRuleDate} from 'src/composables/lawRuleDate'
-import {useLocalStorage} from '@vueuse/core'
-import {useSalaryForUnusedHolidayStore} from 'components/salaryForUnusedHolidays/store'
-import FormSection from 'components/partials/form/FormSection.vue'
-import LawRuleDate from 'components/partials/LawRuleDate.vue'
-import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import helpers from 'src/logic/helpers'
-import validationRules from 'src/logic/validationRules'
+import { storeToRefs } from 'pinia';
+import { useConstantsStore } from 'stores/constantsStore';
+import { useFormValidation } from 'src/composables/formValidation';
+import { useLawRuleDate } from 'src/composables/lawRuleDate';
+import { useLocalStorage } from '@vueuse/core';
+import { useSalaryForUnusedHolidayStore } from 'components/salaryForUnusedHolidays/store';
+import FormSection from 'components/partials/form/FormSection.vue';
+import LawRuleDate from 'components/partials/LawRuleDate.vue';
+import SubmitButton from 'components/partials/form/SubmitButton.vue';
+import helpers from 'src/logic/helpers';
+import validationRules from 'src/logic/validationRules';
+import { useReviewPrompt } from 'src/composables/useReviewPrompt';
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit']);
 
-const {handleValidationError} = useFormValidation()
-const { availableDates } = useLawRuleDate()
-const store = useSalaryForUnusedHolidayStore()
-const {wageStats} = storeToRefs(useConstantsStore())
+const { incrementCalculationCount } = useReviewPrompt();
 
-const amount = useLocalStorage('salaryForUnusedHolidays/form/amount', wageStats.value.minimumWage, { mergeDefaults: true })
-const holidayHours = useLocalStorage('salaryForUnusedHolidays/form/holidayHours', 8 * 20, { mergeDefaults: true })
-const dailyNorm = useLocalStorage('salaryForUnusedHolidays/form/dailyNorm', 8, { mergeDefaults: true })
-const workingTime = useLocalStorage('salaryForUnusedHolidays/form/workingTime', 100, { mergeDefaults: true })
+const { handleValidationError } = useFormValidation();
+const { availableDates } = useLawRuleDate();
+const store = useSalaryForUnusedHolidayStore();
+const { wageStats } = storeToRefs(useConstantsStore());
+
+const amount = useLocalStorage(
+  'salaryForUnusedHolidays/form/amount',
+  wageStats.value.minimumWage,
+  { mergeDefaults: true },
+);
+const holidayHours = useLocalStorage(
+  'salaryForUnusedHolidays/form/holidayHours',
+  8 * 20,
+  { mergeDefaults: true },
+);
+const dailyNorm = useLocalStorage('salaryForUnusedHolidays/form/dailyNorm', 8, {
+  mergeDefaults: true,
+});
+const workingTime = useLocalStorage(
+  'salaryForUnusedHolidays/form/workingTime',
+  100,
+  { mergeDefaults: true },
+);
 
 const handleFormSubmit = () => {
   store.inputFields = {
@@ -103,8 +122,9 @@ const handleFormSubmit = () => {
     holidayHours: holidayHours.value,
     dailyNorm: dailyNorm.value,
     workingTime: helpers.round(workingTime.value / 100, 2),
-  }
+  };
 
-  emit('submit')
-}
+  incrementCalculationCount();
+  emit('submit');
+};
 </script>

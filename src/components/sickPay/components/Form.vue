@@ -1,7 +1,8 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection title="Informacje o zatrudnieniu i zwolnieniu lekarskim">
       <div class="row">
         <div class="col-12">
@@ -53,21 +54,24 @@
 </template>
 
 <script setup lang="ts">
-import {SickPayRate} from 'components/sickPay/types/SickPayRate'
-import {storeToRefs} from 'pinia'
-import {useConstantsStore} from 'stores/constantsStore'
-import {useFormValidation} from 'src/composables/formValidation'
-import {useLocalStorage} from '@vueuse/core'
-import {useSIckPayStore} from 'components/sickPay/store'
-import FormSection from 'components/partials/form/FormSection.vue'
-import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import validationRules from 'src/logic/validationRules'
+import { SickPayRate } from 'components/sickPay/types/SickPayRate';
+import { storeToRefs } from 'pinia';
+import { useConstantsStore } from 'stores/constantsStore';
+import { useFormValidation } from 'src/composables/formValidation';
+import { useLocalStorage } from '@vueuse/core';
+import { useSIckPayStore } from 'components/sickPay/store';
+import FormSection from 'components/partials/form/FormSection.vue';
+import SubmitButton from 'components/partials/form/SubmitButton.vue';
+import validationRules from 'src/logic/validationRules';
+import { useReviewPrompt } from 'src/composables/useReviewPrompt';
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit']);
 
-const {handleValidationError} = useFormValidation()
-const {wageStats} = storeToRefs(useConstantsStore())
-const store = useSIckPayStore()
+const { incrementCalculationCount } = useReviewPrompt();
+
+const { handleValidationError } = useFormValidation();
+const { wageStats } = storeToRefs(useConstantsStore());
+const store = useSIckPayStore();
 
 const sickTaxRates = [
   {
@@ -78,19 +82,30 @@ const sickTaxRates = [
     label: '100%',
     value: 1 as SickPayRate,
   },
-]
+];
 
-const basicAmount = useLocalStorage('sickPay/form/basicAmount', wageStats.value.minimumWage, { mergeDefaults: true })
-const rate = useLocalStorage<SickPayRate>('sickPay/form/rate', sickTaxRates[0].value, { mergeDefaults: true })
-const dayCount = useLocalStorage('sickPay/form/dayCount', 7, { mergeDefaults: true })
+const basicAmount = useLocalStorage(
+  'sickPay/form/basicAmount',
+  wageStats.value.minimumWage,
+  { mergeDefaults: true },
+);
+const rate = useLocalStorage<SickPayRate>(
+  'sickPay/form/rate',
+  sickTaxRates[0].value,
+  { mergeDefaults: true },
+);
+const dayCount = useLocalStorage('sickPay/form/dayCount', 7, {
+  mergeDefaults: true,
+});
 
 const handleFormSubmit = () => {
   store.inputFields = {
     basicAmount: basicAmount.value,
     rate: rate.value,
     dayCount: dayCount.value,
-  }
+  };
 
-  emit('submit')
-}
+  incrementCalculationCount();
+  emit('submit');
+};
 </script>

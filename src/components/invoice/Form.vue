@@ -1,7 +1,5 @@
 <template>
-  <q-form
-    @validation-error="handleValidationError"
-    @submit.prevent="save">
+  <q-form @validation-error="handleValidationError" @submit.prevent="save">
     <FormSection title="Dane faktury">
       <div class="row items-start q-col-gutter-sm">
         <div class="col-12 col-md-6">
@@ -47,23 +45,26 @@
 </template>
 
 <script setup lang="ts">
-import {AmountType} from 'src/types/AmountType'
-import {InvoiceInputFields} from './interfaces/InvoiceInputFields'
-import {VatTaxRate} from 'src/types/VatTaxRate'
-import {ref} from 'vue'
-import {useFormValidation} from 'src/composables/formValidation'
-import FormSection from 'components/partials/form/FormSection.vue'
-import SubmitButton from 'components/partials/form/SubmitButton.vue'
-import {useConstantsStore} from 'stores/constantsStore'
-import validationRules from 'src/logic/validationRules'
+import { AmountType } from 'src/types/AmountType';
+import { InvoiceInputFields } from './interfaces/InvoiceInputFields';
+import { VatTaxRate } from 'src/types/VatTaxRate';
+import { ref } from 'vue';
+import { useFormValidation } from 'src/composables/formValidation';
+import FormSection from 'components/partials/form/FormSection.vue';
+import SubmitButton from 'components/partials/form/SubmitButton.vue';
+import { useConstantsStore } from 'stores/constantsStore';
+import validationRules from 'src/logic/validationRules';
+import { useReviewPrompt } from 'src/composables/useReviewPrompt';
 
-const constants = useConstantsStore()
+const constants = useConstantsStore();
+
+const { incrementCalculationCount } = useReviewPrompt();
 
 const emit = defineEmits<{
-  save: [input: InvoiceInputFields]
-}>()
+  save: [input: InvoiceInputFields];
+}>();
 
-const {handleValidationError} = useFormValidation()
+const { handleValidationError } = useFormValidation();
 const vatTaxRates = [
   {
     label: '0%',
@@ -81,18 +82,19 @@ const vatTaxRates = [
     label: '23%',
     value: 0.23,
   },
-]
+];
 
-const amount = ref<number | null>(null)
-const amountType = ref(constants.amountTypes.net)
-const taxRate = ref(vatTaxRates[vatTaxRates.length - 1])
+const amount = ref<number | null>(null);
+const amountType = ref(constants.amountTypes.net);
+const taxRate = ref(vatTaxRates[vatTaxRates.length - 1]);
 
 const save = () => {
   const input: InvoiceInputFields = {
     amount: Number(amount.value),
     amountType: amountType.value as AmountType,
     taxRate: taxRate.value.value as VatTaxRate,
-  }
-  emit('save', input)
-}
+  };
+  incrementCalculationCount();
+  emit('save', input);
+};
 </script>
