@@ -25,20 +25,7 @@
   <meta name="twitter:description" content="Darmowy kalkulator wynagrodzeń z umowy o pracę, umowy zlecenie, B2B i umowy o dzieło. Oblicz składki ZUS, podatek PIT, VAT i więcej.">
   <meta name="twitter:image" content="https://kalkulatorfinansowy.app/images/og-image.png">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="images/app-icon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-  <link rel="shortcut icon" href="images/favicon.ico">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="dist/style.css">
+<?php include __DIR__ . '/_includes/head-common.php'; ?>
 
   <!-- JSON-LD: SoftwareApplication -->
   <script type="application/ld+json">
@@ -107,6 +94,30 @@
           "@type": "Answer",
           "text": "Tak, aplikacja jest dostępna w Google Play na urządzenia z Androidem. Można też korzystać z wersji webowej w przeglądarce na dowolnym urządzeniu — jest w pełni responsywna."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Jak obliczyć wynagrodzenie netto z brutto?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Od wynagrodzenia brutto odejmij składki ZUS pracownika (emerytalna 9,76%, rentowa 1,5%, chorobowa 2,45%), następnie składkę zdrowotną (9% od podstawy po składkach społecznych), a na końcu zaliczkę na podatek dochodowy PIT (12% lub 32% minus kwota zmniejszająca). Kalkulator wykonuje te obliczenia automatycznie."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Czy kalkulator przechowuje moje dane?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nie. Kalkulator działa w całości w przeglądarce (client-side). Żadne dane finansowe nie są wysyłane na serwer ani przechowywane. Nie ma kont użytkowników, logowania ani śledzenia danych osobowych."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Czym różni się kalkulator od pytania AI o wynagrodzenie?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kalkulator daje precyzyjne, powtarzalne wyniki oparte na zakodowanych wzorach i aktualnych stawkach. AI może halucynować — podawać błędne stawki ZUS, nieaktualne progi podatkowe lub różne wyniki przy tym samym pytaniu. Przy obliczeniach finansowych kalkulator jest bardziej wiarygodny."
+        }
       }
     ]
   }
@@ -127,29 +138,12 @@
   }
   </script>
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-MKR8Z54');</script>
+<?php include __DIR__ . '/_includes/gtm.php'; ?>
 </head>
 <body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKR8Z54" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<?php include __DIR__ . '/_includes/gtm-noscript.php'; ?>
 
-  <!-- Sticky Nav -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      <a href="https://kalkulatorfinansowy.app/" class="flex items-center gap-2 no-underline" aria-label="Kalkulator finansowy — strona główna">
-        <img src="images/app-icon.svg" alt="" width="36" height="36" aria-hidden="true">
-        <span class="hidden sm:inline text-lg font-bold text-gray-900 dark:text-white">Kalkulator finansowy</span>
-      </a>
-      <a href="https://kalkulatorfinansowy.app/app/" class="inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-medium rounded-lg transition-colors text-sm no-underline">
-        Przejdź do kalkulatora
-      </a>
-    </div>
-  </nav>
+<?php include __DIR__ . '/_includes/nav.php'; ?>
 
   <!-- Hero -->
   <header id="hero" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-[#1565C0] to-[#0D47A1]">
@@ -177,8 +171,8 @@
             <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app</span>
           </div>
           <picture>
-              <source srcset="images/hero-screenshot.webp" type="image/webp">
-              <img src="images/hero-screenshot.png" alt="Kalkulator finansowy — dashboard z listą wszystkich kalkulatorów i narzędzi finansowych" width="1280" height="800" fetchpriority="high" class="w-full h-auto">
+              <source srcset="/images/hero-screenshot.webp" type="image/webp">
+              <img src="/images/hero-screenshot.png" alt="Kalkulator finansowy — dashboard z listą wszystkich kalkulatorów i narzędzi finansowych" width="1280" height="800" fetchpriority="high" class="w-full h-auto">
             </picture>
         </div>
       </div>
@@ -220,7 +214,7 @@
           <a href="https://kalkulatorfinansowy.app/app/#/samozatrudnienie" class="inline-flex items-center text-[#1565C0] dark:text-[#42A5F5] font-medium hover:underline">
             Oblicz wynagrodzenie B2B →
           </a>
-          <a href="kalkulator-b2b/" class="inline-flex items-center text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] ml-4 no-underline">
+          <a href="/kalkulator-b2b/" class="block mt-3 text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">
             Dowiedz się więcej →
           </a>
         </div>
@@ -233,8 +227,8 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/samozatrudnienie</span>
             </div>
             <picture>
-              <source srcset="images/modules/samozatrudnienie.webp" type="image/webp">
-              <img src="images/modules/samozatrudnienie.png" alt="Kalkulator samozatrudnienia B2B — formularz obliczania dochodu z działalności gospodarczej" width="640" height="400" loading="lazy" class="w-full h-auto">
+              <source srcset="/images/modules/samozatrudnienie.webp" type="image/webp">
+              <img src="/images/modules/samozatrudnienie.png" alt="Kalkulator samozatrudnienia B2B — formularz obliczania dochodu z działalności gospodarczej" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
         </div>
@@ -253,8 +247,8 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/porownywarka-b2b</span>
             </div>
             <picture>
-              <source srcset="images/modules/porownywarka-b2b.webp" type="image/webp">
-              <img src="images/modules/porownywarka-b2b.png" alt="Porównywarka form opodatkowania B2B — porównanie skali podatkowej, podatku liniowego i ryczałtu" width="640" height="400" loading="lazy" class="w-full h-auto">
+              <source srcset="/images/modules/porownywarka-b2b.webp" type="image/webp">
+              <img src="/images/modules/porownywarka-b2b.png" alt="Porównywarka form opodatkowania B2B — porównanie skali podatkowej, podatku liniowego i ryczałtu" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
         </div>
@@ -265,7 +259,7 @@
           <a href="https://kalkulatorfinansowy.app/app/#/porownywarka-b2b" class="inline-flex items-center text-[#1565C0] dark:text-[#42A5F5] font-medium hover:underline">
             Porównaj formy opodatkowania →
           </a>
-          <a href="porownywarka-b2b/" class="inline-flex items-center text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] ml-4 no-underline">
+          <a href="/porownywarka-b2b/" class="block mt-3 text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">
             Dowiedz się więcej →
           </a>
         </div>
@@ -282,7 +276,7 @@
           <a href="https://kalkulatorfinansowy.app/app/#/umowa-o-prace" class="inline-flex items-center text-[#1565C0] dark:text-[#42A5F5] font-medium hover:underline">
             Oblicz wynagrodzenie z UoP →
           </a>
-          <a href="kalkulator-umowa-o-prace/" class="inline-flex items-center text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] ml-4 no-underline">
+          <a href="/kalkulator-umowa-o-prace/" class="block mt-3 text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">
             Dowiedz się więcej →
           </a>
         </div>
@@ -295,8 +289,8 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/umowa-o-prace</span>
             </div>
             <picture>
-              <source srcset="images/modules/umowa-o-prace.webp" type="image/webp">
-              <img src="images/modules/umowa-o-prace.png" alt="Kalkulator wynagrodzenia z umowy o pracę — obliczanie netto, składek ZUS i kosztów pracodawcy" width="640" height="400" loading="lazy" class="w-full h-auto">
+              <source srcset="/images/modules/umowa-o-prace.webp" type="image/webp">
+              <img src="/images/modules/umowa-o-prace.png" alt="Kalkulator wynagrodzenia z umowy o pracę — obliczanie netto, składek ZUS i kosztów pracodawcy" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
         </div>
@@ -315,8 +309,8 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/kalkulator-ike</span>
             </div>
             <picture>
-              <source srcset="images/modules/kalkulator-ike.webp" type="image/webp">
-              <img src="images/modules/kalkulator-ike.png" alt="Kalkulator oszczędności IKE — symulacja długoterminowych oszczędności emerytalnych" width="640" height="400" loading="lazy" class="w-full h-auto">
+              <source srcset="/images/modules/kalkulator-ike.webp" type="image/webp">
+              <img src="/images/modules/kalkulator-ike.png" alt="Kalkulator oszczędności IKE — symulacja długoterminowych oszczędności emerytalnych" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
         </div>
@@ -326,6 +320,9 @@
           <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">Symuluj różne scenariusze — zmień wysokość wpłat, stopę zwrotu i okres oszczędzania. Kalkulator pokaże Ci prognozowany kapitał i miesięczną wypłatę.</p>
           <a href="https://kalkulatorfinansowy.app/app/#/kalkulator-ike" class="inline-flex items-center text-[#1565C0] dark:text-[#42A5F5] font-medium hover:underline">
             Zaplanuj oszczędności IKE →
+          </a>
+          <a href="/kalkulator-ike/" class="block mt-3 text-gray-500 dark:text-gray-400 text-sm hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">
+            Dowiedz się więcej →
           </a>
         </div>
       </div>
@@ -348,7 +345,7 @@
               </div>
             </a>
             <div class="px-5 pb-4">
-              <a href="kalkulator-umowa-zlecenie/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
+              <a href="/kalkulator-umowa-zlecenie/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
             </div>
           </div>
 
@@ -363,7 +360,7 @@
               </div>
             </a>
             <div class="px-5 pb-4">
-              <a href="kalkulator-umowa-o-dzielo/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
+              <a href="/kalkulator-umowa-o-dzielo/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
             </div>
           </div>
 
@@ -378,7 +375,7 @@
               </div>
             </a>
             <div class="px-5 pb-4">
-              <a href="kalkulator-vat/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
+              <a href="/kalkulator-vat/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
             </div>
           </div>
 
@@ -493,43 +490,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="py-10 bg-gray-900 text-gray-400">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        <div>
-          <h3 class="text-white font-bold mb-3">Kalkulatory</h3>
-          <ul class="space-y-2 text-sm">
-            <li><a href="kalkulator-b2b/" class="hover:text-white transition-colors no-underline">Kalkulator B2B</a></li>
-            <li><a href="kalkulator-umowa-o-prace/" class="hover:text-white transition-colors no-underline">Kalkulator umowy o pracę</a></li>
-            <li><a href="kalkulator-umowa-zlecenie/" class="hover:text-white transition-colors no-underline">Kalkulator umowy zlecenie</a></li>
-            <li><a href="kalkulator-umowa-o-dzielo/" class="hover:text-white transition-colors no-underline">Kalkulator umowy o dzieło</a></li>
-            <li><a href="porownywarka-b2b/" class="hover:text-white transition-colors no-underline">Porównywarka B2B</a></li>
-            <li><a href="kalkulator-vat/" class="hover:text-white transition-colors no-underline">Kalkulator VAT</a></li>
-            <li><a href="kalkulator-ike/" class="hover:text-white transition-colors no-underline">Kalkulator IKE</a></li>
-            <li><a href="kalkulator-ikze/" class="hover:text-white transition-colors no-underline">Kalkulator IKZE</a></li>
-            <li><a href="obligacje-skarbowe/" class="hover:text-white transition-colors no-underline">Obligacje skarbowe</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-white font-bold mb-3">Aplikacja</h3>
-          <ul class="space-y-2 text-sm">
-            <li><a href="https://kalkulatorfinansowy.app/app/" class="hover:text-white transition-colors no-underline">Przejdź do kalkulatora</a></li>
-            <li><a href="https://play.google.com/store/apps/details?id=racyMind.kalkulator" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">Google Play</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-white font-bold mb-3">Autor</h3>
-          <ul class="space-y-2 text-sm">
-            <li><a href="https://lukasz-socha.pl/" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">lukasz-socha.pl</a></li>
-            <li><a href="https://buycoffee.to/lukaszsocha" target="_blank" rel="noopener" class="hover:text-white transition-colors no-underline">☕ Wesprzyj projekt</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="text-center border-t border-gray-800 pt-6">
-        <p class="text-xs text-gray-500">© 2013–2026 Kalkulator finansowy</p>
-      </div>
-    </div>
-  </footer>
+<?php include __DIR__ . '/_includes/footer.php'; ?>
 </body>
 </html>
