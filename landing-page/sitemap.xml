@@ -2,62 +2,68 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kalkulatorfinansowy.app/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-b2b/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-umowa-o-prace/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-umowa-zlecenie/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-umowa-o-dzielo/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/porownywarka-b2b/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-vat/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-ike/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-ikze/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kalkulatorfinansowy.app/obligacje-skarbowe/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kalkulatorfinansowy.app/dlaczego-kalkulator/</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
