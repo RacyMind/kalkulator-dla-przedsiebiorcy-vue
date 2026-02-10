@@ -1,6 +1,6 @@
 export default [
   {
-    content: '<ul><li>Zmiany w interfesie.</li></ul>',
+    content: '<ul><li>Zmiany w interfejsie.</li></ul>',
     publish_date: '2026-02-10',
     version: '6.0.1',
   },
