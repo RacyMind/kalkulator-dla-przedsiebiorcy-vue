@@ -227,5 +227,12 @@ export default {
       link: '/ekwiwalent-za-niewykorzystany-urlop',
       title: 'Ekwiwalent za niewykorzystany urlop',
     } as MenuItem,
+    {
+      caption:
+        'Oblicz wysokość zasiłku macierzyńskiego w dwóch wariantach wypłaty',
+      className: 'c-work',
+      link: '/zasilek-macierzynski',
+      title: 'Zasiłek macierzyński',
+    } as MenuItem,
   ],
 }
