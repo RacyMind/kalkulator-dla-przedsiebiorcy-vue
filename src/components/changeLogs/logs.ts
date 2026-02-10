@@ -348,4 +348,4 @@ export default [
     publish_date: '2021-04-24',
     version: '3.0.0',
   },
-];
+]

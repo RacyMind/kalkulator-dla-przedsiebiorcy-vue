@@ -72,13 +72,13 @@
 </template>
 
 <script setup lang="ts">
-import { Result } from 'components/rentalProfit/interfaces/Result';
-import { pln } from 'src/composables/currencyFormat';
-import ListHeader from 'components/partials/resultList/ListHeader.vue';
-import ListRow from 'components/partials/resultList/ListRow.vue';
+import { Result } from 'components/rentalProfit/interfaces/Result'
+import { pln } from 'src/composables/currencyFormat'
+import ListHeader from 'components/partials/resultList/ListHeader.vue'
+import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {
-  result: Result;
+  result: Result
 }
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 </script>

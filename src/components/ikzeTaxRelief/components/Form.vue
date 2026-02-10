@@ -116,32 +116,32 @@
 </template>
 
 <script setup lang="ts">
-import { IkzeLimitStatus, getIkzeLimit } from 'src/logic/ikzeLimits';
-import { IkzeTaxSystem } from 'components/ikzeTaxRelief/types/IkzeTaxSystem';
-import { InputFields } from 'components/ikzeTaxRelief/interfaces/InputFields';
-import { LumpSumTaxRate } from 'src/logic/taxes/LumpSumTax';
-import { computed, watch } from 'vue';
-import { pln } from 'src/composables/currencyFormat';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useIkzeTaxReliefStore } from 'components/ikzeTaxRelief/store';
-import { useLawRuleDate } from 'src/composables/lawRuleDate';
-import { useLocalStorage } from '@vueuse/core';
-import { useSettingStore } from 'stores/settingStore';
-import FormSection from 'components/partials/form/FormSection.vue';
-import LawRuleDate from 'components/partials/LawRuleDate.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import Tooltip from 'components/partials/Tooltip.vue';
-import validationRules from 'src/logic/validationRules';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { IkzeLimitStatus, getIkzeLimit } from 'src/logic/ikzeLimits'
+import { IkzeTaxSystem } from 'components/ikzeTaxRelief/types/IkzeTaxSystem'
+import { InputFields } from 'components/ikzeTaxRelief/interfaces/InputFields'
+import { LumpSumTaxRate } from 'src/logic/taxes/LumpSumTax'
+import { computed, watch } from 'vue'
+import { pln } from 'src/composables/currencyFormat'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useIkzeTaxReliefStore } from 'components/ikzeTaxRelief/store'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import { useLocalStorage } from '@vueuse/core'
+import { useSettingStore } from 'stores/settingStore'
+import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
+import validationRules from 'src/logic/validationRules'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
-const { handleValidationError } = useFormValidation();
-const { availableDates } = useLawRuleDate();
-const settingStore = useSettingStore();
-const store = useIkzeTaxReliefStore();
+const { handleValidationError } = useFormValidation()
+const { availableDates } = useLawRuleDate()
+const settingStore = useSettingStore()
+const store = useIkzeTaxReliefStore()
 
 const statusOptions = [
   {
@@ -152,7 +152,7 @@ const statusOptions = [
     label: 'Działalność gospodarcza',
     value: IkzeLimitStatus.SelfEmployment,
   },
-];
+]
 
 const taxSystemOptions = [
   {
@@ -167,7 +167,7 @@ const taxSystemOptions = [
     label: 'Ryczałt',
     value: IkzeTaxSystem.LumpSum,
   },
-];
+]
 
 const lumpSumTaxRateOptions = [
   { label: '17%', value: 0.17 },
@@ -180,59 +180,59 @@ const lumpSumTaxRateOptions = [
   { label: '5,5%', value: 0.055 },
   { label: '3%', value: 0.03 },
   { label: '2%', value: 0.02 },
-];
+]
 
 const status = useLocalStorage<IkzeLimitStatus>(
   'ikzeTaxRelief/form/status',
   IkzeLimitStatus.EmploymentContract,
   { mergeDefaults: true },
-);
+)
 const taxSystem = useLocalStorage<IkzeTaxSystem>(
   'ikzeTaxRelief/form/taxSystem',
   IkzeTaxSystem.TaxScale,
   { mergeDefaults: true },
-);
+)
 const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>(
   'ikzeTaxRelief/form/lumpSumTaxRate',
   0.085,
   { mergeDefaults: true },
-);
+)
 const taxBaseBeforeRelief = useLocalStorage(
   'ikzeTaxRelief/form/taxBaseBeforeRelief',
   80000,
   { mergeDefaults: true },
-);
+)
 const ikzeContribution = useLocalStorage(
   'ikzeTaxRelief/form/ikzeContribution',
   5000,
   { mergeDefaults: true },
-);
+)
 
 const currentIkzeLimit = computed(() =>
   getIkzeLimit(settingStore.dateOfLawRules, status.value),
-);
+)
 
 const taxBaseLabel = computed(() => {
   if (
     taxSystem.value === IkzeTaxSystem.LumpSum &&
     status.value === IkzeLimitStatus.SelfEmployment
   ) {
-    return 'Roczny przychód do opodatkowania ryczałtem';
+    return 'Roczny przychód do opodatkowania ryczałtem'
   }
-  return 'Roczna podstawa opodatkowania';
-});
+  return 'Roczna podstawa opodatkowania'
+})
 
 watch(status, (newStatus) => {
   if (newStatus === IkzeLimitStatus.EmploymentContract) {
-    taxSystem.value = IkzeTaxSystem.TaxScale;
+    taxSystem.value = IkzeTaxSystem.TaxScale
   }
-});
+})
 
 watch(currentIkzeLimit, (newLimit) => {
   if (ikzeContribution.value > newLimit) {
-    ikzeContribution.value = newLimit;
+    ikzeContribution.value = newLimit
   }
-});
+})
 
 const handleFormSubmit = () => {
   const inputFields: InputFields = {
@@ -243,18 +243,18 @@ const handleFormSubmit = () => {
         : taxSystem.value,
     ikzeContribution: ikzeContribution.value,
     taxBaseBeforeRelief: taxBaseBeforeRelief.value,
-  };
+  }
 
   if (
     taxSystem.value === IkzeTaxSystem.LumpSum &&
     status.value === IkzeLimitStatus.SelfEmployment
   ) {
-    inputFields.lumpSumTaxRate = lumpSumTaxRate.value;
+    inputFields.lumpSumTaxRate = lumpSumTaxRate.value
   }
 
-  store.inputFields = inputFields;
+  store.inputFields = inputFields
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

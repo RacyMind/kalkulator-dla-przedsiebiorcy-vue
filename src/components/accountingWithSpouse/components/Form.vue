@@ -16,32 +16,32 @@
 </template>
 
 <script setup lang="ts">
-import FormSection from 'components/partials/form/FormSection.vue';
-import LawRuleDate from 'components/partials/LawRuleDate.vue';
+import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
 
-import { Ref, ref } from 'vue';
-import { Spouse } from 'components/accountingWithSpouse/logic/Spouse';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useLawRuleDate } from 'src/composables/lawRuleDate';
-import SpouseForm from 'components/accountingWithSpouse/components/SpouseForm.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { Ref, ref } from 'vue'
+import { Spouse } from 'components/accountingWithSpouse/logic/Spouse'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import SpouseForm from 'components/accountingWithSpouse/components/SpouseForm.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
-const { handleValidationError } = useFormValidation();
+const { handleValidationError } = useFormValidation()
 
-const { availableDates } = useLawRuleDate();
-const husbandForm: Ref<InstanceType<typeof SpouseForm>> = ref(null);
-const wifeForm: Ref<InstanceType<typeof SpouseForm>> = ref(null);
+const { availableDates } = useLawRuleDate()
+const husbandForm: Ref<InstanceType<typeof SpouseForm>> = ref(null)
+const wifeForm: Ref<InstanceType<typeof SpouseForm>> = ref(null)
 
 const handleFormSubmit = () => {
-  husbandForm.value.handleSaveData();
-  wifeForm.value.handleSaveData();
+  husbandForm.value.handleSaveData()
+  wifeForm.value.handleSaveData()
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

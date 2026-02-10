@@ -1,24 +1,24 @@
-import { Capacitor } from '@capacitor/core';
-import { InAppReview } from '@capacitor-community/in-app-review';
-import { useReviewPromptStore } from 'stores/reviewPromptStore';
+import { Capacitor } from '@capacitor/core'
+import { InAppReview } from '@capacitor-community/in-app-review'
+import { useReviewPromptStore } from 'stores/reviewPromptStore'
 
 export default () => {
   if (!Capacitor.isNativePlatform()) {
-    return;
+    return
   }
 
-  const store = useReviewPromptStore();
+  const store = useReviewPromptStore()
 
   if (!store.shouldShowPrompt()) {
-    return;
+    return
   }
 
   InAppReview.requestReview()
     .then(() => {
-      store.recordPromptShown();
+      store.recordPromptShown()
     })
     .catch((error) => {
-      console.error('[ReviewPrompt] requestReview failed:', error);
-      store.recordPromptShown();
-    });
-};
+      console.error('[ReviewPrompt] requestReview failed:', error)
+      store.recordPromptShown()
+    })
+}

@@ -35,7 +35,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useEventStore } from 'stores/eventStore';
+import { useEventStore } from 'stores/eventStore'
 
-const eventStore = useEventStore();
+const eventStore = useEventStore()
 </script>

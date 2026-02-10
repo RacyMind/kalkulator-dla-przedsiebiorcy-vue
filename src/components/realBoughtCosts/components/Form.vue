@@ -55,26 +55,26 @@
 </template>
 
 <script setup lang="ts">
-import { AvailableVatRate } from 'src/logic/taxes/interfaces/AvailableVatRate';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useLocalStorage } from '@vueuse/core';
-import { useRealBoughtCostStore } from 'components/realBoughtCosts/store';
-import FormSection from 'components/partials/form/FormSection.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import VatTaxRateSelect from 'components/partials/form/VatTaxRateSelect.vue';
-import helpers from 'src/logic/helpers';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { AvailableVatRate } from 'src/logic/taxes/interfaces/AvailableVatRate'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLocalStorage } from '@vueuse/core'
+import { useRealBoughtCostStore } from 'components/realBoughtCosts/store'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import VatTaxRateSelect from 'components/partials/form/VatTaxRateSelect.vue'
+import helpers from 'src/logic/helpers'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-type AvailableDeductedVatTaxPart = 0 | 0.5 | 1;
-type IncomeTaxRate = 0 | 0.12 | 0.19 | 0.32;
+type AvailableDeductedVatTaxPart = 0 | 0.5 | 1
+type IncomeTaxRate = 0 | 0.12 | 0.19 | 0.32
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
 const deductedVatTaxPartOptions: {
-  label: string;
-  value: AvailableDeductedVatTaxPart;
+  label: string
+  value: AvailableDeductedVatTaxPart
 }[] = [
   {
     label: 'Nie odliczaj podatku VAT',
@@ -88,7 +88,7 @@ const deductedVatTaxPartOptions: {
     label: 'Odlicz całość podatku VAT',
     value: 1,
   },
-];
+]
 
 const deductedIncomeTaxOptions: { label: string; value: IncomeTaxRate }[] = [
   {
@@ -107,31 +107,31 @@ const deductedIncomeTaxOptions: { label: string; value: IncomeTaxRate }[] = [
     label: '32%',
     value: 0.32,
   },
-];
+]
 
-const { handleValidationError } = useFormValidation();
-const store = useRealBoughtCostStore();
+const { handleValidationError } = useFormValidation()
+const store = useRealBoughtCostStore()
 
 const price = useLocalStorage(
   'realBoughtCosts/form/price',
   helpers.round(1000),
   { mergeDefaults: true },
-);
+)
 const vatTaxRate = useLocalStorage<AvailableVatRate>(
   'realBoughtCosts/form/vatTaxRate',
   0.23,
   { mergeDefaults: true },
-);
+)
 const deductedVatTaxPart = useLocalStorage<AvailableDeductedVatTaxPart>(
   'realBoughtCosts/form/deductedVatTaxPart',
   1,
   { mergeDefaults: true },
-);
+)
 const incomeTaxRate = useLocalStorage<IncomeTaxRate>(
   'realBoughtCosts/form/incomeTaxRate',
   0.12,
   { mergeDefaults: true },
-);
+)
 
 const handleFormSubmit = () => {
   store.inputFields = {
@@ -139,9 +139,9 @@ const handleFormSubmit = () => {
     vatTaxRate: vatTaxRate.value,
     deductedVatTaxPart: deductedVatTaxPart.value,
     incomeTaxRate: incomeTaxRate.value,
-  };
+  }
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

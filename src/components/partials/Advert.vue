@@ -13,12 +13,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { mdiHeart } from '@quasar/extras/mdi-v7';
-import Donate from 'components/partials/adrverts/Donate.vue';
-import TaxDonation from 'components/partials/adrverts/TaxDonation.vue';
+import { mdiHeart } from '@quasar/extras/mdi-v7'
+import Donate from 'components/partials/adrverts/Donate.vue'
+import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
 
 const isTaxDonationTimeFrame = () => {
-  const month = new Date().getMonth();
-  return month > 0 && month < 5;
-};
+  const month = new Date().getMonth()
+  return month > 0 && month < 5
+}
 </script>

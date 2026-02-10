@@ -54,32 +54,32 @@
 </template>
 
 <script setup lang="ts">
-import { InvestmentInputFields } from 'components/investment/interfaces/InvestmentInputFields';
-import { ref } from 'vue';
-import { useFormValidation } from 'src/composables/formValidation';
-import FormSection from 'components/partials/form/FormSection.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import validationRules from 'src/logic/validationRules';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { InvestmentInputFields } from 'components/investment/interfaces/InvestmentInputFields'
+import { ref } from 'vue'
+import { useFormValidation } from 'src/composables/formValidation'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import validationRules from 'src/logic/validationRules'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
 const emit = defineEmits<{
-  save: [input: InvestmentInputFields];
-}>();
+  save: [input: InvestmentInputFields]
+}>()
 
-const { handleValidationError } = useFormValidation();
-const amount = ref<number | null>(null);
-const rate = ref<number | null>(null);
-const monthCount = ref(12);
+const { handleValidationError } = useFormValidation()
+const amount = ref<number | null>(null)
+const rate = ref<number | null>(null)
+const monthCount = ref(12)
 
 const save = () => {
   const input: InvestmentInputFields = {
     amount: Number(amount.value),
     monthCount: Number(monthCount.value),
     rate: Number(rate.value) / 100,
-  };
-  incrementCalculationCount();
-  emit('save', input);
-};
+  }
+  incrementCalculationCount()
+  emit('save', input)
+}
 </script>

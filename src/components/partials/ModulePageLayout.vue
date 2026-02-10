@@ -20,32 +20,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import AdSenseBanner from 'components/partials/AdSenseBanner.vue';
-import Footer from 'components/partials/Footer.vue';
-import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig';
+import { computed } from 'vue'
+import AdSenseBanner from 'components/partials/AdSenseBanner.vue'
+import Footer from 'components/partials/Footer.vue'
+import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig'
 
-const adSlot = AD_SENSE_CONFIG.adSlot;
+const adSlot = AD_SENSE_CONFIG.adSlot
 
 interface Props {
-  singleColumn?: boolean;
+  singleColumn?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   singleColumn: false,
-});
+})
 
 const containerStyle = computed(() =>
   props.singleColumn
     ? 'max-width: 800px; margin: 0 auto;'
     : 'max-width: 1400px; margin: 0 auto;',
-);
+)
 
 const formColumnClass = computed(() =>
   props.singleColumn ? 'col-12' : 'col-12 col-md-6',
-);
+)
 
 const resultsColumnClass = computed(() =>
   props.singleColumn ? 'col-12' : 'col-12 col-md-6',
-);
+)
 </script>

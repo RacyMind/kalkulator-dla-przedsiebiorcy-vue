@@ -111,43 +111,43 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { AmountTypes, useConstantsStore } from 'stores/constantsStore';
-import { EmployeeCalculator } from 'components/contractOfEmployment/logic/EmployeeCalculator';
-import { InputFields } from 'components/contractOfEmployment/interfaces/InputFields';
-import { findGrossAmountUsingNetAmount } from 'src/logic/findGrossAmountUsingNetAmount';
-import { pln } from 'src/composables/currencyFormat';
-import { useEmploymentContractStore } from 'components/contractOfEmployment/store';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useLawRuleDate } from 'src/composables/lawRuleDate';
-import { useLocalStorage } from '@vueuse/core';
-import { useMonthlyAmounts } from 'src/composables/monthlyAmounts';
-import { useMonthlyPercentages } from 'src/composables/monthlyPercentages';
-import { useTaxFreeAmount } from 'src/composables/taxFreeAmount';
-import { watch } from 'vue';
-import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue';
-import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue';
-import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue';
-import FormSection from 'components/partials/form/FormSection.vue';
-import LawRuleDate from 'components/partials/LawRuleDate.vue';
-import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue';
-import Tooltip from 'components/partials/Tooltip.vue';
-import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue';
-import helpers from 'src/logic/helpers';
-import { matCheck, matClear } from 'src/icons';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { storeToRefs } from 'pinia'
+import { AmountTypes, useConstantsStore } from 'stores/constantsStore'
+import { EmployeeCalculator } from 'components/contractOfEmployment/logic/EmployeeCalculator'
+import { InputFields } from 'components/contractOfEmployment/interfaces/InputFields'
+import { findGrossAmountUsingNetAmount } from 'src/logic/findGrossAmountUsingNetAmount'
+import { pln } from 'src/composables/currencyFormat'
+import { useEmploymentContractStore } from 'components/contractOfEmployment/store'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import { useLocalStorage } from '@vueuse/core'
+import { useMonthlyAmounts } from 'src/composables/monthlyAmounts'
+import { useMonthlyPercentages } from 'src/composables/monthlyPercentages'
+import { useTaxFreeAmount } from 'src/composables/taxFreeAmount'
+import { watch } from 'vue'
+import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
+import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
+import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import PpkContributionFields from 'components/partials/form/employee/PpkContributionFields.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
+import helpers from 'src/logic/helpers'
+import { matCheck, matClear } from 'src/icons'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
-const store = useEmploymentContractStore();
-const { availableDates } = useLawRuleDate();
-const { handleValidationError } = useFormValidation();
+const store = useEmploymentContractStore()
+const { availableDates } = useLawRuleDate()
+const { handleValidationError } = useFormValidation()
 const { zusConstants, incomeTaxConstants, wageStats } =
-  storeToRefs(useConstantsStore());
+  storeToRefs(useConstantsStore())
 
 enum ContributionSchemes {
   All = 1,
@@ -173,162 +173,162 @@ const contributionSchemeOptions = [
     label: 'Bez składek ZUS',
     value: ContributionSchemes.Without,
   },
-];
+]
 
 // the salary section
 const amount = useLocalStorage(
   'contractOfEmployment/form/amount',
   wageStats.value.minimumWage(),
   { mergeDefaults: true },
-);
+)
 const amountType = useLocalStorage<AmountTypes>(
   'contractOfEmployment/form/amountType',
   AmountTypes.Gross,
   { mergeDefaults: true },
-);
+)
 const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(
   amount,
   'contractOfEmployment/form',
-);
+)
 
 // the income tax section
 const workInLivePlace = useLocalStorage(
   'contractOfEmployment/form/workInLivePlace',
   true,
   { mergeDefaults: true },
-);
+)
 const areAuthorExpenses = useLocalStorage(
   'contractOfEmployment/form/areAuthorExpenses',
   false,
   { mergeDefaults: true },
-);
+)
 const partOfWorkWithAuthorExpenses = useLocalStorage(
   'contractOfEmployment/form/partOfWorkWithAuthorExpenses',
   100,
   { mergeDefaults: true },
-);
+)
 const {
   hasPercentageForEachMonth: hasAuthhorExpensesForEachMonth,
   monthlyValues: expensesMonthlyValues,
 } = useMonthlyPercentages(
   partOfWorkWithAuthorExpenses,
   'contractOfEmployment/form/authorExpenses',
-);
+)
 
 const hasTaxRelief = useLocalStorage(
   'contractOfEmployment/form/hasTaxRelief',
   false,
   { mergeDefaults: true },
-);
+)
 const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount(
   'contractOfEmployment/form',
-);
+)
 
 // the ZUS contribution section
 const contributionScheme = useLocalStorage<ContributionSchemes>(
   'contractOfEmployment/form/contributionScheme',
   ContributionSchemes.All,
   { mergeDefaults: true },
-);
+)
 const isHealthContribution = useLocalStorage(
   'contractOfEmployment/form/isHealthContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isSickContribution = useLocalStorage(
   'contractOfEmployment/form/isSickContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isDisabilityContribution = useLocalStorage(
   'contractOfEmployment/form/isDisabilityContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isPensionContribution = useLocalStorage(
   'contractOfEmployment/form/isPensionContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isFpContribution = useLocalStorage(
   'contractOfEmployment/form/isFpContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isFgspContribution = useLocalStorage(
   'contractOfEmployment/form/isFgspContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isPpkContribution = useLocalStorage(
   'contractOfEmployment/form/isPpkContribution',
   false,
   { mergeDefaults: true },
-);
+)
 const employerPpkContributionRate = useLocalStorage(
   'contractOfEmployment/form/employerPpkContributionRate',
   zusConstants.value.employer.rates.ppkContribution.default * 100,
   { mergeDefaults: true },
-);
+)
 const employeePpkContributionRate = useLocalStorage(
   'contractOfEmployment/form/employeePpkContributionRate',
   zusConstants.value.employee.rates.ppkContribution.default * 100,
   { mergeDefaults: true },
-);
+)
 const accidentContributionRate = useLocalStorage(
   'contractOfEmployment/form/accidentContributionRate',
   zusConstants.value.employer.rates.accidentCContribution.default * 100,
   { mergeDefaults: true },
-);
+)
 
 watch(contributionScheme, () => {
   switch (contributionScheme.value) {
     case ContributionSchemes.All:
-      isHealthContribution.value = true;
-      isSickContribution.value = true;
-      isDisabilityContribution.value = true;
-      isPensionContribution.value = true;
-      isFpContribution.value = true;
-      isFgspContribution.value = true;
+      isHealthContribution.value = true
+      isSickContribution.value = true
+      isDisabilityContribution.value = true
+      isPensionContribution.value = true
+      isFpContribution.value = true
+      isFgspContribution.value = true
       accidentContributionRate.value =
-        zusConstants.value.employer.rates.accidentCContribution.default * 100;
-      break;
+        zusConstants.value.employer.rates.accidentCContribution.default * 100
+      break
     case ContributionSchemes.WithoutFpAndFgsp:
-      isHealthContribution.value = true;
-      isSickContribution.value = true;
-      isDisabilityContribution.value = true;
-      isPensionContribution.value = true;
-      isFpContribution.value = false;
-      isFgspContribution.value = false;
+      isHealthContribution.value = true
+      isSickContribution.value = true
+      isDisabilityContribution.value = true
+      isPensionContribution.value = true
+      isFpContribution.value = false
+      isFgspContribution.value = false
       accidentContributionRate.value =
-        zusConstants.value.employer.rates.accidentCContribution.default * 100;
-      break;
+        zusConstants.value.employer.rates.accidentCContribution.default * 100
+      break
     case ContributionSchemes.OnlyHealthContribution:
-      isHealthContribution.value = true;
-      isSickContribution.value = false;
-      isDisabilityContribution.value = false;
-      isPensionContribution.value = false;
-      isFpContribution.value = false;
-      isFgspContribution.value = false;
-      isPpkContribution.value = false;
-      accidentContributionRate.value = 0;
-      break;
+      isHealthContribution.value = true
+      isSickContribution.value = false
+      isDisabilityContribution.value = false
+      isPensionContribution.value = false
+      isFpContribution.value = false
+      isFgspContribution.value = false
+      isPpkContribution.value = false
+      accidentContributionRate.value = 0
+      break
     case ContributionSchemes.Without:
-      isHealthContribution.value = false;
-      isSickContribution.value = false;
-      isDisabilityContribution.value = false;
-      isPensionContribution.value = false;
-      isFpContribution.value = false;
-      isFgspContribution.value = false;
-      isPpkContribution.value = false;
-      accidentContributionRate.value = 0;
-      break;
+      isHealthContribution.value = false
+      isSickContribution.value = false
+      isDisabilityContribution.value = false
+      isPensionContribution.value = false
+      isFpContribution.value = false
+      isFgspContribution.value = false
+      isPpkContribution.value = false
+      accidentContributionRate.value = 0
+      break
   }
-});
+})
 
 const handleFormSubmit = () => {
   if (!amount.value) {
-    return;
+    return
   }
 
   const basicInputFields: InputFields = {
@@ -357,65 +357,65 @@ const handleFormSubmit = () => {
     employerPpkContributionRate: isPpkContribution.value
       ? helpers.round(employerPpkContributionRate.value / 100, 4)
       : 0,
-  };
+  }
 
-  const monhtlyInputFields: InputFields[] = [];
+  const monhtlyInputFields: InputFields[] = []
 
   let sumUpAmounts = {
     sumUpTaxBasis: 0,
     sumUpContributionBasis: 0,
     sumUpAuthorExpenses: 0,
     sumUpGrossAmount: 0,
-  };
+  }
 
   for (let i = 0; i < 12; i++) {
-    const inputFields: InputFields = { ...basicInputFields };
+    const inputFields: InputFields = { ...basicInputFields }
 
     if (areAuthorExpenses.value && hasAuthhorExpensesForEachMonth.value) {
       inputFields.partOfWorkWithAuthorExpenses = helpers.round(
         expensesMonthlyValues.value[i] / 100,
         2,
-      );
+      )
     }
 
     if (amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
-      inputFields.grossAmount = Number(monthlyAmounts.value[i]);
+      inputFields.grossAmount = Number(monthlyAmounts.value[i])
     }
 
     if (amountType.value === AmountTypes.Net) {
-      let netAmount = amount.value;
+      let netAmount = amount.value
 
       if (hasAmountForEachMonth.value) {
-        netAmount = Number(monthlyAmounts.value[i]);
+        netAmount = Number(monthlyAmounts.value[i])
       }
 
-      const calculator = new EmployeeCalculator();
+      const calculator = new EmployeeCalculator()
       inputFields.grossAmount = findGrossAmountUsingNetAmount(
         (grossAmount) => {
-          inputFields.grossAmount = grossAmount;
+          inputFields.grossAmount = grossAmount
           return calculator
             .setSumUpAmounts(sumUpAmounts)
             .setInputData(inputFields)
             .calculate()
-            .getResult();
+            .getResult()
         },
         0.5 * netAmount,
         2 * netAmount,
         netAmount,
-      );
+      )
       sumUpAmounts = new EmployeeCalculator(true)
         .setSumUpAmounts(sumUpAmounts)
         .setInputData(inputFields)
         .calculate()
-        .getSumUpAmounts();
+        .getSumUpAmounts()
     }
 
-    monhtlyInputFields.push(inputFields);
+    monhtlyInputFields.push(inputFields)
   }
 
-  store.monthlyInputFields = monhtlyInputFields;
+  store.monthlyInputFields = monhtlyInputFields
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

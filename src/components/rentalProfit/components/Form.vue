@@ -23,10 +23,9 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >Czysty czynsz najmu, bez opłat za media i czynsz
-                administracyjny</Tooltip
-              >
+              <Tooltip>
+                Czysty czynsz najmu, bez opłat za media i czynsz administracyjny
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -50,11 +49,11 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >Twoje wydatki jako wynajmującego (ubezpieczenie, naprawy,
+              <Tooltip>
+                Twoje wydatki jako wynajmującego (ubezpieczenie, naprawy,
                 kredyt). NIE zmniejszają podatku ryczałtowego, ale wpływają na
-                realny zysk netto</Tooltip
-              >
+                realny zysk netto
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -78,11 +77,11 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >Kwoty, które najemca Ci płaci, a Ty przekazujesz dalej
+              <Tooltip>
+                Kwoty, które najemca Ci płaci, a Ty przekazujesz dalej
                 (spółdzielnia, dostawcy mediów). Zmniejszają przychód do
-                opodatkowania ryczałtem</Tooltip
-              >
+                opodatkowania ryczałtem
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -109,9 +108,9 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >Na ile lat chcesz zobaczyć projekcję zysku z najmu</Tooltip
-              >
+              <Tooltip>
+                Na ile lat chcesz zobaczyć projekcję zysku z najmu
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -136,11 +135,10 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >Ile miesięcy w roku przewidujesz bez najemcy. Przychód
-                zmniejsza się proporcjonalnie, koszty utrzymania
-                pozostają</Tooltip
-              >
+              <Tooltip>
+                Ile miesięcy w roku przewidujesz bez najemcy. Przychód zmniejsza
+                się proporcjonalnie, koszty utrzymania pozostają
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -166,10 +164,10 @@
             aria-required="true"
           >
             <template #append>
-              <Tooltip
-                >O ile procent rocznie planujesz podnosić czynsz. Stosowane w
-                projekcji wieloletniej</Tooltip
-              >
+              <Tooltip>
+                O ile procent rocznie planujesz podnosić czynsz. Stosowane w
+                projekcji wieloletniej
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -182,11 +180,11 @@
             :unchecked-icon="matClear"
             label="Rozliczenie małżonków (próg 200 000 zł)"
           />
-          <Tooltip
-            >Zaznacz, jeśli składasz oświadczenie o opodatkowaniu całości
+          <Tooltip>
+            Zaznacz, jeśli składasz oświadczenie o opodatkowaniu całości
             przychodu z najmu u jednego z małżonków. Próg podwyższonej stawki
-            rośnie do 200 000 zł</Tooltip
-          >
+            rośnie do 200 000 zł
+          </Tooltip>
         </div>
       </div>
     </FormSection>
@@ -195,57 +193,57 @@
 </template>
 
 <script setup lang="ts">
-import { InputFields } from 'components/rentalProfit/interfaces/InputFields';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useLocalStorage } from '@vueuse/core';
-import { useRentalProfitStore } from 'components/rentalProfit/store';
-import FormSection from 'components/partials/form/FormSection.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import Tooltip from 'components/partials/Tooltip.vue';
-import validationRules from 'src/logic/validationRules';
-import { matCheck, matClear } from 'src/icons';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
+import { InputFields } from 'components/rentalProfit/interfaces/InputFields'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLocalStorage } from '@vueuse/core'
+import { useRentalProfitStore } from 'components/rentalProfit/store'
+import FormSection from 'components/partials/form/FormSection.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
+import validationRules from 'src/logic/validationRules'
+import { matCheck, matClear } from 'src/icons'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
+const { incrementCalculationCount } = useReviewPrompt()
 
-const { handleValidationError } = useFormValidation();
-const store = useRentalProfitStore();
+const { handleValidationError } = useFormValidation()
+const store = useRentalProfitStore()
 
 const monthlyRent = useLocalStorage('rentalProfit/form/monthlyRent', 3000, {
   mergeDefaults: true,
-});
+})
 const monthlyExpenses = useLocalStorage(
   'rentalProfit/form/monthlyExpenses',
   500,
   { mergeDefaults: true },
-);
+)
 const refactoredCharges = useLocalStorage(
   'rentalProfit/form/refactoredCharges',
   0,
   { mergeDefaults: true },
-);
+)
 const numberOfYears = useLocalStorage('rentalProfit/form/numberOfYears', 1, {
   mergeDefaults: true,
-});
+})
 const isSpouseSettlement = useLocalStorage(
   'rentalProfit/form/isSpouseSettlement',
   false,
   { mergeDefaults: true },
-);
+)
 const vacancyMonths = useLocalStorage('rentalProfit/form/vacancyMonths', 0, {
   mergeDefaults: true,
-});
+})
 const annualRentIncrease = useLocalStorage(
   'rentalProfit/form/annualRentIncrease',
   0,
   { mergeDefaults: true },
-);
+)
 
 const handleFormSubmit = () => {
   if (!monthlyRent.value && monthlyRent.value !== 0) {
-    return;
+    return
   }
 
   const inputFields: InputFields = {
@@ -256,11 +254,11 @@ const handleFormSubmit = () => {
     isSpouseSettlement: isSpouseSettlement.value,
     vacancyMonths: vacancyMonths.value ?? 0,
     annualRentIncrease: annualRentIncrease.value ?? 0,
-  };
+  }
 
-  store.inputFields = inputFields;
+  store.inputFields = inputFields
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

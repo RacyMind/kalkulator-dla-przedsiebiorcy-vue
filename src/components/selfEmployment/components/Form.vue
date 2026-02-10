@@ -366,46 +366,43 @@
 import {
   ContributionBasises,
   useContributionBasis,
-} from 'src/composables/contributionBasises';
-import { storeToRefs } from 'pinia';
-import {
-  EntrepreneurTaxSystem,
-  useConstantsStore,
-} from 'stores/constantsStore';
+} from 'src/composables/contributionBasises'
+import { storeToRefs } from 'pinia'
+import { EntrepreneurTaxSystem, useConstantsStore } from 'stores/constantsStore'
 import {
   IncomeMode,
   InputFields,
-} from 'components/selfEmployment/interfaces/InputFields';
-import { LumpSumTaxRate } from 'src/logic/taxes/LumpSumTax';
-import { computed, watch } from 'vue';
-import { getHourlyRevenue } from 'components/selfEmployment/logic/helpers';
-import { pln } from 'src/composables/currencyFormat';
-import { useFormValidation } from 'src/composables/formValidation';
-import { useLawRuleDate } from 'src/composables/lawRuleDate';
-import { useLocalStorage } from '@vueuse/core';
-import { useMonthlyAmounts } from 'src/composables/monthlyAmounts';
-import { useMonths } from 'src/composables/months';
-import { useReviewPrompt } from 'src/composables/useReviewPrompt';
-import { useSelfEmploymentStore } from 'components/selfEmployment/store';
-import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue';
-import FormSection from 'components/partials/form/FormSection.vue';
-import LawRuleDate from 'components/partials/LawRuleDate.vue';
-import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue';
-import SubmitButton from 'components/partials/form/SubmitButton.vue';
-import Tooltip from 'components/partials/Tooltip.vue';
-import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue';
-import helpers from 'src/logic/helpers';
-import validationRules from 'src/logic/validationRules';
-import { matCheck, matClear } from 'src/icons';
+} from 'components/selfEmployment/interfaces/InputFields'
+import { LumpSumTaxRate } from 'src/logic/taxes/LumpSumTax'
+import { computed, watch } from 'vue'
+import { getHourlyRevenue } from 'components/selfEmployment/logic/helpers'
+import { pln } from 'src/composables/currencyFormat'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import { useLocalStorage } from '@vueuse/core'
+import { useMonthlyAmounts } from 'src/composables/monthlyAmounts'
+import { useMonths } from 'src/composables/months'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
+import { useSelfEmploymentStore } from 'components/selfEmployment/store'
+import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
+import FormSection from 'components/partials/form/FormSection.vue'
+import LawRuleDate from 'components/partials/LawRuleDate.vue'
+import LumpSumTaxRateSelect from 'components/selfEmployment/components/LumpSumTaxRateSelect.vue'
+import SubmitButton from 'components/partials/form/SubmitButton.vue'
+import Tooltip from 'components/partials/Tooltip.vue'
+import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
+import helpers from 'src/logic/helpers'
+import validationRules from 'src/logic/validationRules'
+import { matCheck, matClear } from 'src/icons'
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
-const { incrementCalculationCount } = useReviewPrompt();
-const { handleValidationError } = useFormValidation();
-const { availableDates } = useLawRuleDate();
-const { monthOptions } = useMonths();
-const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore());
-const store = useSelfEmploymentStore();
+const { incrementCalculationCount } = useReviewPrompt()
+const { handleValidationError } = useFormValidation()
+const { availableDates } = useLawRuleDate()
+const { monthOptions } = useMonths()
+const { zusConstants, incomeTaxConstants } = storeToRefs(useConstantsStore())
+const store = useSelfEmploymentStore()
 
 const incomeTaxTypes = [
   {
@@ -420,7 +417,7 @@ const incomeTaxTypes = [
     label: 'Ryczałt ewidencjonowany',
     value: EntrepreneurTaxSystem.LumpSumTax,
   },
-];
+]
 
 const incomeModeOptions = [
   {
@@ -431,125 +428,125 @@ const incomeModeOptions = [
     label: 'Stawka godzinowa',
     value: IncomeMode.HourlyRate,
   },
-];
+]
 
 // the business run period section
 const businessHasStartedBeforeThisYear = useLocalStorage(
   'selfEmployment/form/businessHasStartedBeforeThisYear',
   true,
   { mergeDefaults: true },
-);
+)
 const businessStartedInMonth = useLocalStorage(
   'selfEmployment/form/businessStartedInMonth',
   new Date().getMonth(),
   { mergeDefaults: true },
-);
+)
 
 // the income tax type section
 const incomeTaxType = useLocalStorage(
   'selfEmployment/form/incomeTaxType',
   EntrepreneurTaxSystem.TaxScale,
   { mergeDefaults: true },
-);
+)
 const lumpSumTaxRate = useLocalStorage<LumpSumTaxRate>(
   'selfEmployment/form/lumpSumTaxRate',
   0.17,
   { mergeDefaults: true },
-);
+)
 
 // the revenue and expenses section
 const revenue = useLocalStorage('selfEmployment/form/revenue', 10000, {
   mergeDefaults: true,
-});
+})
 const {
   monthlyAmounts: monthlyRevenues,
   hasAmountForEachMonth: hasRevenueForEachMonth,
-} = useMonthlyAmounts(revenue, 'selfEmployment/form/revenue');
+} = useMonthlyAmounts(revenue, 'selfEmployment/form/revenue')
 const expenses = useLocalStorage('selfEmployment/form/expenses', 0, {
   mergeDefaults: true,
-});
+})
 const {
   monthlyAmounts: monthlyExpenses,
   hasAmountForEachMonth: hasExpensesForEachMonth,
-} = useMonthlyAmounts(expenses, 'selfEmployment/form/expenses');
+} = useMonthlyAmounts(expenses, 'selfEmployment/form/expenses')
 const incomeMode = useLocalStorage<IncomeMode>(
   'selfEmployment/form/incomeMode',
   IncomeMode.MonthlyRevenue,
   { mergeDefaults: true },
-);
+)
 const hourlyRate = useLocalStorage('selfEmployment/form/hourlyRate', 120, {
   mergeDefaults: true,
-});
+})
 const plannedHours = useLocalStorage('selfEmployment/form/plannedHours', 160, {
   mergeDefaults: true,
-});
+})
 const deductLeave = useLocalStorage('selfEmployment/form/deductLeave', false, {
   mergeDefaults: true,
-});
+})
 const leaveHours = useLocalStorage('selfEmployment/form/leaveHours', 0, {
   mergeDefaults: true,
-});
+})
 
 // the income tax section
 const hasTaxRelief = useLocalStorage(
   'selfEmployment/form/hasTaxRelief',
   false,
   { mergeDefaults: true },
-);
+)
 const hasTaxFreeAmount = useLocalStorage(
   'selfEmployment/form/hasTaxFreeAmount',
   true,
   { mergeDefaults: true },
-);
+)
 
 // the ZUS contribution section
-const { chosenContributionBasis } = useContributionBasis('selfEmployment/form');
+const { chosenContributionBasis } = useContributionBasis('selfEmployment/form')
 const customContributionBasis = useLocalStorage(
   'selfEmployment/form/customContributionBasis',
   zusConstants.value.entrepreneur.basises.big,
   { mergeDefaults: true },
-);
+)
 const accidentContributionRate = useLocalStorage(
   'selfEmployment/form/accidentContributionRate',
   zusConstants.value.employer.rates.accidentCContribution.default * 100,
   { mergeDefaults: true },
-);
+)
 const isFpContribution = useLocalStorage(
   'selfEmployment/form/isFpContribution',
   true,
   { mergeDefaults: true },
-);
+)
 const isSickContribution = useLocalStorage(
   'selfEmployment/form/isSickContribution',
   false,
   { mergeDefaults: true },
-);
+)
 const hasEmploymentContract = useLocalStorage(
   'selfEmployment/form/hasEmploymentContract',
   false,
   { mergeDefaults: true },
-);
+)
 const fpContributionIsDisabled = computed(
   () =>
     chosenContributionBasis.value === ContributionBasises.Small ||
     hasEmploymentContract.value,
-);
+)
 const zusRelief = useLocalStorage('selfEmployment/form/zusRelief', false, {
   mergeDefaults: true,
-});
+})
 const zusReliefUntil = useLocalStorage(
   'selfEmployment/form/zusReliefUntil',
   5,
   { mergeDefaults: true },
-);
+)
 const previousMonthHealthContributionBasis = useLocalStorage(
   'selfEmployment/form/previousMonthHealthContributionBasis',
   0,
   { mergeDefaults: true },
-);
-const isHourlyMode = computed(() => incomeMode.value === IncomeMode.HourlyRate);
+)
+const isHourlyMode = computed(() => incomeMode.value === IncomeMode.HourlyRate)
 const hourlyRevenue = computed(() => {
-  const effectiveLeaveHours = deductLeave.value ? (leaveHours.value ?? 0) : 0;
+  const effectiveLeaveHours = deductLeave.value ? (leaveHours.value ?? 0) : 0
   return helpers.round(
     getHourlyRevenue(
       hourlyRate.value ?? 0,
@@ -557,57 +554,57 @@ const hourlyRevenue = computed(() => {
       effectiveLeaveHours,
     ),
     2,
-  );
-});
+  )
+})
 
 watch(chosenContributionBasis, () => {
   if (chosenContributionBasis.value === ContributionBasises.Small) {
-    isFpContribution.value = false;
+    isFpContribution.value = false
   }
-});
+})
 watch(hasEmploymentContract, () => {
   if (hasEmploymentContract.value) {
-    isFpContribution.value = false;
-    isSickContribution.value = false;
-    zusRelief.value = false;
+    isFpContribution.value = false
+    isSickContribution.value = false
+    zusRelief.value = false
   }
-});
+})
 watch(businessStartedInMonth, () => {
-  zusReliefUntil.value = Math.min(11, businessStartedInMonth.value + 5);
-});
+  zusReliefUntil.value = Math.min(11, businessStartedInMonth.value + 5)
+})
 watch(incomeMode, () => {
   if (isHourlyMode.value) {
-    hasRevenueForEachMonth.value = false;
-    monthlyRevenues.value = [];
+    hasRevenueForEachMonth.value = false
+    monthlyRevenues.value = []
   }
-});
+})
 
 const getContributionBasis = (currentMonth: number): number => {
   if (
     !businessHasStartedBeforeThisYear.value &&
     currentMonth < businessStartedInMonth.value
   ) {
-    return 0;
+    return 0
   }
   if (zusRelief.value && currentMonth <= zusReliefUntil.value) {
-    return 0;
+    return 0
   }
   if (chosenContributionBasis.value === ContributionBasises.Custom) {
-    return customContributionBasis.value ?? 0;
+    return customContributionBasis.value ?? 0
   }
   if (chosenContributionBasis.value === ContributionBasises.Small) {
-    return zusConstants.value.entrepreneur.basises.small(currentMonth);
+    return zusConstants.value.entrepreneur.basises.small(currentMonth)
   }
 
-  return zusConstants.value.entrepreneur.basises.big;
-};
+  return zusConstants.value.entrepreneur.basises.big
+}
 
 const handleFormSubmit = () => {
   if (!isHourlyMode.value && !revenue.value) {
-    return;
+    return
   }
 
-  const effectiveLeaveHours = deductLeave.value ? (leaveHours.value ?? 0) : 0;
+  const effectiveLeaveHours = deductLeave.value ? (leaveHours.value ?? 0) : 0
   const calculatedRevenue = isHourlyMode.value
     ? helpers.round(
         getHourlyRevenue(
@@ -617,7 +614,7 @@ const handleFormSubmit = () => {
         ),
         2,
       )
-    : revenue.value;
+    : revenue.value
 
   const basicInputFields: InputFields = {
     revenue: calculatedRevenue,
@@ -648,40 +645,40 @@ const handleFormSubmit = () => {
         : 0,
     businessIsRunning: true,
     monthIndex: 0,
-  };
+  }
 
-  const monthlyInputFields: InputFields[] = [];
+  const monthlyInputFields: InputFields[] = []
 
   for (let i = 0; i < 12; i++) {
     const inputFields: InputFields = {
       ...basicInputFields,
       contributionBasis: getContributionBasis(i),
       monthIndex: i,
-    };
+    }
 
     if (hasRevenueForEachMonth.value && !isHourlyMode.value) {
-      inputFields.revenue = monthlyRevenues.value[i];
+      inputFields.revenue = monthlyRevenues.value[i]
     }
     if (hasExpensesForEachMonth.value) {
-      inputFields.expenses = monthlyExpenses.value[i];
+      inputFields.expenses = monthlyExpenses.value[i]
     }
 
     if (
       !businessHasStartedBeforeThisYear.value &&
       i < businessStartedInMonth.value
     ) {
-      inputFields.revenue = 0;
-      inputFields.expenses = 0;
-      inputFields.contributionBasis = 0;
-      inputFields.businessIsRunning = false;
+      inputFields.revenue = 0
+      inputFields.expenses = 0
+      inputFields.contributionBasis = 0
+      inputFields.businessIsRunning = false
     }
 
-    monthlyInputFields.push(inputFields);
+    monthlyInputFields.push(inputFields)
   }
 
-  store.monthlyInputFields = monthlyInputFields;
+  store.monthlyInputFields = monthlyInputFields
 
-  incrementCalculationCount();
-  emit('submit');
-};
+  incrementCalculationCount()
+  emit('submit')
+}
 </script>

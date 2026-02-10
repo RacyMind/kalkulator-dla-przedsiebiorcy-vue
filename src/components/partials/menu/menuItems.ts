@@ -1,7 +1,7 @@
-import { MenuItem } from 'components/partials/menu/interfaces/MenuItem';
-import { Platform } from 'quasar';
+import { MenuItem } from 'components/partials/menu/interfaces/MenuItem'
+import { Platform } from 'quasar'
 
-const appMenuItems: MenuItem[] = [];
+const appMenuItems: MenuItem[] = []
 
 if (Platform.is.mobile && !Platform.is.nativeMobile && Platform.is.android) {
   appMenuItems.push({
@@ -9,7 +9,7 @@ if (Platform.is.mobile && !Platform.is.nativeMobile && Platform.is.android) {
     className: 'c-app',
     link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
     title: 'Pobierz w Google Play',
-  });
+  })
 }
 if (Platform.is.nativeMobile && Platform.is.android) {
   appMenuItems.push({
@@ -17,7 +17,7 @@ if (Platform.is.nativeMobile && Platform.is.android) {
     caption: 'Twoja opinia pomaga innym użytkownikom',
     className: 'c-app',
     link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-  });
+  })
 }
 
 appMenuItems.push(
@@ -51,7 +51,7 @@ appMenuItems.push(
     link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
     title: 'GitHub',
   },
-);
+)
 export default {
   app: appMenuItems,
   company: [
@@ -228,4 +228,4 @@ export default {
       title: 'Ekwiwalent za niewykorzystany urlop',
     } as MenuItem,
   ],
-};
+}

@@ -28,7 +28,7 @@ const props = defineProps({
     required: false,
     default: false,
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
