@@ -1,9 +1,8 @@
 export default [
   {
-    content:
-      '<ul><li>Dodano automatyczną prośbę o ocenę aplikacji w Google Play (In-App Review) po wykonaniu kilku obliczeń.</li><li>Zaktualizowano opcję w menu: „Podoba Ci się? Oceń!" z linkiem do Google Play Store.</li></ul>',
-    publish_date: '2026-02-09',
-    version: '6.1.0',
+    content: '<ul><li>Zmiany w interfesie.</li></ul>',
+    publish_date: '2026-02-10',
+    version: '6.0.1',
   },
   {
     content:

@@ -3,47 +3,47 @@
 
 :root {
   // Brand
-  --color-primary: #1565C0;
-  --color-secondary: #00897B;
-  --color-accent: #7B1FA2;
+  --color-primary: #1565c0;
+  --color-secondary: #00897b;
+  --color-accent: #7b1fa2;
 
   // Semantic
-  --color-positive: #2E7D32;
-  --color-negative: #C62828;
-  --color-info: #0277BD;
-  --color-warning: #E65100;
+  --color-positive: #2e7d32;
+  --color-negative: #c62828;
+  --color-info: #0277bd;
+  --color-warning: #e65100;
 
   // Surface
-  --color-surface: #FFFFFF;
-  --color-surface-variant: #F5F5F5;
-  --color-surface-elevated: #FFFFFF;
+  --color-surface: #ffffff;
+  --color-surface-variant: #f5f5f5;
+  --color-surface-elevated: #ffffff;
 
   // Text
   --color-text-primary: #212121;
   --color-text-secondary: #616161;
-  --color-text-on-brand: #FFFFFF;
+  --color-text-on-brand: #ffffff;
 
   // Module brands — monochromatic blue gradient (dark→light)
   // Order: Firma → Podatki → Praca → Oszczędzanie → Waluty → Informacje
-  --module-business: #0D47A1;
-  --module-taxes: #1565C0;
-  --module-work: #1976D2;
-  --module-percentage: #1E88E5;
-  --module-currencies: #1A8DE8;
-  --module-informator: #2196F3;
-  --module-app: #0D47A1;
+  --module-business: #0d47a1;
+  --module-taxes: #1565c0;
+  --module-work: #1976d2;
+  --module-percentage: #1e88e5;
+  --module-currencies: #1a8de8;
+  --module-informator: #2196f3;
+  --module-app: #0d47a1;
 
   // Chart colors (max contrast, no similar hues)
-  --chart-1: #1565C0;
-  --chart-2: #FF6F00;
-  --chart-3: #2E7D32;
-  --chart-4: #8E24AA;
-  --chart-5: #00897B;
-  --chart-6: #D32F2F;
-  --chart-7: #F9A825;
-  --chart-8: #5D4037;
-  --chart-9: #C2185B;
-  --chart-10: #546E7A;
+  --chart-1: #1565c0;
+  --chart-2: #ff6f00;
+  --chart-3: #2e7d32;
+  --chart-4: #8e24aa;
+  --chart-5: #00897b;
+  --chart-6: #d32f2f;
+  --chart-7: #f9a825;
+  --chart-8: #5d4037;
+  --chart-9: #c2185b;
+  --chart-10: #546e7a;
 
   // Spacing
   --space-xs: 4px;
@@ -60,47 +60,47 @@
 
 .body--dark {
   // Brand
-  --color-primary: #42A5F5;
-  --color-secondary: #4DB6AC;
-  --color-accent: #CE93D8;
+  --color-primary: #42a5f5;
+  --color-secondary: #4db6ac;
+  --color-accent: #ce93d8;
 
   // Semantic
-  --color-positive: #66BB6A;
-  --color-negative: #EF5350;
-  --color-info: #29B6F6;
-  --color-warning: #FFA726;
+  --color-positive: #66bb6a;
+  --color-negative: #f06060;
+  --color-info: #29b6f6;
+  --color-warning: #ffa726;
 
-  // Surface
-  --color-surface: #121212;
-  --color-surface-variant: #2A2A2A;
-  --color-surface-elevated: #2C2C2C;
+  // Surface (Tailwind gray-900 / gray-800 / gray-700 — matching landing page)
+  --color-surface: #111827;
+  --color-surface-variant: #1f2937;
+  --color-surface-elevated: #2d3748;
 
-  // Text
-  --color-text-primary: #E0E0E0;
-  --color-text-secondary: #9E9E9E;
-  --color-text-on-brand: #FFFFFF;
+  // Text (Tailwind gray-100 / gray-400 — matching landing page)
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-text-on-brand: #ffffff;
 
   // Module brands — lighter blue gradient (dark→light) for dark backgrounds
   // Order: Firma → Podatki → Praca → Oszczędzanie → Waluty → Informacje
-  --module-business: #42A5F5;
-  --module-taxes: #5CB8FF;
-  --module-work: #64B5F6;
-  --module-percentage: #82B1FF;
-  --module-currencies: #90CAF9;
-  --module-informator: #BBDEFB;
-  --module-app: #42A5F5;
+  --module-business: #42a5f5;
+  --module-taxes: #5cb8ff;
+  --module-work: #64b5f6;
+  --module-percentage: #82b1ff;
+  --module-currencies: #90caf9;
+  --module-informator: #bbdefb;
+  --module-app: #42a5f5;
 
   // Chart colors (lighter for dark backgrounds, max contrast)
-  --chart-1: #64B5F6;
-  --chart-2: #FFB74D;
-  --chart-3: #81C784;
-  --chart-4: #CE93D8;
-  --chart-5: #4DB6AC;
-  --chart-6: #EF5350;
-  --chart-7: #FFF176;
-  --chart-8: #A1887F;
-  --chart-9: #F48FB1;
-  --chart-10: #90A4AE;
+  --chart-1: #64b5f6;
+  --chart-2: #ffb74d;
+  --chart-3: #81c784;
+  --chart-4: #ce93d8;
+  --chart-5: #4db6ac;
+  --chart-6: #ef5350;
+  --chart-7: #fff176;
+  --chart-8: #a1887f;
+  --chart-9: #f48fb1;
+  --chart-10: #90a4ae;
 
   // Spacing
   --space-xs: 4px;
