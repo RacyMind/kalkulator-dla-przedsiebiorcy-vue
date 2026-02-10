@@ -7,7 +7,7 @@
       </template>
     </ListRow>
     <ListRow>
-      <template #name> Łączny wymiar urlopów </template>
+      <template #name> Długość urlopu </template>
       <template #value>
         {{ props.result.leavePeriods.totalWeeks }} tyg. ({{
           props.result.leavePeriods.totalDays
