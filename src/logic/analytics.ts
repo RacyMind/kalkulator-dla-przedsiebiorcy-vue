@@ -1,33 +1,33 @@
-import { uid } from 'quasar';
-import { Capacitor } from '@capacitor/core';
-import { FirebaseAnalytics } from '@capacitor-firebase/analytics';
+import { uid } from 'quasar'
+import { Capacitor } from '@capacitor/core'
+import { FirebaseAnalytics } from '@capacitor-firebase/analytics'
 
 declare global {
   interface Window {
-    dataLayer: any;
+    dataLayer: any
   }
 }
 
-const isNative = Capacitor.isNativePlatform();
+const isNative = Capacitor.isNativePlatform()
 
 export default {
   getCid() {
     if (!localStorage.cid) {
-      localStorage.cid = uid();
+      localStorage.cid = uid()
     }
-    return localStorage.cid;
+    return localStorage.cid
   },
 
   logEvent(category: string, action: string, label: string, value = null) {
     if (process.env.DEV) {
-      return;
+      return
     }
 
     if (isNative) {
       FirebaseAnalytics.logEvent({
         name: action,
         params: { category, label, value, cid: this.getCid() },
-      });
+      })
     } else {
       window.dataLayer.push({
         action: action,
@@ -36,26 +36,26 @@ export default {
         event: 'customEvent',
         label: label,
         value: value,
-      });
+      })
     }
   },
 
   logPage(path: string) {
     if (process.env.DEV) {
-      return;
+      return
     }
 
     if (isNative) {
       FirebaseAnalytics.logEvent({
         name: 'screen_view',
         params: { screen_name: path, cid: this.getCid() },
-      });
+      })
     } else {
       window.dataLayer.push({
         cid: this.getCid(),
         event: 'customPageView',
         path: path,
-      });
+      })
     }
   },
-};
+}

@@ -1,8 +1,8 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-import 'dotenv/config';
-import { defineConfig } from '#q-app/wrappers';
+import 'dotenv/config'
+import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig((ctx) => {
   return {
@@ -15,7 +15,7 @@ export default defineConfig((ctx) => {
     boot: [
       'google-analytics',
       'aria-describedby',
-      ...('capacitor' in ctx.mode ? ['admob'] : []),
+      ...('capacitor' in ctx.mode ? ['admob', 'review-prompt'] : []),
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
@@ -39,11 +39,12 @@ export default defineConfig((ctx) => {
           const capacitorStubs = [
             '@capacitor/core',
             '@capacitor-community/admob',
+            '@capacitor-community/in-app-review',
             '@capacitor-firebase/analytics',
-          ];
-          const STUB_PREFIX = '\0capacitor-stub:';
+          ]
+          const STUB_PREFIX = '\0capacitor-stub:'
 
-          viteConf.plugins = viteConf.plugins || [];
+          viteConf.plugins = viteConf.plugins || []
           viteConf.plugins.push({
             name: 'capacitor-stub',
             enforce: 'pre' as const,
@@ -53,44 +54,44 @@ export default defineConfig((ctx) => {
                   (stub) => id === stub || id.startsWith(stub + '/'),
                 )
               ) {
-                return STUB_PREFIX + id;
+                return STUB_PREFIX + id
               }
             },
             load(id: string) {
               if (!id.startsWith(STUB_PREFIX)) {
-                return;
+                return
               }
-              const stubId = id.slice(STUB_PREFIX.length);
+              const stubId = id.slice(STUB_PREFIX.length)
               if (stubId === '@capacitor/core') {
-                return 'export const Capacitor = { isNativePlatform: () => false }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};';
+                return 'export const Capacitor = { isNativePlatform: () => false }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};'
               }
               if (stubId === '@capacitor-firebase/analytics') {
-                return 'export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve() }; export default {};';
+                return 'export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve() }; export default {};'
               }
-              return 'export default {};';
+              return 'export default {};'
             },
-          });
+          })
         }
 
-        viteConf.build = viteConf.build || {};
-        viteConf.build.rollupOptions = viteConf.build.rollupOptions || {};
+        viteConf.build = viteConf.build || {}
+        viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
         viteConf.build.rollupOptions.output = {
           ...((viteConf.build.rollupOptions.output as object) || {}),
           manualChunks(id: string) {
-            if (id.includes('node_modules/quasar/')) return 'vendor-quasar';
+            if (id.includes('node_modules/quasar/')) return 'vendor-quasar'
             if (
               id.includes('node_modules/vue') ||
               id.includes('node_modules/pinia') ||
               id.includes('node_modules/vue-router')
             )
-              return 'vendor-vue';
+              return 'vendor-vue'
             if (
               id.includes('node_modules/chart.js') ||
               id.includes('node_modules/vue-chartjs')
             )
-              return 'vendor-charts';
+              return 'vendor-charts'
           },
-        };
+        }
       },
     },
 
@@ -185,5 +186,5 @@ export default defineConfig((ctx) => {
       middlewares: ['render'],
       prodPort: 3000,
     },
-  };
-});
+  }
+})

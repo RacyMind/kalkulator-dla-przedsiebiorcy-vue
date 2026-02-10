@@ -1,7 +1,5 @@
 <template>
-  <q-form
-    @validation-error="handleValidationError"
-    @submit.prevent="save">
+  <q-form @validation-error="handleValidationError" @submit.prevent="save">
     <FormSection title="Parametry lokaty">
       <div class="row items-start q-col-gutter-sm">
         <div class="col-12 col-md-4">
@@ -56,18 +54,21 @@
 </template>
 
 <script setup lang="ts">
-import {InvestmentInputFields} from 'components/investment/interfaces/InvestmentInputFields'
-import {ref} from 'vue'
-import {useFormValidation} from 'src/composables/formValidation'
+import { InvestmentInputFields } from 'components/investment/interfaces/InvestmentInputFields'
+import { ref } from 'vue'
+import { useFormValidation } from 'src/composables/formValidation'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import validationRules from 'src/logic/validationRules'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
+
+const { incrementCalculationCount } = useReviewPrompt()
 
 const emit = defineEmits<{
   save: [input: InvestmentInputFields]
 }>()
 
-const {handleValidationError} = useFormValidation()
+const { handleValidationError } = useFormValidation()
 const amount = ref<number | null>(null)
 const rate = ref<number | null>(null)
 const monthCount = ref(12)
@@ -78,6 +79,7 @@ const save = () => {
     monthCount: Number(monthCount.value),
     rate: Number(rate.value) / 100,
   }
+  incrementCalculationCount()
   emit('save', input)
 }
 </script>

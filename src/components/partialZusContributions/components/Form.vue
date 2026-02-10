@@ -1,10 +1,12 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection
       v-if="availableDates.length > 1"
-      title="Data obowiązywania przepisów">
+      title="Data obowiązywania przepisów"
+    >
       <LawRuleDate />
     </FormSection>
     <FormSection title="Okres prowadzenia działalności">
@@ -18,9 +20,7 @@
             step="1"
             label="Ilość dni prowadzenia działalności"
             color="brand"
-            :rules="[
-              val => !!val || '* Wpisz liczbę dni',
-            ]"
+            :rules="[(val) => !!val || '* Wpisz liczbę dni']"
             lazy-rules="ondemand"
           />
         </div>
@@ -31,14 +31,15 @@
             emit-value
             map-options
             color="brand"
-            label="Miesiąc rozpoczęcia działalności" />
+            label="Miesiąc rozpoczęcia działalności"
+          />
         </div>
       </div>
     </FormSection>
     <FormSection title="Składki ZUS">
       <div class="row q-col-gutter-x-md">
         <div class="col-12 col-sm">
-          <ZusContributionBasisSelect v-model="chosenContributionBasis"/>
+          <ZusContributionBasisSelect v-model="chosenContributionBasis" />
         </div>
         <div class="col-12 col-sm">
           <q-input
@@ -50,9 +51,7 @@
             label="Podstawa składek ZUS"
             suffix="zł"
             color="brand"
-            :rules="[
-              val => !!val || '* Wpisz kwotę',
-            ]"
+            :rules="[(val) => !!val || '* Wpisz kwotę']"
             lazy-rules="ondemand"
           />
         </div>
@@ -95,41 +94,73 @@
 </template>
 
 <script setup lang="ts">
-import {ContributionBasises, useContributionBasis} from 'src/composables/contributionBasises'
-import {ContributionCalculator} from 'components/partialZusContributions/logic/ContributionCalculator'
-import {storeToRefs} from 'pinia'
-import {useConstantsStore} from 'stores/constantsStore'
-import {useFormValidation} from 'src/composables/formValidation'
-import {useLawRuleDate} from 'src/composables/lawRuleDate'
-import {useLocalStorage} from '@vueuse/core'
-import {useMonths} from 'src/composables/months'
-import {usePartialZusContributionStore} from 'components/partialZusContributions/store'
-import {useSettingStore} from 'stores/settingStore'
-import {watch} from 'vue'
+import {
+  ContributionBasises,
+  useContributionBasis,
+} from 'src/composables/contributionBasises'
+import { ContributionCalculator } from 'components/partialZusContributions/logic/ContributionCalculator'
+import { storeToRefs } from 'pinia'
+import { useConstantsStore } from 'stores/constantsStore'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import { useLocalStorage } from '@vueuse/core'
+import { useMonths } from 'src/composables/months'
+import { usePartialZusContributionStore } from 'components/partialZusContributions/store'
+import { useSettingStore } from 'stores/settingStore'
+import { watch } from 'vue'
 import FormSection from 'components/partials/form/FormSection.vue'
 import LawRuleDate from 'components/partials/LawRuleDate.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import ZusContributionBasisSelect from 'components/selfEmployment/components/ZusContributionBasisSelect.vue'
 import helpers from 'src/logic/helpers'
-import {matCheck, matClear} from 'src/icons'
+import { matCheck, matClear } from 'src/icons'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
 const emit = defineEmits(['submit'])
 
-const {handleValidationError} = useFormValidation()
+const { incrementCalculationCount } = useReviewPrompt()
+
+const { handleValidationError } = useFormValidation()
 const { availableDates } = useLawRuleDate()
 const { monthOptions } = useMonths()
 const { zusConstants } = storeToRefs(useConstantsStore())
 const store = usePartialZusContributionStore()
 const settingStore = useSettingStore()
 
-const daysOfRunningBusiness = useLocalStorage('partialZusContributions/form/daysOfRunningBusiness', new ContributionCalculator().getDaysInMonth(new Date().getMonth()), { mergeDefaults: true })
-const monthIndex = useLocalStorage('partialZusContributions/form/monthIndex', new Date().getMonth(), { mergeDefaults: true })
+const daysOfRunningBusiness = useLocalStorage(
+  'partialZusContributions/form/daysOfRunningBusiness',
+  new ContributionCalculator().getDaysInMonth(new Date().getMonth()),
+  { mergeDefaults: true },
+)
+const monthIndex = useLocalStorage(
+  'partialZusContributions/form/monthIndex',
+  new Date().getMonth(),
+  { mergeDefaults: true },
+)
 
-const { chosenContributionBasis } = useContributionBasis('partialZusContributions/form')
-const contributionBasis = useLocalStorage('partialZusContributions/form/contributionBasis', zusConstants.value.entrepreneur.basises.big, { mergeDefaults: true })
-const accidentContributionRate = useLocalStorage('partialZusContributions/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
-const isFpContribution = useLocalStorage('partialZusContributions/form/isFpContribution', true, { mergeDefaults: true })
-const isSickContribution = useLocalStorage('partialZusContributions/form/isSickContribution', false, { mergeDefaults: true })
+const { chosenContributionBasis } = useContributionBasis(
+  'partialZusContributions/form',
+)
+const contributionBasis = useLocalStorage(
+  'partialZusContributions/form/contributionBasis',
+  zusConstants.value.entrepreneur.basises.big,
+  { mergeDefaults: true },
+)
+const accidentContributionRate = useLocalStorage(
+  'partialZusContributions/form/accidentContributionRate',
+  zusConstants.value.employer.rates.accidentCContribution.default * 100,
+  { mergeDefaults: true },
+)
+const isFpContribution = useLocalStorage(
+  'partialZusContributions/form/isFpContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isSickContribution = useLocalStorage(
+  'partialZusContributions/form/isSickContribution',
+  false,
+  { mergeDefaults: true },
+)
 
 watch(chosenContributionBasis, () => {
   switch (chosenContributionBasis.value) {
@@ -137,26 +168,35 @@ watch(chosenContributionBasis, () => {
       contributionBasis.value = zusConstants.value.entrepreneur.basises.big
       break
     case ContributionBasises.Small:
-      contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
+      contributionBasis.value = zusConstants.value.entrepreneur.basises.small(
+        monthIndex.value,
+      )
       isFpContribution.value = false
       break
   }
 })
 
-watch(() => settingStore.dateOfLawRules, () => {
-  switch (chosenContributionBasis.value) {
-    case ContributionBasises.Big:
-      contributionBasis.value = zusConstants.value.entrepreneur.basises.big
-      break
-    case ContributionBasises.Small:
-      contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
-      break
-  }
-})
+watch(
+  () => settingStore.dateOfLawRules,
+  () => {
+    switch (chosenContributionBasis.value) {
+      case ContributionBasises.Big:
+        contributionBasis.value = zusConstants.value.entrepreneur.basises.big
+        break
+      case ContributionBasises.Small:
+        contributionBasis.value = zusConstants.value.entrepreneur.basises.small(
+          monthIndex.value,
+        )
+        break
+    }
+  },
+)
 
 watch(monthIndex, () => {
-  if(chosenContributionBasis.value === ContributionBasises.Small) {
-    contributionBasis.value = zusConstants.value.entrepreneur.basises.small(monthIndex.value)
+  if (chosenContributionBasis.value === ContributionBasises.Small) {
+    contributionBasis.value = zusConstants.value.entrepreneur.basises.small(
+      monthIndex.value,
+    )
   }
 })
 
@@ -167,9 +207,13 @@ const handleFormSubmit = () => {
     daysOfRunningBusiness: daysOfRunningBusiness.value,
     isFpContribution: isFpContribution.value,
     isSickContribution: isSickContribution.value,
-    accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
+    accidentContributionRate: helpers.round(
+      accidentContributionRate.value / 100,
+      4,
+    ),
   }
 
+  incrementCalculationCount()
   emit('submit')
 }
 </script>

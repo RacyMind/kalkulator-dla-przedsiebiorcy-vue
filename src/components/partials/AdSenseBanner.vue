@@ -12,48 +12,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
-import { useRoute } from 'vue-router';
-import { adSenseService } from 'src/services/adsense/AdSenseService';
-import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig';
+import { ref, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import { adSenseService } from 'src/services/adsense/AdSenseService'
+import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig'
 
 declare global {
   interface Window {
-    adsbygoogle: Array<Record<string, unknown>>;
+    adsbygoogle: Array<Record<string, unknown>>
   }
 }
 
 interface Props {
-  adSlot: string;
+  adSlot: string
 }
 
-defineProps<Props>();
+defineProps<Props>()
 
-const route = useRoute();
-const publisherId = AD_SENSE_CONFIG.publisherId;
-const layoutKey = AD_SENSE_CONFIG.layoutKey;
-const showAd = ref(false);
+const route = useRoute()
+const publisherId = AD_SENSE_CONFIG.publisherId
+const layoutKey = AD_SENSE_CONFIG.layoutKey
+const showAd = ref(false)
 
 onMounted(async () => {
   const canShow =
-    adSenseService.isAvailable() && adSenseService.isPageWithAds(route.path);
-  if (!canShow) return;
+    adSenseService.isAvailable() && adSenseService.isPageWithAds(route.path)
+  if (!canShow) return
 
-  showAd.value = true;
+  showAd.value = true
 
-  if (adSenseService.adPushed) return;
+  if (adSenseService.adPushed) return
 
-  await adSenseService.loadScript();
-  await nextTick();
+  await adSenseService.loadScript()
+  await nextTick()
 
   try {
-    window.adsbygoogle = window.adsbygoogle || [];
-    window.adsbygoogle.push({});
-    adSenseService.markAdPushed();
+    window.adsbygoogle = window.adsbygoogle || []
+    window.adsbygoogle.push({})
+    adSenseService.markAdPushed()
   } catch {
-    showAd.value = false;
+    showAd.value = false
   }
-});
+})
 </script>
 
 <style lang="scss" scoped>

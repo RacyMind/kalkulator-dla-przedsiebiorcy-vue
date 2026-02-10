@@ -1,10 +1,12 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection
       v-if="availableDates.length > 1"
-      title="Data obowiązywania przepisów">
+      title="Data obowiązywania przepisów"
+    >
       <LawRuleDate />
     </FormSection>
     <FormSection title="Wynagrodzenie">
@@ -19,16 +21,12 @@
             label="Wynagrodzenie"
             suffix="zł"
             color="brand"
-            :rules="[
-              val => !!val || '* Wpisz kwotę',
-            ]"
+            :rules="[(val) => !!val || '* Wpisz kwotę']"
             lazy-rules="ondemand"
             hide-bottom-space
           />
         </div>
-        <AmountTypeSelect
-          v-model="amountType"
-          class="col-shrink" />
+        <AmountTypeSelect v-model="amountType" class="col-shrink" />
       </div>
       <div class="row">
         <div class="col">
@@ -55,7 +53,10 @@
             label="Ulga podatkowa"
           />
           <Tooltip class="q-ml-sm">
-            Brak naliczania podatku dochodowego dla wynagrodzenia do {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br>Ulga dla osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla pracujących seniorów.
+            Brak naliczania podatku dochodowego dla wynagrodzenia do
+            {{ pln(incomeTaxConstants.taxReliefLimit) }} brutto.<br />Ulga dla
+            osób do 26 roku życia, dla rodzin 4+, na powrót z zagranicy, dla
+            pracujących seniorów.
           </Tooltip>
         </div>
         <div>
@@ -69,7 +70,8 @@
       </div>
       <TaxFreeAmountFields
         v-model:has-tax-free-amount="hasTaxFreeAmount"
-        v-model:employer-count="employerCount" />
+        v-model:employer-count="employerCount"
+      />
       <AuthorExpenseFields
         v-model:are-author-expenses="areAuthorExpenses"
         v-model:part-of-work-with-author-expenses="partOfWorkWithAuthorExpenses"
@@ -85,7 +87,8 @@
             :options="contributionSchemeOptions"
             emit-value
             map-options
-            label="Schemat składek ZUS" />
+            label="Schemat składek ZUS"
+          />
         </div>
       </div>
       <ZusContributionFields
@@ -108,20 +111,20 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia'
-import {AmountTypes, useConstantsStore} from 'stores/constantsStore'
-import {EmployeeCalculator} from 'components/contractOfEmployment/logic/EmployeeCalculator'
-import {InputFields} from 'components/contractOfEmployment/interfaces/InputFields'
-import {findGrossAmountUsingNetAmount} from 'src/logic/findGrossAmountUsingNetAmount'
-import {pln} from 'src/composables/currencyFormat'
-import {useEmploymentContractStore} from 'components/contractOfEmployment/store'
-import {useFormValidation} from 'src/composables/formValidation'
-import {useLawRuleDate} from 'src/composables/lawRuleDate'
-import {useLocalStorage} from '@vueuse/core'
-import {useMonthlyAmounts} from 'src/composables/monthlyAmounts'
-import {useMonthlyPercentages} from 'src/composables/monthlyPercentages'
-import {useTaxFreeAmount} from 'src/composables/taxFreeAmount'
-import {watch} from 'vue'
+import { storeToRefs } from 'pinia'
+import { AmountTypes, useConstantsStore } from 'stores/constantsStore'
+import { EmployeeCalculator } from 'components/contractOfEmployment/logic/EmployeeCalculator'
+import { InputFields } from 'components/contractOfEmployment/interfaces/InputFields'
+import { findGrossAmountUsingNetAmount } from 'src/logic/findGrossAmountUsingNetAmount'
+import { pln } from 'src/composables/currencyFormat'
+import { useEmploymentContractStore } from 'components/contractOfEmployment/store'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLawRuleDate } from 'src/composables/lawRuleDate'
+import { useLocalStorage } from '@vueuse/core'
+import { useMonthlyAmounts } from 'src/composables/monthlyAmounts'
+import { useMonthlyPercentages } from 'src/composables/monthlyPercentages'
+import { useTaxFreeAmount } from 'src/composables/taxFreeAmount'
+import { watch } from 'vue'
 import AmountTypeSelect from 'components/partials/form/AmountTypeSelect.vue'
 import AuthorExpenseFields from 'components/partials/form/employee/AuthorExpenseFields.vue'
 import EachMonthAmountFields from 'components/partials/form/EachMonthAmountFields.vue'
@@ -133,14 +136,18 @@ import TaxFreeAmountFields from 'components/partials/form/TaxFreeAmountFields.vu
 import Tooltip from 'components/partials/Tooltip.vue'
 import ZusContributionFields from 'components/partials/form/employee/ZusContributionFields.vue'
 import helpers from 'src/logic/helpers'
-import {matCheck, matClear} from 'src/icons'
+import { matCheck, matClear } from 'src/icons'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
 const emit = defineEmits(['submit'])
 
+const { incrementCalculationCount } = useReviewPrompt()
+
 const store = useEmploymentContractStore()
 const { availableDates } = useLawRuleDate()
-const {handleValidationError} = useFormValidation()
-const { zusConstants, incomeTaxConstants, wageStats } = storeToRefs(useConstantsStore())
+const { handleValidationError } = useFormValidation()
+const { zusConstants, incomeTaxConstants, wageStats } =
+  storeToRefs(useConstantsStore())
 
 enum ContributionSchemes {
   All = 1,
@@ -169,31 +176,110 @@ const contributionSchemeOptions = [
 ]
 
 // the salary section
-const amount = useLocalStorage('contractOfEmployment/form/amount', wageStats.value.minimumWage(), { mergeDefaults: true })
-const amountType =  useLocalStorage<AmountTypes>('contractOfEmployment/form/amountType', AmountTypes.Gross, { mergeDefaults: true })
-const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(amount, 'contractOfEmployment/form')
+const amount = useLocalStorage(
+  'contractOfEmployment/form/amount',
+  wageStats.value.minimumWage(),
+  { mergeDefaults: true },
+)
+const amountType = useLocalStorage<AmountTypes>(
+  'contractOfEmployment/form/amountType',
+  AmountTypes.Gross,
+  { mergeDefaults: true },
+)
+const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(
+  amount,
+  'contractOfEmployment/form',
+)
 
 // the income tax section
-const workInLivePlace = useLocalStorage('contractOfEmployment/form/workInLivePlace', true, { mergeDefaults: true })
-const areAuthorExpenses = useLocalStorage('contractOfEmployment/form/areAuthorExpenses', false, { mergeDefaults: true })
-const partOfWorkWithAuthorExpenses = useLocalStorage('contractOfEmployment/form/partOfWorkWithAuthorExpenses', 100, { mergeDefaults: true })
-const { hasPercentageForEachMonth: hasAuthhorExpensesForEachMonth, monthlyValues: expensesMonthlyValues } = useMonthlyPercentages(partOfWorkWithAuthorExpenses, 'contractOfEmployment/form/authorExpenses')
+const workInLivePlace = useLocalStorage(
+  'contractOfEmployment/form/workInLivePlace',
+  true,
+  { mergeDefaults: true },
+)
+const areAuthorExpenses = useLocalStorage(
+  'contractOfEmployment/form/areAuthorExpenses',
+  false,
+  { mergeDefaults: true },
+)
+const partOfWorkWithAuthorExpenses = useLocalStorage(
+  'contractOfEmployment/form/partOfWorkWithAuthorExpenses',
+  100,
+  { mergeDefaults: true },
+)
+const {
+  hasPercentageForEachMonth: hasAuthhorExpensesForEachMonth,
+  monthlyValues: expensesMonthlyValues,
+} = useMonthlyPercentages(
+  partOfWorkWithAuthorExpenses,
+  'contractOfEmployment/form/authorExpenses',
+)
 
-const hasTaxRelief = useLocalStorage('contractOfEmployment/form/hasTaxRelief', false, { mergeDefaults: true })
-const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount('contractOfEmployment/form')
+const hasTaxRelief = useLocalStorage(
+  'contractOfEmployment/form/hasTaxRelief',
+  false,
+  { mergeDefaults: true },
+)
+const { employerCount, hasTaxFreeAmount } = useTaxFreeAmount(
+  'contractOfEmployment/form',
+)
 
 // the ZUS contribution section
-const contributionScheme = useLocalStorage<ContributionSchemes>('contractOfEmployment/form/contributionScheme', ContributionSchemes.All, { mergeDefaults: true })
-const isHealthContribution = useLocalStorage('contractOfEmployment/form/isHealthContribution', true, { mergeDefaults: true })
-const isSickContribution = useLocalStorage('contractOfEmployment/form/isSickContribution', true, { mergeDefaults: true })
-const isDisabilityContribution = useLocalStorage('contractOfEmployment/form/isDisabilityContribution', true, { mergeDefaults: true })
-const isPensionContribution = useLocalStorage('contractOfEmployment/form/isPensionContribution', true, { mergeDefaults: true })
-const isFpContribution =  useLocalStorage('contractOfEmployment/form/isFpContribution', true, { mergeDefaults: true })
-const isFgspContribution =  useLocalStorage('contractOfEmployment/form/isFgspContribution', true, { mergeDefaults: true })
-const isPpkContribution =  useLocalStorage('contractOfEmployment/form/isPpkContribution', false, { mergeDefaults: true })
-const employerPpkContributionRate = useLocalStorage('contractOfEmployment/form/employerPpkContributionRate', zusConstants.value.employer.rates.ppkContribution.default * 100, { mergeDefaults: true })
-const employeePpkContributionRate = useLocalStorage('contractOfEmployment/form/employeePpkContributionRate', zusConstants.value.employee.rates.ppkContribution.default * 100, { mergeDefaults: true })
-const accidentContributionRate = useLocalStorage('contractOfEmployment/form/accidentContributionRate', zusConstants.value.employer.rates.accidentCContribution.default * 100, { mergeDefaults: true })
+const contributionScheme = useLocalStorage<ContributionSchemes>(
+  'contractOfEmployment/form/contributionScheme',
+  ContributionSchemes.All,
+  { mergeDefaults: true },
+)
+const isHealthContribution = useLocalStorage(
+  'contractOfEmployment/form/isHealthContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isSickContribution = useLocalStorage(
+  'contractOfEmployment/form/isSickContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isDisabilityContribution = useLocalStorage(
+  'contractOfEmployment/form/isDisabilityContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isPensionContribution = useLocalStorage(
+  'contractOfEmployment/form/isPensionContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isFpContribution = useLocalStorage(
+  'contractOfEmployment/form/isFpContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isFgspContribution = useLocalStorage(
+  'contractOfEmployment/form/isFgspContribution',
+  true,
+  { mergeDefaults: true },
+)
+const isPpkContribution = useLocalStorage(
+  'contractOfEmployment/form/isPpkContribution',
+  false,
+  { mergeDefaults: true },
+)
+const employerPpkContributionRate = useLocalStorage(
+  'contractOfEmployment/form/employerPpkContributionRate',
+  zusConstants.value.employer.rates.ppkContribution.default * 100,
+  { mergeDefaults: true },
+)
+const employeePpkContributionRate = useLocalStorage(
+  'contractOfEmployment/form/employeePpkContributionRate',
+  zusConstants.value.employee.rates.ppkContribution.default * 100,
+  { mergeDefaults: true },
+)
+const accidentContributionRate = useLocalStorage(
+  'contractOfEmployment/form/accidentContributionRate',
+  zusConstants.value.employer.rates.accidentCContribution.default * 100,
+  { mergeDefaults: true },
+)
 
 watch(contributionScheme, () => {
   switch (contributionScheme.value) {
@@ -204,7 +290,8 @@ watch(contributionScheme, () => {
       isPensionContribution.value = true
       isFpContribution.value = true
       isFgspContribution.value = true
-      accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
+      accidentContributionRate.value =
+        zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.WithoutFpAndFgsp:
       isHealthContribution.value = true
@@ -213,7 +300,8 @@ watch(contributionScheme, () => {
       isPensionContribution.value = true
       isFpContribution.value = false
       isFgspContribution.value = false
-      accidentContributionRate.value = zusConstants.value.employer.rates.accidentCContribution.default * 100
+      accidentContributionRate.value =
+        zusConstants.value.employer.rates.accidentCContribution.default * 100
       break
     case ContributionSchemes.OnlyHealthContribution:
       isHealthContribution.value = true
@@ -246,8 +334,12 @@ const handleFormSubmit = () => {
   const basicInputFields: InputFields = {
     grossAmount: amount.value,
     hasTaxRelief: hasTaxRelief.value,
-    partTaxReducingAmount: hasTaxFreeAmount.value ? employerCount.value * 12 : 0,
-    partOfWorkWithAuthorExpenses: areAuthorExpenses.value ? helpers.round(partOfWorkWithAuthorExpenses.value / 100, 2) : 0,
+    partTaxReducingAmount: hasTaxFreeAmount.value
+      ? employerCount.value * 12
+      : 0,
+    partOfWorkWithAuthorExpenses: areAuthorExpenses.value
+      ? helpers.round(partOfWorkWithAuthorExpenses.value / 100, 2)
+      : 0,
     workInLivePlace: workInLivePlace.value,
     isHealthContribution: isHealthContribution.value,
     isDisabilityContribution: isDisabilityContribution.value,
@@ -255,9 +347,16 @@ const handleFormSubmit = () => {
     isSickContribution: isSickContribution.value,
     isFpContribution: isFpContribution.value,
     isFgspContribution: isFgspContribution.value,
-    accidentContributionRate: helpers.round(accidentContributionRate.value / 100, 4),
-    employeePpkContributionRate: isPpkContribution.value ? helpers.round(employeePpkContributionRate.value / 100, 4) : 0,
-    employerPpkContributionRate: isPpkContribution.value ? helpers.round(employerPpkContributionRate.value / 100, 4) : 0,
+    accidentContributionRate: helpers.round(
+      accidentContributionRate.value / 100,
+      4,
+    ),
+    employeePpkContributionRate: isPpkContribution.value
+      ? helpers.round(employeePpkContributionRate.value / 100, 4)
+      : 0,
+    employerPpkContributionRate: isPpkContribution.value
+      ? helpers.round(employerPpkContributionRate.value / 100, 4)
+      : 0,
   }
 
   const monhtlyInputFields: InputFields[] = []
@@ -270,20 +369,23 @@ const handleFormSubmit = () => {
   }
 
   for (let i = 0; i < 12; i++) {
-    const inputFields:InputFields = {...basicInputFields}
+    const inputFields: InputFields = { ...basicInputFields }
 
-    if(areAuthorExpenses.value && hasAuthhorExpensesForEachMonth.value) {
-      inputFields.partOfWorkWithAuthorExpenses = helpers.round(expensesMonthlyValues.value[i] / 100, 2)
+    if (areAuthorExpenses.value && hasAuthhorExpensesForEachMonth.value) {
+      inputFields.partOfWorkWithAuthorExpenses = helpers.round(
+        expensesMonthlyValues.value[i] / 100,
+        2,
+      )
     }
 
-    if(amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
+    if (amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
       inputFields.grossAmount = Number(monthlyAmounts.value[i])
     }
 
-    if(amountType.value === AmountTypes.Net) {
+    if (amountType.value === AmountTypes.Net) {
       let netAmount = amount.value
 
-      if(hasAmountForEachMonth.value) {
+      if (hasAmountForEachMonth.value) {
         netAmount = Number(monthlyAmounts.value[i])
       }
 
@@ -291,11 +393,21 @@ const handleFormSubmit = () => {
       inputFields.grossAmount = findGrossAmountUsingNetAmount(
         (grossAmount) => {
           inputFields.grossAmount = grossAmount
-          return calculator.setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getResult()
+          return calculator
+            .setSumUpAmounts(sumUpAmounts)
+            .setInputData(inputFields)
+            .calculate()
+            .getResult()
         },
-        0.5 * netAmount, 2 * netAmount, netAmount,
+        0.5 * netAmount,
+        2 * netAmount,
+        netAmount,
       )
-      sumUpAmounts = new EmployeeCalculator(true).setSumUpAmounts(sumUpAmounts).setInputData(inputFields).calculate().getSumUpAmounts()
+      sumUpAmounts = new EmployeeCalculator(true)
+        .setSumUpAmounts(sumUpAmounts)
+        .setInputData(inputFields)
+        .calculate()
+        .getSumUpAmounts()
     }
 
     monhtlyInputFields.push(inputFields)
@@ -303,7 +415,7 @@ const handleFormSubmit = () => {
 
   store.monthlyInputFields = monhtlyInputFields
 
+  incrementCalculationCount()
   emit('submit')
 }
-
 </script>

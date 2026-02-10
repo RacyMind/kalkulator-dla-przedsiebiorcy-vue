@@ -19,6 +19,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@capacitor-community/in-app-review": "^8.0.0",
     "@quasar/extras": "^1.17.0",
     "@vueuse/core": "^14.2.0",
     "axios": "^1.13.4",

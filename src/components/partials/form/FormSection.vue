@@ -29,9 +29,9 @@
   <Separator v-if="!hideSeparator" />
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import Separator from 'components/partials/Separator.vue';
-import { matExpandLess, matExpandMore } from 'src/icons';
+import { ref } from 'vue'
+import Separator from 'components/partials/Separator.vue'
+import { matExpandLess, matExpandMore } from 'src/icons'
 
 const props = defineProps({
   title: String,
@@ -40,6 +40,6 @@ const props = defineProps({
     required: false,
     default: false,
   },
-});
-const visible = ref(true);
+})
+const visible = ref(true)
 </script>
