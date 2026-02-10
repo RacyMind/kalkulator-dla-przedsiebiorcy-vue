@@ -10,25 +10,25 @@
     </ListRow>
     <ListRow>
       <template #name>Zmiana formy opodatkowania</template>
-      <template #description
-        >do 20 dnia miesiąca następującego po miesiącu, w którym został
-        osiągnięty pierwszy przychód w danym roku podatkowym</template
-      >
+      <template #description>
+        do 20 dnia miesiąca następującego po miesiącu, w którym został
+        osiągnięty pierwszy przychód w danym roku podatkowym
+      </template>
     </ListRow>
     <ListRow>
       <template #name>Rozliczenie PIT</template>
-      <template #description
-        >do 30. kwietnia. W przypadku, gdy termin nie jest dniem roboczym termin
-        zostaje przeniesiony na najbliższy dzień roboczy</template
-      >
+      <template #description>
+        do 30. kwietnia. W przypadku, gdy termin nie jest dniem roboczym termin
+        zostaje przeniesiony na najbliższy dzień roboczy
+      </template>
     </ListRow>
     <ListRow>
       <template #name>Termin składania formularza VAT-26</template>
-      <template #description
-        >do 25. dnia następnego miesiąca, w którym zostanie poniesiony pierwszy
+      <template #description>
+        do 25. dnia następnego miesiąca, w którym zostanie poniesiony pierwszy
         wydatek związany z pojazdem, nie później jednak niż w dniu przesłania
-        ewidencji JPK_V7</template
-      >
+        ewidencji JPK_V7
+      </template>
     </ListRow>
   </div>
 </template>
