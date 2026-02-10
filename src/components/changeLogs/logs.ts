@@ -1,5 +1,10 @@
 export default [
   {
+    content: '<ul><li>Zmiany w interfesie.</li></ul>',
+    publish_date: '2026-02-10',
+    version: '6.0.1',
+  },
+  {
     content:
       '<ul><li>Nowy dashboard z kafelkami modułów pogrupowanymi w sekcje i responsywny panel boczny.</li><li>Dwukolumnowy układ stron modułów (formularz + wyniki) i nowa ikona aplikacji.</li><li>Tryb ciemny (dark mode) z trzema opcjami: jasny, ciemny i automatyczny.</li><li>Poprawiono dostępność WCAG AA — semantyczny HTML, nawigacja klawiaturą, atrybuty ARIA.</li><li>Dodano obligacje ROS (6-letnie) i ROD (12-letnie) w module Obligacje skarbowe.</li><li>Dodano tryb stawki godzinowej w module Samozatrudnienie (B2B).</li><li>Moduł Inflacja pobiera dane automatycznie z API Eurostat/ECB.</li><li>Dodano moduł Kalkulator zysku z najmu.</li><li>Dodano meta tagi Open Graph i Twitter/X Cards dla lepszego udostępniania w social media.</li><li>Refaktoryzacja kodu: migracja na Pinia, ujednolicenie stałych, nowa paleta kolorów.</li></ul>',
     publish_date: '2026-02-08',
@@ -342,4 +347,4 @@ export default [
     publish_date: '2021-04-24',
     version: '3.0.0',
   },
-];
+]

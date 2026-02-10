@@ -1,74 +1,70 @@
-import {MenuItem} from 'components/partials/menu/interfaces/MenuItem'
-import {Platform} from 'quasar'
+import { MenuItem } from 'components/partials/menu/interfaces/MenuItem'
+import { Platform } from 'quasar'
 
 const appMenuItems: MenuItem[] = []
 
-if(Platform.is.mobile && !Platform.is.nativeMobile	 && Platform.is.android) {
-  appMenuItems.push(
-    {
-      caption: 'Pobierz natywną aplikację na swoje urządzenie',
-      className: 'c-app',
-      link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-      title: 'Pobierz w Google Play',
-    },
-  )
+if (Platform.is.mobile && !Platform.is.nativeMobile && Platform.is.android) {
+  appMenuItems.push({
+    caption: 'Pobierz natywną aplikację na swoje urządzenie',
+    className: 'c-app',
+    link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
+    title: 'Pobierz w Google Play',
+  })
 }
-if(Platform.is.nativeMobile	 && Platform.is.android) {
-  appMenuItems.push(
-    {
-      title: 'Oceń w Google Play',
-      caption: 'Pomóż w rozwoju aplikacji i oceń aplikację w Google Play',
-      className: 'c-app',
-      link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-    },
-  )
+if (Platform.is.nativeMobile && Platform.is.android) {
+  appMenuItems.push({
+    title: 'Podoba Ci się? Oceń!',
+    caption: 'Twoja opinia pomaga innym użytkownikom',
+    className: 'c-app',
+    link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
+  })
 }
 
 appMenuItems.push(
-    {
-      caption: 'Pokazuje historię zmian w aplikacji',
-      className: 'c-app',
-      link: '/historia-zmian',
-      title: 'Historia zmian',
-    },
-    {
-      caption: '@kalkulator.finansowy',
-      className: 'c-app',
-      link: 'https://www.facebook.com/kalkulator.finansowy',
-      title: 'Polub na Facebooku',
-    },
-    {
-      caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
-      className: 'c-app',
-      link: '/kontakt',
-      title: 'Formularz kontaktowy',
-    },
-    {
-      caption: '',
-      className: 'c-app',
-      link: '/polityka-prywatnosci',
-      title: 'Polityka prywatności',
-    },
-    {
-      caption: 'Repozytorium aplikacji',
-      className: 'c-app',
-      link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
-      title: 'GitHub',
-    },
+  {
+    caption: 'Pokazuje historię zmian w aplikacji',
+    className: 'c-app',
+    link: '/historia-zmian',
+    title: 'Historia zmian',
+  },
+  {
+    caption: '@kalkulator.finansowy',
+    className: 'c-app',
+    link: 'https://www.facebook.com/kalkulator.finansowy',
+    title: 'Polub na Facebooku',
+  },
+  {
+    caption: 'Formularz do zgłaszania błędów lub pomysłów na nowe funkcje',
+    className: 'c-app',
+    link: '/kontakt',
+    title: 'Formularz kontaktowy',
+  },
+  {
+    caption: '',
+    className: 'c-app',
+    link: '/polityka-prywatnosci',
+    title: 'Polityka prywatności',
+  },
+  {
+    caption: 'Repozytorium aplikacji',
+    className: 'c-app',
+    link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
+    title: 'GitHub',
+  },
 )
 export default {
-
-
   app: appMenuItems,
   company: [
     {
-      caption: 'Oblicz wynagrodzenie netto, podatek i składki ZUS na działalności gospodarczej',
+      caption:
+        'Oblicz wynagrodzenie netto, podatek i składki ZUS na działalności gospodarczej',
       className: 'c-company',
       link: '/samozatrudnienie',
       title: 'Samozatrudnienie (B2B)',
     } as MenuItem,
     {
-      caption: 'Porównaj formy opodatkowania i wybierz najkorzystniejszą dla siebie',
+      caption:
+        'Porównaj formy opodatkowania i wybierz najkorzystniejszą dla siebie',
       className: 'c-company',
       link: '/porownywarka-b2b',
       title: 'Porównywarka B2B',
@@ -98,7 +94,8 @@ export default {
       title: 'Limit zwolnienia z VAT',
     } as MenuItem,
     {
-      caption: 'Oblicz proporcjonalne składki ZUS gdy rozpoczynasz lub kończysz działalność w trakcie miesiąca',
+      caption:
+        'Oblicz proporcjonalne składki ZUS gdy rozpoczynasz lub kończysz działalność w trakcie miesiąca',
       className: 'c-company',
       link: '/skladki-zus-za-czesc-miesiaca',
       title: 'Składki ZUS za część miesiąca',
@@ -166,7 +163,8 @@ export default {
       title: 'Ulga podatkowa IKZE',
     } as MenuItem,
     {
-      caption: 'Symuluj długoterminowe oszczędności na IKE z korzyścią podatkową',
+      caption:
+        'Symuluj długoterminowe oszczędności na IKE z korzyścią podatkową',
       className: 'c-savings',
       link: '/kalkulator-ike',
       title: 'Kalkulator IKE',
@@ -190,7 +188,8 @@ export default {
       title: 'Obligacje skarbowe',
     } as MenuItem,
     {
-      caption: 'Oblicz zysk z najmu prywatnego z uwzględnieniem ryczałtu i kosztów',
+      caption:
+        'Oblicz zysk z najmu prywatnego z uwzględnieniem ryczałtu i kosztów',
       className: 'c-savings',
       link: '/zysk-z-najmu',
       title: 'Zysk z najmu',
@@ -210,7 +209,8 @@ export default {
       title: 'Umowa zlecenie',
     } as MenuItem,
     {
-      caption: 'Oblicz wynagrodzenie netto z uwzględnieniem kosztów uzyskania przychodu',
+      caption:
+        'Oblicz wynagrodzenie netto z uwzględnieniem kosztów uzyskania przychodu',
       className: 'c-work',
       link: '/umowa-o-dzielo',
       title: 'Umowa o dzieło',

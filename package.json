@@ -1,6 +1,6 @@
 {
   "name": "kalkulator-finansowy",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Kalkulator finansowy umożliwia obliczenie wynagrodzenia z umowy o pracę, umowy zlecenie, umowy o dzieło czy pracy na zasadach B2B. Uwzględnia Polski Ład.",
   "productName": "Kalkulator finansowy – Darmowy kalkulator wynagrodzeń i podatków",
   "author": "Łukasz Socha <kontakt@lukasz-socha.pl>",
@@ -19,6 +19,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@capacitor-community/in-app-review": "^8.0.0",
     "@quasar/extras": "^1.17.0",
     "@vueuse/core": "^14.2.0",
     "axios": "^1.13.4",
@@ -32,6 +33,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@capacitor-firebase/analytics": "^6.3.1",
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@quasar/app-vite": "^2.4.0",

@@ -29,33 +29,34 @@
         />
       </div>
     </div>
-    <div v-if="loading">
-      Wczytywanie...
-    </div>
+    <div v-if="loading">Wczytywanie...</div>
     <template v-else-if="values.length">
-      <LineChart
-        :chart-options="chartOptions"
-        :chart-data="chartData"/>
+      <LineChart :chart-options="chartOptions" :chart-data="chartData" />
     </template>
     <span v-else>Brak danych</span>
     <p
       class="q-mt-md q-mb-none text-grey text-justify"
-      style="font-size:0.8rem;">
-      Wykres pokazuje zmianę siły nabywczej pieniądza w odniesieniu do kwoty bazowej.<br><br>
-      Źródło danych: <a
+      style="font-size: 0.8rem"
+    >
+      Wykres pokazuje zmianę siły nabywczej pieniądza w odniesieniu do kwoty
+      bazowej.<br /><br />
+      Źródło danych:
+      <a
         class="text-grey"
         href="https://data.ecb.europa.eu/data/datasets/ICP/ICP.M.PL.N.000000.4.ANR"
-        target="_blank">Eurostat/ECB</a>
+        target="_blank"
+        >Eurostat/ECB</a
+      >
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
-import {computed, ref, watch} from 'vue'
-import {useLineChart} from 'src/composables/useLineChart'
+import { InflationEntry } from 'components/inflation/interfaces/InflationEntry'
+import { computed, ref, watch } from 'vue'
+import { useLineChart } from 'src/composables/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
-import {useConstantsStore} from 'stores/constantsStore'
+import { useConstantsStore } from 'stores/constantsStore'
 import helpers from 'src/logic/helpers'
 import inflation from './inflation'
 import validationRules from 'src/logic/validationRules'
@@ -67,27 +68,27 @@ const chartOptions = {
     display: false,
   },
   scales: {
-    xAxes: [{
-      time: {
-        unit: 'quarter',
+    xAxes: [
+      {
+        time: {
+          unit: 'quarter',
+        },
+        type: 'time',
       },
-      type: 'time',
-    }],
-      yAxes: [{
-      scaleLabel: {
-        display: true,
-        labelString: 'Siła nabywcza pieniądza w zł',
+    ],
+    yAxes: [
+      {
+        scaleLabel: {
+          display: true,
+          labelString: 'Siła nabywcza pieniądza w zł',
+        },
       },
-    }],
+    ],
   },
 }
 
 const currentYear = new Date().getFullYear()
 const availableYears = [
-  {
-    label: 'Ostatni rok',
-    value: currentYear - 1,
-  },
   {
     label: 'Ostatnie 5 lat',
     value: currentYear - 5,
@@ -105,34 +106,34 @@ const amount = ref(10000)
 const year = ref(availableYears[0].value)
 const loading = ref(false)
 const labels = ref<string[]>([])
-const values = ref<Array<{x: Date, y: number}>>([])
+const values = ref<Array<{ x: Date; y: number }>>([])
 
-const chartData = computed(() => useLineChart(
-    'Kwota',
-    labels.value,
-    values.value,
-  ),
+const chartData = computed(() =>
+  useLineChart('Kwota', labels.value, values.value),
 )
 
 const fetchData = () => {
   loading.value = true
-  inflation.fetchInflationRates(year.value, 'lastMonth').then((response: InflationEntry[]) => {
-    labels.value = response.map((data: InflationEntry) => {
-      return `${constants.localeDate.months[data.month - 1]} ${data.year}`
-    })
+  inflation
+    .fetchInflationRates(year.value, 'lastMonth')
+    .then((response: InflationEntry[]) => {
+      labels.value = response.map((data: InflationEntry) => {
+        return `${constants.localeDate.months[data.month - 1]} ${data.year}`
+      })
 
-    let currentValue = amount.value
+      let currentValue = amount.value
 
-    values.value = response.map((data: InflationEntry) => {
-      currentValue = currentValue - currentValue * data.value/100
-      return {
-        x: new Date(`${data.year}-${data.month}-01`),
-        y: helpers.round(currentValue, 2),
-      }
+      values.value = response.map((data: InflationEntry) => {
+        currentValue = currentValue - (currentValue * data.value) / 100
+        return {
+          x: new Date(`${data.year}-${data.month}-01`),
+          y: helpers.round(currentValue, 2),
+        }
+      })
     })
-  }).finally(() => {
-    loading.value = false
-  })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 fetchData()

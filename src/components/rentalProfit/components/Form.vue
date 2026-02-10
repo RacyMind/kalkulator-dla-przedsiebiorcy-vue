@@ -1,7 +1,8 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection title="Dane najmu">
       <div class="row q-col-gutter-sm q-mb-sm">
         <div class="col-12">
@@ -13,13 +14,18 @@
             label="Miesięczny przychód z najmu (zł)"
             suffix="zł"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(0),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>Czysty czynsz najmu, bez opłat za media i czynsz administracyjny</Tooltip>
+              <Tooltip>
+                Czysty czynsz najmu, bez opłat za media i czynsz administracyjny
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -34,13 +40,20 @@
             label="Miesięczne koszty utrzymania (zł)"
             suffix="zł"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(0),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>Twoje wydatki jako wynajmującego (ubezpieczenie, naprawy, kredyt). NIE zmniejszają podatku ryczałtowego, ale wpływają na realny zysk netto</Tooltip>
+              <Tooltip>
+                Twoje wydatki jako wynajmującego (ubezpieczenie, naprawy,
+                kredyt). NIE zmniejszają podatku ryczałtowego, ale wpływają na
+                realny zysk netto
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -55,13 +68,20 @@
             label="Opłaty refakturowane na najemcę (zł/mies.)"
             suffix="zł"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(0)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(0),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>Kwoty, które najemca Ci płaci, a Ty przekazujesz dalej (spółdzielnia, dostawcy mediów). Zmniejszają przychód do opodatkowania ryczałtem</Tooltip>
+              <Tooltip>
+                Kwoty, które najemca Ci płaci, a Ty przekazujesz dalej
+                (spółdzielnia, dostawcy mediów). Zmniejszają przychód do
+                opodatkowania ryczałtem
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -78,13 +98,19 @@
             step="1"
             label="Liczba lat"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(1), validationRules.maxValue(30)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(1),
+              validationRules.maxValue(30),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>Na ile lat chcesz zobaczyć projekcję zysku z najmu</Tooltip>
+              <Tooltip>
+                Na ile lat chcesz zobaczyć projekcję zysku z najmu
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -99,13 +125,20 @@
             step="1"
             label="Pustostany (miesiące bez najemcy w roku)"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(12)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(0),
+              validationRules.maxValue(12),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>Ile miesięcy w roku przewidujesz bez najemcy. Przychód zmniejsza się proporcjonalnie, koszty utrzymania pozostają</Tooltip>
+              <Tooltip>
+                Ile miesięcy w roku przewidujesz bez najemcy. Przychód zmniejsza
+                się proporcjonalnie, koszty utrzymania pozostają
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -121,13 +154,20 @@
             label="Roczna waloryzacja czynszu (%)"
             suffix="%"
             color="brand"
-            :rules="[validationRules.requiredAmount, validationRules.minValue(0), validationRules.maxValue(100)]"
+            :rules="[
+              validationRules.requiredAmount,
+              validationRules.minValue(0),
+              validationRules.maxValue(100),
+            ]"
             lazy-rules="ondemand"
             hide-bottom-space
             aria-required="true"
           >
             <template #append>
-              <Tooltip>O ile procent rocznie planujesz podnosić czynsz. Stosowane w projekcji wieloletniej</Tooltip>
+              <Tooltip>
+                O ile procent rocznie planujesz podnosić czynsz. Stosowane w
+                projekcji wieloletniej
+              </Tooltip>
             </template>
           </q-input>
         </div>
@@ -140,7 +180,11 @@
             :unchecked-icon="matClear"
             label="Rozliczenie małżonków (próg 200 000 zł)"
           />
-          <Tooltip>Zaznacz, jeśli składasz oświadczenie o opodatkowaniu całości przychodu z najmu u jednego z małżonków. Próg podwyższonej stawki rośnie do 200 000 zł</Tooltip>
+          <Tooltip>
+            Zaznacz, jeśli składasz oświadczenie o opodatkowaniu całości
+            przychodu z najmu u jednego z małżonków. Próg podwyższonej stawki
+            rośnie do 200 000 zł
+          </Tooltip>
         </div>
       </div>
     </FormSection>
@@ -149,28 +193,53 @@
 </template>
 
 <script setup lang="ts">
-import {InputFields} from 'components/rentalProfit/interfaces/InputFields'
-import {useFormValidation} from 'src/composables/formValidation'
-import {useLocalStorage} from '@vueuse/core'
-import {useRentalProfitStore} from 'components/rentalProfit/store'
+import { InputFields } from 'components/rentalProfit/interfaces/InputFields'
+import { useFormValidation } from 'src/composables/formValidation'
+import { useLocalStorage } from '@vueuse/core'
+import { useRentalProfitStore } from 'components/rentalProfit/store'
 import FormSection from 'components/partials/form/FormSection.vue'
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
 import Tooltip from 'components/partials/Tooltip.vue'
 import validationRules from 'src/logic/validationRules'
-import {matCheck, matClear} from 'src/icons'
+import { matCheck, matClear } from 'src/icons'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
 const emit = defineEmits(['submit'])
 
-const {handleValidationError} = useFormValidation()
+const { incrementCalculationCount } = useReviewPrompt()
+
+const { handleValidationError } = useFormValidation()
 const store = useRentalProfitStore()
 
-const monthlyRent = useLocalStorage('rentalProfit/form/monthlyRent', 3000, {mergeDefaults: true})
-const monthlyExpenses = useLocalStorage('rentalProfit/form/monthlyExpenses', 500, {mergeDefaults: true})
-const refactoredCharges = useLocalStorage('rentalProfit/form/refactoredCharges', 0, {mergeDefaults: true})
-const numberOfYears = useLocalStorage('rentalProfit/form/numberOfYears', 1, {mergeDefaults: true})
-const isSpouseSettlement = useLocalStorage('rentalProfit/form/isSpouseSettlement', false, {mergeDefaults: true})
-const vacancyMonths = useLocalStorage('rentalProfit/form/vacancyMonths', 0, {mergeDefaults: true})
-const annualRentIncrease = useLocalStorage('rentalProfit/form/annualRentIncrease', 0, {mergeDefaults: true})
+const monthlyRent = useLocalStorage('rentalProfit/form/monthlyRent', 3000, {
+  mergeDefaults: true,
+})
+const monthlyExpenses = useLocalStorage(
+  'rentalProfit/form/monthlyExpenses',
+  500,
+  { mergeDefaults: true },
+)
+const refactoredCharges = useLocalStorage(
+  'rentalProfit/form/refactoredCharges',
+  0,
+  { mergeDefaults: true },
+)
+const numberOfYears = useLocalStorage('rentalProfit/form/numberOfYears', 1, {
+  mergeDefaults: true,
+})
+const isSpouseSettlement = useLocalStorage(
+  'rentalProfit/form/isSpouseSettlement',
+  false,
+  { mergeDefaults: true },
+)
+const vacancyMonths = useLocalStorage('rentalProfit/form/vacancyMonths', 0, {
+  mergeDefaults: true,
+})
+const annualRentIncrease = useLocalStorage(
+  'rentalProfit/form/annualRentIncrease',
+  0,
+  { mergeDefaults: true },
+)
 
 const handleFormSubmit = () => {
   if (!monthlyRent.value && monthlyRent.value !== 0) {
@@ -189,6 +258,7 @@ const handleFormSubmit = () => {
 
   store.inputFields = inputFields
 
+  incrementCalculationCount()
   emit('submit')
 }
 </script>

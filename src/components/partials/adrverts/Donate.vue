@@ -18,8 +18,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import SupportProject from 'components/partials/SupportProject.vue';
+import { ref } from 'vue'
+import SupportProject from 'components/partials/SupportProject.vue'
 
-const openModal = ref(false);
+const openModal = ref(false)
 </script>

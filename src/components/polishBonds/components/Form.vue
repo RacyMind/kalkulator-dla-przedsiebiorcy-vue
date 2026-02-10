@@ -1,7 +1,8 @@
 <template>
   <q-form
     @validation-error="handleValidationError"
-    @submit.prevent="handleFormSubmit">
+    @submit.prevent="handleFormSubmit"
+  >
     <FormSection title="Rodzaj obligacji">
       <div class="row">
         <div class="col">
@@ -19,24 +20,17 @@
         </div>
       </div>
 
-      <BondDescription
-        v-if="bondType"
-        :bond-type="bondType"
-      />
+      <BondDescription v-if="bondType" :bond-type="bondType" />
     </FormSection>
 
     <FormSection title="Parametry obligacji">
-      <CommonFields
-        ref="commonFieldsRef"
-      />
-      <component
-        :is="bondForm"
-        v-if="bondType"
-        :ref="setBondFormRef"
-      />
+      <CommonFields ref="commonFieldsRef" />
+      <component :is="bondForm" v-if="bondType" :ref="setBondFormRef" />
       <p class="q-my-none text-caption text-grey">
-        Aktualne oprocentowanie obligacji skarbowych znajduje się na stronie <a href="https://www.obligacjeskarbowe.pl/"
-                                                                                target="_blank">obligacjeskarbowe.pl</a>.
+        Aktualne oprocentowanie obligacji skarbowych znajduje się na stronie
+        <a href="https://www.obligacjeskarbowe.pl/" target="_blank"
+          >obligacjeskarbowe.pl</a
+        >.
       </p>
     </FormSection>
     <SubmitButton />
@@ -46,7 +40,7 @@
 <script setup lang="ts">
 import { BondType, usePolishBondsStore } from 'components/polishBonds/store'
 import { computed, ref } from 'vue'
-import {useFormValidation} from 'src/composables/formValidation'
+import { useFormValidation } from 'src/composables/formValidation'
 import { useLocalStorage } from '@vueuse/core'
 import BondDescription from 'components/polishBonds/components/BondDescription.vue'
 import CoiForm from 'components/polishBonds/components/bondForms/CoiForm.vue'
@@ -61,12 +55,17 @@ import RosForm from 'components/polishBonds/components/bondForms/RosForm.vue'
 import SubmitButton from 'src/components/partials/form/SubmitButton.vue'
 import TosForm from 'components/polishBonds/components/bondForms/TosForm.vue'
 import validationRules from 'src/logic/validationRules'
+import { useReviewPrompt } from 'src/composables/useReviewPrompt'
 
 const emit = defineEmits(['submit'])
 
-const {handleValidationError} = useFormValidation()
+const { incrementCalculationCount } = useReviewPrompt()
+
+const { handleValidationError } = useFormValidation()
 const store = usePolishBondsStore()
-const bondType = useLocalStorage<BondType>('polishBonds/form/bondType', 'EDO', { mergeDefaults: true })
+const bondType = useLocalStorage<BondType>('polishBonds/form/bondType', 'EDO', {
+  mergeDefaults: true,
+})
 const bondCount = ref<number | null>(null)
 const yearlyInflationRate = ref<number | null>(null)
 const belkaTax = ref(true)
@@ -117,7 +116,7 @@ const saveCommonFields = () => {
 
   store.commonInputFields = {
     boughtBondCount: commonFieldsValue.boughtBondCount,
-    yearlyInflationRate:commonFieldsValue.yearlyInflationRate,
+    yearlyInflationRate: commonFieldsValue.yearlyInflationRate,
     belkaTax: commonFieldsValue.belkaTax,
   }
 
@@ -196,6 +195,7 @@ const handleFormSubmit = () => {
       break
   }
 
+  incrementCalculationCount()
   emit('submit')
 }
 

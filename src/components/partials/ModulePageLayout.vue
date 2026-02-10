@@ -1,26 +1,16 @@
 <template>
   <q-page class="module-page module-page--padded">
-    <div
-      class="row q-col-gutter-md"
-      :style="containerStyle"
-    >
+    <div class="row q-col-gutter-md" :style="containerStyle">
       <div :class="formColumnClass">
-        <q-card
-          flat
-          class="module-card module-card--padded"
-        >
+        <q-card flat class="module-card module-card--padded">
           <slot name="form"></slot>
         </q-card>
       </div>
-      <div v-if="$slots.results"
-           :class="resultsColumnClass"
-           aria-live="polite">
-        <q-card
-          flat
-          class="module-card module-card--padded"
-        >
+      <div v-if="$slots.results" :class="resultsColumnClass" aria-live="polite">
+        <q-card flat class="module-card module-card--padded">
           <slot name="results"></slot>
         </q-card>
+        <AdSenseBanner :ad-slot="adSlot" />
       </div>
     </div>
     <div :style="containerStyle">
@@ -31,7 +21,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import AdSenseBanner from 'components/partials/AdSenseBanner.vue'
 import Footer from 'components/partials/Footer.vue'
+import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig'
+
+const adSlot = AD_SENSE_CONFIG.adSlot
 
 interface Props {
   singleColumn?: boolean

@@ -1,8 +1,8 @@
-import { computed } from 'vue';
-import { acceptHMRUpdate, defineStore } from 'pinia';
-import { useSettingStore } from 'stores/settingStore';
-import helpers from 'src/logic/helpers';
-import { YEAR_PARAMS } from './constants/yearParams';
+import { computed } from 'vue'
+import { acceptHMRUpdate, defineStore } from 'pinia'
+import { useSettingStore } from 'stores/settingStore'
+import helpers from 'src/logic/helpers'
+import { YEAR_PARAMS } from './constants/yearParams'
 import type {
   AvailableYear,
   EmployeeZusConstants,
@@ -11,11 +11,11 @@ import type {
   IncomeTaxConstants,
   WageStats,
   ZusConstants,
-} from './constants/types';
-import type { AmountType } from 'src/types/AmountType';
-import type { IncomeTaxType } from 'src/types/IncomeTaxType';
+} from './constants/types'
+import type { AmountType } from 'src/types/AmountType'
+import type { IncomeTaxType } from 'src/types/IncomeTaxType'
 
-export { AmountTypes, EntrepreneurTaxSystem } from './constants/types';
+export { AmountTypes, EntrepreneurTaxSystem } from './constants/types'
 export type {
   AvailableYear,
   EmployeeZusConstants,
@@ -24,61 +24,61 @@ export type {
   IncomeTaxConstants,
   WageStats,
   ZusConstants,
-} from './constants/types';
+} from './constants/types'
 
 export const useConstantsStore = defineStore('constantsStore', () => {
-  const settingStore = useSettingStore();
+  const settingStore = useSettingStore()
 
   // --- Static constants ---
 
   const app = {
     name: 'Kalkulator finansowy',
-    version: '6.0.0',
-  };
+    version: '6.0.1',
+  }
 
   const amountTypes = {
     gross: 'gross' as AmountType,
     net: 'net' as AmountType,
-  };
+  }
 
   const taxTypes = {
     general: 'general' as IncomeTaxType,
     linear: 'linear' as IncomeTaxType,
     lumpSum: 'lumpSum' as IncomeTaxType,
-  };
+  }
 
-  const availableYears: AvailableYear[] = [2021, 2022, 2023, 2024, 2025, 2026];
+  const availableYears: AvailableYear[] = [2021, 2022, 2023, 2024, 2025, 2026]
 
   const contractOfEmployment = {
     authorExpensesRate: 0.5,
     expensesIfYouWorkWhereYouDontLive: 300,
     expensesIfYouWorkWhereYouLive: 250,
-  };
+  }
 
   const contractOfMandate = {
     authorExpensesRate: 0.5,
     expensesRate: 0.2,
-  };
+  }
 
   const contractWork = {
     expenses20: 0.2,
     expenses50: 0.5,
-  };
+  }
 
   const ppk = {
     employee: { defaultRate: 2, maximumRate: 4, minimumRate: 0.5 },
     employer: { defaultRate: 1.5, maximumRate: 4, minimumRate: 1.5 },
-  };
+  }
 
-  const vatLimit = 200000;
-  const cashRegisterLimit = 20000;
+  const vatLimit = 200000
+  const cashRegisterLimit = 20000
 
   const rentalTax = {
     lumpSumRate: 0.085,
     lumpSumRateAboveThreshold: 0.125,
     threshold: 100000,
     spouseThreshold: 200000,
-  };
+  }
 
   const localeDate = {
     days: 'Niedziela_Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota'.split(
@@ -92,7 +92,7 @@ export const useConstantsStore = defineStore('constantsStore', () => {
       ),
     monthsShort: 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
     wholeYearIndex: 12,
-  };
+  }
 
   const monthNames = [
     'Styczeń',
@@ -107,19 +107,19 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     'Październik',
     'Listopad',
     'Grudzień',
-  ];
+  ]
 
-  const fullYear = 'Cały rok';
+  const fullYear = 'Cały rok'
 
-  const basicCapitalInterestRate = 7.5;
-  const basicLateInterestRate = 9.5;
+  const basicCapitalInterestRate = 7.5
+  const basicLateInterestRate = 9.5
 
   const taxRates = {
     belkaRate: 19,
     firstRate: 17,
     linearRate: 19,
     secondRate: 32,
-  };
+  }
 
   const taxRatesForLumpSum = [
     { label: '2%', value: 2 },
@@ -130,21 +130,21 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     { label: '12.5%', value: 12.5 },
     { label: '15%', value: 15 },
     { label: '17%', value: 17 },
-  ];
+  ]
 
-  const lumpSumUpToAmount = 200;
-  const minimumSalary = 2800;
-  const freeAmountForTax = 525.12 / 12;
-  const limitBasicAmountForZus = 157770;
-  const accidentRate = 1.67;
-  const amountOfTaxThreshold = 85528;
-  const amountOfPolskiLadTaxThreshold = 120000;
-  const polskiLadFreeAmountForTax = 5100 / 12;
+  const lumpSumUpToAmount = 200
+  const minimumSalary = 2800
+  const freeAmountForTax = 525.12 / 12
+  const limitBasicAmountForZus = 157770
+  const accidentRate = 1.67
+  const amountOfTaxThreshold = 85528
+  const amountOfPolskiLadTaxThreshold = 120000
+  const polskiLadFreeAmountForTax = 5100 / 12
 
   const us = {
     employee: { healthRate: 7.75, polskiLadHealthRate: 0 },
     owner: { healthRate: 7.75, polskiLadHealthRate: 0 },
-  };
+  }
 
   const zus = {
     employee: {
@@ -164,69 +164,69 @@ export const useConstantsStore = defineStore('constantsStore', () => {
       sickRate: 2.45,
       smallAmount: 903,
     },
-  };
+  }
 
   const availableFormsOfAccountingForMarriage = {
     contractOfEmployment: 'contactOfEmployment',
     selfEmployment: 'selfEmployment',
-  };
+  }
 
   // --- Year-dependent computed getters ---
 
   const yearParams = computed(() => {
-    const year = settingStore.dateOfLawRules.getFullYear() as AvailableYear;
-    return YEAR_PARAMS[year] ?? YEAR_PARAMS[2026];
-  });
+    const year = settingStore.dateOfLawRules.getFullYear() as AvailableYear
+    return YEAR_PARAMS[year] ?? YEAR_PARAMS[2026]
+  })
 
   const wageStats = computed<WageStats>(() => {
     return {
       averageWageInLastQuarter: (
         year = settingStore.dateOfLawRules.getFullYear() - 1,
       ) => {
-        if (year <= 2022) return 6965.94;
-        if (year <= 2023) return 7767.85;
-        if (year <= 2024) return 8549.18;
-        return 9228.64;
+        if (year <= 2022) return 6965.94
+        if (year <= 2023) return 7767.85
+        if (year <= 2024) return 8549.18
+        return 9228.64
       },
       minimumWage: (
         year = settingStore.dateOfLawRules.getFullYear(),
         monthIndex = settingStore.dateOfLawRules.getMonth(),
       ) => {
-        if (year <= 2022) return 3010;
+        if (year <= 2022) return 3010
         if (year <= 2023) {
-          if (monthIndex <= 5) return 3490;
-          return 3600;
+          if (monthIndex <= 5) return 3490
+          return 3600
         }
         if (year <= 2024) {
-          if (monthIndex <= 5) return 4242;
-          return 4300;
+          if (monthIndex <= 5) return 4242
+          return 4300
         }
-        if (year <= 2025) return 4666;
-        return 4806;
+        if (year <= 2025) return 4666
+        return 4806
       },
       minimumHourlyWage: (
         year = settingStore.dateOfLawRules.getFullYear(),
         monthIndex = settingStore.dateOfLawRules.getMonth(),
       ) => {
         if (year <= 2023) {
-          if (monthIndex <= 5) return 22.8;
-          return 23.5;
+          if (monthIndex <= 5) return 22.8
+          return 23.5
         }
         if (year <= 2024) {
-          if (monthIndex <= 5) return 27.7;
-          return 28.1;
+          if (monthIndex <= 5) return 27.7
+          return 28.1
         }
-        if (year <= 2025) return 30.5;
-        return 31.4;
+        if (year <= 2025) return 30.5
+        return 31.4
       },
       projectedAverageWage: () => {
-        if (settingStore.dateOfLawRules.getFullYear() <= 2023) return 6935;
-        if (settingStore.dateOfLawRules.getFullYear() <= 2024) return 7824;
-        if (settingStore.dateOfLawRules.getFullYear() <= 2025) return 8673;
-        return 9420;
+        if (settingStore.dateOfLawRules.getFullYear() <= 2023) return 6935
+        if (settingStore.dateOfLawRules.getFullYear() <= 2024) return 7824
+        if (settingStore.dateOfLawRules.getFullYear() <= 2025) return 8673
+        return 9420
       },
-    };
-  });
+    }
+  })
 
   const incomeTaxConstants = computed<IncomeTaxConstants>(() => {
     return {
@@ -256,8 +256,8 @@ export const useConstantsStore = defineStore('constantsStore', () => {
         taxRate: 0.19,
       },
       belkaTaxRate: 0.19,
-    };
-  });
+    }
+  })
 
   const zusConstants = computed<ZusConstants>(() => {
     const employeeZusConstants: EmployeeZusConstants = {
@@ -268,7 +268,7 @@ export const useConstantsStore = defineStore('constantsStore', () => {
         ppkContribution: { default: 0.02, min: 0.005, max: 0.04 },
         sickContribution: 0.0245,
       },
-    };
+    }
 
     const employerZusConstants: EmployerZusConstants = {
       rates: {
@@ -280,7 +280,7 @@ export const useConstantsStore = defineStore('constantsStore', () => {
         pensionContribution: 0.0976,
         ppkContribution: { default: 0.015, min: 0.015, max: 0.04 },
       },
-    };
+    }
 
     const entrepreneurZusConstants: EntrepreneurZusConstants = {
       basises: {
@@ -313,7 +313,7 @@ export const useConstantsStore = defineStore('constantsStore', () => {
           employerZusConstants.rates.pensionContribution,
         sickContribution: employeeZusConstants.rates.sickContribution,
       },
-    };
+    }
 
     return {
       contributionBasisLimit: helpers.round(
@@ -323,10 +323,10 @@ export const useConstantsStore = defineStore('constantsStore', () => {
       employee: employeeZusConstants,
       employer: employerZusConstants,
       entrepreneur: entrepreneurZusConstants,
-    };
-  });
+    }
+  })
 
-  const params = YEAR_PARAMS;
+  const params = YEAR_PARAMS
 
   return {
     app,
@@ -363,9 +363,9 @@ export const useConstantsStore = defineStore('constantsStore', () => {
     wageStats,
     yearParams,
     zusConstants,
-  };
-});
+  }
+})
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useConstantsStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useConstantsStore, import.meta.hot))
 }

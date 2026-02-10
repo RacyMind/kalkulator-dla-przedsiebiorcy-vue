@@ -1,17 +1,28 @@
 <template>
-  <ModulePageLayout class="c-info"
-                    single-column>
+  <ModulePageLayout class="c-info" single-column>
     <template #form>
-      <Advert/>
-      <ListHeader>Terminy w US</ListHeader>
-      <USSummary/>
-      <ListHeader>Terminy w ZUS</ListHeader>
-      <ZUSSummary/>
-      <ListHeader>Terminy w PFRON</ListHeader>
-      <PFRONSummary/>
-      <p
-        class="q-pa-md text-grey text-justify"
-        style="font-size:0.8rem;">
+      <Advert />
+
+      <section class="q-mb-md">
+        <ListHeader>Terminy w US</ListHeader>
+        <USSummary />
+      </section>
+
+      <q-separator class="module-separator" />
+
+      <section class="q-mb-md">
+        <ListHeader>Terminy w ZUS</ListHeader>
+        <ZUSSummary />
+      </section>
+
+      <q-separator class="module-separator" />
+
+      <section class="q-mb-md">
+        <ListHeader>Terminy w PFRON</ListHeader>
+        <PFRONSummary />
+      </section>
+
+      <p class="q-pa-md footer-text text-justify" style="font-size: 0.8rem">
         Ostatnia aktualizacja: 02.01.2022 r.
       </p>
     </template>
@@ -19,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useBreadcrumbStore} from 'stores/breadcrumbStore'
+import { useBreadcrumbStore } from 'stores/breadcrumbStore'
 import Advert from 'components/partials/Advert.vue'
 import ListHeader from 'components/partials/resultList/ListHeader.vue'
 import ModulePageLayout from 'components/partials/ModulePageLayout.vue'

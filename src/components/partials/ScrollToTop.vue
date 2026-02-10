@@ -1,6 +1,5 @@
 <template>
-  <q-page-sticky position="bottom-right"
-                 :offset="[18, 18]">
+  <q-page-sticky v-if="!isNative" position="bottom-right" :offset="[18, 18]">
     <transition name="fade-scale">
       <q-btn
         v-show="visible"
@@ -18,8 +17,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import {mdiChevronUp} from '@quasar/extras/mdi-v7'
+import { mdiChevronUp } from '@quasar/extras/mdi-v7'
+import { Capacitor } from '@capacitor/core'
 
+const isNative = Capacitor.isNativePlatform()
 const visible = ref(false)
 const SCROLL_THRESHOLD = 300
 

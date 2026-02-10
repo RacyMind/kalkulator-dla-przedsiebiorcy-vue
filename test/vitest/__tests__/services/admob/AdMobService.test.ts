@@ -79,9 +79,18 @@ describe('AdMobService', () => {
     it('registers event listeners', async () => {
       await service.initialize()
 
-      expect(mockAdMob.addListener).toHaveBeenCalledWith('bannerAdLoaded', expect.any(Function))
-      expect(mockAdMob.addListener).toHaveBeenCalledWith('bannerAdFailedToLoad', expect.any(Function))
-      expect(mockAdMob.addListener).toHaveBeenCalledWith('bannerAdSizeChanged', expect.any(Function))
+      expect(mockAdMob.addListener).toHaveBeenCalledWith(
+        'bannerAdLoaded',
+        expect.any(Function),
+      )
+      expect(mockAdMob.addListener).toHaveBeenCalledWith(
+        'bannerAdFailedToLoad',
+        expect.any(Function),
+      )
+      expect(mockAdMob.addListener).toHaveBeenCalledWith(
+        'bannerAdSizeChanged',
+        expect.any(Function),
+      )
     })
 
     it('does not create duplicate when called twice (idempotent)', async () => {
@@ -205,11 +214,11 @@ describe('AdMobService', () => {
     it('contains pages that should not show ads', async () => {
       const { AD_CONFIG } = await import('services/admob/adConfig')
 
-      expect(AD_CONFIG.noAdPages).toContain('/')
+      expect(AD_CONFIG.noAdPages).not.toContain('/')
       expect(AD_CONFIG.noAdPages).toContain('/polityka-prywatnosci')
       expect(AD_CONFIG.noAdPages).toContain('/kontakt')
       expect(AD_CONFIG.noAdPages).toContain('/historia-zmian')
-      expect(AD_CONFIG.noAdPages).toHaveLength(4)
+      expect(AD_CONFIG.noAdPages).toHaveLength(3)
     })
 
     it('does not contain module pages', async () => {

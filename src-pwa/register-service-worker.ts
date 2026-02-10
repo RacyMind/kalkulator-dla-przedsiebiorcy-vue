@@ -1,5 +1,5 @@
-import { register } from 'register-service-worker';
-import { Notify } from 'quasar';
+import { register } from 'register-service-worker'
+import { Notify } from 'quasar'
 
 register(process.env.SERVICE_WORKER_FILE, {
   ready() {},
@@ -21,24 +21,24 @@ register(process.env.SERVICE_WORKER_FILE, {
           label: 'Odśwież',
           color: 'white',
           handler: () => {
-            const waiting = registration.waiting;
+            const waiting = registration.waiting
             if (waiting) {
-              waiting.postMessage({ type: 'SKIP_WAITING' });
+              waiting.postMessage({ type: 'SKIP_WAITING' })
               waiting.addEventListener('statechange', (e) => {
                 if ((e.target as ServiceWorker).state === 'activated') {
-                  window.location.reload();
+                  window.location.reload()
                 }
-              });
+              })
             } else {
-              window.location.reload();
+              window.location.reload()
             }
           },
         },
       ],
-    });
+    })
   },
 
   offline() {},
 
   error() {},
-});
+})

@@ -1,3 +1,27 @@
+DirectoryIndex index.php index.html
+
+# Rewrite subpage URLs to page.php router
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Redirect HTTP to HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Redirect www to non-www
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Skip existing files and directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Rewrite /slug/ or /slug to page.php?slug=slug
+  RewriteRule ^([a-z0-9\-]+)/?$ page.php?slug=$1 [L,QSA]
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access 1 year"
@@ -17,7 +41,7 @@
   <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf|webp)$">
   Header set Cache-Control "max-age=2678400, public"
   </filesmatch>
-  <filesmatch "\.(html|htm)$">
+  <filesmatch "\.(html|htm|php)$">
   Header set Cache-Control "max-age=7200, private, must-revalidate"
   </filesmatch>
   <filesmatch "\.(pdf)$">

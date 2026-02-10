@@ -14,9 +14,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, ref, onMounted, onUnmounted } from 'vue';
-import { Dark } from 'quasar';
-import { Pie, Bar, Line, Doughnut } from 'vue-chartjs';
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { Dark } from 'quasar'
+import { Pie, Bar, Line, Doughnut } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   ArcElement,
@@ -29,7 +29,7 @@ import {
   PointElement,
   Title,
   Tooltip,
-} from 'chart.js';
+} from 'chart.js'
 
 ChartJS.register(
   ArcElement,
@@ -42,7 +42,7 @@ ChartJS.register(
   PointElement,
   Title,
   Tooltip,
-);
+)
 
 const props = defineProps({
   chartData: {
@@ -62,42 +62,42 @@ const props = defineProps({
     type: String,
     default: 'Wykres danych',
   },
-});
+})
 
-const chartContainer = ref<HTMLElement | null>(null);
-const containerWidth = ref(0);
-let resizeObserver: ResizeObserver | null = null;
+const chartContainer = ref<HTMLElement | null>(null)
+const containerWidth = ref(0)
+let resizeObserver: ResizeObserver | null = null
 
 onMounted(() => {
   if (chartContainer.value) {
-    containerWidth.value = chartContainer.value.clientWidth;
+    containerWidth.value = chartContainer.value.clientWidth
     resizeObserver = new ResizeObserver((entries) => {
-      const w = Math.round(entries[0].contentRect.width);
+      const w = Math.round(entries[0].contentRect.width)
       if (Math.abs(w - containerWidth.value) > 20) {
-        containerWidth.value = w;
+        containerWidth.value = w
       }
-    });
-    resizeObserver.observe(chartContainer.value);
+    })
+    resizeObserver.observe(chartContainer.value)
   }
-});
+})
 
 onUnmounted(() => {
-  resizeObserver?.disconnect();
-});
+  resizeObserver?.disconnect()
+})
 
 const chartComponentMap: Record<string, any> = {
   pie: Pie,
   bar: Bar,
   line: Line,
   doughnut: Doughnut,
-};
+}
 
-const chartComponent = computed(() => chartComponentMap[props.type] || Bar);
+const chartComponent = computed(() => chartComponentMap[props.type] || Bar)
 
-const textColor = computed(() => (Dark.isActive ? '#E0E0E0' : '#666666'));
+const textColor = computed(() => (Dark.isActive ? '#E0E0E0' : '#666666'))
 
 const formatPln = (value: number) =>
-  value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' });
+  value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
 
 const mergedOptions = computed(() => ({
   ...props.chartOptions,
@@ -113,14 +113,14 @@ const mergedOptions = computed(() => ({
       ...props.chartOptions?.plugins?.tooltip,
       callbacks: {
         label: (context: any) => {
-          const label = context.label || '';
-          const isHorizontal = context.chart?.options?.indexAxis === 'y';
+          const label = context.label || ''
+          const isHorizontal = context.chart?.options?.indexAxis === 'y'
           const raw =
             typeof context.parsed === 'number'
               ? context.parsed
               : ((isHorizontal ? context.parsed?.x : context.parsed?.y) ??
-                context.raw);
-          return `${label}: ${formatPln(Number(raw))}`;
+                context.raw)
+          return `${label}: ${formatPln(Number(raw))}`
         },
       },
     },
@@ -146,5 +146,5 @@ const mergedOptions = computed(() => ({
             },
           },
         },
-}));
+}))
 </script>
