@@ -100,6 +100,13 @@ export default {
       link: '/skladki-zus-za-czesc-miesiaca',
       title: 'Składki ZUS za część miesiąca',
     } as MenuItem,
+    {
+      caption:
+        'Oblicz kwotę refundacji PFRON dla składek emerytalnej i rentowej zależnie od stopnia niepełnosprawności',
+      className: 'c-company',
+      link: '/refundacja-skladek-spolecznych-pfron',
+      title: 'Refundacja składek społecznych PFRON',
+    } as MenuItem,
   ],
   taxes: [
     {

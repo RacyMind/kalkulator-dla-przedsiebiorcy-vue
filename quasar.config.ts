@@ -29,6 +29,9 @@ export default defineConfig((ctx) => {
       env: {
         VITE_GTM_ID: process.env.VITE_GTM_ID,
         VITE_ADSENSE_PUBLISHER_ID: process.env.VITE_ADSENSE_PUBLISHER_ID,
+        VITE_ADMOB_BANNER_ID: process.env.VITE_ADMOB_BANNER_ID,
+        VITE_ADSENSE_AD_SLOT: process.env.VITE_ADSENSE_AD_SLOT,
+        VITE_ADSENSE_LAYOUT_KEY: process.env.VITE_ADSENSE_LAYOUT_KEY,
       },
       typescript: {
         strict: true,
