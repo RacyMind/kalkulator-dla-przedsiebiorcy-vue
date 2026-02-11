@@ -1,5 +1,5 @@
 <template>
-  <div class="advert-wrapper q-mt-md">
+  <div v-if="!premiumStore.isPremiumActive" class="advert-wrapper q-mt-md">
     <q-card flat class="advert-card text-center q-pa-md">
       <q-icon
         :name="mdiHeart"
@@ -16,6 +16,9 @@
 import { mdiHeart } from '@quasar/extras/mdi-v7'
 import Donate from 'components/partials/adrverts/Donate.vue'
 import TaxDonation from 'components/partials/adrverts/TaxDonation.vue'
+import { usePremiumStore } from 'stores/premiumStore'
+
+const premiumStore = usePremiumStore()
 
 const isTaxDonationTimeFrame = () => {
   const month = new Date().getMonth()

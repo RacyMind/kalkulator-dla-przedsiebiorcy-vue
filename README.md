@@ -107,6 +107,16 @@ npm run build
 npm run build:android
 ```
 
+### Debug zakupow Google Play (Android)
+
+Jesli zakup nie dziala w Android Studio, najpierw sprawdz srodowisko:
+
+1. Uzywaj emulatora z obrazem `Google Play` (nie tylko `Google APIs`).
+2. Zaloguj w emulatorze konto testera z Play Console.
+3. Produkt jednorazowy (`VITE_PREMIUM_PRODUCT_ID`) musi byc aktywny w Play Console.
+4. Test zakupu wykonuj na buildzie z toru testowego Play (Internal Testing), nie tylko z lokalnego sideload.
+5. Po zmianach produktu/konta odczekaj na propagacje konfiguracji Play.
+
 ### Linting i formatowanie
 
 ```bash

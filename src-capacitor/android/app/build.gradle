@@ -7,7 +7,7 @@ android {
         applicationId "racyMind.kalkulator"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 60004
+        versionCode 60007
         versionName "6.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {

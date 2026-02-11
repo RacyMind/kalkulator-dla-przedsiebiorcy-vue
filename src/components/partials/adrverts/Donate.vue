@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!premiumStore.isPremiumActive">
     <div>Kalkulator jest i zawsze będzie darmowy. Wesprzyj jego rozwój!</div>
     <q-btn
       label="Wesprzyj twórcę"
@@ -20,6 +20,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import SupportProject from 'components/partials/SupportProject.vue'
+import { usePremiumStore } from 'stores/premiumStore'
 
 const openModal = ref(false)
+const premiumStore = usePremiumStore()
 </script>

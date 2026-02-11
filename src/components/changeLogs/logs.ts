@@ -1,8 +1,8 @@
 export default [
   {
     content:
-      '<ul><li>Dodano moduł Zasiłek macierzyński — obliczanie zasiłku w dwóch wariantach wypłaty (81,5% stały / 100%+70% zmienny) dla umowy o pracę i działalności gospodarczej.</li></ul>',
-    publish_date: '2026-02-10',
+      '<ul><li>Dodano moduł Zasiłek macierzyński.</li><li>Dodano moduł Refundacja składek społecznych PFRON.</li></ul>',
+    publish_date: '2026-02-11',
     version: '6.1.0',
   },
   {

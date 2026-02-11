@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-if="!premiumStore.isPremiumActive">
     <div>
-      Przekaż 1,5% podatku — to nic nie kosztuje!<br>
-      <strong>KRS: 0000270809</strong><br>
+      Przekaż 1,5% podatku — to nic nie kosztuje!<br />
+      <strong>KRS: 0000270809</strong><br />
       <strong>Cel szczególny: Socha, 15548</strong>
     </div>
     <q-btn
@@ -21,8 +21,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import SupportAuthor from 'components/partials/SupportAuthor.vue'
+import { usePremiumStore } from 'stores/premiumStore'
 
 const openModal = ref(false)
+const premiumStore = usePremiumStore()
 </script>

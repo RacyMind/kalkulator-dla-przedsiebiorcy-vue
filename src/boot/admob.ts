@@ -1,6 +1,7 @@
 import { AD_CONFIG } from '../services/admob/adConfig'
 import { AdMob, BannerAdPluginEvents } from '@capacitor-community/admob'
 import { AdMobService } from '../services/admob/AdMobService'
+import { usePremiumStore } from 'stores/premiumStore'
 import type { Router } from 'vue-router'
 
 const adMobService = new AdMobService()
@@ -14,15 +15,20 @@ export default ({ router }: { router: Router }) => {
     return
   }
 
-  AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: { width: number; height: number }) => {
-    updateBodyMargin(size.height)
-  })
+  const premiumStore = usePremiumStore()
+
+  AdMob.addListener(
+    BannerAdPluginEvents.SizeChanged,
+    (size: { width: number; height: number }) => {
+      updateBodyMargin(size.height)
+    },
+  )
 
   adMobService.initialize()
 
   router.afterEach((to) => {
     const path = to.path
-    if (AD_CONFIG.noAdPages.includes(path)) {
+    if (premiumStore.isPremiumActive || AD_CONFIG.noAdPages.includes(path)) {
       adMobService.hideAd()
       updateBodyMargin(0)
     } else {

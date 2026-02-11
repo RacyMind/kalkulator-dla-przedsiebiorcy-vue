@@ -168,11 +168,22 @@ Available years: `2021 | 2022 | 2023 | 2024 | 2025 | 2026`
 
 - **Minimal comments** — Only add comments for complex logic or edge cases. Do not comment every line.
 - **Polish language in UI** — All labels, messages, and user-facing text must be in Polish.
+- **Polish diacritics in UI** — Always use Polish diacritics in user-facing text (`ą ć ę ł ń ó ś ź ż`), never ASCII replacements.
 - **Single type file per module** — Keep all types for a module in one file (e.g., `types/index.ts` or `types/SomeType.ts`), not split across many files.
 - **camelCase** for variables and constants — Do not use UPPER_SNAKE_CASE for JS/TS constants (the legacy `yearParams.ts` is an exception, not a pattern to follow).
 - **No semicolons** — ESLint enforces `semi: ['error', 'never']`.
 - **Single quotes** — ESLint enforces `quotes: ['warn', 'single']`.
 - **Trailing commas** on multiline — `comma-dangle: ['error', 'always-multiline']`.
+- **Enums for state values** — Never use static strings like `'loading'`, `'active'`, `'error'` etc. for state. Always define an enum in the module's `types/` directory and use it instead. Example:
+  ```typescript
+  // types/Status.ts
+  export enum Status {
+    Idle = 'idle',
+    Loading = 'loading',
+    Active = 'active',
+    Error = 'error',
+  }
+  ```
 
 ### TypeScript
 
