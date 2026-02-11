@@ -82,6 +82,10 @@ const routes: RouteRecordRaw[] = [
         path: 'skladki-zus-za-czesc-miesiaca',
       },
       {
+        component: () => import('components/pfronRefund/pages/Index.vue'),
+        path: 'refundacja-skladek-spolecznych-pfron',
+      },
+      {
         component: () => import('components/inflation/pages/Index.vue'),
         path: 'inflacja',
       },
