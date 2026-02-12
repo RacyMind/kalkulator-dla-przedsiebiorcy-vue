@@ -89,6 +89,6 @@ HTML,
     'related' => [
         ['slug' => 'kalkulator-b2b', 'name' => 'Kalkulator B2B', 'desc' => 'Oblicz wynagrodzenie netto na działalności gospodarczej.', 'gradient' => 'from-blue-500 to-blue-700', 'icon' => $icons['briefcase']],
         ['slug' => 'kalkulator-vat', 'name' => 'Kalkulator VAT', 'desc' => 'Przelicz kwoty netto i brutto z uwzględnieniem stawki VAT.', 'gradient' => 'from-emerald-500 to-emerald-700', 'icon' => $icons['money']],
-        ['slug' => 'kalkulator-refundacja-skladek-spolecznych-pfron', 'name' => 'Refundacja składek PFRON', 'desc' => 'Sprawdź poziom refundacji składek społecznych dla przedsiębiorcy.', 'gradient' => 'from-amber-500 to-amber-700', 'icon' => $icons['calculator']],
+        ['slug' => 'kalkulator-refundacja-skladek-spolecznych-pfron', 'name' => 'Refundacja składek PFRON', 'desc' => 'Sprawdź poziom refundacji składek społecznych dla przedsiębiorcy.', 'gradient' => 'from-amber-500 to-amber-700', 'icon' => $icons['accessiblePerson']],
     ],
 ];

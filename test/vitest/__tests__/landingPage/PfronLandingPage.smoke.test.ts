@@ -21,7 +21,7 @@ describe('PFRON landing page smoke', () => {
     )
   })
 
-  it('adds the new landing page to related calculators for business subpages', () => {
+  it('adds the new landing page to related calculators for business subpages with accessible icon', () => {
     const businessPages = [
       'landing-page/_pages/kalkulator-b2b.php',
       'landing-page/_pages/porownywarka-b2b.php',
@@ -31,6 +31,7 @@ describe('PFRON landing page smoke', () => {
     for (const pagePath of businessPages) {
       const pageFile = readTextFile(pagePath)
       expect(pageFile).toContain(`'slug' => '${pfronSlug}'`)
+      expect(pageFile).toContain("'icon' => $icons['accessiblePerson']")
     }
   })
 
@@ -48,5 +49,11 @@ describe('PFRON landing page smoke', () => {
     expect(footer).toContain(
       '<a href="/kalkulator-refundacja-skladek-spolecznych-pfron/"',
     )
+  })
+
+  it('defines the accessible icon used by the PFRON related card', () => {
+    const icons = readTextFile('landing-page/_includes/icons.php')
+
+    expect(icons).toContain("'accessiblePerson' => '<svg")
   })
 })

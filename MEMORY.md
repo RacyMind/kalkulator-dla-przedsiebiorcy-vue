@@ -140,3 +140,26 @@ For each completed task, add one section:
   - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 4 tests)
 - Outcome: Manual QA flow for landing-page is now explicit and repeatable in both agent and project docs.
 - Follow-ups: none.
+
+### 2026-02-12 - Use accessible-person icon for PFRON related cards
+
+- Task: Updated PFRON entries in related calculators to use an accessibility-oriented icon instead of calculator icon.
+- Decisions:
+  - Added a new shared icon key: `accessiblePerson` in landing icons map.
+  - Applied icon change only to business pages already linking to PFRON (`kalkulator-b2b`, `porownywarka-b2b`, `kalkulator-vat`).
+  - Kept related links selective (no global rollout to all landing subpages).
+- Files changed:
+  - `landing-page/_includes/icons.php`
+  - `landing-page/_pages/kalkulator-b2b.php`
+  - `landing-page/_pages/porownywarka-b2b.php`
+  - `landing-page/_pages/kalkulator-vat.php`
+  - `test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `php -l landing-page/_includes/icons.php`
+  - `php -l landing-page/_pages/kalkulator-b2b.php`
+  - `php -l landing-page/_pages/porownywarka-b2b.php`
+  - `php -l landing-page/_pages/kalkulator-vat.php`
+  - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 5 tests)
+- Outcome: PFRON cards now use an accessibility-specific icon and test coverage protects this contract.
+- Follow-ups: none.
