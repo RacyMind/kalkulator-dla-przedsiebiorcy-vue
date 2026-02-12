@@ -27,6 +27,11 @@ export class AdMobService {
       return
     }
 
+    if (this.isPremiumActive()) {
+      this.state.isBannerVisible = false
+      return
+    }
+
     try {
       this.registerListeners()
       await AdMob.initialize()

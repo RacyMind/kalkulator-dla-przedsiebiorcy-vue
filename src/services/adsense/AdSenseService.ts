@@ -4,15 +4,6 @@ import { usePremiumStore } from 'stores/premiumStore'
 
 export class AdSenseService {
   private scriptLoaded = false
-  private _adPushed = false
-
-  get adPushed(): boolean {
-    return this._adPushed
-  }
-
-  markAdPushed(): void {
-    this._adPushed = true
-  }
 
   isAvailable(): boolean {
     return (

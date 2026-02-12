@@ -17,6 +17,11 @@ export default ({ router }: { router: Router }) => {
 
   const premiumStore = usePremiumStore()
 
+  if (premiumStore.isPremiumActive) {
+    updateBodyMargin(0)
+    return
+  }
+
   AdMob.addListener(
     BannerAdPluginEvents.SizeChanged,
     (size: { width: number; height: number }) => {
@@ -24,7 +29,7 @@ export default ({ router }: { router: Router }) => {
     },
   )
 
-  adMobService.initialize()
+  void adMobService.initialize()
 
   router.afterEach((to) => {
     const path = to.path

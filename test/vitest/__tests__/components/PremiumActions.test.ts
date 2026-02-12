@@ -143,7 +143,7 @@ describe('PremiumActions', () => {
     const wrapper = mountComponent()
     const buttons = wrapper.findAll('button')
     const trigger = buttons.find((button) =>
-      button.text().includes('Usuń reklamy i przyciski wsparcia'),
+      button.text().includes('Usuń reklamy'),
     )
 
     expect(trigger).toBeDefined()

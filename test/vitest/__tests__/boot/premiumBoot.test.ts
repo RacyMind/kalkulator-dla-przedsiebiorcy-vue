@@ -13,23 +13,29 @@ vi.mock('stores/premiumStore', () => ({
 import premiumBoot from 'boot/premium'
 
 describe('premium boot', () => {
-  it('does not block app startup while initialization is pending', async () => {
+  it('waits for premium initialization before resolving boot', async () => {
+    let resolveInitialization: (() => void) | undefined
     initializePremium.mockImplementation(
       () =>
-        new Promise<void>(() => {
-          return
+        new Promise<void>((resolve) => {
+          resolveInitialization = resolve
         }),
     )
 
+    const bootPromise = premiumBoot()
+
     const result = await Promise.race([
-      Promise.resolve(premiumBoot()).then(() => 'resolved'),
+      bootPromise.then(() => 'resolved'),
       new Promise<'timeout'>((resolve) => {
         setTimeout(() => resolve('timeout'), 30)
       }),
     ])
 
-    expect(result).toBe('resolved')
+    expect(result).toBe('timeout')
     expect(initializePremium).toHaveBeenCalledTimes(1)
+
+    resolveInitialization?.()
+    await expect(bootPromise).resolves.toBeUndefined()
   })
 
   it('logs error when initialization rejects', async () => {
@@ -38,8 +44,7 @@ describe('premium boot', () => {
       .mockImplementation(() => undefined)
     initializePremium.mockRejectedValueOnce(new Error('boot_failed'))
 
-    premiumBoot()
-    await Promise.resolve()
+    await premiumBoot()
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       '[PremiumBilling] premium boot initializePremium failed:',

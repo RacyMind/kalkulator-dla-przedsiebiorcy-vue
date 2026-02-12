@@ -127,14 +127,15 @@ describe('AdMobService', () => {
       expect(mockAdMob.showBanner).not.toHaveBeenCalled()
     })
 
-    it('does not show banner when premium is active', async () => {
+    it('does not initialize SDK or show banner when premium is active', async () => {
       const premiumStore = usePremiumStore()
       premiumStore.isPremiumActive = true
 
       await service.initialize()
 
-      expect(mockAdMob.initialize).toHaveBeenCalledTimes(1)
+      expect(mockAdMob.initialize).not.toHaveBeenCalled()
       expect(mockAdMob.showBanner).not.toHaveBeenCalled()
+      expect(mockAdMob.addListener).not.toHaveBeenCalled()
     })
   })
 

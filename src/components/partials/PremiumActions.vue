@@ -4,11 +4,8 @@
     class="premium-actions column items-center q-gutter-xs"
   >
     <q-btn color="amber-8" rounded unelevated no-caps @click="openModal">
-      Usuń reklamy i przyciski wsparcia
+      Usuń reklamy
     </q-btn>
-    <div class="text-caption">
-      Jednorazowo {{ premiumStore.premiumPriceLabel }}
-    </div>
 
     <q-dialog v-model="isModalOpen">
       <q-card class="premium-modal">
@@ -17,9 +14,8 @@
         </q-card-section>
         <q-card-section class="q-pt-none">
           <p class="q-mb-sm">
-            Korzystaj z aplikacji bez reklam i bez przycisków wsparcia. Jedna
-            płatność odblokowuje pełną wersję premium na Twoim koncie Google
-            Play.
+            Korzystaj z aplikacji bez reklam. Jedna płatność odblokowuje pełną
+            wersję premium na Twoim koncie Google Play.
           </p>
           <p class="q-mb-sm">
             Cena brutto: <strong>{{ premiumStore.premiumPriceLabel }}</strong

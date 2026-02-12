@@ -4,9 +4,9 @@
       class="adsbygoogle"
       style="display: block"
       :data-ad-client="publisherId"
-      :data-ad-slot="adSlot"
-      data-ad-format="fluid"
-      :data-ad-layout-key="layoutKey"
+      :data-ad-slot="normalizedAdSlot"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
     ></ins>
   </div>
 </template>
@@ -27,21 +27,24 @@ interface Props {
   adSlot: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const route = useRoute()
 const publisherId = AD_SENSE_CONFIG.publisherId
-const layoutKey = AD_SENSE_CONFIG.layoutKey
 const showAd = ref(false)
+const normalizedAdSlot = ref('')
 
 onMounted(async () => {
   const canShow =
     adSenseService.isAvailable() && adSenseService.isPageWithAds(route.path)
   if (!canShow) return
 
-  showAd.value = true
+  const adSlot = props.adSlot.trim()
+  if (adSlot.length === 0) return
 
-  if (adSenseService.adPushed) return
+  normalizedAdSlot.value = adSlot
+
+  showAd.value = true
 
   await adSenseService.loadScript()
   await nextTick()
@@ -49,7 +52,6 @@ onMounted(async () => {
   try {
     window.adsbygoogle = window.adsbygoogle || []
     window.adsbygoogle.push({})
-    adSenseService.markAdPushed()
   } catch {
     showAd.value = false
   }
