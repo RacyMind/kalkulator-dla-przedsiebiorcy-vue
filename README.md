@@ -2,134 +2,150 @@
 
 # Kalkulator finansowy
 
-Bezpłatny kalkulator finansowy umożliwiający obliczenie wynagrodzeń z umowy o pracę, umowy zlecenie, umowy o dzieło, samozatrudnienia (B2B) i wielu innych. Uwzględnia aktualne przepisy podatkowe i składki ZUS.
+Aplikacja webowa (PWA) i Android do obliczeń finansowych zgodnych z polskimi przepisami: wynagrodzenia, podatki, ZUS, limity, inwestycje i kalkulatory pomocnicze.
 
-**[Otwórz aplikację →](https://kalkulatorfinansowy.app)**
+- Aplikacja: [kalkulatorfinansowy.app](https://kalkulatorfinansowy.app)
+- Android: [Google Play](https://play.google.com/store/apps/details?id=racyMind.kalkulator)
 
-## Funkcje
+## Cel repozytorium
 
-Aplikacja zawiera **29 modułów kalkulatorów**:
+Repozytorium służy do utrzymania i rozwoju kalkulatorów finansowych z naciskiem na:
 
-### Wynagrodzenia
+- poprawność logiki biznesowej,
+- spójność architektury modułów,
+- wysokie pokrycie testami jednostkowymi.
 
-- **Umowa o pracę** — brutto/netto z pełnym rozliczeniem ZUS i podatku
-- **Umowa zlecenie** — kalkulator dla zleceniobiorcy i zleceniodawcy
-- **Umowa o dzieło** — z uwzględnieniem kosztów uzyskania przychodu
-- **Samozatrudnienie (B2B)** — porównanie form opodatkowania
-- **Porównywarka B2B** — zestawienie UoP vs B2B
-- **Rozliczenie z małżonkiem** — wspólne rozliczenie PIT
+## Stos technologiczny
 
-### Finanse i inwestycje
+- Vue 3 + `<script setup lang="ts">`
+- Quasar 2
+- Pinia
+- TypeScript (strict mode)
+- Vite (`@quasar/app-vite`)
+- Vitest + `@vue/test-utils` + happy-dom
+- Capacitor (Android)
 
-- **Lokata** — kalkulator oprocentowania lokat
-- **Odsetki** — obliczanie odsetek ustawowych i umownych
-- **Inflacja** — wpływ inflacji na siłę nabywczą
-- **Siła nabywcza pieniądza** — porównanie wartości w czasie
-- **Przelicznik walut** — z aktualnymi kursami NBP
-- **Kursy walut** — tabela kursów NBP
-- **Obligacje skarbowe** — 8 typów obligacji (ROR, DOR, TOS, COI, EDO, ROS, ROD, OTS)
-- **Kalkulator IKE** — oszczędności na Indywidualnym Koncie Emerytalnym
-- **Ulga podatkowa IKZE** — korzyści podatkowe z IKZE
-- **Zysk z najmu** — kalkulator rentowności najmu
+## Struktura projektu
 
-### Działalność gospodarcza
+```text
+src/
+  components/
+    <moduleName>/
+      components/
+      interfaces/
+      logic/
+      pages/
+      types/
+      store.ts
+    partials/
+  logic/
+  stores/
+  router/
+  composables/
 
-- **Faktura VAT** — generowanie i obliczanie faktur
-- **Limit kasy fiskalnej** — sprawdzenie obowiązku ewidencji
-- **Limit zwolnienia z VAT** — weryfikacja progu VAT
-- **Składki ZUS za część miesiąca** — proporcjonalne składki
-- **Działalność nierejestrowana** — kalkulator przychodów
-- **Rzeczywisty koszt zakupu** — analiza kosztów z uwzględnieniem podatku
+test/vitest/__tests__/
+  modules/
+  logic/
+  composables/
+  services/
+```
 
-### Inne
+Wzorcowy moduł: `src/components/contractWork/`.
 
-- **Zasiłek chorobowy** — obliczanie wysokości zasiłku
-- **Ekwiwalent za urlop** — kalkulator ekwiwalentu
-- **Informacje o wynagrodzeniu** — statystyki płac
-- **Terminy US/ZUS/PFRON** — kalendarz terminów
+## Podejście architektoniczne
 
-### Dodatkowe funkcje
+Każdy kalkulator:
 
-- 🌙 **Tryb ciemny** — jasny, ciemny i automatyczny (zgodny z systemem)
-- ♿ **Dostępność WCAG AA** — nawigacja klawiaturą, atrybuty ARIA, kontrast
-- 📱 **Responsywność** — pełna obsługa mobile, tablet i desktop
-- 📊 **Wykresy** — wizualizacja wyników z animacjami
+- posiada własny katalog modułu,
+- trzyma dane wejściowe w store (`inputFields`),
+- wylicza wynik przez klasę kalkulatora (`BasicCalculator`),
+- udostępnia wynik przez getter store.
 
-## Technologie
+Zasady pracy:
 
-- **Vue 3.5+** — framework frontendowy
-- **TypeScript 5.9+** — typowanie statyczne
-- **Quasar 2.18+** — komponenty UI
-- **Pinia 2.3+** — zarządzanie stanem
-- **Vite** — bundler i dev server
-- **Vitest 4.x** — testy jednostkowe
-- **Capacitor** — build natywny Android
+- najpierw sprawdzaj istniejące komponenty/partials i reuse, dopiero potem twórz nowe,
+- nie dodawaj nowych zależności bez uzgodnienia,
+- nie twórz nowych katalogów bazowych bez uzgodnienia,
+- używaj `camelCase` dla zmiennych i stałych (bez `UPPER_SNAKE_CASE`),
+- trzymaj się wzorców sąsiednich plików.
 
-## Dostępność
+## Szybki start
 
-- **PWA** — [kalkulatorfinansowy.app](https://kalkulatorfinansowy.app)
-- **Android** — [Google Play](https://play.google.com/store/apps/details?id=racyMind.kalkulator)
+Wymagania:
 
-## Rozwój
-
-### Wymagania
-
-- Node.js 18+
+- Node.js `>= 20`
 - npm
 
-### Instalacja
+Instalacja:
 
 ```bash
 npm install
 ```
 
-### Uruchomienie (tryb deweloperski)
+Uruchomienie lokalne (PWA dev):
 
 ```bash
 npm start
 ```
 
-### Testy
+## Testy i jakość
+
+W tym projekcie zmiana jest kompletna dopiero po uruchomieniu testów.
+
+Podstawowe komendy:
 
 ```bash
+# wszystkie testy (CI mode)
+npm run test:unit:ci
+
+# watch mode
 npm run test:unit
+
+# pojedynczy test
+npx vitest run test/vitest/__tests__/modules/contractOfWork/ContractWorkCalculator.test.ts
+
+# lint
+npm run lint
 ```
 
-### Build produkcyjny (PWA)
+## Workflow zmian
+
+1. Zidentyfikuj moduł i istniejące elementy do reużycia.
+2. Wprowadź zmianę zgodnie ze strukturą katalogów i wzorcami kodu.
+3. Dodaj lub zaktualizuj testy dla zmienionej logiki.
+4. Uruchom co najmniej testy modułu, a przed merge pełny zestaw testów.
+5. Uruchom lint i napraw ostrzeżenia/błędy istotne dla zmiany.
+
+## Build
+
+PWA:
 
 ```bash
 npm run build
 ```
 
-### Build Android
+Android:
 
 ```bash
 npm run build:android
 ```
 
-### Debug zakupow Google Play (Android)
+## Gdy zmiana UI nie jest widoczna
 
-Jesli zakup nie dziala w Android Studio, najpierw sprawdz srodowisko:
+Najczęstsze przyczyny:
 
-1. Uzywaj emulatora z obrazem `Google Play` (nie tylko `Google APIs`).
-2. Zaloguj w emulatorze konto testera z Play Console.
-3. Produkt jednorazowy (`VITE_PREMIUM_PRODUCT_ID`) musi byc aktywny w Play Console.
-4. Test zakupu wykonuj na buildzie z toru testowego Play (Internal Testing), nie tylko z lokalnego sideload.
-5. Po zmianach produktu/konta odczekaj na propagacje konfiguracji Play.
+1. Nie działa aktualny dev server: uruchom `npm start`.
+2. Sprawdzany jest stary build: wykonaj `npm run build`.
+3. Otwarta jest inna gałąź lub nieaktualny deploy.
 
-### Linting i formatowanie
+## CI
 
-```bash
-npm run lint
-npm run format
-```
+Pipeline (`.github/workflows/ci.yml`) uruchamia:
+
+1. `npm run lint`
+2. `npx vitest run`
+3. build PWA po przejściu poprzednich kroków
 
 ## Licencja
 
-Projekt open-source. Szczegóły w pliku [LICENSE.md](LICENSE.md).
-
-## Autor
-
-**Łukasz Socha** — [kontakt@lukasz-socha.pl](mailto:kontakt@lukasz-socha.pl)
-
-Jeśli kalkulator jest dla Ciebie przydatny, możesz [wesprzeć projekt](https://zrzutka.pl/r4awyd) lub przekazać 1,5% podatku (KRS: 0000270809, cel szczególny: Socha, 15548).
+Szczegóły: [LICENSE.md](LICENSE.md)
