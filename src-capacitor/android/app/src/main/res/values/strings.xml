@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2025</string>
-    <string name="title_activity_main">Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B 2023-2025</string>
+    <string name="app_name">Kalkulator finansowy – Darmowy kalkulator wynagrodzeń i podatków</string>
+    <string name="title_activity_main">Kalkulator finansowy – Darmowy kalkulator wynagrodzeń i podatków</string>
     <string name="package_name">racyMind.kalkulator</string>
     <string name="custom_url_scheme">racyMind.kalkulator</string>
     <string name="admob_app_id">ca-app-pub-5774067444002039~6033995902</string>

@@ -1,20 +1,16 @@
 import { Capacitor } from '@capacitor/core'
 import { AD_SENSE_CONFIG } from './adSenseConfig'
+import { usePremiumStore } from 'stores/premiumStore'
 
 export class AdSenseService {
   private scriptLoaded = false
-  private _adPushed = false
-
-  get adPushed(): boolean {
-    return this._adPushed
-  }
-
-  markAdPushed(): void {
-    this._adPushed = true
-  }
 
   isAvailable(): boolean {
-    return !Capacitor.isNativePlatform() && !process.env.DEV
+    return (
+      !Capacitor.isNativePlatform() &&
+      !process.env.DEV &&
+      !this.isPremiumActive()
+    )
   }
 
   loadScript(): Promise<void> {
@@ -47,6 +43,14 @@ export class AdSenseService {
 
   isPageWithAds(path: string): boolean {
     return !AD_SENSE_CONFIG.noAdPages.includes(path)
+  }
+
+  private isPremiumActive(): boolean {
+    try {
+      return usePremiumStore().isPremiumActive
+    } catch {
+      return false
+    }
   }
 }
 
