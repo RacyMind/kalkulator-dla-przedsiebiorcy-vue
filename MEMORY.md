@@ -71,3 +71,72 @@ For each completed task, add one section:
   - `npx vitest run test/vitest/__tests__/modules/contractOfWork/ContractWorkCalculator.test.ts` (passed: 1 file, 5 tests)
 - Outcome: Documentation baseline updated for future agent sessions.
 - Follow-ups: none.
+
+### 2026-02-12 - Add PFRON landing subpage and related links for business pages
+
+- Task: Added a new landing subpage for PFRON social contribution refunds, updated related calculators on selected business pages, and extended sitemap coverage.
+- Decisions:
+  - New slug set to `kalkulator-refundacja-skladek-spolecznych-pfron`.
+  - Updated `related` only on `kalkulator-b2b`, `porownywarka-b2b`, and `kalkulator-vat`.
+  - Added dedicated screenshot assets (`png` + `webp`) for the new landing page.
+  - Added one minimal smoke test for landing consistency (page, related links, sitemap).
+- Files changed:
+  - `landing-page/_pages/kalkulator-refundacja-skladek-spolecznych-pfron.php`
+  - `landing-page/_pages/kalkulator-b2b.php`
+  - `landing-page/_pages/porownywarka-b2b.php`
+  - `landing-page/_pages/kalkulator-vat.php`
+  - `landing-page/sitemap.xml`
+  - `landing-page/images/modules/kalkulator-refundacja-skladek-spolecznych-pfron.png`
+  - `landing-page/images/modules/kalkulator-refundacja-skladek-spolecznych-pfron.webp`
+  - `test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 3 tests)
+- Outcome: Landing page and business-related cross-linking for PFRON are implemented and test-backed.
+- Follow-ups: none.
+
+### 2026-02-12 - Regenerate PFRON landing screenshot with visible results and no ads
+
+- Task: Re-generated landing screenshot asset for the PFRON page to show calculated results and remove ad blocks from the captured frame.
+- Decisions:
+  - Forced light mode and premium state in browser storage during screenshot capture.
+  - Triggered calculation before capture so result panel is populated.
+  - Removed `.advert-wrapper` and `.adsense-wrapper` from DOM before capturing.
+- Files changed:
+  - `landing-page/images/modules/kalkulator-refundacja-skladek-spolecznych-pfron.png`
+  - `landing-page/images/modules/kalkulator-refundacja-skladek-spolecznych-pfron.webp`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 3 tests)
+- Outcome: Screenshot now matches requirement: result section visible and ads hidden.
+- Follow-ups: none.
+
+### 2026-02-12 - Add PFRON landing link to footer navigation
+
+- Task: Added missing footer link for the new PFRON landing page and extended smoke test coverage.
+- Decisions:
+  - Footer link added under the calculators list.
+  - Smoke test now validates footer contains the PFRON landing link.
+- Files changed:
+  - `landing-page/_includes/footer.php`
+  - `test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 4 tests)
+- Outcome: Footer navigation includes the new PFRON subpage and regression is covered by tests.
+- Follow-ups: none.
+
+### 2026-02-12 - Document local PHP server workflow for landing page
+
+- Task: Updated repository docs with explicit instructions for running the landing page on a local PHP server.
+- Decisions:
+  - Added a dedicated AGENTS section for manual landing-page checks (`php -S ...`, open URL, stop process).
+  - Added README quick-start snippet for local PHP server in `landing-page/`.
+- Files changed:
+  - `AGENTS.md`
+  - `README.md`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/PfronLandingPage.smoke.test.ts` (passed: 1 file, 4 tests)
+- Outcome: Manual QA flow for landing-page is now explicit and repeatable in both agent and project docs.
+- Follow-ups: none.

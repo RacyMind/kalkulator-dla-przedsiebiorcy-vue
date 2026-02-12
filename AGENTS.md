@@ -136,6 +136,14 @@ If a frontend change is reported as missing:
 2. Ask the user to run `npm start` for dev view.
 3. If checking production bundle behavior, ask the user to run `npm run build`.
 
+## Landing Page Local Server
+
+For manual checks of the PHP landing page:
+
+1. Run from `landing-page/`: `php -S 127.0.0.1:8000 router.php`
+2. Open: `http://127.0.0.1:8000/`
+3. Stop server with `Ctrl+C` (foreground) or `Stop-Process -Id <PID>` (PowerShell background process)
+
 ## Communication Style
 
 - Keep responses concise.

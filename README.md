@@ -88,6 +88,15 @@ Uruchomienie lokalne (PWA dev):
 npm start
 ```
 
+Uruchomienie lokalne landing page (PHP):
+
+```bash
+cd landing-page
+php -S 127.0.0.1:8000 router.php
+```
+
+Następnie otwórz: `http://127.0.0.1:8000/`
+
 ## Testy i jakość
 
 W tym projekcie zmiana jest kompletna dopiero po uruchomieniu testów.

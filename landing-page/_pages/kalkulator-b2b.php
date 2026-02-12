@@ -79,7 +79,7 @@ HTML,
     ],
     'related' => [
         ['slug' => 'porownywarka-b2b', 'name' => 'Porównywarka B2B', 'desc' => 'Porównaj skalę podatkową, podatek liniowy i ryczałt w jednym miejscu.', 'gradient' => 'from-blue-500 to-blue-700', 'icon' => $icons['chart']],
-        ['slug' => 'kalkulator-umowa-o-prace', 'name' => 'Kalkulator umowy o pracę', 'desc' => 'Oblicz wynagrodzenie netto z umowy o pracę i koszty pracodawcy.', 'gradient' => 'from-emerald-500 to-emerald-700', 'icon' => $icons['briefcase']],
+        ['slug' => 'kalkulator-refundacja-skladek-spolecznych-pfron', 'name' => 'Refundacja składek PFRON', 'desc' => 'Oblicz kwotę refundacji składek emerytalnej i rentowej z PFRON.', 'gradient' => 'from-emerald-500 to-emerald-700', 'icon' => $icons['calculator']],
         ['slug' => 'kalkulator-vat', 'name' => 'Kalkulator VAT', 'desc' => 'Przelicz kwoty netto i brutto z uwzględnieniem stawki VAT.', 'gradient' => 'from-amber-500 to-amber-700', 'icon' => $icons['money']],
     ],
 ];
