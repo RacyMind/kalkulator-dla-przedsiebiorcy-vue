@@ -16,6 +16,8 @@
     "test:unit": "vitest",
     "test:unit:ci": "vitest run",
     "test:unit:ui": "vitest --ui",
+    "store:screenshots:capture": "node scripts/capture-store-screenshots.mjs",
+    "store:screenshots:generate": "node scripts/generate-store-screenshots.mjs",
     "prepare": "husky"
   },
   "dependencies": {
