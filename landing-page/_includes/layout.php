@@ -69,10 +69,9 @@ $e = function($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); };
   </script>
 <?php endif; ?>
 
-<?php include __DIR__ . '/gtm.php'; ?>
+<?php include __DIR__ . '/ga4.php'; ?>
 </head>
 <body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
-<?php include __DIR__ . '/gtm-noscript.php'; ?>
 
 <?php include __DIR__ . '/nav.php'; ?>
 

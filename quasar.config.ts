@@ -27,7 +27,7 @@ export default defineConfig((ctx) => {
       publicPath: ctx.dev ? '' : 'app',
       vueRouterMode: 'hash',
       env: {
-        VITE_GTM_ID: process.env.VITE_GTM_ID,
+        VITE_GA_MEASUREMENT_ID: process.env.VITE_GA_MEASUREMENT_ID,
         VITE_ADSENSE_PUBLISHER_ID: process.env.VITE_ADSENSE_PUBLISHER_ID,
         VITE_ADMOB_BANNER_ID: process.env.VITE_ADMOB_BANNER_ID,
         VITE_ADSENSE_AD_SLOT: process.env.VITE_ADSENSE_AD_SLOT,

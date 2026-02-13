@@ -138,10 +138,9 @@
   }
   </script>
 
-<?php include __DIR__ . '/_includes/gtm.php'; ?>
+<?php include __DIR__ . '/_includes/ga4.php'; ?>
 </head>
 <body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
-<?php include __DIR__ . '/_includes/gtm-noscript.php'; ?>
 
 <?php include __DIR__ . '/_includes/nav.php'; ?>
 

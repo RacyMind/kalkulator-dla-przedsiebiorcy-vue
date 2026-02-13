@@ -361,3 +361,33 @@ For each completed task, add one section:
   - `npm run build` (passed: Quasar PWA build)
 - Outcome: Web/PWA builds now inject GTM with valid container id `GTM-MKR8Z54`; invalid/non-GTM ids are filtered out and no longer silently produce malformed GTM bootstrap.
 - Follow-ups: In GTM container, verify GA4 tags/triggers for `customPageView` and `customEvent` are published.
+
+### 2026-02-13 - Migrate web analytics to GA4 gtag and add landing-page GA4 include
+
+- Task: Naprawiono analitykę web przez przejście z GTM `dataLayer` custom events na bezpośrednie GA4 `gtag` oraz dodano GA4 do landing page.
+- Decisions:
+  - Ujednolicono ścieżkę web na `gtag('event', ...)` i `gtag('event', 'page_view', ...)`.
+  - Zachowano natywną ścieżkę Firebase Analytics bez zmian behawioralnych.
+  - Dodano env `VITE_GA_MEASUREMENT_ID` i usunięto aktywne include GTM w landing page.
+  - W landing page ustawiono domyślny identyfikator `G-9P7ZTHLC47` z opcjonalnym override `GA_MEASUREMENT_ID`.
+- Files changed:
+  - `src/logic/analytics.ts`
+  - `index.html`
+  - `quasar.config.ts`
+  - `.env.example`
+  - `landing-page/_includes/ga4.php`
+  - `landing-page/index.php`
+  - `landing-page/_includes/layout.php`
+  - `landing-page/_includes/gtm.php` (deleted)
+  - `landing-page/_includes/gtm-noscript.php` (deleted)
+  - `test/vitest/__tests__/logic/Analytics.test.ts`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 8 tests)
+  - `npm run test:unit:ci` (failed: istniejący problem niezwiązany ze zmianą, brak assetu `graphics/Google Play/phone/01-main-menu-dark.png` w `StoreScreenshotsAssetsContract.test.ts`)
+  - `php -l landing-page/_includes/ga4.php` (passed)
+  - `php -l landing-page/index.php` (passed)
+  - `php -l landing-page/_includes/layout.php` (passed)
+- Outcome: Web i landing page korzystają z GA4 `gtag`; nowe testy kontraktowe i logiki analityki przechodzą.
+- Follow-ups: Przywrócić brakujący asset screenshotów Google Play, aby ponownie domknąć pełny `npm run test:unit:ci`.
