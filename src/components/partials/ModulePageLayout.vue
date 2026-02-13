@@ -10,7 +10,7 @@
         <q-card flat class="module-card module-card--padded">
           <slot name="results"></slot>
         </q-card>
-        <AdSenseBanner :ad-slot="adSlot" />
+        <AdSenseBanner v-if="showAdSenseBanner" :ad-slot="adSlot" />
       </div>
     </div>
     <div :style="containerStyle">
@@ -24,8 +24,10 @@ import { computed } from 'vue'
 import AdSenseBanner from 'components/partials/AdSenseBanner.vue'
 import Footer from 'components/partials/Footer.vue'
 import { AD_SENSE_CONFIG } from 'src/services/adsense/adSenseConfig'
+import { usePremiumStore } from 'stores/premiumStore'
 
 const adSlot = AD_SENSE_CONFIG.adSlot
+const premiumStore = usePremiumStore()
 
 interface Props {
   singleColumn?: boolean
@@ -48,4 +50,6 @@ const formColumnClass = computed(() =>
 const resultsColumnClass = computed(() =>
   props.singleColumn ? 'col-12' : 'col-12 col-md-6',
 )
+
+const showAdSenseBanner = computed(() => !premiumStore.isPremiumActive)
 </script>

@@ -1,6 +1,6 @@
 {
   "appId": "racyMind.kalkulator",
-  "appName": "Kalkulator finansowy - oblicz wynagrodzenie z UoP, B2B",
+  "appName": "Kalkulator finansowy – Darmowy kalkulator wynagrodzeń i podatków",
   "webDir": "www",
   "plugins": {
     "StatusBar": {

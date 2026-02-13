@@ -1,11 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <a href="#main-content"
-       class="skip-to-content">Przejdź do treści</a>
-    <q-header
-      class="bg-primary-brand"
-      elevated
-    >
+    <a href="#main-content" class="skip-to-content">Przejdź do treści</a>
+    <q-header class="bg-primary-brand" elevated>
       <q-toolbar>
         <q-btn
           v-if="!isDesktop"
@@ -21,19 +17,22 @@
         <q-toolbar-title>
           <div class="row justify-between items-center">
             <div class="row items-center">
-              <router-link to="/"
-                           class="text-white text-no-decoration row items-center"
-                           :aria-label="constants.app.name + ' — strona główna'">
-                <img src="~assets/app-icon-white.svg"
-                     alt=""
-                     style="width: 28px; height: 28px;"
-                     class="q-mr-sm" />
+              <router-link
+                to="/"
+                class="text-white text-no-decoration row items-center"
+                :aria-label="constants.app.name + ' — strona główna'"
+              >
+                <img
+                  src="~assets/app-icon-white.svg"
+                  alt=""
+                  style="width: 28px; height: 28px"
+                  class="q-mr-sm"
+                />
                 <span class="gt-xs">{{ constants.app.name }}</span>
               </router-link>
 
               <template v-if="breadcrumbStore.items.length">
-                <q-icon :name="matChevronRight"
-                        class="q-mx-xs gt-xs" />
+                <q-icon :name="matChevronRight" class="q-mx-xs gt-xs" />
                 <q-breadcrumbs
                   active-color="white"
                   gutter="xs"
@@ -75,7 +74,7 @@
       bordered
       content-class="bg-surface-variant"
       aria-label="Panel boczny"
-      @update:model-value="val => leftDrawerOpen = val"
+      @update:model-value="(val) => (leftDrawerOpen = val)"
     >
       <q-scroll-area class="fit">
         <nav aria-label="Menu główne">
@@ -84,9 +83,13 @@
           </q-list>
         </nav>
 
-        <footer class="text-center q-py-md"
-                style="border-top: 1px solid rgba(0,0,0,0.12)">
+        <footer
+          class="text-center q-py-md"
+          style="border-top: 1px solid rgba(0, 0, 0, 0.12)"
+        >
+          <PremiumActions class="q-mb-sm" />
           <q-btn
+            v-if="!premiumStore.isPremiumActive"
             class="q-mb-sm"
             color="red-7"
             rounded
@@ -94,8 +97,7 @@
             aria-label="Wesprzyj twórcę"
             @click="openModal = true"
           >
-            <q-icon :name="outlinedFavorite"
-                    class="q-mr-sm" />
+            <q-icon :name="outlinedFavorite" class="q-mr-sm" />
             Wesprzyj twórcę
           </q-btn>
           <div class="text-caption text-grey q-mt-xs">
@@ -104,18 +106,22 @@
         </footer>
       </q-scroll-area>
 
-      <q-dialog v-model="openModal">
+      <q-dialog v-if="!premiumStore.isPremiumActive" v-model="openModal">
         <SupportProject />
       </q-dialog>
     </q-drawer>
 
     <q-page-container class="bg-surface-variant">
-      <main id="main-content"
-            tabindex="-1">
-        <h1 class="sr-only">{{ breadcrumbStore.items.length ? breadcrumbStore.items[breadcrumbStore.items.length - 1].name : constants.app.name }}</h1>
+      <main id="main-content" tabindex="-1">
+        <h1 class="sr-only">
+          {{
+            breadcrumbStore.items.length
+              ? breadcrumbStore.items[breadcrumbStore.items.length - 1].name
+              : constants.app.name
+          }}
+        </h1>
         <router-view v-slot="{ Component }">
-          <transition name="fade-scale"
-                      mode="out-in">
+          <transition name="fade-scale" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>
@@ -126,36 +132,44 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, computed} from 'vue'
-import {useRoute} from 'vue-router'
-import {useQuasar} from 'quasar'
-import {useBreadcrumbStore} from 'stores/breadcrumbStore'
+import { ref, watch, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useBreadcrumbStore } from 'stores/breadcrumbStore'
 import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
+import PremiumActions from 'components/partials/PremiumActions.vue'
 import ScrollToTop from 'components/partials/ScrollToTop.vue'
-import {useConstantsStore} from 'stores/constantsStore'
-import {useTheme} from 'src/composables/useTheme'
-import {useRecentlyUsed} from 'src/composables/useRecentlyUsed'
-import {matMenu, matChevronRight, outlinedFavorite} from 'src/icons'
+import { useConstantsStore } from 'stores/constantsStore'
+import { usePremiumStore } from 'stores/premiumStore'
+import { useTheme } from 'src/composables/useTheme'
+import { useRecentlyUsed } from 'src/composables/useRecentlyUsed'
+import { matMenu, matChevronRight, outlinedFavorite } from 'src/icons'
 
 const $q = useQuasar()
 const route = useRoute()
 const constants = useConstantsStore()
-const {themeIcon, themeTooltip, cycleTheme} = useTheme()
-const {addRecent} = useRecentlyUsed()
+const premiumStore = usePremiumStore()
+const { themeIcon, themeTooltip, cycleTheme } = useTheme()
+const { addRecent } = useRecentlyUsed()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)
 const openModal = ref(false)
-const hamburgerRef = ref<InstanceType<typeof import('quasar').QBtn> | null>(null)
+const hamburgerRef = ref<InstanceType<typeof import('quasar').QBtn> | null>(
+  null,
+)
 
 const isDesktop = computed(() => $q.screen.gt.md)
 
-watch(() => route.path, () => {
-  if (!isDesktop.value) {
-    leftDrawerOpen.value = false
-  }
-})
+watch(
+  () => route.path,
+  () => {
+    if (!isDesktop.value) {
+      leftDrawerOpen.value = false
+    }
+  },
+)
 
 watch(leftDrawerOpen, (newVal, oldVal) => {
   if (!newVal && oldVal && !isDesktop.value) {
@@ -163,10 +177,14 @@ watch(leftDrawerOpen, (newVal, oldVal) => {
   }
 })
 
-watch(() => breadcrumbStore.items, (items) => {
-  if (route.path !== '/' && items.length) {
-    const lastBreadcrumb = items[items.length - 1]
-    addRecent(route.path, lastBreadcrumb.name)
-  }
-}, { deep: true })
+watch(
+  () => breadcrumbStore.items,
+  (items) => {
+    if (route.path !== '/' && items.length) {
+      const lastBreadcrumb = items[items.length - 1]
+      addRecent(route.path, lastBreadcrumb.name)
+    }
+  },
+  { deep: true },
+)
 </script>

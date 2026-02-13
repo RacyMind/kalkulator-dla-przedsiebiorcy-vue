@@ -1,7 +1,13 @@
 import { AD_CONFIG } from './adConfig'
-import { AdMob, BannerAdPluginEvents, BannerAdPosition, BannerAdSize } from '@capacitor-community/admob'
+import {
+  AdMob,
+  BannerAdPluginEvents,
+  BannerAdPosition,
+  BannerAdSize,
+} from '@capacitor-community/admob'
 import { Capacitor } from '@capacitor/core'
 import type { AdMobServiceState } from './types'
+import { usePremiumStore } from 'stores/premiumStore'
 
 export class AdMobService {
   private state: AdMobServiceState = {
@@ -21,28 +27,39 @@ export class AdMobService {
       return
     }
 
+    if (this.isPremiumActive()) {
+      this.state.isBannerVisible = false
+      return
+    }
+
     try {
       this.registerListeners()
       await AdMob.initialize()
-
-      await AdMob.showBanner({
-        adId: AD_CONFIG.bannerAdId,
-        adSize: BannerAdSize.ADAPTIVE_BANNER,
-        position: BannerAdPosition.BOTTOM_CENTER,
-        margin: 0,
-        isTesting: AD_CONFIG.isTesting,
-      })
-
       this.state.isInitialized = true
-      this.state.isBannerVisible = true
+
+      if (this.isPremiumActive()) {
+        this.state.isBannerVisible = false
+        return
+      }
+
+      await this.showBanner()
     } catch (error) {
-       
       console.error('[AdMobService] Initialization failed:', error)
     }
   }
 
   async showAd(): Promise<void> {
-    if (!this.state.isBannerLoaded || this.state.isBannerVisible) {
+    if (this.isPremiumActive()) {
+      await this.hideAd()
+      return
+    }
+
+    if (!this.state.isInitialized || this.state.isBannerVisible) {
+      return
+    }
+
+    if (!this.state.isBannerLoaded) {
+      await this.showBanner()
       return
     }
 
@@ -50,13 +67,12 @@ export class AdMobService {
       await AdMob.resumeBanner()
       this.state.isBannerVisible = true
     } catch (error) {
-       
       console.error('[AdMobService] resumeBanner failed:', error)
     }
   }
 
   async hideAd(): Promise<void> {
-    if (!this.state.isBannerLoaded || !this.state.isBannerVisible) {
+    if (!this.state.isBannerVisible) {
       return
     }
 
@@ -64,7 +80,6 @@ export class AdMobService {
       await AdMob.hideBanner()
       this.state.isBannerVisible = false
     } catch (error) {
-       
       console.error('[AdMobService] hideBanner failed:', error)
     }
   }
@@ -78,14 +93,43 @@ export class AdMobService {
       this.state.isBannerLoaded = true
     })
 
-    AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: { code: number; message: string }) => {
-      this.state.lastError = { code: error.code, message: error.message }
-       
-      console.error('[AdMobService] Banner failed to load:', error.code, error.message)
-    })
+    AdMob.addListener(
+      BannerAdPluginEvents.FailedToLoad,
+      (error: { code: number; message: string }) => {
+        this.state.lastError = { code: error.code, message: error.message }
+        this.state.isBannerVisible = false
+        console.error(
+          '[AdMobService] Banner failed to load:',
+          error.code,
+          error.message,
+        )
+      },
+    )
 
-    AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: { width: number; height: number }) => {
-      this.state.bannerHeight = size.height
+    AdMob.addListener(
+      BannerAdPluginEvents.SizeChanged,
+      (size: { width: number; height: number }) => {
+        this.state.bannerHeight = size.height
+      },
+    )
+  }
+
+  private async showBanner(): Promise<void> {
+    await AdMob.showBanner({
+      adId: AD_CONFIG.bannerAdId,
+      adSize: BannerAdSize.ADAPTIVE_BANNER,
+      position: BannerAdPosition.BOTTOM_CENTER,
+      margin: 0,
+      isTesting: AD_CONFIG.isTesting,
     })
+    this.state.isBannerVisible = true
+  }
+
+  private isPremiumActive(): boolean {
+    try {
+      return usePremiumStore().isPremiumActive
+    } catch {
+      return false
+    }
   }
 }

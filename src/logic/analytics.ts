@@ -4,11 +4,13 @@ import { FirebaseAnalytics } from '@capacitor-firebase/analytics'
 
 declare global {
   interface Window {
-    dataLayer: any
+    dataLayer?: unknown[]
+    gtag?: (...args: unknown[]) => void
   }
 }
 
 const isNative = Capacitor.isNativePlatform()
+const hasGtag = () => typeof window.gtag === 'function'
 
 export default {
   getCid() {
@@ -28,16 +30,24 @@ export default {
         name: action,
         params: { category, label, value, cid: this.getCid() },
       })
-    } else {
-      window.dataLayer.push({
-        action: action,
-        category: category,
-        cid: this.getCid(),
-        event: 'customEvent',
-        label: label,
-        value: value,
-      })
+      return
     }
+
+    if (!hasGtag()) {
+      return
+    }
+
+    const eventParams: Record<string, string | number> = {
+      event_category: category,
+      event_label: label,
+      cid: this.getCid(),
+    }
+
+    if (typeof value === 'number') {
+      eventParams.value = value
+    }
+
+    window.gtag?.('event', action, eventParams)
   },
 
   logPage(path: string) {
@@ -50,12 +60,16 @@ export default {
         name: 'screen_view',
         params: { screen_name: path, cid: this.getCid() },
       })
-    } else {
-      window.dataLayer.push({
-        cid: this.getCid(),
-        event: 'customPageView',
-        path: path,
-      })
+      return
     }
+
+    if (!hasGtag()) {
+      return
+    }
+
+    window.gtag?.('event', 'page_view', {
+      cid: this.getCid(),
+      page_path: path,
+    })
   },
 }

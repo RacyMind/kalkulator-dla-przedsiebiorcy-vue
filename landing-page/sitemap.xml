@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://kalkulatorfinansowy.app/kalkulator-refundacja-skladek-spolecznych-pfron/</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://kalkulatorfinansowy.app/kalkulator-ike/</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>yearly</changefreq>
@@ -57,6 +63,12 @@
   <url>
     <loc>https://kalkulatorfinansowy.app/obligacje-skarbowe/</loc>
     <lastmod>2026-02-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kalkulatorfinansowy.app/kalkulator-zasilek-macierzynski/</loc>
+    <lastmod>2026-02-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -1,6 +1,13 @@
 export default [
   {
-    content: '<ul><li>Zmiany w interfejsie.</li></ul>',
+    content:
+      '<ul><li>Dodano moduł Zasiłek macierzyński.</li><li>Dodano moduł Refundacja składek społecznych PFRON.</li></ul>',
+    publish_date: '2026-02-11',
+    version: '6.1.0',
+  },
+  {
+    content:
+      '<ul><li>Zmiany w interfejsie.</li><li>Dodano wyświetlanie rzeczywistego kosztu zakupu w module Rzeczywisty koszt zakupu.</li></ul>',
     publish_date: '2026-02-10',
     version: '6.0.1',
   },

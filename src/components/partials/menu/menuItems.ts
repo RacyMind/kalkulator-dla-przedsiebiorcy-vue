@@ -100,6 +100,13 @@ export default {
       link: '/skladki-zus-za-czesc-miesiaca',
       title: 'Składki ZUS za część miesiąca',
     } as MenuItem,
+    {
+      caption:
+        'Oblicz kwotę refundacji PFRON dla składek emerytalnej i rentowej zależnie od stopnia niepełnosprawności',
+      className: 'c-company',
+      link: '/refundacja-skladek-spolecznych-pfron',
+      title: 'Refundacja składek społecznych PFRON',
+    } as MenuItem,
   ],
   taxes: [
     {
@@ -226,6 +233,13 @@ export default {
       className: 'c-work',
       link: '/ekwiwalent-za-niewykorzystany-urlop',
       title: 'Ekwiwalent za niewykorzystany urlop',
+    } as MenuItem,
+    {
+      caption:
+        'Oblicz wysokość zasiłku macierzyńskiego w dwóch wariantach wypłaty',
+      className: 'c-work',
+      link: '/zasilek-macierzynski',
+      title: 'Zasiłek macierzyński',
     } as MenuItem,
   ],
 }

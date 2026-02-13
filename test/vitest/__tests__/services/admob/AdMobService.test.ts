@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 
-const { mockAdMob, mockCapacitor } = vi.hoisted(() => {
+const { mockAdMob, mockCapacitor, mockRegisterPlugin } = vi.hoisted(() => {
   const mockAdMob = {
     initialize: vi.fn().mockResolvedValue(undefined),
     showBanner: vi.fn().mockResolvedValue(undefined),
@@ -10,8 +11,16 @@ const { mockAdMob, mockCapacitor } = vi.hoisted(() => {
   }
   const mockCapacitor = {
     isNativePlatform: vi.fn().mockReturnValue(true),
+    getPlatform: vi.fn().mockReturnValue('android'),
   }
-  return { mockAdMob, mockCapacitor }
+  const mockRegisterPlugin = vi.fn().mockReturnValue({
+    initialize: vi.fn().mockResolvedValue(undefined),
+    queryProductDetails: vi.fn().mockResolvedValue({ productDetails: [] }),
+    purchaseProduct: vi.fn().mockResolvedValue(undefined),
+    queryPurchases: vi.fn().mockResolvedValue({ purchases: [] }),
+    acknowledgePurchase: vi.fn().mockResolvedValue(undefined),
+  })
+  return { mockAdMob, mockCapacitor, mockRegisterPlugin }
 })
 
 vi.mock('@capacitor-community/admob', () => ({
@@ -31,16 +40,23 @@ vi.mock('@capacitor-community/admob', () => ({
 
 vi.mock('@capacitor/core', () => ({
   Capacitor: mockCapacitor,
+  registerPlugin: mockRegisterPlugin,
 }))
 
 import { AdMobService } from 'services/admob/AdMobService'
+import { usePremiumStore } from 'stores/premiumStore'
 
 describe('AdMobService', () => {
   let service: AdMobService
 
   beforeEach(() => {
+    setActivePinia(createPinia())
+    localStorage.clear()
     vi.clearAllMocks()
     mockCapacitor.isNativePlatform.mockReturnValue(true)
+    mockCapacitor.getPlatform.mockReturnValue('android')
+    const premiumStore = usePremiumStore()
+    premiumStore.isPremiumActive = false
     service = new AdMobService()
   })
 
@@ -110,6 +126,17 @@ describe('AdMobService', () => {
       expect(mockAdMob.initialize).not.toHaveBeenCalled()
       expect(mockAdMob.showBanner).not.toHaveBeenCalled()
     })
+
+    it('does not initialize SDK or show banner when premium is active', async () => {
+      const premiumStore = usePremiumStore()
+      premiumStore.isPremiumActive = true
+
+      await service.initialize()
+
+      expect(mockAdMob.initialize).not.toHaveBeenCalled()
+      expect(mockAdMob.showBanner).not.toHaveBeenCalled()
+      expect(mockAdMob.addListener).not.toHaveBeenCalled()
+    })
   })
 
   describe('showAd()', () => {
@@ -146,6 +173,17 @@ describe('AdMobService', () => {
       await service.showAd()
 
       expect(mockAdMob.resumeBanner).not.toHaveBeenCalled()
+    })
+
+    it('hides banner when premium becomes active', async () => {
+      await service.initialize()
+      const premiumStore = usePremiumStore()
+      premiumStore.isPremiumActive = true
+      vi.clearAllMocks()
+
+      await service.showAd()
+
+      expect(mockAdMob.hideBanner).toHaveBeenCalledTimes(1)
     })
   })
 

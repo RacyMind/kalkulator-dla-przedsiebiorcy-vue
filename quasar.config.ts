@@ -15,7 +15,7 @@ export default defineConfig((ctx) => {
     boot: [
       'google-analytics',
       'aria-describedby',
-      ...('capacitor' in ctx.mode ? ['admob', 'review-prompt'] : []),
+      ...('capacitor' in ctx.mode ? ['premium', 'admob', 'review-prompt'] : []),
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
@@ -27,8 +27,12 @@ export default defineConfig((ctx) => {
       publicPath: ctx.dev ? '' : 'app',
       vueRouterMode: 'hash',
       env: {
-        VITE_GTM_ID: process.env.VITE_GTM_ID,
+        VITE_GA_MEASUREMENT_ID: process.env.VITE_GA_MEASUREMENT_ID,
         VITE_ADSENSE_PUBLISHER_ID: process.env.VITE_ADSENSE_PUBLISHER_ID,
+        VITE_ADMOB_BANNER_ID: process.env.VITE_ADMOB_BANNER_ID,
+        VITE_ADSENSE_AD_SLOT: process.env.VITE_ADSENSE_AD_SLOT,
+        VITE_ADSENSE_LAYOUT_KEY: process.env.VITE_ADSENSE_LAYOUT_KEY,
+        VITE_PREMIUM_PRODUCT_ID: process.env.VITE_PREMIUM_PRODUCT_ID,
       },
       typescript: {
         strict: true,
@@ -63,10 +67,16 @@ export default defineConfig((ctx) => {
               }
               const stubId = id.slice(STUB_PREFIX.length)
               if (stubId === '@capacitor/core') {
-                return 'export const Capacitor = { isNativePlatform: () => false }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};'
+                return 'export const Capacitor = { isNativePlatform: () => false, getPlatform: () => "web" }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};'
               }
               if (stubId === '@capacitor-firebase/analytics') {
                 return 'export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve() }; export default {};'
+              }
+              if (stubId === '@capacitor-community/admob') {
+                return 'export const AdMob = { initialize: () => Promise.resolve(), showBanner: () => Promise.resolve(), hideBanner: () => Promise.resolve(), resumeBanner: () => Promise.resolve(), addListener: () => Promise.resolve({ remove: () => Promise.resolve() }) }; export const BannerAdPluginEvents = { Loaded: "bannerAdLoaded", FailedToLoad: "bannerAdFailedToLoad", SizeChanged: "bannerAdSizeChanged" }; export const BannerAdPosition = { BOTTOM_CENTER: "BOTTOM_CENTER" }; export const BannerAdSize = { ADAPTIVE_BANNER: "ADAPTIVE_BANNER" }; export default {};'
+              }
+              if (stubId === '@capacitor-community/in-app-review') {
+                return 'export const InAppReview = { requestReview: () => Promise.resolve() }; export default {};'
               }
               return 'export default {};'
             },
