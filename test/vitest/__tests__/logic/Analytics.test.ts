@@ -6,6 +6,7 @@ const originalDevValue = process.env.DEV
 
 const importAnalytics = async (
   nativePlatform: boolean,
+  analyticsConsent: boolean,
 ): Promise<{
   analytics: AnalyticsModule['default']
   firebaseLogEvent: ReturnType<typeof vi.fn>
@@ -24,6 +25,10 @@ const importAnalytics = async (
     FirebaseAnalytics: {
       logEvent: firebaseLogEvent,
     },
+  }))
+
+  vi.doMock('src/logic/consent', () => ({
+    hasAnalyticsConsent: () => analyticsConsent,
   }))
 
   const analyticsModule = await import('logic/analytics')
@@ -51,12 +56,12 @@ describe('analytics logic', () => {
     }
   })
 
-  it('sends custom event to GA4 on web when gtag is available', async () => {
+  it('sends custom event to GA4 on web when consent is granted', async () => {
     const gtagSpy = vi.fn()
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
     localStorage.cid = 'web-cid'
 
-    const { analytics, firebaseLogEvent } = await importAnalytics(false)
+    const { analytics, firebaseLogEvent } = await importAnalytics(false, true)
     analytics.logEvent('Modal', 'Open', 'Wsparcie autora', 3)
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
@@ -68,12 +73,23 @@ describe('analytics logic', () => {
     })
   })
 
-  it('sends page view to GA4 on web when gtag is available', async () => {
+  it('does not send custom event to GA4 on web when consent is denied', async () => {
+    const gtagSpy = vi.fn()
+    ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
+
+    const { analytics, firebaseLogEvent } = await importAnalytics(false, false)
+    analytics.logEvent('Modal', 'Open', 'Wsparcie autora', 3)
+
+    expect(firebaseLogEvent).not.toHaveBeenCalled()
+    expect(gtagSpy).not.toHaveBeenCalled()
+  })
+
+  it('sends page view to GA4 on web when consent is granted', async () => {
     const gtagSpy = vi.fn()
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
     localStorage.cid = 'page-cid'
 
-    const { analytics, firebaseLogEvent } = await importAnalytics(false)
+    const { analytics, firebaseLogEvent } = await importAnalytics(false, true)
     analytics.logPage('app/umowa-o-prace')
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
@@ -84,19 +100,19 @@ describe('analytics logic', () => {
   })
 
   it('does not throw on web when gtag is unavailable', async () => {
-    const { analytics, firebaseLogEvent } = await importAnalytics(false)
+    const { analytics, firebaseLogEvent } = await importAnalytics(false, true)
 
     expect(() => analytics.logEvent('Modal', 'Open', 'Wsparcie')).not.toThrow()
     expect(() => analytics.logPage('app/porownywarka-b2b')).not.toThrow()
     expect(firebaseLogEvent).not.toHaveBeenCalled()
   })
 
-  it('uses Firebase analytics on native platform', async () => {
+  it('uses Firebase analytics on native platform when consent is granted', async () => {
     const gtagSpy = vi.fn()
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
     localStorage.cid = 'native-cid'
 
-    const { analytics, firebaseLogEvent } = await importAnalytics(true)
+    const { analytics, firebaseLogEvent } = await importAnalytics(true, true)
     analytics.logEvent('Modal', 'Open', 'Wsparcie')
     analytics.logPage('app/kalkulator-ike')
 
@@ -119,16 +135,26 @@ describe('analytics logic', () => {
     })
   })
 
+  it('does not use Firebase analytics on native platform when consent is denied', async () => {
+    localStorage.cid = 'native-cid'
+
+    const { analytics, firebaseLogEvent } = await importAnalytics(true, false)
+    analytics.logEvent('Modal', 'Open', 'Wsparcie')
+    analytics.logPage('app/kalkulator-ike')
+
+    expect(firebaseLogEvent).not.toHaveBeenCalled()
+  })
+
   it('does not emit analytics in development mode', async () => {
     ;(process.env as Record<string, string | undefined>).DEV = 'true'
     const gtagSpy = vi.fn()
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
 
-    const webAnalytics = await importAnalytics(false)
+    const webAnalytics = await importAnalytics(false, true)
     webAnalytics.analytics.logEvent('Modal', 'Open', 'Wsparcie autora')
     webAnalytics.analytics.logPage('app/umowa-zlecenie')
 
-    const nativeAnalytics = await importAnalytics(true)
+    const nativeAnalytics = await importAnalytics(true, true)
     nativeAnalytics.analytics.logEvent('Modal', 'Open', 'Wsparcie autora')
     nativeAnalytics.analytics.logPage('app/umowa-zlecenie')
 

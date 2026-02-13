@@ -74,6 +74,7 @@ $e = function($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); };
 <body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
 
 <?php include __DIR__ . '/nav.php'; ?>
+<?php include __DIR__ . '/consent.php'; ?>
 
   <header class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-[#1565C0] to-[#0D47A1]">
     <div class="max-w-6xl mx-auto px-4">

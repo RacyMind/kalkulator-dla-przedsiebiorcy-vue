@@ -128,6 +128,7 @@
         <ScrollToTop />
       </main>
     </q-page-container>
+    <ConsentBanner />
   </q-layout>
 </template>
 
@@ -140,6 +141,7 @@ import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import PremiumActions from 'components/partials/PremiumActions.vue'
 import ScrollToTop from 'components/partials/ScrollToTop.vue'
+import ConsentBanner from 'components/partials/ConsentBanner.vue'
 import { useConstantsStore } from 'stores/constantsStore'
 import { usePremiumStore } from 'stores/premiumStore'
 import { useTheme } from 'src/composables/useTheme'

@@ -391,3 +391,64 @@ For each completed task, add one section:
   - `php -l landing-page/_includes/layout.php` (passed)
 - Outcome: Web i landing page korzystają z GA4 `gtag`; nowe testy kontraktowe i logiki analityki przechodzą.
 - Follow-ups: Przywrócić brakujący asset screenshotów Google Play, aby ponownie domknąć pełny `npm run test:unit:ci`.
+
+### 2026-02-13 - Implement consent-first analytics (web + landing + Android) and add app regulations
+
+- Task: Wdro�ono zgod� analityczn� (RODO) dla GA4/Firebase Analytics oraz zast�piono disclaimer pe�nym regulaminem dost�pnym w aplikacji.
+- Decisions:
+  - Zastosowano wsp�lny stan zgody `kf-consent-v1` dla web, landing i Android.
+  - Wdro�ono Consent Mode Advanced z domy�lnym `denied` dla `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`.
+  - Emisja event�w analitycznych zosta�a zablokowana bez zgody (web i native).
+  - Dla Android przy odrzuceniu zgody ustawiane jest `DENIED` i wykonywane `resetAnalyticsData()`.
+  - Dodano stron� `/regulamin`, linki prawne w formularzu oraz rozszerzono strony bez reklam o `/regulamin`.
+- Files changed:
+  - `src/types/Consent.ts`
+  - `src/logic/consent.ts`
+  - `src/logic/analytics.ts`
+  - `src/boot/consent.ts`
+  - `quasar.config.ts`
+  - `index.html`
+  - `src/components/partials/ConsentBanner.vue`
+  - `src/layouts/MainLayout.vue`
+  - `src/components/privacyPolicy/Index.vue`
+  - `src/components/regulations/pages/Index.vue`
+  - `src/router/routes.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `src/components/partials/menu/menuItems.ts`
+  - `src/services/admob/adConfig.ts`
+  - `landing-page/_includes/ga4.php`
+  - `landing-page/_includes/consent.php`
+  - `landing-page/index.php`
+  - `landing-page/_includes/layout.php`
+  - `test/vitest/__tests__/logic/Analytics.test.ts`
+  - `test/vitest/__tests__/logic/Consent.test.ts`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `test/vitest/__tests__/router/LegalRoutesContract.test.ts`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/services/admob/AdMobService.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/logic/Consent.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/services/admob/AdMobService.test.ts test/vitest/__tests__/router/LegalRoutesContract.test.ts` (passed: 6 files, 40 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 1 file, 4 tests)
+  - `npm run test:unit:ci` (passed: 74 files, 535 tests)
+  - `npm run lint` (failed: istniej�ce wcze�niej b��dy/warnings w plikach niezwi�zanych z zadaniem)
+- Outcome: Aplikacja i landing page wymagaj� decyzji u�ytkownika dla analityki, Android respektuje zgody i resetuje dane po wycofaniu, a stary disclaimer zosta� zast�piony pe�nym regulaminem oraz linkami prawnymi.
+- Follow-ups: Rozwa�y� doko�czenie porz�dk�w lint (4 aktywne b��dy w niezwi�zanych komponentach) oraz audyt reklam pod k�tem osobnych zg�d marketingowych.
+
+### 2026-02-13 - Place consent banner above AdMob banner on Android
+
+- Task: Naprawiono nak�adanie si� banera zg�d na reklam� AdMob w aplikacji Android.
+- Decisions:
+  - Dodano globalny offset CSS `--admob-banner-offset` ustawiany w `admob` boot na podstawie wysoko�ci reklamy.
+  - Baner zg�d u�ywa teraz `bottom: calc(... + var(--admob-banner-offset))`, wi�c zawsze renderuje si� nad reklam�.
+  - Dodano test regresyjny bootu AdMob sprawdzaj�cy aktualizacj� offsetu przy show/hide reklamy.
+- Files changed:
+  - `src/boot/admob.ts`
+  - `src/components/partials/ConsentBanner.vue`
+  - `test/vitest/__tests__/boot/admobBoot.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/admobBoot.test.ts test/vitest/__tests__/services/admob/AdMobService.test.ts` (passed: 2 files, 25 tests)
+  - `npm run test:unit:ci` (passed: 74 files, 535 tests)
+- Outcome: Na Androidzie baner zg�d nie jest ju� przykrywany przez AdMob i utrzymuje poprawny odst�p przy zmianie widoczno�ci reklamy.
+- Follow-ups: none.

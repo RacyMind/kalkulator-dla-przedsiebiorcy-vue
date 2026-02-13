@@ -13,6 +13,7 @@ export default defineConfig((ctx) => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
+      'consent',
       'google-analytics',
       'aria-describedby',
       ...('capacitor' in ctx.mode ? ['premium', 'admob', 'review-prompt'] : []),
@@ -70,7 +71,7 @@ export default defineConfig((ctx) => {
                 return 'export const Capacitor = { isNativePlatform: () => false, getPlatform: () => "web" }; export const registerPlugin = () => ({}); export class WebPlugin {}; export default {};'
               }
               if (stubId === '@capacitor-firebase/analytics') {
-                return 'export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve() }; export default {};'
+                return 'export const ConsentType = { AdPersonalization: "AD_PERSONALIZATION", AdStorage: "AD_STORAGE", AdUserData: "AD_USER_DATA", AnalyticsStorage: "ANALYTICS_STORAGE", FunctionalityStorage: "FUNCTIONALITY_STORAGE", PersonalizationStorage: "PERSONALIZATION_STORAGE" }; export const ConsentStatus = { Granted: "GRANTED", Denied: "DENIED" }; export const FirebaseAnalytics = { logEvent: () => Promise.resolve(), setCurrentScreen: () => Promise.resolve(), setConsent: () => Promise.resolve(), setEnabled: () => Promise.resolve(), resetAnalyticsData: () => Promise.resolve() }; export default {};'
               }
               if (stubId === '@capacitor-community/admob') {
                 return 'export const AdMob = { initialize: () => Promise.resolve(), showBanner: () => Promise.resolve(), hideBanner: () => Promise.resolve(), resumeBanner: () => Promise.resolve(), addListener: () => Promise.resolve({ remove: () => Promise.resolve() }) }; export const BannerAdPluginEvents = { Loaded: "bannerAdLoaded", FailedToLoad: "bannerAdFailedToLoad", SizeChanged: "bannerAdSizeChanged" }; export const BannerAdPosition = { BOTTOM_CENTER: "BOTTOM_CENTER" }; export const BannerAdSize = { ADAPTIVE_BANNER: "ADAPTIVE_BANNER" }; export default {};'

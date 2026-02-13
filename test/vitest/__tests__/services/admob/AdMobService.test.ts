@@ -254,9 +254,10 @@ describe('AdMobService', () => {
 
       expect(AD_CONFIG.noAdPages).not.toContain('/')
       expect(AD_CONFIG.noAdPages).toContain('/polityka-prywatnosci')
+      expect(AD_CONFIG.noAdPages).toContain('/regulamin')
       expect(AD_CONFIG.noAdPages).toContain('/kontakt')
       expect(AD_CONFIG.noAdPages).toContain('/historia-zmian')
-      expect(AD_CONFIG.noAdPages).toHaveLength(3)
+      expect(AD_CONFIG.noAdPages).toHaveLength(4)
     })
 
     it('does not contain module pages', async () => {

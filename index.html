@@ -30,7 +30,7 @@
     <meta name="twitter:title" content="Kalkulator finansowy – Twój darmowy kalkulator wynagrodzeń" />
     <meta name="twitter:description" content="Darmowy kalkulator wynagrodzeń z umowy o pracę, umowy zlecenie, B2B i umowy o dzieło. Oblicz składki ZUS, podatek PIT, VAT i więcej." />
     <meta name="twitter:image" content="https://kalkulatorfinansowy.app/app/images/og-image.png" />
-    <% if (process.env.VITE_GA_MEASUREMENT_ID) { %>
+    <% if (process.env.VITE_GA_MEASUREMENT_ID && !ctx.mode.capacitor && !ctx.mode.cordova) { %>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=<%= process.env.VITE_GA_MEASUREMENT_ID %>"></script>
     <script>
@@ -39,7 +39,41 @@
       window.gtag = gtag
       gtag('js', new Date())
 
-      gtag('config', '<%= process.env.VITE_GA_MEASUREMENT_ID %>')
+      const consentStorageKey = 'kf-consent-v1'
+      const getStoredAnalyticsConsent = () => {
+        try {
+          const rawConsent = localStorage.getItem(consentStorageKey)
+          if (!rawConsent) {
+            return null
+          }
+          const parsedConsent = JSON.parse(rawConsent)
+          return parsedConsent?.analyticsStorage ?? null
+        } catch {
+          return null
+        }
+      }
+
+      const defaultConsentState = {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      }
+
+      gtag('consent', 'default', defaultConsentState)
+
+      const storedAnalyticsConsent = getStoredAnalyticsConsent()
+      if (storedAnalyticsConsent === 'granted' || storedAnalyticsConsent === 'denied') {
+        gtag('consent', 'update', {
+          ...defaultConsentState,
+          analytics_storage: storedAnalyticsConsent,
+        })
+      }
+
+      gtag('config', '<%= process.env.VITE_GA_MEASUREMENT_ID %>', {
+        anonymize_ip: true,
+        allow_google_signals: false,
+      })
     </script>
     <% } %>
   </head>

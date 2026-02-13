@@ -143,6 +143,7 @@
 <body class="bg-white text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
 
 <?php include __DIR__ . '/_includes/nav.php'; ?>
+<?php include __DIR__ . '/_includes/consent.php'; ?>
 
   <!-- Hero -->
   <header id="hero" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-[#1565C0] to-[#0D47A1]">

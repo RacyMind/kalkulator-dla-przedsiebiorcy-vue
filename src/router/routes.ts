@@ -107,6 +107,10 @@ const routes: RouteRecordRaw[] = [
         path: 'polityka-prywatnosci',
       },
       {
+        component: () => import('components/regulations/pages/Index.vue'),
+        path: 'regulamin',
+      },
+      {
         component: () => import('components/b2bComparator/pages/Index.vue'),
         path: 'porownywarka-b2b',
       },

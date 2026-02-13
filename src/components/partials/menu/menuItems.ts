@@ -46,6 +46,12 @@ appMenuItems.push(
     title: 'Polityka prywatności',
   },
   {
+    caption: '',
+    className: 'c-app',
+    link: '/regulamin',
+    title: 'Regulamin',
+  },
+  {
     caption: 'Repozytorium aplikacji',
     className: 'c-app',
     link: 'https://github.com/RacyMind/kalkulator-dla-przedsiebiorcy-vue',
