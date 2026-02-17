@@ -68,13 +68,12 @@
     </q-header>
 
     <q-drawer
-      :model-value="isDesktop || leftDrawerOpen"
+      v-model="leftDrawerOpen"
+      :behavior="isDesktop ? 'desktop' : 'mobile'"
       :overlay="!isDesktop"
-      :breakpoint="0"
       bordered
       content-class="bg-surface-variant"
       aria-label="Panel boczny"
-      @update:model-value="(val) => (leftDrawerOpen = val)"
     >
       <q-scroll-area class="fit">
         <nav aria-label="Menu główne">
@@ -162,7 +161,20 @@ const hamburgerRef = ref<InstanceType<typeof import('quasar').QBtn> | null>(
   null,
 )
 
-const isDesktop = computed(() => $q.screen.gt.md)
+const isMobile = computed(() => $q.platform.is.mobile || $q.screen.lt.md)
+const isDesktop = computed(() => !isMobile.value)
+const isDashboardRoute = computed(() => route.path === '/')
+const shouldKeepDrawerOpen = computed(
+  () => isDesktop.value && !isDashboardRoute.value,
+)
+
+watch(
+  [isDesktop, isDashboardRoute],
+  () => {
+    leftDrawerOpen.value = shouldKeepDrawerOpen.value
+  },
+  { immediate: true },
+)
 
 watch(
   () => route.path,

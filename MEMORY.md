@@ -452,3 +452,83 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 74 files, 535 tests)
 - Outcome: Na Androidzie baner zg�d nie jest ju� przykrywany przez AdMob i utrzymuje poprawny odst�p przy zmianie widoczno�ci reklamy.
 - Follow-ups: none.
+
+### 2026-02-17 - Route-aware responsive menu behavior in MainLayout
+
+- Task: Implemented separate menu behavior for desktop and mobile. Desktop keeps the side menu open except on dashboard, while mobile uses overlay drawer.
+- Decisions:
+  - Desktop persistence uses the condition `isDesktop && route.path !== '/'`.
+  - Added `leftDrawerOpen` reset when entering desktop mode to clear stale mobile-open state.
+  - Added regression coverage for desktop/mobile behavior, mobile navigation close, and breakpoint switch.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 5 tests)
+  - `npm run test:unit:ci` (passed: 75 files, 540 tests)
+- Outcome: Menu behavior now matches desktop/mobile requirements and is protected by focused regression tests.
+- Follow-ups: none.
+
+### 2026-02-17 - Fix mobile drawer close regression in MainLayout
+
+- Task: Fixed an issue where the mobile side menu could remain open and not close reliably after the desktop/dashboard behavior change.
+- Decisions:
+  - Switched `QDrawer` binding to `v-model="leftDrawerOpen"` as the single source of truth.
+  - Added explicit watcher on `[isDesktop, isDashboardRoute]` to enforce desktop-open rules and clear stale mobile-open state.
+  - Kept mobile behavior as overlay drawer and validated close path via drawer update event.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 6 tests)
+  - `npm run test:unit:ci` (passed: 75 files, 541 tests)
+- Outcome: Mobile drawer can now be closed correctly while desktop/dashboard rules remain intact.
+- Follow-ups: none.
+
+### 2026-02-17 - Ensure mobile drawer closes on backdrop click
+
+- Task: Adjusted drawer behavior so tapping/clicking outside the drawer on mobile closes the menu reliably.
+- Decisions:
+  - Set QDrawer behavior explicitly to desktop/mobile via `:behavior="isDesktop ? 'desktop' : 'mobile'`.
+  - Removed `breakpoint=0` override to avoid blocking native mobile drawer interaction semantics.
+  - Extended layout tests to assert drawer behavior mode and mobile close event path.
+- Files changed:
+  - src/layouts/MainLayout.vue
+  - test/vitest/**tests**/layouts/MainLayout.responsiveDrawer.test.ts
+  - MEMORY.md
+- Tests run:
+  - npx vitest run test/vitest/**tests**/layouts/MainLayout.responsiveDrawer.test.ts (passed: 1 file, 6 tests)
+  - npm run test:unit:ci (passed: 75 files, 541 tests)
+- Outcome: Mobile drawer now follows overlay/backdrop close behavior while desktop/dashboard rules remain correct.
+- Follow-ups: none.
+
+### 2026-02-17 - Fix submit scroll and responsive tab panel clipping after mobile to desktop switch
+
+- Task: Fixed two UI regressions: submit action not reliably scrolling to results, and tabbed result panels being visually clipped after resizing from mobile to desktop.
+- Decisions:
+  - Updated `useScrollToResults` to wait for render tick and animation frame before scrolling.
+  - Updated `helpers.scrollToElement` to use deterministic target alignment with header offset and tolerance, without viewport-visibility early return.
+  - Introduced `useResponsiveTabPanels` composable and applied it to all tabbed result pages.
+  - Replaced static `swipeable` and removed `:breakpoint="0"`; now `q-tab-panels` uses `:swipeable="isMobileTabMode"` and `:key="tabPanelsKey"`.
+- Files changed:
+  - `src/composables/useResponsiveTabPanels.ts`
+  - `src/composables/useScrollToResults.ts`
+  - `src/logic/helpers.ts`
+  - `src/components/accountingWithSpouse/pages/Index.vue`
+  - `src/components/contractOfEmployment/pages/Index.vue`
+  - `src/components/contractOfMandate/pages/Index.vue`
+  - `src/components/polishBonds/pages/Index.vue`
+  - `src/components/rentalProfit/pages/Index.vue`
+  - `src/components/selfEmployment/pages/Index.vue`
+  - `test/vitest/__tests__/logic/HelpersScrollToElement.test.ts`
+  - `test/vitest/__tests__/composables/useScrollToResults.test.ts`
+  - `test/vitest/__tests__/composables/useResponsiveTabPanels.test.ts`
+  - `test/vitest/__tests__/modules/ResponsiveTabbedPagesContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/HelpersScrollToElement.test.ts test/vitest/__tests__/composables/useScrollToResults.test.ts test/vitest/__tests__/composables/useResponsiveTabPanels.test.ts test/vitest/__tests__/modules/ResponsiveTabbedPagesContract.test.ts` (passed: 4 files, 11 tests)
+  - `npm run test:unit:ci` (passed: 79 files, 552 tests)
+- Outcome: Submit scrolling is deterministic and tabbed result layouts remain stable when switching from mobile to desktop while preserving selected tab.
+- Follow-ups: Validate manually in browser/device once MCP Chrome is available in this environment.

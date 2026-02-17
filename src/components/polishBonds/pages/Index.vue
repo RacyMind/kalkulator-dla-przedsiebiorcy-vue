@@ -1,9 +1,7 @@
 <template>
   <ModulePageLayout class="c-savings">
     <template #form>
-      <SectionHeader :level="2">
-        Wypełnij formularz
-      </SectionHeader>
+      <SectionHeader :level="2"> Wypełnij formularz </SectionHeader>
       <Form @submit="handleSubmit" />
       <Advert />
     </template>
@@ -13,42 +11,28 @@
         v-model="tab"
         inline-label
         class="bg-primary text-white shadow-2"
-        :breakpoint="0"
-        align="justify">
-        <q-tab
-          :name="Tabs.Summary"
-          label="Podsumowanie" />
-        <q-tab
-          :name="Tabs.Payouts"
-          label="Wypłaty" />
+        align="justify"
+      >
+        <q-tab :name="Tabs.Summary" label="Podsumowanie" />
+        <q-tab :name="Tabs.Payouts" label="Wypłaty" />
       </QTabs>
       <q-tab-panels
+        :key="tabPanelsKey"
         v-model="tab"
         animated
-        swipeable>
-        <q-tab-panel
-          :name="Tabs.Summary"
-          class="q-pa-none">
+        :swipeable="isMobileTabMode"
+      >
+        <q-tab-panel :name="Tabs.Summary" class="q-pa-none">
           <template v-if="store.result">
             <ResultList :result="store.result" />
           </template>
-          <div
-            v-else
-            class="q-pa-md">
-            Brak danych
-          </div>
+          <div v-else class="q-pa-md">Brak danych</div>
         </q-tab-panel>
-        <q-tab-panel
-          :name="Tabs.Payouts"
-          class="q-pa-none">
+        <q-tab-panel :name="Tabs.Payouts" class="q-pa-none">
           <template v-if="store.result">
             <MonthlyDetailsList :result="store.result" />
           </template>
-          <div
-            v-else
-            class="q-pa-md">
-            Brak danych
-          </div>
+          <div v-else class="q-pa-md">Brak danych</div>
         </q-tab-panel>
       </q-tab-panels>
     </template>
@@ -83,9 +67,11 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyDetailsList from 'components/polishBonds/components/MonthlyDetailsList.vue'
 import ResultList from 'components/polishBonds/components/ResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
-import {useScrollToResults} from 'src/composables/useScrollToResults'
+import { useResponsiveTabPanels } from 'src/composables/useResponsiveTabPanels'
+import { useScrollToResults } from 'src/composables/useScrollToResults'
 
 const { scrollTarget, scrollToResults } = useScrollToResults()
+const { isMobileTabMode, tabPanelsKey } = useResponsiveTabPanels()
 import helpers from 'src/logic/helpers'
 
 enum Tabs {
@@ -122,7 +108,10 @@ const prepareCommonInputFields = () => {
 
   return {
     boughtBondCount: store.commonInputFields.boughtBondCount,
-    yearlyInflationRate: helpers.round(store.commonInputFields.yearlyInflationRate / 100, 4),
+    yearlyInflationRate: helpers.round(
+      store.commonInputFields.yearlyInflationRate / 100,
+      4,
+    ),
     belkaTax: store.commonInputFields.belkaTax,
   }
 }
@@ -194,7 +183,9 @@ const calculateRor = () => {
   const inputFields: RorInputFields = {
     ...common,
     initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
-    nbpReferenceRates: form.nbpReferenceRates.map((rate: number) => helpers.round(rate / 100, 4)),
+    nbpReferenceRates: form.nbpReferenceRates.map((rate: number) =>
+      helpers.round(rate / 100, 4),
+    ),
   }
 
   useCalculator(new RorCalculator(), inputFields)
@@ -209,7 +200,9 @@ const calculateDor = () => {
   const inputFields: DorInputFields = {
     ...common,
     initialInterestRate: helpers.round(form.initialInterestRate / 100, 4),
-    nbpReferenceRates: form.nbpReferenceRates.map((rate: number) => helpers.round(rate / 100, 4)),
+    nbpReferenceRates: form.nbpReferenceRates.map((rate: number) =>
+      helpers.round(rate / 100, 4),
+    ),
   }
 
   useCalculator(new DorCalculator(), inputFields)
