@@ -1,6 +1,12 @@
 export default [
   {
     content:
+      '<ul><li>Poprawiono interfejs.</li><li>Zaktualizowano wyświetlenie wykresów.</li></ul>',
+    publish_date: '2026-02-18',
+    version: '6.1.1',
+  },
+  {
+    content:
       '<ul><li>Dodano moduł Zasiłek macierzyński.</li><li>Dodano moduł Refundacja składek społecznych PFRON.</li></ul>',
     publish_date: '2026-02-11',
     version: '6.1.0',

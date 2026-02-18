@@ -71,7 +71,7 @@
           prawa, w tym przepisy Kodeksu cywilnego oraz RODO.
         </p>
 
-        <p class="text-caption q-mt-lg">Obowiązuje od: 13 lutego 2026 r.</p>
+        <p class="text-caption q-mt-lg">Obowiązuje od: 18 lutego 2026 r.</p>
       </div>
     </template>
   </ModulePageLayout>

@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { defineComponent } from 'vue'
@@ -38,7 +40,7 @@ vi.mock('stores/constantsStore', () => ({
   useConstantsStore: () => ({
     app: {
       name: 'Kalkulator finansowy',
-      version: '6.1.0',
+      version: '6.1.1',
     },
   }),
 }))
@@ -101,6 +103,11 @@ const SlotStub = defineComponent({
   template: '<div><slot /></div>',
 })
 
+const ScrollAreaStub = defineComponent({
+  template:
+    '<div data-test="drawer-scroll-area" v-bind="$attrs"><slot /></div>',
+})
+
 const routeComponent = defineComponent({
   template: '<div data-test="route-page">page</div>',
 })
@@ -138,7 +145,7 @@ const mountLayout = async (path: string) => {
         'q-toolbar': SlotStub,
         'q-toolbar-title': SlotStub,
         'q-drawer': DrawerStub,
-        'q-scroll-area': SlotStub,
+        'q-scroll-area': ScrollAreaStub,
         'q-list': SlotStub,
         'q-dialog': SlotStub,
         'q-page-container': SlotStub,
@@ -202,6 +209,18 @@ describe('MainLayout responsive drawer behavior', () => {
     await flushPromises()
 
     expect(drawerModelValue(wrapper)).toBe('true')
+  })
+
+  it('defines drawer scroll padding contract for AdMob banner offset', () => {
+    const layoutSource = readFileSync(
+      resolve(process.cwd(), 'src/layouts/MainLayout.vue'),
+      'utf8',
+    )
+
+    expect(layoutSource).toContain(':style="drawerScrollAreaStyle"')
+    expect(layoutSource).toContain(
+      'calc(var(--admob-banner-offset, 0px) + env(safe-area-inset-bottom, 0px))',
+    )
   })
 
   it('closes mobile drawer when drawer emits update:modelValue false', async () => {

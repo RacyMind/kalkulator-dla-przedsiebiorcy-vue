@@ -645,3 +645,45 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 89 files, 578 tests)
 - Outcome: BAR tooltip hover now uses nearest-point interaction and labels behave correctly again.
 - Follow-ups: none.
+
+### 2026-02-18 - Prepare release 6.1.1 with UI and chart display updates
+
+- Task: Prepared version `6.1.1` for publication (PWA + Android) and added changelog note about interface improvements and updated chart rendering.
+- Decisions:
+  - Bumped app/runtime versions to `6.1.1` in web and Capacitor metadata.
+  - Increased Android `versionCode` from `60008` to `60009` and aligned `versionName` with package version.
+  - Added a new top changelog entry dated `2026-02-18` with two items: interface fix and chart display update.
+  - Added a release contract test to keep package version, constants store version, and latest changelog entry synchronized.
+- Files changed:
+  - `package.json`
+  - `src-capacitor/package.json`
+  - `src-capacitor/android/app/build.gradle`
+  - `src/stores/constantsStore.ts`
+  - `src/components/changeLogs/logs.ts`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `test/vitest/__tests__/release/ReleaseMetadata.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/android/AndroidMetadata.test.ts` (passed: 1 file, 2 tests)
+  - `npx vitest run test/vitest/__tests__/release/ReleaseMetadata.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 90 files, 580 tests)
+- Outcome: Release metadata and in-app versioning are consistent for `6.1.1`; changelog is updated and covered by automated tests.
+- Follow-ups: none.
+
+### 2026-02-18 - Fix Android drawer overlap with AdMob banner
+
+- Task: Fixed Android issue where the drawer menu was visually covered by the bottom AdMob banner.
+- Decisions:
+  - Kept AdMob lifecycle unchanged (no hide/show toggle on drawer open).
+  - Applied drawer-level bottom padding using existing CSS variable `--admob-banner-offset` plus `safe-area-inset-bottom`.
+  - Added deterministic regression coverage in layout tests by asserting MainLayout source contract for drawer style binding and AdMob offset formula.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 7 tests)
+  - `npx vitest run test/vitest/__tests__/boot/admobBoot.test.ts` (passed: 1 file, 3 tests)
+  - `npm run test:unit:ci` (passed: 90 files, 581 tests)
+- Outcome: Drawer content now reserves space for AdMob banner on Android, preventing bottom menu/footer actions from being obscured.
+- Follow-ups: none.

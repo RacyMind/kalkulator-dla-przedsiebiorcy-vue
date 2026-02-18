@@ -75,7 +75,10 @@
       content-class="bg-surface-variant"
       aria-label="Panel boczny"
     >
-      <q-scroll-area class="fit">
+      <q-scroll-area
+        class="fit c-drawer-scroll-area"
+        :style="drawerScrollAreaStyle"
+      >
         <nav aria-label="Menu główne">
           <q-list>
             <Menu :hide-search-input="false" />
@@ -167,6 +170,10 @@ const isDashboardRoute = computed(() => route.path === '/')
 const shouldKeepDrawerOpen = computed(
   () => isDesktop.value && !isDashboardRoute.value,
 )
+const drawerScrollAreaStyle = computed(() => ({
+  paddingBottom:
+    'calc(var(--admob-banner-offset, 0px) + env(safe-area-inset-bottom, 0px))',
+}))
 
 watch(
   [isDesktop, isDashboardRoute],
