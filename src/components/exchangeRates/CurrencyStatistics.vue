@@ -10,38 +10,50 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue'
-import {useCurrencyRateStore} from 'stores/currency-rate-store'
-import {useLineChart} from 'src/composables/useLineChart'
+import { computed } from 'vue'
+import { useCurrencyRateStore } from 'stores/currency-rate-store'
+import { useLineChart } from 'src/composables/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
 
 const currencyRateStore = useCurrencyRateStore()
 
 const chartOptions = {
-  legend: {
-    display: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 8,
+        maxRotation: 0,
+        minRotation: 0,
+      },
+    },
+    y: {
+      ticks: {
+        maxTicksLimit: 6,
+      },
+    },
   },
 }
 
 const chartData = computed(() => {
-    let dates: any[] = []
-    let rates: any[] = []
-    if (currencyRateStore.currencyRate && currencyRateStore.currencyRate.rates) {
-      dates = currencyRateStore.currencyRate.rates.map(rate => {
-        return rate.effectiveDate
-      })
-      rates = currencyRateStore.currencyRate.rates.map(rate => {
-        return {
-          x: new Date(rate.effectiveDate),
-          y: rate.mid,
-        }
-      })
-    }
-    return useLineChart(
-      currencyRateStore.currencyRate.currency,
-      dates,
-      rates,
-    )
-  },
-)
+  let dates: any[] = []
+  let rates: any[] = []
+  if (currencyRateStore.currencyRate && currencyRateStore.currencyRate.rates) {
+    dates = currencyRateStore.currencyRate.rates.map((rate) => {
+      return rate.effectiveDate
+    })
+    rates = currencyRateStore.currencyRate.rates.map((rate) => {
+      return {
+        x: new Date(rate.effectiveDate),
+        y: rate.mid,
+      }
+    })
+  }
+  return useLineChart(currencyRateStore.currencyRate.currency, dates, rates)
+})
 </script>

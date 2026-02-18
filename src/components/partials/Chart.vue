@@ -30,6 +30,10 @@ import {
   Title,
   Tooltip,
 } from 'chart.js'
+import {
+  calculatePieChartPercentages,
+  formatPieChartPercentage,
+} from 'src/composables/usePieChartPercentages'
 
 ChartJS.register(
   ArcElement,
@@ -99,52 +103,108 @@ const textColor = computed(() => (Dark.isActive ? '#E0E0E0' : '#666666'))
 const formatPln = (value: number) =>
   value.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
 
-const mergedOptions = computed(() => ({
-  ...props.chartOptions,
-  plugins: {
-    ...props.chartOptions?.plugins,
-    legend: {
-      ...props.chartOptions?.plugins?.legend,
-      labels: {
-        color: textColor.value,
+const isPieChartType = computed(
+  () => props.type === 'pie' || props.type === 'doughnut',
+)
+const isBarChartType = computed(() => props.type === 'bar')
+
+const getContextRawValue = (context: any): number => {
+  const isHorizontal = context.chart?.options?.indexAxis === 'y'
+  const raw =
+    typeof context.parsed === 'number'
+      ? context.parsed
+      : ((isHorizontal ? context.parsed?.x : context.parsed?.y) ?? context.raw)
+
+  return Number(raw)
+}
+
+const defaultTooltipLabel = (context: any) => {
+  const label = context.label || ''
+
+  if (isPieChartType.value) {
+    const percentages = calculatePieChartPercentages(
+      context.dataset?.data ?? [],
+    )
+    const percentage = percentages[context.dataIndex] ?? 0
+
+    return `${label}: ${formatPieChartPercentage(percentage)}`
+  }
+
+  return `${label}: ${formatPln(getContextRawValue(context))}`
+}
+
+const mergedOptions = computed(() => {
+  const externalTooltip = props.chartOptions?.plugins?.tooltip
+  const externalTooltipCallbacks = externalTooltip?.callbacks
+  const defaultTooltipOptions = isPieChartType.value
+    ? {}
+    : isBarChartType.value
+      ? {
+          mode: 'nearest',
+          intersect: true,
+        }
+      : {
+          mode: 'index',
+          intersect: false,
+        }
+
+  return {
+    ...props.chartOptions,
+    plugins: {
+      ...props.chartOptions?.plugins,
+      legend: {
+        ...props.chartOptions?.plugins?.legend,
+        labels: {
+          ...props.chartOptions?.plugins?.legend?.labels,
+          color: textColor.value,
+        },
       },
-    },
-    tooltip: {
-      ...props.chartOptions?.plugins?.tooltip,
-      callbacks: {
-        label: (context: any) => {
-          const label = context.label || ''
-          const isHorizontal = context.chart?.options?.indexAxis === 'y'
-          const raw =
-            typeof context.parsed === 'number'
-              ? context.parsed
-              : ((isHorizontal ? context.parsed?.x : context.parsed?.y) ??
-                context.raw)
-          return `${label}: ${formatPln(Number(raw))}`
+      tooltip: {
+        ...defaultTooltipOptions,
+        ...externalTooltip,
+        callbacks: {
+          ...externalTooltipCallbacks,
+          label: externalTooltipCallbacks?.label ?? defaultTooltipLabel,
         },
       },
     },
-  },
-  scales:
-    props.type === 'pie' || props.type === 'doughnut'
+    scales: isPieChartType.value
       ? undefined
       : {
+          ...props.chartOptions?.scales,
           x: {
-            ticks: { color: textColor.value },
+            ...props.chartOptions?.scales?.x,
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 8,
+              maxRotation: 0,
+              minRotation: 0,
+              padding: 6,
+              ...props.chartOptions?.scales?.x?.ticks,
+              color: textColor.value,
+            },
             grid: {
+              ...props.chartOptions?.scales?.x?.grid,
               color: Dark.isActive
                 ? 'rgba(255,255,255,0.1)'
                 : 'rgba(0,0,0,0.1)',
             },
           },
           y: {
-            ticks: { color: textColor.value },
+            ...props.chartOptions?.scales?.y,
+            ticks: {
+              maxTicksLimit: 6,
+              ...props.chartOptions?.scales?.y?.ticks,
+              color: textColor.value,
+            },
             grid: {
+              ...props.chartOptions?.scales?.y?.grid,
               color: Dark.isActive
                 ? 'rgba(255,255,255,0.1)'
                 : 'rgba(0,0,0,0.1)',
             },
           },
         },
-}))
+  }
+})
 </script>

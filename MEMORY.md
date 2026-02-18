@@ -532,3 +532,116 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 79 files, 552 tests)
 - Outcome: Submit scrolling is deterministic and tabbed result layouts remain stable when switching from mobile to desktop while preserving selected tab.
 - Follow-ups: Validate manually in browser/device once MCP Chrome is available in this environment.
+
+### 2026-02-18 - Pie chart percentages and UX legend redesign
+
+- Task: Replaced pie chart monetary presentation with percentage presentation and introduced a more readable HTML legend under the chart.
+- Decisions:
+  - Kept business data in amounts and changed only presentation layer for pie/doughnut charts.
+  - Added shared percentage helper (`calculatePieChartPercentages`, `formatPieChartPercentage`) used by tooltip and legend.
+  - Disabled canvas legend in pie charts and rendered custom legend rows with color swatch, label, percentage, and progress bar.
+  - Preserved extensibility by letting external tooltip `label` callbacks override default behavior.
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `src/components/partials/statistics/PieChart.vue`
+  - `src/composables/usePieChartPercentages.ts`
+  - `test/vitest/__tests__/composables/usePieChartPercentages.test.ts`
+  - `test/vitest/__tests__/components/PieChart.test.ts`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/composables/usePieChartPercentages.test.ts test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts` (passed: 3 files, 11 tests)
+  - `npx eslint src/components/partials/Chart.vue src/components/partials/statistics/PieChart.vue src/composables/usePieChartPercentages.ts test/vitest/__tests__/composables/usePieChartPercentages.test.ts test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts` (passed)
+- Outcome: Pie charts now display percentages in tooltips and in an improved legend optimized for readability on mobile and desktop.
+- Follow-ups: none.
+
+### 2026-02-18 - Sortowanie legendy pie, ukrywanie 0% i sanitizacja ujemnych warto�ci w samozatrudnieniu
+
+- Task: Updated pie chart behavior to sort legend items by descending percentage, hide 0% legend entries, and prevent negative income from appearing as a chart segment in self-employment statistics.
+- Decisions:
+  - Added centralized pie data sanitization in `usePieChart` so all non-positive and invalid values are normalized to `0` before rendering.
+  - Kept percentage computation in `usePieChartPercentages` and changed legend rendering logic in `PieChart.vue` to filter `percentage > 0` and sort descending.
+  - Added stable tie handling in legend sorting by preserving original input order for equal percentages.
+  - Replaced self-employment chart visibility condition with `hasChartData` based on sanitized dataset positivity instead of raw `income` truthiness.
+- Files changed:
+  - `src/composables/usePieChart.ts`
+  - `src/components/partials/statistics/PieChart.vue`
+  - `src/components/selfEmployment/components/Statistics.vue`
+  - `test/vitest/__tests__/components/PieChart.test.ts`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/composables/usePieChart.test.ts`
+  - `test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/composables/usePieChart.test.ts test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts` (passed: 4 files, 12 tests)
+  - `npx eslint src/composables/usePieChart.ts src/components/partials/statistics/PieChart.vue src/components/selfEmployment/components/Statistics.vue test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/composables/usePieChart.test.ts test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts` (passed)
+  - `npm run test:unit:ci` (passed: 84 files, 569 tests)
+- Outcome: Pie legend now reflects meaningful contribution order, zero-share noise is removed, and negative self-employment income is no longer rendered as a pie segment.
+- Follow-ups: none.
+
+### 2026-02-18 - Global UX/UI cleanup for line/bar charts and legend visibility adjustments
+
+- Task: Improved chart UX/UI by reducing X-axis density globally for line/bar charts, hiding legend in spouse settlement and B2B comparator charts, and modernizing chart option configs for inflation, purchasing power, and exchange rates.
+- Decisions:
+  - Added global non-pie chart defaults in `Chart.vue` for readability: tooltip index mode, non-intersect tooltip, auto-skip X ticks, max 8 X ticks, no X-label rotation, and capped Y ticks.
+  - Migrated affected modules from legacy Chart.js option keys (`legend`, `xAxes`, `yAxes`) to modern keys (`plugins.legend`, `scales.x`, `scales.y`).
+  - Kept legend hidden explicitly in `accountingWithSpouse` and `b2bComparator` chart options while preserving horizontal bar orientation.
+  - Added focused component/module tests validating legend visibility and X-axis density contracts.
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `src/components/accountingWithSpouse/components/Statistics.vue`
+  - `src/components/b2bComparator/components/Statistics.vue`
+  - `src/components/inflation/InflationStatistics.vue`
+  - `src/components/inflation/PurchasingPowerOfMoneyStatistics.vue`
+  - `src/components/exchangeRates/CurrencyStatistics.vue`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts`
+  - `test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts`
+  - `test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/accountingWithSpouse/components/Statistics.vue src/components/b2bComparator/components/Statistics.vue src/components/exchangeRates/CurrencyStatistics.vue src/components/inflation/InflationStatistics.vue src/components/inflation/PurchasingPowerOfMoneyStatistics.vue src/components/partials/Chart.vue test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts` (passed: 6 files, 11 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 576 tests)
+- Outcome: Target modules now hide legends where required, line/bar charts are visibly cleaner on X-axis, and chart option configs are consistent with current Chart.js API.
+- Follow-ups: `npm run lint` still reports pre-existing repository-wide warnings/errors in unrelated files.
+
+### 2026-02-18 - Fix inflation chart tooltip unit to percent
+
+- Task: Fixed inflation chart tooltip so hovered values display percentage instead of PLN.
+- Decisions:
+  - Added module-level tooltip formatter in `InflationStatistics.vue` to keep fix local and avoid regressions in other line/bar charts that still require currency formatting.
+  - Kept one decimal place and `pl-PL` locale formatting for consistency with inflation UI.
+- Files changed:
+  - `src/components/inflation/InflationStatistics.vue`
+  - `test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/inflation/InflationStatistics.vue test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 577 tests)
+- Outcome: Hover tooltip on inflation chart now shows values as percentages (`%`) instead of z�ot�wka.
+- Follow-ups: none.
+
+### 2026-02-18 - Fix BAR tooltip hover behavior after global chart UX update
+
+- Task: Repaired BAR chart hover labels by fixing default tooltip interaction in shared `Chart.vue`.
+- Decisions:
+  - Split default tooltip interaction by chart type in shared chart wrapper.
+  - For `bar` charts set default tooltip to `mode: 'nearest'` and `intersect: true`.
+  - Kept existing defaults for line charts (`mode: 'index'`, `intersect: false`) and pie percentage tooltip logic.
+  - Added regression assertions to keep tooltip ownership in shared `Chart.vue` (no local tooltip override in BAR module statistics components).
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/partials/Chart.vue test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts` (passed: 3 files, 9 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 578 tests)
+- Outcome: BAR tooltip hover now uses nearest-point interaction and labels behave correctly again.
+- Follow-ups: none.

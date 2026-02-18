@@ -64,26 +64,29 @@ import validationRules from 'src/logic/validationRules'
 const constants = useConstantsStore()
 
 const chartOptions = {
-  legend: {
-    display: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
   },
   scales: {
-    xAxes: [
-      {
-        time: {
-          unit: 'quarter',
-        },
-        type: 'time',
+    x: {
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 8,
+        maxRotation: 0,
+        minRotation: 0,
       },
-    ],
-    yAxes: [
-      {
-        scaleLabel: {
-          display: true,
-          labelString: 'Siła nabywcza pieniądza w zł',
-        },
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Siła nabywcza pieniądza w zł',
       },
-    ],
+      ticks: {
+        maxTicksLimit: 6,
+      },
+    },
   },
 }
 
