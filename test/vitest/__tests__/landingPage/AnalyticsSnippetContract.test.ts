@@ -34,9 +34,11 @@ describe('Landing page analytics snippet contract', () => {
     const consentInclude = readTextFile('landing-page/_includes/consent.php')
 
     expect(consentInclude).toContain('consent-banner')
+    expect(consentInclude).toContain('kf-consent-banner__card')
     expect(consentInclude).toContain('consent-accept')
     expect(consentInclude).toContain('consent-reject')
     expect(consentInclude).toContain('consent-settings-modal')
+    expect(consentInclude).toContain('consent-manage-button')
     expect(consentInclude).toContain('localStorage.setItem(consentStorageKey')
     expect(consentInclude).toContain('window.kfApplyAnalyticsConsent')
   })

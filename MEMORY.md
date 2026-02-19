@@ -687,3 +687,78 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 90 files, 581 tests)
 - Outcome: Drawer content now reserves space for AdMob banner on Android, preventing bottom menu/footer actions from being obscured.
 - Follow-ups: none.
+
+### 2026-02-19 - Improve landing page cookies panel UX to Quasar-like bottom banner
+
+- Task: Reworked landing page cookies UI/UX to match the Quasar app pattern (bottom fixed banner with centered card), improved modal interactions, and validated behavior via contract tests and local PHP smoke check.
+- Decisions:
+  - Introduced dedicated consent CSS classes inside `consent.php` to guarantee deterministic bottom positioning and max-width card layout (`920px`) without relying on landing CSS rebuild.
+  - Kept existing consent storage/API contract (`kf-consent-v1`, `granted/denied`) and preserved element IDs used by analytics integration.
+  - Made `consent-manage-button` visible only after a consent decision; hidden while banner is active.
+  - Added modal close UX on `Escape` and backdrop click, with body scroll lock while modal is open.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed: 2 files, 8 tests)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `php -S 127.0.0.1:8000 router.php` + `Invoke-WebRequest http://127.0.0.1:8000/` smoke check (HTTP 200, consent markers present)
+- Outcome: Landing page cookies panel now follows Quasar-like UX at the bottom of the page, with improved settings modal interaction and maintained analytics consent contract.
+- Follow-ups: none.
+
+### 2026-02-19 - Increase cookies banner padding on landing page
+
+- Task: Improved cookies banner spacing so text and action buttons no longer feel tight against edges.
+- Decisions:
+  - Increased mobile banner side insets from `8px` to `12px` and desktop insets from `16px` to `20px`.
+  - Increased banner card inner spacing from `p-4` to `p-5 sm:p-6`.
+  - Added regression assertion in landing page consent UI contract test for the new padding classes.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 8 tests)
+- Outcome: Cookies banner now has visibly safer inner and outer spacing on mobile and desktop.
+- Follow-ups: none.
+
+### 2026-02-19 - Unify cookies settings modal UX/UI with landing banner style
+
+- Task: Improved cookies settings modal visual hierarchy and interaction quality to match the banner style and remove UX inconsistency.
+- Decisions:
+  - Refactored modal into clear sections: header, body option card, and action footer with top border.
+  - Added dedicated close button (`consent-settings-close`) and wired close behavior to the same handler as cancel/backdrop/Escape.
+  - Kept consent storage and decision flow unchanged (`kf-consent-v1`, `granted/denied`).
+  - Preserved and validated Polish copy with diacritics and pointer cursor contract for all consent buttons.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 10 tests)
+- Outcome: Cookies settings modal now has consistent UI/UX with the banner and smoother close interactions.
+- Follow-ups: none.
+
+### 2026-02-19 - Enforce centered full-screen cookies settings modal with working dark mode
+
+- Task: Fixed cookies settings modal so it is always centered and uses full-page overlay; corrected dark/light differentiation on landing page with Tailwind `darkMode: 'media'`.
+- Decisions:
+  - Replaced reliance on `.dark ...` selectors with explicit `@media (prefers-color-scheme: dark)` overrides for modal surfaces and overlay.
+  - Enforced full-screen overlay contract: fixed positioning, `inset: 0`, `100vw`, `100dvh`, high z-index (`z-[4000]`), and pointer-event gating tied to modal open class.
+  - Kept consent business logic/storage unchanged and preserved close/focus UX flow.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 12 tests)
+- Outcome: Modal is now guaranteed centered with full-page overlay and properly differentiated dark/light styling on landing page.
+- Follow-ups: none.
