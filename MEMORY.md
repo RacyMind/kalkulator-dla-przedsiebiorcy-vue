@@ -391,3 +391,396 @@ For each completed task, add one section:
   - `php -l landing-page/_includes/layout.php` (passed)
 - Outcome: Web i landing page korzystają z GA4 `gtag`; nowe testy kontraktowe i logiki analityki przechodzą.
 - Follow-ups: Przywrócić brakujący asset screenshotów Google Play, aby ponownie domknąć pełny `npm run test:unit:ci`.
+
+### 2026-02-13 - Implement consent-first analytics (web + landing + Android) and add app regulations
+
+- Task: Wdro�ono zgod� analityczn� (RODO) dla GA4/Firebase Analytics oraz zast�piono disclaimer pe�nym regulaminem dost�pnym w aplikacji.
+- Decisions:
+  - Zastosowano wsp�lny stan zgody `kf-consent-v1` dla web, landing i Android.
+  - Wdro�ono Consent Mode Advanced z domy�lnym `denied` dla `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`.
+  - Emisja event�w analitycznych zosta�a zablokowana bez zgody (web i native).
+  - Dla Android przy odrzuceniu zgody ustawiane jest `DENIED` i wykonywane `resetAnalyticsData()`.
+  - Dodano stron� `/regulamin`, linki prawne w formularzu oraz rozszerzono strony bez reklam o `/regulamin`.
+- Files changed:
+  - `src/types/Consent.ts`
+  - `src/logic/consent.ts`
+  - `src/logic/analytics.ts`
+  - `src/boot/consent.ts`
+  - `quasar.config.ts`
+  - `index.html`
+  - `src/components/partials/ConsentBanner.vue`
+  - `src/layouts/MainLayout.vue`
+  - `src/components/privacyPolicy/Index.vue`
+  - `src/components/regulations/pages/Index.vue`
+  - `src/router/routes.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `src/components/partials/menu/menuItems.ts`
+  - `src/services/admob/adConfig.ts`
+  - `landing-page/_includes/ga4.php`
+  - `landing-page/_includes/consent.php`
+  - `landing-page/index.php`
+  - `landing-page/_includes/layout.php`
+  - `test/vitest/__tests__/logic/Analytics.test.ts`
+  - `test/vitest/__tests__/logic/Consent.test.ts`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `test/vitest/__tests__/router/LegalRoutesContract.test.ts`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/services/admob/AdMobService.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/logic/Consent.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/services/admob/AdMobService.test.ts test/vitest/__tests__/router/LegalRoutesContract.test.ts` (passed: 6 files, 40 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 1 file, 4 tests)
+  - `npm run test:unit:ci` (passed: 74 files, 535 tests)
+  - `npm run lint` (failed: istniej�ce wcze�niej b��dy/warnings w plikach niezwi�zanych z zadaniem)
+- Outcome: Aplikacja i landing page wymagaj� decyzji u�ytkownika dla analityki, Android respektuje zgody i resetuje dane po wycofaniu, a stary disclaimer zosta� zast�piony pe�nym regulaminem oraz linkami prawnymi.
+- Follow-ups: Rozwa�y� doko�czenie porz�dk�w lint (4 aktywne b��dy w niezwi�zanych komponentach) oraz audyt reklam pod k�tem osobnych zg�d marketingowych.
+
+### 2026-02-13 - Place consent banner above AdMob banner on Android
+
+- Task: Naprawiono nak�adanie si� banera zg�d na reklam� AdMob w aplikacji Android.
+- Decisions:
+  - Dodano globalny offset CSS `--admob-banner-offset` ustawiany w `admob` boot na podstawie wysoko�ci reklamy.
+  - Baner zg�d u�ywa teraz `bottom: calc(... + var(--admob-banner-offset))`, wi�c zawsze renderuje si� nad reklam�.
+  - Dodano test regresyjny bootu AdMob sprawdzaj�cy aktualizacj� offsetu przy show/hide reklamy.
+- Files changed:
+  - `src/boot/admob.ts`
+  - `src/components/partials/ConsentBanner.vue`
+  - `test/vitest/__tests__/boot/admobBoot.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/admobBoot.test.ts test/vitest/__tests__/services/admob/AdMobService.test.ts` (passed: 2 files, 25 tests)
+  - `npm run test:unit:ci` (passed: 74 files, 535 tests)
+- Outcome: Na Androidzie baner zg�d nie jest ju� przykrywany przez AdMob i utrzymuje poprawny odst�p przy zmianie widoczno�ci reklamy.
+- Follow-ups: none.
+
+### 2026-02-17 - Route-aware responsive menu behavior in MainLayout
+
+- Task: Implemented separate menu behavior for desktop and mobile. Desktop keeps the side menu open except on dashboard, while mobile uses overlay drawer.
+- Decisions:
+  - Desktop persistence uses the condition `isDesktop && route.path !== '/'`.
+  - Added `leftDrawerOpen` reset when entering desktop mode to clear stale mobile-open state.
+  - Added regression coverage for desktop/mobile behavior, mobile navigation close, and breakpoint switch.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 5 tests)
+  - `npm run test:unit:ci` (passed: 75 files, 540 tests)
+- Outcome: Menu behavior now matches desktop/mobile requirements and is protected by focused regression tests.
+- Follow-ups: none.
+
+### 2026-02-17 - Fix mobile drawer close regression in MainLayout
+
+- Task: Fixed an issue where the mobile side menu could remain open and not close reliably after the desktop/dashboard behavior change.
+- Decisions:
+  - Switched `QDrawer` binding to `v-model="leftDrawerOpen"` as the single source of truth.
+  - Added explicit watcher on `[isDesktop, isDashboardRoute]` to enforce desktop-open rules and clear stale mobile-open state.
+  - Kept mobile behavior as overlay drawer and validated close path via drawer update event.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 6 tests)
+  - `npm run test:unit:ci` (passed: 75 files, 541 tests)
+- Outcome: Mobile drawer can now be closed correctly while desktop/dashboard rules remain intact.
+- Follow-ups: none.
+
+### 2026-02-17 - Ensure mobile drawer closes on backdrop click
+
+- Task: Adjusted drawer behavior so tapping/clicking outside the drawer on mobile closes the menu reliably.
+- Decisions:
+  - Set QDrawer behavior explicitly to desktop/mobile via `:behavior="isDesktop ? 'desktop' : 'mobile'`.
+  - Removed `breakpoint=0` override to avoid blocking native mobile drawer interaction semantics.
+  - Extended layout tests to assert drawer behavior mode and mobile close event path.
+- Files changed:
+  - src/layouts/MainLayout.vue
+  - test/vitest/**tests**/layouts/MainLayout.responsiveDrawer.test.ts
+  - MEMORY.md
+- Tests run:
+  - npx vitest run test/vitest/**tests**/layouts/MainLayout.responsiveDrawer.test.ts (passed: 1 file, 6 tests)
+  - npm run test:unit:ci (passed: 75 files, 541 tests)
+- Outcome: Mobile drawer now follows overlay/backdrop close behavior while desktop/dashboard rules remain correct.
+- Follow-ups: none.
+
+### 2026-02-17 - Fix submit scroll and responsive tab panel clipping after mobile to desktop switch
+
+- Task: Fixed two UI regressions: submit action not reliably scrolling to results, and tabbed result panels being visually clipped after resizing from mobile to desktop.
+- Decisions:
+  - Updated `useScrollToResults` to wait for render tick and animation frame before scrolling.
+  - Updated `helpers.scrollToElement` to use deterministic target alignment with header offset and tolerance, without viewport-visibility early return.
+  - Introduced `useResponsiveTabPanels` composable and applied it to all tabbed result pages.
+  - Replaced static `swipeable` and removed `:breakpoint="0"`; now `q-tab-panels` uses `:swipeable="isMobileTabMode"` and `:key="tabPanelsKey"`.
+- Files changed:
+  - `src/composables/useResponsiveTabPanels.ts`
+  - `src/composables/useScrollToResults.ts`
+  - `src/logic/helpers.ts`
+  - `src/components/accountingWithSpouse/pages/Index.vue`
+  - `src/components/contractOfEmployment/pages/Index.vue`
+  - `src/components/contractOfMandate/pages/Index.vue`
+  - `src/components/polishBonds/pages/Index.vue`
+  - `src/components/rentalProfit/pages/Index.vue`
+  - `src/components/selfEmployment/pages/Index.vue`
+  - `test/vitest/__tests__/logic/HelpersScrollToElement.test.ts`
+  - `test/vitest/__tests__/composables/useScrollToResults.test.ts`
+  - `test/vitest/__tests__/composables/useResponsiveTabPanels.test.ts`
+  - `test/vitest/__tests__/modules/ResponsiveTabbedPagesContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/HelpersScrollToElement.test.ts test/vitest/__tests__/composables/useScrollToResults.test.ts test/vitest/__tests__/composables/useResponsiveTabPanels.test.ts test/vitest/__tests__/modules/ResponsiveTabbedPagesContract.test.ts` (passed: 4 files, 11 tests)
+  - `npm run test:unit:ci` (passed: 79 files, 552 tests)
+- Outcome: Submit scrolling is deterministic and tabbed result layouts remain stable when switching from mobile to desktop while preserving selected tab.
+- Follow-ups: Validate manually in browser/device once MCP Chrome is available in this environment.
+
+### 2026-02-18 - Pie chart percentages and UX legend redesign
+
+- Task: Replaced pie chart monetary presentation with percentage presentation and introduced a more readable HTML legend under the chart.
+- Decisions:
+  - Kept business data in amounts and changed only presentation layer for pie/doughnut charts.
+  - Added shared percentage helper (`calculatePieChartPercentages`, `formatPieChartPercentage`) used by tooltip and legend.
+  - Disabled canvas legend in pie charts and rendered custom legend rows with color swatch, label, percentage, and progress bar.
+  - Preserved extensibility by letting external tooltip `label` callbacks override default behavior.
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `src/components/partials/statistics/PieChart.vue`
+  - `src/composables/usePieChartPercentages.ts`
+  - `test/vitest/__tests__/composables/usePieChartPercentages.test.ts`
+  - `test/vitest/__tests__/components/PieChart.test.ts`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/composables/usePieChartPercentages.test.ts test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts` (passed: 3 files, 11 tests)
+  - `npx eslint src/components/partials/Chart.vue src/components/partials/statistics/PieChart.vue src/composables/usePieChartPercentages.ts test/vitest/__tests__/composables/usePieChartPercentages.test.ts test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts` (passed)
+- Outcome: Pie charts now display percentages in tooltips and in an improved legend optimized for readability on mobile and desktop.
+- Follow-ups: none.
+
+### 2026-02-18 - Sortowanie legendy pie, ukrywanie 0% i sanitizacja ujemnych warto�ci w samozatrudnieniu
+
+- Task: Updated pie chart behavior to sort legend items by descending percentage, hide 0% legend entries, and prevent negative income from appearing as a chart segment in self-employment statistics.
+- Decisions:
+  - Added centralized pie data sanitization in `usePieChart` so all non-positive and invalid values are normalized to `0` before rendering.
+  - Kept percentage computation in `usePieChartPercentages` and changed legend rendering logic in `PieChart.vue` to filter `percentage > 0` and sort descending.
+  - Added stable tie handling in legend sorting by preserving original input order for equal percentages.
+  - Replaced self-employment chart visibility condition with `hasChartData` based on sanitized dataset positivity instead of raw `income` truthiness.
+- Files changed:
+  - `src/composables/usePieChart.ts`
+  - `src/components/partials/statistics/PieChart.vue`
+  - `src/components/selfEmployment/components/Statistics.vue`
+  - `test/vitest/__tests__/components/PieChart.test.ts`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/composables/usePieChart.test.ts`
+  - `test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/composables/usePieChart.test.ts test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts` (passed: 4 files, 12 tests)
+  - `npx eslint src/composables/usePieChart.ts src/components/partials/statistics/PieChart.vue src/components/selfEmployment/components/Statistics.vue test/vitest/__tests__/components/PieChart.test.ts test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/composables/usePieChart.test.ts test/vitest/__tests__/modules/selfEmployment/SelfEmploymentStatistics.test.ts` (passed)
+  - `npm run test:unit:ci` (passed: 84 files, 569 tests)
+- Outcome: Pie legend now reflects meaningful contribution order, zero-share noise is removed, and negative self-employment income is no longer rendered as a pie segment.
+- Follow-ups: none.
+
+### 2026-02-18 - Global UX/UI cleanup for line/bar charts and legend visibility adjustments
+
+- Task: Improved chart UX/UI by reducing X-axis density globally for line/bar charts, hiding legend in spouse settlement and B2B comparator charts, and modernizing chart option configs for inflation, purchasing power, and exchange rates.
+- Decisions:
+  - Added global non-pie chart defaults in `Chart.vue` for readability: tooltip index mode, non-intersect tooltip, auto-skip X ticks, max 8 X ticks, no X-label rotation, and capped Y ticks.
+  - Migrated affected modules from legacy Chart.js option keys (`legend`, `xAxes`, `yAxes`) to modern keys (`plugins.legend`, `scales.x`, `scales.y`).
+  - Kept legend hidden explicitly in `accountingWithSpouse` and `b2bComparator` chart options while preserving horizontal bar orientation.
+  - Added focused component/module tests validating legend visibility and X-axis density contracts.
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `src/components/accountingWithSpouse/components/Statistics.vue`
+  - `src/components/b2bComparator/components/Statistics.vue`
+  - `src/components/inflation/InflationStatistics.vue`
+  - `src/components/inflation/PurchasingPowerOfMoneyStatistics.vue`
+  - `src/components/exchangeRates/CurrencyStatistics.vue`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts`
+  - `test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts`
+  - `test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/accountingWithSpouse/components/Statistics.vue src/components/b2bComparator/components/Statistics.vue src/components/exchangeRates/CurrencyStatistics.vue src/components/inflation/InflationStatistics.vue src/components/inflation/PurchasingPowerOfMoneyStatistics.vue src/components/partials/Chart.vue test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts test/vitest/__tests__/modules/inflation/PurchasingPowerOfMoneyStatistics.chartOptions.test.ts test/vitest/__tests__/modules/exchangeRates/CurrencyStatistics.chartOptions.test.ts` (passed: 6 files, 11 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 576 tests)
+- Outcome: Target modules now hide legends where required, line/bar charts are visibly cleaner on X-axis, and chart option configs are consistent with current Chart.js API.
+- Follow-ups: `npm run lint` still reports pre-existing repository-wide warnings/errors in unrelated files.
+
+### 2026-02-18 - Fix inflation chart tooltip unit to percent
+
+- Task: Fixed inflation chart tooltip so hovered values display percentage instead of PLN.
+- Decisions:
+  - Added module-level tooltip formatter in `InflationStatistics.vue` to keep fix local and avoid regressions in other line/bar charts that still require currency formatting.
+  - Kept one decimal place and `pl-PL` locale formatting for consistency with inflation UI.
+- Files changed:
+  - `src/components/inflation/InflationStatistics.vue`
+  - `test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/inflation/InflationStatistics.vue test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/inflation/InflationStatistics.chartOptions.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 577 tests)
+- Outcome: Hover tooltip on inflation chart now shows values as percentages (`%`) instead of z�ot�wka.
+- Follow-ups: none.
+
+### 2026-02-18 - Fix BAR tooltip hover behavior after global chart UX update
+
+- Task: Repaired BAR chart hover labels by fixing default tooltip interaction in shared `Chart.vue`.
+- Decisions:
+  - Split default tooltip interaction by chart type in shared chart wrapper.
+  - For `bar` charts set default tooltip to `mode: 'nearest'` and `intersect: true`.
+  - Kept existing defaults for line charts (`mode: 'index'`, `intersect: false`) and pie percentage tooltip logic.
+  - Added regression assertions to keep tooltip ownership in shared `Chart.vue` (no local tooltip override in BAR module statistics components).
+- Files changed:
+  - `src/components/partials/Chart.vue`
+  - `test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts`
+  - `test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts`
+  - `test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/partials/Chart.vue test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/components/Chart.tooltipPiePercent.test.ts test/vitest/__tests__/modules/accountingWithSpouse/StatisticsChartOptions.test.ts test/vitest/__tests__/modules/b2bComparator/StatisticsChartOptions.test.ts` (passed: 3 files, 9 tests)
+  - `npm run test:unit:ci` (passed: 89 files, 578 tests)
+- Outcome: BAR tooltip hover now uses nearest-point interaction and labels behave correctly again.
+- Follow-ups: none.
+
+### 2026-02-18 - Prepare release 6.1.1 with UI and chart display updates
+
+- Task: Prepared version `6.1.1` for publication (PWA + Android) and added changelog note about interface improvements and updated chart rendering.
+- Decisions:
+  - Bumped app/runtime versions to `6.1.1` in web and Capacitor metadata.
+  - Increased Android `versionCode` from `60008` to `60009` and aligned `versionName` with package version.
+  - Added a new top changelog entry dated `2026-02-18` with two items: interface fix and chart display update.
+  - Added a release contract test to keep package version, constants store version, and latest changelog entry synchronized.
+- Files changed:
+  - `package.json`
+  - `src-capacitor/package.json`
+  - `src-capacitor/android/app/build.gradle`
+  - `src/stores/constantsStore.ts`
+  - `src/components/changeLogs/logs.ts`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `test/vitest/__tests__/release/ReleaseMetadata.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/android/AndroidMetadata.test.ts` (passed: 1 file, 2 tests)
+  - `npx vitest run test/vitest/__tests__/release/ReleaseMetadata.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 90 files, 580 tests)
+- Outcome: Release metadata and in-app versioning are consistent for `6.1.1`; changelog is updated and covered by automated tests.
+- Follow-ups: none.
+
+### 2026-02-18 - Fix Android drawer overlap with AdMob banner
+
+- Task: Fixed Android issue where the drawer menu was visually covered by the bottom AdMob banner.
+- Decisions:
+  - Kept AdMob lifecycle unchanged (no hide/show toggle on drawer open).
+  - Applied drawer-level bottom padding using existing CSS variable `--admob-banner-offset` plus `safe-area-inset-bottom`.
+  - Added deterministic regression coverage in layout tests by asserting MainLayout source contract for drawer style binding and AdMob offset formula.
+- Files changed:
+  - `src/layouts/MainLayout.vue`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts` (passed: 1 file, 7 tests)
+  - `npx vitest run test/vitest/__tests__/boot/admobBoot.test.ts` (passed: 1 file, 3 tests)
+  - `npm run test:unit:ci` (passed: 90 files, 581 tests)
+- Outcome: Drawer content now reserves space for AdMob banner on Android, preventing bottom menu/footer actions from being obscured.
+- Follow-ups: none.
+
+### 2026-02-19 - Improve landing page cookies panel UX to Quasar-like bottom banner
+
+- Task: Reworked landing page cookies UI/UX to match the Quasar app pattern (bottom fixed banner with centered card), improved modal interactions, and validated behavior via contract tests and local PHP smoke check.
+- Decisions:
+  - Introduced dedicated consent CSS classes inside `consent.php` to guarantee deterministic bottom positioning and max-width card layout (`920px`) without relying on landing CSS rebuild.
+  - Kept existing consent storage/API contract (`kf-consent-v1`, `granted/denied`) and preserved element IDs used by analytics integration.
+  - Made `consent-manage-button` visible only after a consent decision; hidden while banner is active.
+  - Added modal close UX on `Escape` and backdrop click, with body scroll lock while modal is open.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed: 2 files, 8 tests)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `php -S 127.0.0.1:8000 router.php` + `Invoke-WebRequest http://127.0.0.1:8000/` smoke check (HTTP 200, consent markers present)
+- Outcome: Landing page cookies panel now follows Quasar-like UX at the bottom of the page, with improved settings modal interaction and maintained analytics consent contract.
+- Follow-ups: none.
+
+### 2026-02-19 - Increase cookies banner padding on landing page
+
+- Task: Improved cookies banner spacing so text and action buttons no longer feel tight against edges.
+- Decisions:
+  - Increased mobile banner side insets from `8px` to `12px` and desktop insets from `16px` to `20px`.
+  - Increased banner card inner spacing from `p-4` to `p-5 sm:p-6`.
+  - Added regression assertion in landing page consent UI contract test for the new padding classes.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 8 tests)
+- Outcome: Cookies banner now has visibly safer inner and outer spacing on mobile and desktop.
+- Follow-ups: none.
+
+### 2026-02-19 - Unify cookies settings modal UX/UI with landing banner style
+
+- Task: Improved cookies settings modal visual hierarchy and interaction quality to match the banner style and remove UX inconsistency.
+- Decisions:
+  - Refactored modal into clear sections: header, body option card, and action footer with top border.
+  - Added dedicated close button (`consent-settings-close`) and wired close behavior to the same handler as cancel/backdrop/Escape.
+  - Kept consent storage and decision flow unchanged (`kf-consent-v1`, `granted/denied`).
+  - Preserved and validated Polish copy with diacritics and pointer cursor contract for all consent buttons.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 10 tests)
+- Outcome: Cookies settings modal now has consistent UI/UX with the banner and smoother close interactions.
+- Follow-ups: none.
+
+### 2026-02-19 - Enforce centered full-screen cookies settings modal with working dark mode
+
+- Task: Fixed cookies settings modal so it is always centered and uses full-page overlay; corrected dark/light differentiation on landing page with Tailwind `darkMode: 'media'`.
+- Decisions:
+  - Replaced reliance on `.dark ...` selectors with explicit `@media (prefers-color-scheme: dark)` overrides for modal surfaces and overlay.
+  - Enforced full-screen overlay contract: fixed positioning, `inset: 0`, `100vw`, `100dvh`, high z-index (`z-[4000]`), and pointer-event gating tied to modal open class.
+  - Kept consent business logic/storage unchanged and preserved close/focus UX flow.
+- Files changed:
+  - `landing-page/_includes/consent.php`
+  - `test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed)
+  - `php -l landing-page/_includes/consent.php` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 12 tests)
+- Outcome: Modal is now guaranteed centered with full-page overlay and properly differentiated dark/light styling on landing page.
+- Follow-ups: none.
+
+### 2026-02-19 - Add drawer install CTA with Android Google Play and PWA install fallback
+
+- Task: Added a single context-aware install CTA in drawer footer: Google Play on Android mobile web, PWA install on other web contexts, and hidden CTA when app is already installed.
+- Decisions:
+  - Implemented installation visibility logic in dedicated composable `useInstallCta` (platform detection + `beforeinstallprompt` + `appinstalled`).
+  - Treated "installed" as either native Capacitor app or web standalone mode (`display-mode: standalone` / `navigator.standalone`).
+  - Removed legacy Google Play entry from `menuItems` app section to avoid duplicate CTA surface.
+  - Kept CTA integration in `MainLayout` footer (not menu list) to support action-based PWA prompt flow.
+- Files changed:
+  - `src/composables/useInstallCta.ts`
+  - `src/layouts/MainLayout.vue`
+  - `src/components/partials/menu/menuItems.ts`
+  - `test/vitest/__tests__/composables/useInstallCta.test.ts`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `test/vitest/__tests__/components/menu/menuItems.appSection.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/composables/useInstallCta.test.ts test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts test/vitest/__tests__/components/menu/menuItems.appSection.test.ts` (passed: 3 files, 18 tests)
+  - `npm run test:unit:ci` (passed: 93 files, 600 tests)
+- Outcome: Drawer now exposes one non-duplicated installation CTA with correct platform behavior and hides itself after installation detection.
+- Follow-ups: none.

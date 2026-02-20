@@ -9,57 +9,83 @@
       emit-value
       map-options
     />
-    <div v-if="loading">
-      Wczytywanie...
-    </div>
+    <div v-if="loading">Wczytywanie...</div>
     <template v-else-if="values.length">
-      <p>
-        {{ labels[labels.length - 1] }}: {{ values[values.length - 1].y }}%
-      </p>
-      <LineChart
-        :chart-options="chartOptions"
-        :chart-data="chartData"/>
+      <p>{{ labels[labels.length - 1] }}: {{ values[values.length - 1].y }}%</p>
+      <LineChart :chart-options="chartOptions" :chart-data="chartData" />
     </template>
     <span v-else>Brak danych</span>
     <p
       class="q-mt-md q-mb-none text-grey text-justify"
-      style="font-size:0.8rem;">
-      Wykres pokazuje zmianę cen w porównaniu z analogicznym miesiącem poprzedniego roku.<br><br>
-      Źródło danych: <a
+      style="font-size: 0.8rem"
+    >
+      Wykres pokazuje zmianę cen w porównaniu z analogicznym miesiącem
+      poprzedniego roku.<br /><br />
+      Źródło danych:
+      <a
         class="text-grey"
         href="https://data.ecb.europa.eu/data/datasets/ICP/ICP.M.PL.N.000000.4.ANR"
-        target="_blank">Eurostat/ECB</a>
+        target="_blank"
+        >Eurostat/ECB</a
+      >
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import {InflationEntry} from 'components/inflation/interfaces/InflationEntry'
-import {computed, ref, watch} from 'vue'
-import {useLineChart} from 'src/composables/useLineChart'
+import { InflationEntry } from 'components/inflation/interfaces/InflationEntry'
+import { computed, ref, watch } from 'vue'
+import { useLineChart } from 'src/composables/useLineChart'
 import LineChart from 'components/partials/LineChart.vue'
-import {useConstantsStore} from 'stores/constantsStore'
+import { useConstantsStore } from 'stores/constantsStore'
 import inflation from './inflation'
 
 const constants = useConstantsStore()
 
+const formatInflationTooltip = (context: any): string => {
+  const label = context.label || ''
+  const rawValue =
+    typeof context.parsed === 'number'
+      ? context.parsed
+      : (context.parsed?.y ?? context.raw)
+
+  const value = Number(rawValue)
+
+  return `${label}: ${value.toLocaleString('pl-PL', {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })}%`
+}
+
 const chartOptions = {
-  legend: {
-    display: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: formatInflationTooltip,
+      },
+    },
   },
   scales: {
-    xAxes: [{
-      time: {
-        unit: 'quarter',
+    x: {
+      ticks: {
+        autoSkip: true,
+        maxTicksLimit: 8,
+        maxRotation: 0,
+        minRotation: 0,
       },
-      type: 'time',
-    }],
-      yAxes: [{
-      scaleLabel: {
+    },
+    y: {
+      title: {
         display: true,
-        labelString: 'Inflacja w %',
+        text: 'Inflacja w %',
       },
-    }],
+      ticks: {
+        maxTicksLimit: 6,
+      },
+    },
   },
 }
 
@@ -81,30 +107,30 @@ const availableYears = [
 const year = ref(availableYears[0].value)
 const loading = ref(false)
 const labels = ref<string[]>([])
-const values = ref<Array<{x: Date, y: number}>>([])
+const values = ref<Array<{ x: Date; y: number }>>([])
 
-const chartData = computed(() => useLineChart(
-    'Inflacja',
-    labels.value,
-    values.value,
-  ),
+const chartData = computed(() =>
+  useLineChart('Inflacja', labels.value, values.value),
 )
 
 const fetchData = () => {
   loading.value = true
-  inflation.fetchInflationRates(year.value).then((response: InflationEntry[]) => {
-    labels.value = response.map((data: InflationEntry) => {
-      return `${constants.localeDate.months[data.month - 1]} ${data.year}`
+  inflation
+    .fetchInflationRates(year.value)
+    .then((response: InflationEntry[]) => {
+      labels.value = response.map((data: InflationEntry) => {
+        return `${constants.localeDate.months[data.month - 1]} ${data.year}`
+      })
+      values.value = response.map((data: InflationEntry) => {
+        return {
+          x: new Date(`${data.year}-${data.month}-01`),
+          y: data.value,
+        }
+      })
     })
-    values.value = response.map((data: InflationEntry) => {
-      return {
-        x: new Date(`${data.year}-${data.month}-01`),
-        y: data.value,
-      }
+    .finally(() => {
+      loading.value = false
     })
-  }).finally(() => {
-    loading.value = false
-  })
 }
 
 fetchData()

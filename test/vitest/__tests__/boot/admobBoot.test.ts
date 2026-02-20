@@ -15,6 +15,7 @@ describe('admob boot', () => {
     setActivePinia(createPinia())
     localStorage.clear()
     document.body.style.marginBottom = ''
+    document.documentElement.style.removeProperty('--admob-banner-offset')
     afterEachCallback = undefined
     vi.restoreAllMocks()
 
@@ -44,6 +45,9 @@ describe('admob boot', () => {
     expect(addListenerSpy).not.toHaveBeenCalled()
     expect(router.afterEach).not.toHaveBeenCalled()
     expect(document.body.style.marginBottom).toBe('')
+    expect(
+      document.documentElement.style.getPropertyValue('--admob-banner-offset'),
+    ).toBe('0px')
   })
 
   it('initializes AdMob and reacts to route changes when premium is inactive', () => {
@@ -80,11 +84,17 @@ describe('admob boot', () => {
     expect(showAdSpy).toHaveBeenCalledTimes(1)
     expect(hideAdSpy).not.toHaveBeenCalled()
     expect(document.body.style.marginBottom).toBe('50px')
+    expect(
+      document.documentElement.style.getPropertyValue('--admob-banner-offset'),
+    ).toBe('50px')
 
     afterEachCallback?.({ path: '/kontakt' })
 
     expect(hideAdSpy).toHaveBeenCalledTimes(1)
     expect(document.body.style.marginBottom).toBe('')
+    expect(
+      document.documentElement.style.getPropertyValue('--admob-banner-offset'),
+    ).toBe('0px')
   })
 
   it('is no-op on web platform', () => {

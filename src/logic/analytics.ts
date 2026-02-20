@@ -1,6 +1,7 @@
 import { uid } from 'quasar'
 import { Capacitor } from '@capacitor/core'
 import { FirebaseAnalytics } from '@capacitor-firebase/analytics'
+import { hasAnalyticsConsent } from 'src/logic/consent'
 
 declare global {
   interface Window {
@@ -22,6 +23,10 @@ export default {
 
   logEvent(category: string, action: string, label: string, value = null) {
     if (process.env.DEV) {
+      return
+    }
+
+    if (!hasAnalyticsConsent()) {
       return
     }
 
@@ -52,6 +57,10 @@ export default {
 
   logPage(path: string) {
     if (process.env.DEV) {
+      return
+    }
+
+    if (!hasAnalyticsConsent()) {
       return
     }
 

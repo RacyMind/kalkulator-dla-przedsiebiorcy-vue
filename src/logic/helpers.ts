@@ -1,20 +1,24 @@
-import {AvailableYear} from 'src/types/AvailableYear'
-import {useConstantsStore} from 'stores/constantsStore'
-import {sumMonthlyResults} from 'src/logic/sumMonthlyResults'
+import { AvailableYear } from 'src/types/AvailableYear'
+import { useConstantsStore } from 'stores/constantsStore'
+import { sumMonthlyResults } from 'src/logic/sumMonthlyResults'
 
 /**
  * Scrolls to the element
  *
  * @param el
  */
-function scrollToElement (el:any) {
+function scrollToElement(el: any) {
   if (!el) return
+
   const rect = el.getBoundingClientRect()
-  // If element is already visible in viewport, don't scroll
-  if (rect.top >= 0 && rect.top < window.innerHeight * 0.8) return
   const headerOffset = 60
-  const elementPosition = rect.top + window.scrollY
-  window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' })
+  const elementPosition = rect.top + window.scrollY - headerOffset
+  const targetTop = Math.max(0, elementPosition)
+  const tolerance = 8
+
+  if (Math.abs(window.scrollY - targetTop) <= tolerance) return
+
+  window.scrollTo({ top: targetTop, behavior: 'smooth' })
 }
 
 /**
@@ -24,7 +28,7 @@ function scrollToElement (el:any) {
  * @param {number} precision
  * @returns {number}
  */
-function round (value:number, precision = 0):number {
+function round(value: number, precision = 0): number {
   const factor = Math.pow(10, precision)
   return Math.round(value * factor) / factor
 }
@@ -34,23 +38,27 @@ function round (value:number, precision = 0):number {
  *
  * @returns {AvailableYear}
  */
-function getDefaultYear ():AvailableYear {
+function getDefaultYear(): AvailableYear {
   const constants = useConstantsStore()
-  const currentYear: AvailableYear = <AvailableYear> new Date().getFullYear()
+  const currentYear: AvailableYear = <AvailableYear>new Date().getFullYear()
 
   if (constants.availableYears.includes(currentYear)) {
     return currentYear
   }
 
-  return <AvailableYear> constants.availableYears[constants.availableYears.length - 1]
+  return <AvailableYear>(
+    constants.availableYears[constants.availableYears.length - 1]
+  )
 }
 
-function sum<EmployeType>(monthlyResults:EmployeType[], property: keyof EmployeType) {
-  return monthlyResults.reduce((accumulator:number, result:EmployeType) => {
+function sum<EmployeType>(
+  monthlyResults: EmployeType[],
+  property: keyof EmployeType,
+) {
+  return monthlyResults.reduce((accumulator: number, result: EmployeType) => {
     return round(<number>accumulator + <number>result[property], 2)
   }, 0)
 }
-
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
   constructors.forEach((baseCtor) => {
@@ -59,7 +67,7 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
         derivedCtor.prototype,
         name,
         Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
-        Object.create(null),
+          Object.create(null),
       )
     })
   })
@@ -67,7 +75,7 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
 
 /**
  * Formats a number with specified decimal places
- * 
+ *
  * @param {number} value - The number to format
  * @param {number} decimalPlaces - Number of decimal places
  * @returns {string} - Formatted number as string

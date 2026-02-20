@@ -19,17 +19,18 @@
       style="color: var(--color-text-secondary)"
     >
       <p class="q-mb-none">
-        Twórca aplikacji dokłada wszelkich starań, by obliczenia były poprawne.
-        Niemniej wszelkie obliczenia mają charakter orientacyjny. Twórca nie
-        ponosi odpowiedzialności za ewentualne szkody powstałe podczas używania
-        danych z aplikacji.<br />
         Korzystając z aplikacji akceptujesz
+        <router-link style="color: var(--color-text-primary)" to="/regulamin">
+          regulamin
+        </router-link>
+        oraz
         <router-link
-          style="text-decoration: underline; color: var(--color-text-secondary)"
+          style="color: var(--color-text-primary)"
           to="/polityka-prywatnosci"
         >
           politykę prywatności
         </router-link>
+        .
       </p>
     </div>
   </div>

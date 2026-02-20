@@ -1,9 +1,7 @@
 <template>
   <ModulePageLayout class="c-company">
     <template #form>
-      <SectionHeader :level="2">
-        Wypełnij formularz
-      </SectionHeader>
+      <SectionHeader :level="2"> Wypełnij formularz </SectionHeader>
       <Form @submit="handleSubmit" />
       <Advert />
     </template>
@@ -13,52 +11,37 @@
         v-model="tab"
         inline-label
         class="bg-primary text-white shadow-2"
-        :breakpoint="0"
-        align="justify">
-        <q-tab
-          :name="Tabs.AnnualSummary"
-          label="Cały rok" />
-        <q-tab
-          :name="Tabs.EachMonth"
-          label="Poszczególne miesiące" />
+        align="justify"
+      >
+        <q-tab :name="Tabs.AnnualSummary" label="Cały rok" />
+        <q-tab :name="Tabs.EachMonth" label="Poszczególne miesiące" />
       </QTabs>
       <q-tab-panels
+        :key="tabPanelsKey"
         v-model="tab"
         animated
-        swipeable>
-        <q-tab-panel
-          :name="Tabs.AnnualSummary"
-          class="q-pa-none">
+        :swipeable="isMobileTabMode"
+      >
+        <q-tab-panel :name="Tabs.AnnualSummary" class="q-pa-none">
           <template v-if="store.result">
             <AnnualResultList :result="store.result.annualResult" />
             <Statistics :result="store.result.annualResult" />
           </template>
-          <div
-            v-else
-            class="q-pa-md">
-            Brak danych
-          </div>
+          <div v-else class="q-pa-md">Brak danych</div>
         </q-tab-panel>
-        <q-tab-panel
-          :name="Tabs.EachMonth"
-          class="q-pa-none">
+        <q-tab-panel :name="Tabs.EachMonth" class="q-pa-none">
           <template v-if="store.result">
             <div
               v-for="(monthlyResult, index) in store.result.monthlyResults"
-              :key="index">
+              :key="index"
+            >
               <ListHeader>
                 {{ monthNames[index] }}
               </ListHeader>
-              <MonthlyResultList
-                :result="monthlyResult"
-                :month="index" />
+              <MonthlyResultList :result="monthlyResult" :month="index" />
             </div>
           </template>
-          <div
-            v-else
-            class="q-pa-md">
-            Brak danych
-          </div>
+          <div v-else class="q-pa-md">Brak danych</div>
         </q-tab-panel>
       </q-tab-panels>
     </template>
@@ -66,15 +49,14 @@
 </template>
 
 <script setup lang="ts">
-
-import {EntrepreneurTaxSystem} from 'stores/constantsStore'
-import {checkTaxThresholdCrossing} from 'src/composables/useTaxThresholdNotification'
-import {QTabs} from 'quasar'
-import {ref} from 'vue'
-import {lawRuleDateWatcher} from 'src/composables/lawRuleDate'
-import {useBreadcrumbStore} from 'stores/breadcrumbStore'
-import {useMonths} from 'src/composables/months'
-import {useSelfEmploymentStore} from 'components/selfEmployment/store'
+import { EntrepreneurTaxSystem } from 'stores/constantsStore'
+import { checkTaxThresholdCrossing } from 'src/composables/useTaxThresholdNotification'
+import { QTabs } from 'quasar'
+import { ref } from 'vue'
+import { lawRuleDateWatcher } from 'src/composables/lawRuleDate'
+import { useBreadcrumbStore } from 'stores/breadcrumbStore'
+import { useMonths } from 'src/composables/months'
+import { useSelfEmploymentStore } from 'components/selfEmployment/store'
 import Advert from 'components/partials/Advert.vue'
 import AnnualResultList from 'components/selfEmployment/components/AnnualResultList.vue'
 import Form from 'components/selfEmployment/components/Form.vue'
@@ -83,16 +65,18 @@ import ModulePageLayout from 'components/partials/ModulePageLayout.vue'
 import MonthlyResultList from 'components/selfEmployment/components/MonthlyResultList.vue'
 import SectionHeader from 'components/partials/SectionHeader.vue'
 import Statistics from 'components/selfEmployment/components/Statistics.vue'
-import {useScrollToResults} from 'src/composables/useScrollToResults'
+import { useResponsiveTabPanels } from 'src/composables/useResponsiveTabPanels'
+import { useScrollToResults } from 'src/composables/useScrollToResults'
 
 const { scrollTarget, scrollToResults } = useScrollToResults()
+const { isMobileTabMode, tabPanelsKey } = useResponsiveTabPanels()
 
 enum Tabs {
   AnnualSummary = 1,
   EachMonth = 2,
 }
 
-const {monthNames} = useMonths()
+const { monthNames } = useMonths()
 const store = useSelfEmploymentStore()
 const breadcrumbStore = useBreadcrumbStore()
 
@@ -109,7 +93,10 @@ lawRuleDateWatcher(store)
 const handleSubmit = () => {
   scrollToResults()
 
-  if(store?.monthlyInputFields?.length &&  store.monthlyInputFields[0].taxSystem !== EntrepreneurTaxSystem.TaxScale) {
+  if (
+    store?.monthlyInputFields?.length &&
+    store.monthlyInputFields[0].taxSystem !== EntrepreneurTaxSystem.TaxScale
+  ) {
     return
   }
 

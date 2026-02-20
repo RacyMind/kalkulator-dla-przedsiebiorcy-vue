@@ -8,6 +8,10 @@ const adMobService = new AdMobService()
 
 function updateBodyMargin(height: number) {
   document.body.style.marginBottom = height > 0 ? `${height}px` : ''
+  document.documentElement.style.setProperty(
+    '--admob-banner-offset',
+    height > 0 ? `${height}px` : '0px',
+  )
 }
 
 export default ({ router }: { router: Router }) => {

@@ -68,15 +68,17 @@
     </q-header>
 
     <q-drawer
-      :model-value="isDesktop || leftDrawerOpen"
+      v-model="leftDrawerOpen"
+      :behavior="isDesktop ? 'desktop' : 'mobile'"
       :overlay="!isDesktop"
-      :breakpoint="0"
       bordered
       content-class="bg-surface-variant"
       aria-label="Panel boczny"
-      @update:model-value="(val) => (leftDrawerOpen = val)"
     >
-      <q-scroll-area class="fit">
+      <q-scroll-area
+        class="fit c-drawer-scroll-area"
+        :style="drawerScrollAreaStyle"
+      >
         <nav aria-label="Menu główne">
           <q-list>
             <Menu :hide-search-input="false" />
@@ -87,6 +89,31 @@
           class="text-center q-py-md"
           style="border-top: 1px solid rgba(0, 0, 0, 0.12)"
         >
+          <q-btn
+            v-if="showGooglePlayCta"
+            class="q-mb-sm"
+            color="primary"
+            rounded
+            unelevated
+            type="a"
+            :href="googlePlayUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Pobierz w Google Play"
+          >
+            Pobierz w Google Play
+          </q-btn>
+          <q-btn
+            v-else-if="showPwaInstallCta"
+            class="q-mb-sm"
+            color="primary"
+            rounded
+            unelevated
+            aria-label="Zainstaluj aplikację"
+            @click="installPwa"
+          >
+            Zainstaluj aplikację
+          </q-btn>
           <PremiumActions class="q-mb-sm" />
           <q-btn
             v-if="!premiumStore.isPremiumActive"
@@ -128,6 +155,7 @@
         <ScrollToTop />
       </main>
     </q-page-container>
+    <ConsentBanner />
   </q-layout>
 </template>
 
@@ -140,10 +168,12 @@ import Menu from 'components/partials/menu/Menu.vue'
 import SupportProject from 'components/partials/SupportProject.vue'
 import PremiumActions from 'components/partials/PremiumActions.vue'
 import ScrollToTop from 'components/partials/ScrollToTop.vue'
+import ConsentBanner from 'components/partials/ConsentBanner.vue'
 import { useConstantsStore } from 'stores/constantsStore'
 import { usePremiumStore } from 'stores/premiumStore'
 import { useTheme } from 'src/composables/useTheme'
 import { useRecentlyUsed } from 'src/composables/useRecentlyUsed'
+import { useInstallCta } from 'src/composables/useInstallCta'
 import { matMenu, matChevronRight, outlinedFavorite } from 'src/icons'
 
 const $q = useQuasar()
@@ -152,6 +182,8 @@ const constants = useConstantsStore()
 const premiumStore = usePremiumStore()
 const { themeIcon, themeTooltip, cycleTheme } = useTheme()
 const { addRecent } = useRecentlyUsed()
+const { googlePlayUrl, showGooglePlayCta, showPwaInstallCta, installPwa } =
+  useInstallCta()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)
@@ -160,7 +192,24 @@ const hamburgerRef = ref<InstanceType<typeof import('quasar').QBtn> | null>(
   null,
 )
 
-const isDesktop = computed(() => $q.screen.gt.md)
+const isMobile = computed(() => $q.platform.is.mobile || $q.screen.lt.md)
+const isDesktop = computed(() => !isMobile.value)
+const isDashboardRoute = computed(() => route.path === '/')
+const shouldKeepDrawerOpen = computed(
+  () => isDesktop.value && !isDashboardRoute.value,
+)
+const drawerScrollAreaStyle = computed(() => ({
+  paddingBottom:
+    'calc(var(--admob-banner-offset, 0px) + env(safe-area-inset-bottom, 0px))',
+}))
+
+watch(
+  [isDesktop, isDashboardRoute],
+  () => {
+    leftDrawerOpen.value = shouldKeepDrawerOpen.value
+  },
+  { immediate: true },
+)
 
 watch(
   () => route.path,

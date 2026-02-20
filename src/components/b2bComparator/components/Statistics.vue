@@ -6,6 +6,11 @@
       :chart-data="chartData"
       :chart-options="{
         indexAxis: 'y',
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
       }"
     />
     <span v-else>Brak danych</span>
@@ -14,7 +19,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import {useBarChart} from 'src/composables/useBarChart'
+import { useBarChart } from 'src/composables/useBarChart'
 import BarChart from 'components/partials/statistics/BarChart.vue'
 
 interface Props {
@@ -24,20 +29,13 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const labels = [
-  'Skala podatkowa',
-  'Liniowy',
-  'Zryczałtowany',
-]
+const labels = ['Skala podatkowa', 'Liniowy', 'Zryczałtowany']
 
-const chartData = computed(() => useBarChart(
-  'Dochód w poszczególnych formach opodatkowania',
-    labels,
-    [
-      props.taxScale,
-      props.flatTax,
-      props.lumpSumTax,
-    ],
-  ),
+const chartData = computed(() =>
+  useBarChart('Dochód w poszczególnych formach opodatkowania', labels, [
+    props.taxScale,
+    props.flatTax,
+    props.lumpSumTax,
+  ]),
 )
 </script>

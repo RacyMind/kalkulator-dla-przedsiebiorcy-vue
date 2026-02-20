@@ -33,7 +33,7 @@ export const useConstantsStore = defineStore('constantsStore', () => {
 
   const app = {
     name: 'Kalkulator finansowy',
-    version: '6.1.0',
+    version: '6.1.1',
   }
 
   const amountTypes = {
