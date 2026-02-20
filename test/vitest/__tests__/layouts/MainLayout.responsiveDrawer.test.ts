@@ -57,10 +57,18 @@ vi.mock('stores/breadcrumbStore', () => ({
   }),
 }))
 
-const { addRecentMock, cycleThemeMock } = vi.hoisted(() => ({
-  addRecentMock: vi.fn(),
-  cycleThemeMock: vi.fn(),
-}))
+const { addRecentMock, cycleThemeMock, installPwaMock, installCtaState } =
+  vi.hoisted(() => ({
+    addRecentMock: vi.fn(),
+    cycleThemeMock: vi.fn(),
+    installPwaMock: vi.fn(),
+    installCtaState: {
+      showGooglePlayCta: false,
+      showPwaInstallCta: false,
+      googlePlayUrl:
+        'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
+    },
+  }))
 
 vi.mock('src/composables/useTheme', () => ({
   useTheme: () => ({
@@ -73,6 +81,15 @@ vi.mock('src/composables/useTheme', () => ({
 vi.mock('src/composables/useRecentlyUsed', () => ({
   useRecentlyUsed: () => ({
     addRecent: addRecentMock,
+  }),
+}))
+
+vi.mock('src/composables/useInstallCta', () => ({
+  useInstallCta: () => ({
+    googlePlayUrl: installCtaState.googlePlayUrl,
+    showGooglePlayCta: installCtaState.showGooglePlayCta,
+    showPwaInstallCta: installCtaState.showPwaInstallCta,
+    installPwa: installPwaMock,
   }),
 }))
 
@@ -175,6 +192,8 @@ const drawerBehavior = (wrapper: ReturnType<typeof mount>) =>
 describe('MainLayout responsive drawer behavior', () => {
   beforeEach(async () => {
     vi.clearAllMocks()
+    installCtaState.showGooglePlayCta = false
+    installCtaState.showPwaInstallCta = false
     await setViewportWidth(1440)
   })
 
@@ -269,5 +288,46 @@ describe('MainLayout responsive drawer behavior', () => {
     await flushPromises()
 
     expect(drawerModelValue(wrapper)).toBe('true')
+  })
+
+  it('renders Google Play CTA when Android mobile web install entry is available', async () => {
+    installCtaState.showGooglePlayCta = true
+    const { wrapper } = await mountLayout('/umowa-o-prace')
+
+    const googlePlayButton = wrapper.find(
+      'button[aria-label="Pobierz w Google Play"]',
+    )
+
+    expect(googlePlayButton.exists()).toBe(true)
+    expect(googlePlayButton.text()).toContain('Pobierz w Google Play')
+    expect(
+      wrapper.find('button[aria-label="Zainstaluj aplikację"]').exists(),
+    ).toBe(false)
+  })
+
+  it('renders PWA install CTA and delegates click to install composable action', async () => {
+    installCtaState.showPwaInstallCta = true
+    const { wrapper } = await mountLayout('/umowa-o-prace')
+
+    const pwaButton = wrapper.find('button[aria-label="Zainstaluj aplikację"]')
+
+    expect(pwaButton.exists()).toBe(true)
+    await pwaButton.trigger('click')
+
+    expect(installPwaMock).toHaveBeenCalledTimes(1)
+    expect(
+      wrapper.find('button[aria-label="Pobierz w Google Play"]').exists(),
+    ).toBe(false)
+  })
+
+  it('hides install CTA buttons when install entry is unavailable', async () => {
+    const { wrapper } = await mountLayout('/umowa-o-prace')
+
+    expect(
+      wrapper.find('button[aria-label="Pobierz w Google Play"]').exists(),
+    ).toBe(false)
+    expect(
+      wrapper.find('button[aria-label="Zainstaluj aplikację"]').exists(),
+    ).toBe(false)
   })
 })

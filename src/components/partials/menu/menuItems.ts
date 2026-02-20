@@ -3,14 +3,6 @@ import { Platform } from 'quasar'
 
 const appMenuItems: MenuItem[] = []
 
-if (Platform.is.mobile && !Platform.is.nativeMobile && Platform.is.android) {
-  appMenuItems.push({
-    caption: 'Pobierz natywną aplikację na swoje urządzenie',
-    className: 'c-app',
-    link: 'https://play.google.com/store/apps/details?id=racyMind.kalkulator',
-    title: 'Pobierz w Google Play',
-  })
-}
 if (Platform.is.nativeMobile && Platform.is.android) {
   appMenuItems.push({
     title: 'Podoba Ci się? Oceń!',

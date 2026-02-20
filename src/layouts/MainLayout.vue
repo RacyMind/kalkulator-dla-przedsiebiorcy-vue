@@ -89,6 +89,31 @@
           class="text-center q-py-md"
           style="border-top: 1px solid rgba(0, 0, 0, 0.12)"
         >
+          <q-btn
+            v-if="showGooglePlayCta"
+            class="q-mb-sm"
+            color="primary"
+            rounded
+            unelevated
+            type="a"
+            :href="googlePlayUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Pobierz w Google Play"
+          >
+            Pobierz w Google Play
+          </q-btn>
+          <q-btn
+            v-else-if="showPwaInstallCta"
+            class="q-mb-sm"
+            color="primary"
+            rounded
+            unelevated
+            aria-label="Zainstaluj aplikację"
+            @click="installPwa"
+          >
+            Zainstaluj aplikację
+          </q-btn>
           <PremiumActions class="q-mb-sm" />
           <q-btn
             v-if="!premiumStore.isPremiumActive"
@@ -148,6 +173,7 @@ import { useConstantsStore } from 'stores/constantsStore'
 import { usePremiumStore } from 'stores/premiumStore'
 import { useTheme } from 'src/composables/useTheme'
 import { useRecentlyUsed } from 'src/composables/useRecentlyUsed'
+import { useInstallCta } from 'src/composables/useInstallCta'
 import { matMenu, matChevronRight, outlinedFavorite } from 'src/icons'
 
 const $q = useQuasar()
@@ -156,6 +182,8 @@ const constants = useConstantsStore()
 const premiumStore = usePremiumStore()
 const { themeIcon, themeTooltip, cycleTheme } = useTheme()
 const { addRecent } = useRecentlyUsed()
+const { googlePlayUrl, showGooglePlayCta, showPwaInstallCta, installPwa } =
+  useInstallCta()
 
 const breadcrumbStore = useBreadcrumbStore()
 const leftDrawerOpen = ref(false)

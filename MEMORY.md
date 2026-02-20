@@ -762,3 +762,25 @@ For each completed task, add one section:
   - `npx vitest run test/vitest/__tests__/landingPage/LandingConsentUiContract.test.ts test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts` (passed: 2 files, 12 tests)
 - Outcome: Modal is now guaranteed centered with full-page overlay and properly differentiated dark/light styling on landing page.
 - Follow-ups: none.
+
+### 2026-02-19 - Add drawer install CTA with Android Google Play and PWA install fallback
+
+- Task: Added a single context-aware install CTA in drawer footer: Google Play on Android mobile web, PWA install on other web contexts, and hidden CTA when app is already installed.
+- Decisions:
+  - Implemented installation visibility logic in dedicated composable `useInstallCta` (platform detection + `beforeinstallprompt` + `appinstalled`).
+  - Treated "installed" as either native Capacitor app or web standalone mode (`display-mode: standalone` / `navigator.standalone`).
+  - Removed legacy Google Play entry from `menuItems` app section to avoid duplicate CTA surface.
+  - Kept CTA integration in `MainLayout` footer (not menu list) to support action-based PWA prompt flow.
+- Files changed:
+  - `src/composables/useInstallCta.ts`
+  - `src/layouts/MainLayout.vue`
+  - `src/components/partials/menu/menuItems.ts`
+  - `test/vitest/__tests__/composables/useInstallCta.test.ts`
+  - `test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts`
+  - `test/vitest/__tests__/components/menu/menuItems.appSection.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/composables/useInstallCta.test.ts test/vitest/__tests__/layouts/MainLayout.responsiveDrawer.test.ts test/vitest/__tests__/components/menu/menuItems.appSection.test.ts` (passed: 3 files, 18 tests)
+  - `npm run test:unit:ci` (passed: 93 files, 600 tests)
+- Outcome: Drawer now exposes one non-duplicated installation CTA with correct platform behavior and hides itself after installation detection.
+- Follow-ups: none.
