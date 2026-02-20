@@ -79,6 +79,12 @@ export default defineConfig((ctx) => {
               if (stubId === '@capacitor-community/in-app-review') {
                 return 'export const InAppReview = { requestReview: () => Promise.resolve() }; export default {};'
               }
+              if (stubId === '@capacitor-community/admob') {
+                return 'export const AdMob = { initialize: () => Promise.resolve(), showBanner: () => Promise.resolve(), hideBanner: () => Promise.resolve(), resumeBanner: () => Promise.resolve(), addListener: () => Promise.resolve({ remove: () => Promise.resolve() }) }; export const BannerAdPluginEvents = { Loaded: "bannerAdLoaded", FailedToLoad: "bannerAdFailedToLoad", SizeChanged: "bannerAdSizeChanged" }; export const BannerAdPosition = { BOTTOM_CENTER: "BOTTOM_CENTER" }; export const BannerAdSize = { ADAPTIVE_BANNER: "ADAPTIVE_BANNER" }; export default {};'
+              }
+              if (stubId === '@capacitor-community/in-app-review') {
+                return 'export const InAppReview = { requestReview: () => Promise.resolve() }; export default {};'
+              }
               return 'export default {};'
             },
           })
