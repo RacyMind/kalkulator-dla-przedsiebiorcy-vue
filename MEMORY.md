@@ -784,3 +784,97 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 93 files, 600 tests)
 - Outcome: Drawer now exposes one non-duplicated installation CTA with correct platform behavior and hides itself after installation detection.
 - Follow-ups: none.
+
+### 2026-02-20 - Remove landing-page render-blocking Google Fonts via local Roboto hosting
+
+- Task: Eliminated render-blocking Google Fonts requests on landing pages while preserving Roboto typography and validating delivery contracts with tests.
+- Decisions:
+  - Removed external Google Fonts/preconnect tags from shared landing head include and kept local `/dist/style.css` as the critical stylesheet.
+  - Self-hosted Roboto in `landing-page/fonts/roboto/` using local `woff2` assets (latin + latin-ext) and defined `@font-face` for weights `400`, `500`, `700` with `font-display: swap`.
+  - Added Apache `woff2` MIME/cache directives in `.htaccess` to make font delivery explicit and cacheable.
+  - Added a dedicated landing performance contract test to prevent regressions in head/font loading.
+- Files changed:
+  - `landing-page/_includes/head-common.php`
+  - `landing-page/style.css`
+  - `landing-page/.htaccess`
+  - `landing-page/fonts/roboto/roboto-latin-ext.woff2`
+  - `landing-page/fonts/roboto/roboto-latin.woff2`
+  - `landing-page/fonts/roboto/LICENSE`
+  - `test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `.\landing-page\tailwindcss.exe --input .\landing-page\style.css --output .\landing-page\dist\style.css --minify` (passed)
+  - `php -l landing-page/_includes/head-common.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 21 tests)
+- Outcome: Landing templates no longer depend on `fonts.googleapis.com`/`fonts.gstatic.com` in the critical path, and Roboto is served locally with regression coverage.
+- Follow-ups: none.
+
+### 2026-02-20 - Assert generated landing dist CSS includes local Roboto
+
+- Task: Addressed follow-up concern by explicitly validating that generated `landing-page/dist/style.css` contains local Roboto references and no Google Fonts URLs.
+- Decisions:
+  - Kept `landing-page/dist/` ignored in git as repository policy currently defines.
+  - Added a dedicated contract assertion for generated dist output instead of relying only on source CSS checks.
+- Files changed:
+  - `test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `.\landing-page\tailwindcss.exe --input .\landing-page\style.css --output .\landing-page\dist\style.css --minify` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed: 1 file, 5 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 22 tests)
+- Outcome: Contract now guarantees generated dist CSS references local Roboto assets and avoids external Google Fonts regressions.
+- Follow-ups: none.
+
+### 2026-02-20 - Defer GA4 gtag script loading to post-load idle on landing and SPA
+
+- Task: Reduced render-path impact of GA4 by removing immediate head load of `gtag.js` and introducing deferred dynamic loading after `window.load` + idle, while keeping consent-mode behavior and analytics contracts.
+- Decisions:
+  - Preserved policy to always initialize GA consent defaults (`denied`) and queue `gtag` commands immediately via local stub.
+  - Replaced static `<script async src=...>` with idempotent dynamic loader (`loadGaScriptOnce`) scheduled on `load` and `requestIdleCallback` (with `setTimeout` fallback).
+  - Kept landing-page consent integration contract unchanged via `window.kfApplyAnalyticsConsent`.
+  - Extended contract tests to enforce deferred-loading pattern and no static head inclusion of `gtag.js`.
+- Files changed:
+  - `index.html`
+  - `landing-page/_includes/ga4.php`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `php -l landing-page/_includes/ga4.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 2 files, 5 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 22 tests)
+  - `npm run test:unit:ci` (passed: 95 files, 606 tests)
+- Outcome: GA4 script download is moved out of the critical rendering path for both landing page and SPA while preserving consent-mode and analytics event contracts.
+- Follow-ups: none.
+
+### 2026-02-20 - Deliver responsive landing images to reduce oversized image transfer
+
+- Task: Implemented responsive image delivery for landing hero and calculator screenshots to reduce LCP image transfer and remove oversized WebP payloads.
+- Decisions:
+  - Added generated WebP breakpoints (`400w`, `640w`, `960w`) for hero and all SEO landing module screenshots.
+  - Updated homepage and shared landing layout `<picture>` sources to use `srcset` + explicit `sizes` matching actual render widths.
+  - Kept PNG fallback in `<img>` for compatibility while serving smaller WebP candidates to modern browsers.
+  - Added contract tests that validate markup, dynamic layout templating, and existence of generated image variants.
+- Files changed:
+  - `scripts/generate-landing-responsive-images.mjs`
+  - `package.json`
+  - `landing-page/index.php`
+  - `landing-page/_includes/layout.php`
+  - `landing-page/images/hero-screenshot-400.webp`
+  - `landing-page/images/hero-screenshot-640.webp`
+  - `landing-page/images/hero-screenshot-960.webp`
+  - `landing-page/images/modules/*-400.webp`
+  - `landing-page/images/modules/*-640.webp`
+  - `landing-page/images/modules/*-960.webp`
+  - `test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `php -l landing-page/index.php` (passed)
+  - `php -l landing-page/_includes/layout.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts` (passed: 1 file, 3 tests)
+- Outcome: Landing pages now ship responsive screenshot variants and select smaller assets per viewport, with automated regression coverage for markup and generated files.
+- Follow-ups: none.

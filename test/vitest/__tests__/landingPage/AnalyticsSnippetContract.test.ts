@@ -7,16 +7,32 @@ const readTextFile = (relativePath: string): string => {
 }
 
 describe('Landing page analytics snippet contract', () => {
-  it('defines GA4 gtag include with consent mode defaults', () => {
+  it('defines deferred GA4 loader with consent mode defaults', () => {
     const ga4Include = readTextFile('landing-page/_includes/ga4.php')
 
-    expect(ga4Include).toContain('https://www.googletagmanager.com/gtag/js?id=')
+    expect(ga4Include).not.toContain(
+      '<script async src="https://www.googletagmanager.com/gtag/js?id=',
+    )
     expect(ga4Include).toContain('window.dataLayer = window.dataLayer || []')
+    expect(ga4Include).toContain('window.gtag = gtag')
     expect(ga4Include).toContain(
       "gtag('consent', 'default', defaultConsentState)",
     )
     expect(ga4Include).toContain("analytics_storage: 'denied'")
-    expect(ga4Include).toContain('window.kfApplyAnalyticsConsent')
+    expect(ga4Include).toContain('const loadGaScriptOnce = () => {')
+    expect(ga4Include).toContain(
+      "const script = document.createElement('script')",
+    )
+    expect(ga4Include).toContain(
+      "script.src = 'https://www.googletagmanager.com/gtag/js?id=",
+    )
+    expect(ga4Include).toContain("'requestIdleCallback' in window")
+    expect(ga4Include).toContain(
+      "window.addEventListener('load', loadWhenIdle, { once: true })",
+    )
+    expect(ga4Include).toContain(
+      'window.kfApplyAnalyticsConsent = updateAnalyticsConsent',
+    )
     expect(ga4Include).toContain("gtag('config',")
   })
 

@@ -102,7 +102,11 @@ $e = function($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); };
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate"><?= $e($page['screenshot_url_bar'] ?? 'kalkulatorfinansowy.app') ?></span>
             </div>
             <picture>
-              <source srcset="/images/modules/<?= $e($page['screenshot']) ?>.webp" type="image/webp">
+              <source
+                srcset="/images/modules/<?= $e($page['screenshot']) ?>-400.webp 400w, /images/modules/<?= $e($page['screenshot']) ?>-640.webp 640w, /images/modules/<?= $e($page['screenshot']) ?>-960.webp 960w"
+                sizes="(min-width: 768px) 552px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/modules/<?= $e($page['screenshot']) ?>.png" alt="<?= $e($page['screenshot_alt']) ?>" width="<?= $page['screenshot_width'] ?? 1280 ?>" height="<?= $page['screenshot_height'] ?? 800 ?>" loading="lazy" class="w-full h-auto">
             </picture>
           </div>

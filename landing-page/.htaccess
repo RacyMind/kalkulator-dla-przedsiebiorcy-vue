@@ -22,6 +22,10 @@ DirectoryIndex index.php index.html
   RewriteRule ^([a-z0-9\-]+)/?$ page.php?slug=$1 [L,QSA]
 </IfModule>
 
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access 1 year"
@@ -35,10 +39,11 @@ DirectoryIndex index.php index.html
   ExpiresByType text/x-javascript "access 1 day"
   ExpiresByType application/x-shockwave-flash "access 1 month"
   ExpiresByType image/x-icon "access 1 year"
+  ExpiresByType font/woff2 "access 1 year"
   ExpiresDefault "access 1 day"
 </IfModule>
 <IfModule mod_headers.c>
-  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf|webp)$">
+  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf|webp|woff2)$">
   Header set Cache-Control "max-age=2678400, public"
   </filesmatch>
   <filesmatch "\.(html|htm|php)$">
