@@ -80,6 +80,7 @@ General:
 
 - UI text must be in Polish.
 - Use Polish diacritics in user-facing UI text.
+- Store text files as UTF-8 and keep Polish characters as literal glyphs (do not replace them with `\uXXXX` escapes).
 - Use descriptive names:
   - prefer `isRegisteredForDiscounts`
   - avoid unclear names like `discount()`

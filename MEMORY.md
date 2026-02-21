@@ -878,3 +878,67 @@ For each completed task, add one section:
   - `npx vitest run test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts` (passed: 1 file, 3 tests)
 - Outcome: Landing pages now ship responsive screenshot variants and select smaller assets per viewport, with automated regression coverage for markup and generated files.
 - Follow-ups: none.
+
+### 2026-02-21 - Add SoftwareApplication JSON-LD to SPA/PWA app entry
+
+- Task: Added structured data JSON-LD for the `/app` web application/PWA so crawlers can classify the SPA as a `SoftwareApplication`.
+- Decisions:
+  - Limited scope to `index.html` (`/app`) and did not modify landing-page schema blocks.
+  - Used `SoftwareApplication` schema (not `WebApplication`) to stay consistent with existing SEO approach.
+  - Kept a contract test in the existing app head snippet suite to prevent schema regression.
+- Files changed:
+  - `index.html`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: SPA/PWA head now includes JSON-LD with app identity, category, platform, free-offer metadata, URL, and author; contract coverage enforces continued presence.
+- Follow-ups: none.
+
+### 2026-02-21 - Normalize JSON-LD Polish characters to literal UTF-8
+
+- Task: Replaced Unicode escape sequences in SPA JSON-LD (`\u...`) with literal Polish characters to keep source text human-readable and consistent with repository conventions.
+- Decisions:
+  - Kept file encoding as UTF-8 and used direct diacritics (`Ł`, `ą`, `ę`, `ż`, etc.) in JSON-LD values.
+  - Retained the same schema fields and contract assertions.
+- Files changed:
+  - `index.html`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: JSON-LD now uses readable Polish text in source while preserving behavior and passing regression checks.
+- Follow-ups: none.
+
+### 2026-02-21 - Persist UTF-8/Polish glyph rule in AGENTS.md
+
+- Task: Added an explicit repository rule for encoding and Polish diacritics handling in source files.
+- Decisions:
+  - Documented UTF-8 as required text encoding for source files.
+  - Documented that Polish characters must stay literal and must not be converted to `\uXXXX` escapes.
+- Files changed:
+  - `AGENTS.md`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: Agent guidance now explicitly prevents future regressions in Polish text encoding style.
+- Follow-ups: none.
+
+### 2026-02-21 - Unblock /app crawling and enforce SPA canonical consistency
+
+- Task: Enabled crawling for the SPA shell, added `/app` to sitemap discovery, and aligned SPA metadata signals to one canonical URL.
+- Decisions:
+  - Removed `/app/` disallow from `robots.txt` to allow bot access to the SPA shell.
+  - Added `https://kalkulatorfinansowy.app/app` to sitemap with monthly cadence and lower priority than homepage.
+  - Standardized SPA metadata URL to `https://kalkulatorfinansowy.app/app` across canonical, `og:url`, and JSON-LD.
+  - Added SEO contract test coverage for robots/sitemap plus metadata consistency assertions in existing SPA head contract.
+- Files changed:
+  - `landing-page/robots.txt`
+  - `landing-page/sitemap.xml`
+  - `index.html`
+  - `test/vitest/__tests__/landingPage/SeoIndexingContract.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/SeoIndexingContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 2 files, 6 tests)
+- Outcome: `/app` is crawlable, discoverable via sitemap, and canonicalized consistently for SPA metadata signals with regression tests in place.
+- Follow-ups: none.

@@ -7,6 +7,31 @@ const readTextFile = (relativePath: string): string => {
 }
 
 describe('App analytics snippet contract', () => {
+  it('embeds SoftwareApplication JSON-LD for web app/PWA discovery', () => {
+    const appIndex = readTextFile('index.html')
+
+    expect(appIndex).toContain('<script type="application/ld+json">')
+    expect(appIndex).toContain('"@type": "SoftwareApplication"')
+    expect(appIndex).toContain('"name": "Kalkulator finansowy"')
+    expect(appIndex).toContain('"applicationCategory": "FinanceApplication"')
+    expect(appIndex).toContain('"operatingSystem": "Web, Android"')
+    expect(appIndex).toContain('"url": "https://kalkulatorfinansowy.app/app"')
+    expect(appIndex).toContain('"price": "0"')
+    expect(appIndex).toContain('"priceCurrency": "PLN"')
+  })
+
+  it('uses a single canonical SPA URL in canonical, Open Graph and JSON-LD metadata', () => {
+    const appIndex = readTextFile('index.html')
+
+    expect(appIndex).toContain(
+      '<link rel="canonical" href="https://kalkulatorfinansowy.app/app">',
+    )
+    expect(appIndex).toContain(
+      '<meta property="og:url" content="https://kalkulatorfinansowy.app/app" />',
+    )
+    expect(appIndex).toContain('"url": "https://kalkulatorfinansowy.app/app"')
+  })
+
   it('defines deferred GA4 loader in SPA index template', () => {
     const appIndex = readTextFile('index.html')
 

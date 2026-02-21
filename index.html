@@ -30,6 +30,27 @@
     <meta name="twitter:title" content="Kalkulator finansowy – Twój darmowy kalkulator wynagrodzeń" />
     <meta name="twitter:description" content="Darmowy kalkulator wynagrodzeń z umowy o pracę, umowy zlecenie, B2B i umowy o dzieło. Oblicz składki ZUS, podatek PIT, VAT i więcej." />
     <meta name="twitter:image" content="https://kalkulatorfinansowy.app/app/images/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kalkulator finansowy",
+        "description": "Kalkulator finansowy – darmowe obliczanie wynagrodzeń z umowy o pracę, umowy zlecenie, B2B, umowy o dzieło. Sprawdź składki ZUS, podatek PIT, VAT i więcej.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web, Android",
+        "url": "https://kalkulatorfinansowy.app/app",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "PLN"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Łukasz Socha"
+        }
+      }
+    </script>
     <% if (process.env.VITE_GA_MEASUREMENT_ID && !ctx.mode.capacitor && !ctx.mode.cordova) { %>
     <script>
       window.dataLayer = window.dataLayer || []
