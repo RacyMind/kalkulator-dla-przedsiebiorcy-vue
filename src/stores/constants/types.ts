@@ -3,6 +3,7 @@ export type AvailableYear = 2021 | 2022 | 2023 | 2024 | 2025 | 2026
 export enum AmountTypes {
   Gross = 1,
   Net = 2,
+  EmployerCost = 3,
 }
 
 export enum EntrepreneurTaxSystem {

@@ -942,3 +942,32 @@ For each completed task, add one section:
   - `npx vitest run test/vitest/__tests__/landingPage/SeoIndexingContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 2 files, 6 tests)
 - Outcome: `/app` is crawlable, discoverable via sitemap, and canonicalized consistently for SPA metadata signals with regression tests in place.
 - Follow-ups: none.
+
+### 2026-02-21 - Add reverse mode based on employer cost for UoP and mandate
+
+- Task: Added a new amount input mode that estimates `grossAmount` from `Suma kosztów pracodawcy`, analogicznie do istniejącego trybu szacowania z netto, for `Umowa o pracę` and `Umowa zlecenie`.
+- Decisions:
+  - Extended `AmountTypes` with `EmployerCost` and kept `AmountTypeSelect` backward compatible via optional `showEmployerCost` prop.
+  - Generalized reverse-search logic into `findGrossAmountUsingTargetAmount` and preserved `findGrossAmountUsingNetAmount` as a compatibility wrapper.
+  - Added `setSumUpContributionBasis` / `getSumUpContributionBasis` to employer calculators to correctly carry annual ZUS basis in monthly reverse estimation.
+  - Enabled the new UI option only in modules that expose employer-cost outputs (UoP + mandate), leaving `contractWork` unchanged.
+- Files changed:
+  - `src/stores/constants/types.ts`
+  - `src/logic/findGrossAmountUsingNetAmount.ts`
+  - `src/components/partials/form/AmountTypeSelect.vue`
+  - `src/components/contractOfEmployment/components/Form.vue`
+  - `src/components/contractOfMandate/components/Form.vue`
+  - `src/components/contractOfEmployment/logic/EmployerCalculator.ts`
+  - `src/components/contractOfMandate/logic/EmployerCalculator.ts`
+  - `test/vitest/__tests__/components/AmountTypeSelect.test.ts`
+  - `test/vitest/__tests__/logic/findGrossAmountUsingTargetAmount.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/findGrossAmountUsingEmployerCost.test.ts`
+  - `test/vitest/__tests__/modules/contractOfMandate/findGrossAmountUsingEmployerCost.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/EmployerCalculator.test.ts`
+  - `test/vitest/__tests__/modules/contractOfMandate/EmployerCalculator.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/stores/constants/types.ts src/logic/findGrossAmountUsingNetAmount.ts src/components/partials/form/AmountTypeSelect.vue src/components/contractOfEmployment/logic/EmployerCalculator.ts src/components/contractOfMandate/logic/EmployerCalculator.ts src/components/contractOfEmployment/components/Form.vue src/components/contractOfMandate/components/Form.vue test/vitest/__tests__/components/AmountTypeSelect.test.ts test/vitest/__tests__/logic/findGrossAmountUsingTargetAmount.test.ts test/vitest/__tests__/modules/contractOfEmployment/findGrossAmountUsingEmployerCost.test.ts test/vitest/__tests__/modules/contractOfMandate/findGrossAmountUsingEmployerCost.test.ts test/vitest/__tests__/modules/contractOfEmployment/EmployerCalculator.test.ts test/vitest/__tests__/modules/contractOfMandate/EmployerCalculator.test.ts` (passed)
+  - `npm run test:unit:ci` (passed: 101 files, 624 tests)
+- Outcome: Users can now estimate salary inputs from employer cost in UoP and mandate calculators with full test coverage and no regression in existing net-based estimation.
+- Follow-ups: none.

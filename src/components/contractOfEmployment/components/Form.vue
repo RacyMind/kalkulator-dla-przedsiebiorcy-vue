@@ -26,7 +26,11 @@
             hide-bottom-space
           />
         </div>
-        <AmountTypeSelect v-model="amountType" class="col-shrink" />
+        <AmountTypeSelect
+          v-model="amountType"
+          :show-employer-cost="true"
+          class="col-shrink"
+        />
       </div>
       <div class="row">
         <div class="col">
@@ -114,8 +118,12 @@
 import { storeToRefs } from 'pinia'
 import { AmountTypes, useConstantsStore } from 'stores/constantsStore'
 import { EmployeeCalculator } from 'components/contractOfEmployment/logic/EmployeeCalculator'
+import { EmployerCalculator } from 'components/contractOfEmployment/logic/EmployerCalculator'
 import { InputFields } from 'components/contractOfEmployment/interfaces/InputFields'
-import { findGrossAmountUsingNetAmount } from 'src/logic/findGrossAmountUsingNetAmount'
+import {
+  findGrossAmountUsingNetAmount,
+  findGrossAmountUsingTargetAmount,
+} from 'src/logic/findGrossAmountUsingNetAmount'
 import { pln } from 'src/composables/currencyFormat'
 import { useEmploymentContractStore } from 'components/contractOfEmployment/store'
 import { useFormValidation } from 'src/composables/formValidation'
@@ -367,6 +375,7 @@ const handleFormSubmit = () => {
     sumUpAuthorExpenses: 0,
     sumUpGrossAmount: 0,
   }
+  let sumUpEmployerContributionBasis = 0
 
   for (let i = 0; i < 12; i++) {
     const inputFields: InputFields = { ...basicInputFields }
@@ -408,6 +417,36 @@ const handleFormSubmit = () => {
         .setInputData(inputFields)
         .calculate()
         .getSumUpAmounts()
+    }
+
+    if (amountType.value === AmountTypes.EmployerCost) {
+      let employerCostAmount = amount.value
+
+      if (hasAmountForEachMonth.value) {
+        employerCostAmount = Number(monthlyAmounts.value[i])
+      }
+
+      const calculator = new EmployerCalculator()
+      inputFields.grossAmount = findGrossAmountUsingTargetAmount(
+        (grossAmount) => {
+          inputFields.grossAmount = grossAmount
+          return calculator
+            .setSumUpContributionBasis(sumUpEmployerContributionBasis)
+            .setInputData(inputFields)
+            .calculate()
+            .getResult()
+        },
+        0.5 * employerCostAmount,
+        2 * employerCostAmount,
+        employerCostAmount,
+        (result) => result.totalAmount,
+      )
+
+      sumUpEmployerContributionBasis = new EmployerCalculator(true)
+        .setSumUpContributionBasis(sumUpEmployerContributionBasis)
+        .setInputData(inputFields)
+        .calculate()
+        .getSumUpContributionBasis()
     }
 
     monhtlyInputFields.push(inputFields)
