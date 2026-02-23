@@ -46,6 +46,121 @@
         v-if="hasAmountForEachMonth"
         v-model="monthlyAmounts"
       />
+      <div v-if="amountType === AmountTypes.Gross" class="row q-mt-md">
+        <div class="col">
+          <q-toggle
+            v-model="isOvertimeEnabled"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
+            label="Dodaj nadgodziny"
+          />
+        </div>
+      </div>
+      <div
+        v-if="amountType === AmountTypes.Gross && isOvertimeEnabled"
+        class="row q-col-gutter-sm q-mt-sm"
+      >
+        <div class="col-12 col-sm-4">
+          <q-input
+            v-model.number="standardMonthlyHours"
+            type="number"
+            min="1"
+            step="1"
+            label="Norma godzinowa w miesiącu"
+            suffix="h"
+            color="brand"
+            :rules="[
+              (val) =>
+                val > 0 || '* Wpisz poprawną normę godzinową (większą od 0)',
+            ]"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-sm-4">
+          <q-input
+            v-model.number="overtimeHours"
+            :disable="hasOvertimeHoursForEachMonth"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Liczba nadgodzin"
+            suffix="h"
+            color="brand"
+            :rules="[(val) => val >= 0 || '* Wpisz liczbę godzin']"
+            lazy-rules="ondemand"
+            hide-bottom-space
+          />
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="row items-center q-gutter-xs no-wrap">
+            <div class="col">
+              <q-input
+                v-model.number="overtimePercent"
+                type="number"
+                min="0"
+                max="300"
+                step="0.01"
+                label="Dodatek za nadgodziny"
+                suffix="%"
+                color="brand"
+                :rules="[
+                  (val) =>
+                    (val >= minimumOvertimePercent &&
+                      val <= maximumOvertimePercent) ||
+                    '* Wpisz procent z zakresu 0-300',
+                ]"
+                lazy-rules="ondemand"
+                hide-bottom-space
+              />
+            </div>
+            <Tooltip>
+              Procent dodatku za nadgodziny wpisujesz zgodnie z zasadami
+              pracodawcy. Kwota nadgodzin jest liczona ze stawki godzinowej i
+              tego dodatku.
+            </Tooltip>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="amountType === AmountTypes.Gross && isOvertimeEnabled"
+        class="row q-mt-sm"
+      >
+        <div class="col">
+          <q-toggle
+            v-model="hasOvertimeHoursForEachMonth"
+            :checked-icon="matCheck"
+            :unchecked-icon="matClear"
+            label="Różna liczba nadgodzin w poszczególnych miesiącach"
+          />
+        </div>
+      </div>
+      <div
+        v-if="
+          amountType === AmountTypes.Gross &&
+          isOvertimeEnabled &&
+          hasOvertimeHoursForEachMonth
+        "
+        class="row items-center q-col-gutter-sm q-mt-sm"
+      >
+        <div
+          v-for="(month, index) in monthNames"
+          :key="month"
+          class="col-4 col-sm-2"
+        >
+          <q-input
+            v-model.number="monthlyOvertimeHours[index]"
+            type="number"
+            min="0"
+            step="0.01"
+            :label="month"
+            suffix="h"
+            color="brand"
+            :rules="[(val) => val >= 0 || '* Wpisz liczbę godzin']"
+            lazy-rules="ondemand"
+          />
+        </div>
+      </div>
     </FormSection>
     <FormSection title="Podatek dochodowy">
       <div class="row q-col-gutter-x-md">
@@ -130,6 +245,7 @@ import { useFormValidation } from 'src/composables/formValidation'
 import { useLawRuleDate } from 'src/composables/lawRuleDate'
 import { useLocalStorage } from '@vueuse/core'
 import { useMonthlyAmounts } from 'src/composables/monthlyAmounts'
+import { useMonths } from 'src/composables/months'
 import { useMonthlyPercentages } from 'src/composables/monthlyPercentages'
 import { useTaxFreeAmount } from 'src/composables/taxFreeAmount'
 import { watch } from 'vue'
@@ -153,9 +269,13 @@ const { incrementCalculationCount } = useReviewPrompt()
 
 const store = useEmploymentContractStore()
 const { availableDates } = useLawRuleDate()
+const { monthNames } = useMonths()
 const { handleValidationError } = useFormValidation()
 const { zusConstants, incomeTaxConstants, wageStats } =
   storeToRefs(useConstantsStore())
+
+const minimumOvertimePercent = 0
+const maximumOvertimePercent = 300
 
 enum ContributionSchemes {
   All = 1,
@@ -198,6 +318,30 @@ const { monthlyAmounts, hasAmountForEachMonth } = useMonthlyAmounts(
   amount,
   'contractOfEmployment/form',
 )
+const isOvertimeEnabled = useLocalStorage(
+  'contractOfEmployment/form/isOvertimeEnabled',
+  false,
+  { mergeDefaults: true },
+)
+const standardMonthlyHours = useLocalStorage(
+  'contractOfEmployment/form/standardMonthlyHours',
+  168,
+  { mergeDefaults: true },
+)
+const overtimeHours = useLocalStorage(
+  'contractOfEmployment/form/overtimeHours',
+  0,
+  { mergeDefaults: true },
+)
+const overtimePercent = useLocalStorage(
+  'contractOfEmployment/form/overtimePercent',
+  50,
+  { mergeDefaults: true },
+)
+const {
+  monthlyAmounts: monthlyOvertimeHours,
+  hasAmountForEachMonth: hasOvertimeHoursForEachMonth,
+} = useMonthlyAmounts(overtimeHours, 'contractOfEmployment/form/overtime')
 
 // the income tax section
 const workInLivePlace = useLocalStorage(
@@ -334,6 +478,27 @@ watch(contributionScheme, () => {
   }
 })
 
+const calculateOvertimeGrossAmount = (
+  baseGrossAmount: number,
+  monthlyHoursNorm: number,
+  overtimeHoursAmount: number,
+  overtimePercentAmount: number,
+) => {
+  if (
+    baseGrossAmount <= 0 ||
+    monthlyHoursNorm <= 0 ||
+    overtimeHoursAmount <= 0 ||
+    overtimePercentAmount < 0
+  ) {
+    return 0
+  }
+
+  const hourlyRate = baseGrossAmount / monthlyHoursNorm
+  const overtimeMultiplier = 1 + overtimePercentAmount / 100
+
+  return helpers.round(hourlyRate * overtimeHoursAmount * overtimeMultiplier, 2)
+}
+
 const handleFormSubmit = () => {
   if (!amount.value) {
     return
@@ -376,6 +541,8 @@ const handleFormSubmit = () => {
     sumUpGrossAmount: 0,
   }
   let sumUpEmployerContributionBasis = 0
+  const shouldApplyOvertime =
+    amountType.value === AmountTypes.Gross && isOvertimeEnabled.value
 
   for (let i = 0; i < 12; i++) {
     const inputFields: InputFields = { ...basicInputFields }
@@ -389,6 +556,23 @@ const handleFormSubmit = () => {
 
     if (amountType.value === AmountTypes.Gross && hasAmountForEachMonth.value) {
       inputFields.grossAmount = Number(monthlyAmounts.value[i])
+    }
+
+    if (shouldApplyOvertime) {
+      const monthlyOvertimeHourAmount = hasOvertimeHoursForEachMonth.value
+        ? Number(monthlyOvertimeHours.value[i] ?? 0)
+        : Number(overtimeHours.value)
+      const monthlyOvertimeGrossAmount = calculateOvertimeGrossAmount(
+        inputFields.grossAmount,
+        Number(standardMonthlyHours.value),
+        monthlyOvertimeHourAmount,
+        Number(overtimePercent.value),
+      )
+
+      inputFields.grossAmount = helpers.round(
+        inputFields.grossAmount + monthlyOvertimeGrossAmount,
+        2,
+      )
     }
 
     if (amountType.value === AmountTypes.Net) {

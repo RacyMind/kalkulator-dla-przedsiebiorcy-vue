@@ -971,3 +971,26 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 101 files, 624 tests)
 - Outcome: Users can now estimate salary inputs from employer cost in UoP and mandate calculators with full test coverage and no regression in existing net-based estimation.
 - Follow-ups: none.
+
+### 2026-02-23 - Add overtime option in contract of employment form
+
+- Task: Added overtime input support in `Umowa o pracę` form as an additive gross component, with configurable overtime percentage and optional per-month overtime hours.
+- Decisions:
+  - Implemented overtime only for `AmountTypes.Gross` to avoid ambiguity in reverse solvers for net/employer-cost modes.
+  - Kept calculator interfaces unchanged (`InputFields` still carries only final `grossAmount`), applying overtime at form preprocessing level.
+  - Added one overtime model (`hours + percent`) with `0-300%` validation and explanatory tooltip.
+  - Reused existing monthly storage pattern via `useMonthlyAmounts` for overtime-hours-per-month.
+- Files changed:
+  - `src/components/contractOfEmployment/components/Form.vue`
+  - `test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/contractOfEmployment/components/Form.vue test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts` (passed: 3 files, 24 tests)
+  - `npm run test:unit:ci` (passed: 102 files, 629 tests)
+  - `npm run lint` (fails due pre-existing unrelated lint errors in other modules/files)
+- Outcome: UoP now supports overtime additions in gross mode, monthly inputs are correctly expanded with overtime gross, and behavior is covered by form-level and annual regression tests.
+- Follow-ups:
+  - Resolve existing repo-wide lint debt unrelated to this change to restore `npm run lint` green status.
