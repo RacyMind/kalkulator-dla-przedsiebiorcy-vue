@@ -994,3 +994,26 @@ For each completed task, add one section:
 - Outcome: UoP now supports overtime additions in gross mode, monthly inputs are correctly expanded with overtime gross, and behavior is covered by form-level and annual regression tests.
 - Follow-ups:
   - Resolve existing repo-wide lint debt unrelated to this change to restore `npm run lint` green status.
+
+### 2026-02-23 - Remove commit message naming restrictions from repository tooling
+
+- Task: Removed commit message format enforcement so commits are no longer blocked by Conventional Commits validation.
+- Decisions:
+  - Kept GitHub Actions workflow unchanged because `.github/workflows/ci.yml` does not contain commit message checks.
+  - Removed the Husky `commit-msg` hook and `commitlint` configuration as the only active source of commit name restrictions.
+  - Removed direct `@commitlint/*` devDependencies from project metadata.
+  - Added a regression contract test to ensure commit message restrictions are not reintroduced accidentally.
+- Files changed:
+  - `.husky/commit-msg`
+  - `commitlint.config.js`
+  - `package.json`
+  - `package-lock.json`
+  - `test/vitest/__tests__/release/CommitMessagePolicy.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/release/CommitMessagePolicy.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 103 files, 631 tests)
+  - `npm run lint` (fails due pre-existing unrelated lint errors in multiple existing files)
+- Outcome: Commit messages are no longer constrained by repository hooks/config, and regression coverage now protects this policy.
+- Follow-ups:
+  - Resolve existing repo-wide lint errors unrelated to this change if full lint green is required in CI.
