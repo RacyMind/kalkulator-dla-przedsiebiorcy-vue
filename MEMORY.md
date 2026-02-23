@@ -1017,3 +1017,99 @@ For each completed task, add one section:
 - Outcome: Commit messages are no longer constrained by repository hooks/config, and regression coverage now protects this policy.
 - Follow-ups:
   - Resolve existing repo-wide lint errors unrelated to this change if full lint green is required in CI.
+
+### 2026-02-23 - Add savings plan module with DCA and IKE/IKZE/deposit comparison
+
+- Task: Dodano nowy moduł `Plan oszczędzania` z symulacją DCA, celem oszczędnościowym, wariantami stopy zwrotu oraz porównaniem scenariuszy IKE vs IKZE vs lokata.
+- Decisions:
+  - Zaimplementowano kalkulator łańcuchowy (`BasicCalculator`) z miesięczną symulacją DCA dla 3 narzędzi i 3 scenariuszy zwrotu.
+  - Uwzględniono limity roczne IKE/IKZE per rok (na bazie istniejącej logiki limitów), ulgę podatkową IKZE oraz 10% podatek przy wypłacie IKZE.
+  - Dla lokaty zastosowano podatek Belki od dodatnich odsetek w kroku miesięcznym.
+  - Wymaganą miesięczną wpłatę do celu liczono metodą binary-search, z oznaczeniem scenariuszy nieosiągalnych przez limity.
+  - Moduł zintegrowano z routerem i menu sekcji oszczędzania.
+- Files changed:
+  - `src/components/savingsPlan/components/Form.vue`
+  - `src/components/savingsPlan/components/ResultList.vue`
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `src/components/savingsPlan/components/Statistics.vue`
+  - `src/components/savingsPlan/interfaces/InputFields.ts`
+  - `src/components/savingsPlan/interfaces/Result.ts`
+  - `src/components/savingsPlan/logic/SavingsPlanCalculator.ts`
+  - `src/components/savingsPlan/pages/Index.vue`
+  - `src/components/savingsPlan/store.ts`
+  - `src/components/savingsPlan/types/SavingsPlanTypes.ts`
+  - `src/components/partials/menu/menuItems.ts`
+  - `src/router/routes.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts` (passed: 1 file, 4 tests)
+  - `npx eslint src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/ResultList.vue src/components/savingsPlan/components/ScenarioComparison.vue src/components/savingsPlan/components/Statistics.vue src/components/savingsPlan/interfaces/InputFields.ts src/components/savingsPlan/interfaces/Result.ts src/components/savingsPlan/logic/SavingsPlanCalculator.ts src/components/savingsPlan/pages/Index.vue src/components/savingsPlan/store.ts src/components/savingsPlan/types/SavingsPlanTypes.ts src/components/partials/menu/menuItems.ts src/router/routes.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts` (passed)
+  - `npm run test:unit:ci` (passed: 103 files, 633 tests)
+- Outcome: Moduł planowania oszczędzania jest dostępny pod `/plan-oszczedzania`, pokazuje projekcję portfela w czasie, wymagane wpłaty do celu i pełne porównanie IKE/IKZE/lokata na wartościach netto.
+- Follow-ups: none.
+
+### 2026-02-23 - Refactor savings plan for tax-base model, tabs UX, saved plans, and yearly limit growth
+
+- Task: Przebudowano moduł `plan-oszczedzania`: forma zatrudnienia + forma opodatkowania + roczna podstawa opodatkowania, zakładki `IKE / IKZE / Bez ulg`, nowy układ porównania (karty + ranking), zapis/odczyt nazwanych planów w localStorage oraz symulacja rocznego wzrostu limitów IKE/IKZE.
+- Decisions:
+  - Zastąpiono ręczny wybór stawki IKZE modelem pochodnym (skala 12/32, liniowy 19%) na podstawie formy zatrudnienia i podstawy opodatkowania.
+  - Usunięto selektor „narzędzia wykresu” z formularza; aktywne narzędzie jest sterowane zakładkami w wynikach.
+  - Zmieniono trzecią kategorię narzędzia z `Lokata`/`deposit` na `Bez ulg` (`no_relief`), zachowując logikę podatku Belki.
+  - Dodano centralne źródło limitów IKE/IKZE z fallbackiem do ostatniego znanego roku i nowymi testami regresyjnymi.
+  - Dodano mechanizm przechowywania i migracji zapisanych planów (`chartTool`/`deposit` -> `activeTool`/`no_relief`, domyślne dla nowych pól).
+  - Dodano parametr `annualLimitGrowthRate` i składany wzrost limitów rok-do-roku dla IKE i IKZE.
+- Files changed:
+  - `src/components/savingsPlan/components/Form.vue`
+  - `src/components/savingsPlan/components/ResultList.vue`
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `src/components/savingsPlan/components/Statistics.vue`
+  - `src/components/savingsPlan/interfaces/InputFields.ts`
+  - `src/components/savingsPlan/interfaces/Result.ts`
+  - `src/components/savingsPlan/logic/SavingsPlanCalculator.ts`
+  - `src/components/savingsPlan/logic/SavingsPlanStorage.ts`
+  - `src/components/savingsPlan/pages/Index.vue`
+  - `src/components/savingsPlan/store.ts`
+  - `src/components/savingsPlan/types/SavingsPlanTypes.ts`
+  - `src/logic/ikeLimits.ts`
+  - `src/logic/ikzeLimits.ts`
+  - `src/logic/savingsLimits.ts`
+  - `test/vitest/__tests__/logic/savingsLimits.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanStorageMigration.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStorageMigration.test.ts` (passed: 4 files, 14 tests)
+  - `npx vitest run test/vitest/__tests__/logic/savingsLimits.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 107 files, 645 tests)
+  - `npx eslint src/components/savingsPlan/types/SavingsPlanTypes.ts src/components/savingsPlan/interfaces/InputFields.ts src/components/savingsPlan/interfaces/Result.ts src/components/savingsPlan/logic/SavingsPlanCalculator.ts src/components/savingsPlan/logic/SavingsPlanStorage.ts src/components/savingsPlan/store.ts src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/Statistics.vue src/components/savingsPlan/components/ResultList.vue src/components/savingsPlan/components/ScenarioComparison.vue src/components/savingsPlan/pages/Index.vue src/logic/savingsLimits.ts src/logic/ikeLimits.ts src/logic/ikzeLimits.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStorageMigration.test.ts test/vitest/__tests__/logic/savingsLimits.test.ts` (passed)
+  - `npm run lint` (fails due pre-existing unrelated lint errors in other modules/files)
+- Outcome: Moduł oszczędzania działa zgodnie z nowym modelem podatkowym i UX, umożliwia trwałe przechowywanie wielu planów oraz symulację wzrostu limitów, a pełny zestaw testów jednostkowych repo pozostaje zielony.
+- Follow-ups:
+  - Wyczyścić istniejący, repo-wide dług lintowy niezwiązany z tą zmianą, jeśli wymagane jest zielone `npm run lint`.
+
+### 2026-02-23 - Polish savingsPlan UX follow-up: tabs parity, chart legend, and fixed comparison section
+
+- Task: Applied requested UX polish for savings plan results: removed summary heading, allowed `0` yearly limit growth input, aligned tabs styling/behavior with employment contract pages, introduced custom line-chart legend in pie-chart style with final PLN values, and moved comparison section outside tab panels.
+- Decisions:
+  - Bound `scrollTarget` to `QTabs` and removed `Podsumowanie` heading so results open directly at tabs.
+  - Kept comparison cards rendered once under tab panels to avoid panel-scroll coupling during tab switches.
+  - Replaced line chart built-in legend with custom `LineChartLegend` component showing scenario color + final value.
+  - Switched yearly growth validation to `requiredAmount` so `0` is valid.
+- Files changed:
+  - `src/components/savingsPlan/pages/Index.vue`
+  - `src/components/savingsPlan/components/Form.vue`
+  - `src/components/savingsPlan/components/Statistics.vue`
+  - `src/components/partials/statistics/LineChartLegend.vue`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanCalculator.test.ts` (passed: 4 files, 15 tests)
+  - `npm run test:unit:ci` (passed: 108 files, 648 tests)
+  - `npx eslint src/components/savingsPlan/pages/Index.vue src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/Statistics.vue src/components/partials/statistics/LineChartLegend.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts` (passed)
+- Outcome: savingsPlan results UX now matches requested structure and interaction, with clearer chart reading and stable comparison section across tab changes.
+- Follow-ups: none.
