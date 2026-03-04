@@ -3,7 +3,7 @@
     ref="chartContainer"
     role="img"
     :aria-label="ariaLabel"
-    style="position: relative; width: 100%"
+    style="position: relative; width: 100%; overflow: hidden"
   >
     <component
       :is="chartComponent"
@@ -72,21 +72,33 @@ const chartContainer = ref<HTMLElement | null>(null)
 const containerWidth = ref(0)
 let resizeObserver: ResizeObserver | null = null
 
+const syncWidth = () => {
+  if (!chartContainer.value) return
+  const w = Math.round(chartContainer.value.clientWidth)
+  if (w > 0 && Math.abs(w - containerWidth.value) > 20) {
+    containerWidth.value = w
+  }
+}
+
+let resizeTimer: ReturnType<typeof setTimeout> | null = null
+const onWindowResize = () => {
+  if (resizeTimer) clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(syncWidth, 150)
+}
+
 onMounted(() => {
   if (chartContainer.value) {
     containerWidth.value = chartContainer.value.clientWidth
-    resizeObserver = new ResizeObserver((entries) => {
-      const w = Math.round(entries[0].contentRect.width)
-      if (Math.abs(w - containerWidth.value) > 20) {
-        containerWidth.value = w
-      }
-    })
+    resizeObserver = new ResizeObserver(() => syncWidth())
     resizeObserver.observe(chartContainer.value)
   }
+  window.addEventListener('resize', onWindowResize)
 })
 
 onUnmounted(() => {
   resizeObserver?.disconnect()
+  window.removeEventListener('resize', onWindowResize)
+  if (resizeTimer) clearTimeout(resizeTimer)
 })
 
 const chartComponentMap: Record<string, any> = {

@@ -1,47 +1,59 @@
 <template>
   <ModulePageLayout class="c-savings">
     <template #form>
-      <SectionHeader :level="2"> Wypełnij formularz </SectionHeader>
+      <SectionHeader :level="2">Wypełnij formularz</SectionHeader>
       <Form @submit="handleSubmit" />
       <Advert />
     </template>
     <template #results>
       <template v-if="store.result">
-        <QTabs
-          ref="scrollTarget"
-          v-model="tab"
-          inline-label
-          class="bg-primary text-white shadow-2"
-          align="justify"
-        >
-          <q-tab
-            v-for="tool in toolTabs"
-            :key="tool.value"
-            :name="tool.value"
-            :label="tool.label"
-          />
-        </QTabs>
-        <q-tab-panels
-          :key="tabPanelsKey"
-          v-model="tab"
-          animated
-          :swipeable="isMobileTabMode"
-        >
-          <q-tab-panel
-            v-for="tool in toolTabs"
-            :key="tool.value"
-            :name="tool.value"
-            class="q-pa-none"
-          >
-            <q-list>
-              <ResultList :result="store.result" />
-            </q-list>
+        <div class="column q-gutter-md">
+          <q-card bordered flat class="overflow-hidden">
+            <QTabs
+              ref="scrollTarget"
+              v-model="tab"
+              inline-label
+              class="bg-primary text-white shadow-1"
+              align="justify"
+            >
+              <q-tab
+                v-for="tool in toolTabs"
+                :key="tool.value"
+                :name="tool.value"
+                :label="tool.label"
+              />
+            </QTabs>
+            <q-tab-panels
+              :key="tabPanelsKey"
+              v-model="tab"
+              animated
+              :swipeable="isMobileTabMode"
+            >
+              <q-tab-panel
+                v-for="tool in toolTabs"
+                :key="tool.value"
+                :name="tool.value"
+                class="q-pa-none"
+              >
+                <q-list>
+                  <ResultList :result="store.result" />
+                </q-list>
+              </q-tab-panel>
+            </q-tab-panels>
+          </q-card>
+
+          <q-card bordered flat>
             <ListHeader>Prognoza wartości portfela w czasie</ListHeader>
+            <q-separator />
             <Statistics :result="store.result" />
-          </q-tab-panel>
-        </q-tab-panels>
-        <ListHeader>Porównanie narzędzi oszczędzania</ListHeader>
-        <ScenarioComparison :result="store.result" />
+          </q-card>
+
+          <q-card bordered flat>
+            <ListHeader>Porównanie form oszczędzania</ListHeader>
+            <q-separator />
+            <ScenarioComparison :result="store.result" />
+          </q-card>
+        </div>
       </template>
       <div v-else class="q-pa-md">Brak danych</div>
     </template>

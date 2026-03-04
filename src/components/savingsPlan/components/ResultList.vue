@@ -70,10 +70,12 @@
         <span v-else> Cel nieosiągalny przy limicie wpłat </span>
       </template>
     </ListRow>
-    <ListRow v-if="taxSummary">
-      <template #name> Podatki i ulgi (wariant bazowy) </template>
+    <ListRow v-for="taxRow in taxRows" :key="taxRow.key">
+      <template #name> {{ taxRow.label }} </template>
       <template #value>
-        {{ taxSummary }}
+        <span :class="taxRow.valueClass">
+          {{ taxRow.value }}
+        </span>
       </template>
     </ListRow>
   </div>
@@ -93,6 +95,13 @@ import ListRow from 'components/partials/resultList/ListRow.vue'
 
 interface Props {
   result: Result
+}
+
+interface TaxRow {
+  key: string
+  label: string
+  value: string
+  valueClass?: string
 }
 
 const props = defineProps<Props>()
@@ -138,23 +147,39 @@ const averageEffectiveMonthlyContribution = computed(() => {
   )
 })
 
-const taxSummary = computed(() => {
+const taxRows = computed<TaxRow[]>(() => {
   if (!baseScenarioProjection.value) {
-    return ''
+    return []
   }
 
   if (props.result.activeTool === SavingsPlanTool.Ikze) {
-    return `Ulga: ${pln(
-      baseScenarioProjection.value.totalTaxRelief,
-    )}, podatek przy wypłacie: ${pln(
-      baseScenarioProjection.value.totalIkzePayoutTax,
-    )}`
+    return [
+      {
+        key: 'tax-relief',
+        label: 'Ulga podatkowa (wariant bazowy)',
+        value: pln(baseScenarioProjection.value.totalTaxRelief),
+        valueClass: 'text-positive',
+      },
+      {
+        key: 'ikze-payout-tax',
+        label: 'Podatek przy wypłacie (wariant bazowy)',
+        value: pln(baseScenarioProjection.value.totalIkzePayoutTax),
+        valueClass: 'text-negative',
+      },
+    ]
   }
 
   if (props.result.activeTool === SavingsPlanTool.NoRelief) {
-    return `Podatek Belki: ${pln(baseScenarioProjection.value.totalBelkaTax)}`
+    return [
+      {
+        key: 'belka-tax',
+        label: 'Podatek Belki (wariant bazowy)',
+        value: pln(baseScenarioProjection.value.totalBelkaTax),
+        valueClass: 'text-negative',
+      },
+    ]
   }
 
-  return ''
+  return []
 })
 </script>

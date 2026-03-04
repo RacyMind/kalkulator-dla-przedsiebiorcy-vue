@@ -45,6 +45,9 @@ describe('SavingsPlan tabs and comparison', () => {
     const pageSource = readTextFile(
       'src/components/savingsPlan/pages/Index.vue',
     )
+    const scenarioComparisonSource = readTextFile(
+      'src/components/savingsPlan/components/ScenarioComparison.vue',
+    )
 
     expect(pageSource).toContain('<QTabs')
     expect(pageSource).toContain('ref="scrollTarget"')
@@ -53,22 +56,24 @@ describe('SavingsPlan tabs and comparison', () => {
     expect(pageSource).toContain('store.setActiveTool(nextTool)')
     expect(pageSource).toContain(':swipeable="isMobileTabMode"')
     expect(pageSource).toContain(':key="tabPanelsKey"')
-    expect(pageSource).toContain('class="bg-primary text-white shadow-2"')
+    expect(pageSource).toContain('class="bg-primary text-white shadow-1"')
+    expect(pageSource).toContain('class="column q-gutter-md"')
+    expect((pageSource.match(/<q-card/g) ?? []).length).toBe(3)
+    expect(pageSource).toContain('Porównanie form oszczędzania')
     expect(pageSource).not.toContain('Podsumowanie')
 
     const scenarioComparisonMatches = pageSource.match(
-      /<ScenarioComparison :result="store\.result" \/>/g,
+      /<ScenarioComparison[\s\S]*:result="store\.result"[\s\S]*\/>/g,
     )
 
     expect(scenarioComparisonMatches?.length ?? 0).toBe(1)
 
     const tabPanelsEndIndex = pageSource.indexOf('</q-tab-panels>')
-    const scenarioComparisonIndex = pageSource.indexOf(
-      '<ScenarioComparison :result="store.result" />',
-    )
+    const scenarioComparisonIndex = pageSource.indexOf('<ScenarioComparison')
 
     expect(tabPanelsEndIndex).toBeGreaterThan(-1)
     expect(scenarioComparisonIndex).toBeGreaterThan(tabPanelsEndIndex)
+    expect(scenarioComparisonSource).not.toContain('<style')
   })
 
   it('exposes no-relief tool label and keeps comparison in card form', () => {
@@ -80,9 +85,15 @@ describe('SavingsPlan tabs and comparison', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Ranking narzędzi')
+    expect(wrapper.text()).toContain('Ranking form oszczędzania')
     expect(wrapper.text()).toContain('Szczegóły scenariuszy')
+    expect(wrapper.text()).toContain('Ulga podatkowa')
+    expect(wrapper.text()).toContain('Podatek przy wypłacie')
+    expect(wrapper.text()).toContain('Podatek Belki')
+    expect(wrapper.text()).not.toContain('Ulga:')
     expect(wrapper.find('table').exists()).toBe(false)
-    expect(wrapper.findAll('.comparisonCard').length).toBe(6)
+    expect(wrapper.findAllComponents({ name: 'QCard' }).length).toBe(6)
+    expect(wrapper.findAll('.col-xl-4').length).toBe(6)
+    expect(wrapper.findAll('.bg-blue-1').length).toBe(3)
   })
 })

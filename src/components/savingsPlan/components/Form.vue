@@ -250,15 +250,19 @@
             :options="savedPlanOptions"
             emit-value
             map-options
-            clearable
             label="Wybierz zapisany plan"
             color="brand"
             hide-bottom-space
+            @update:model-value="handleSelectSavedPlan"
           />
         </div>
       </div>
-      <div class="row q-col-gutter-sm">
-        <div class="col-12 col-sm-6 col-md-3">
+      <div v-if="activeSavedPlanName" class="text-caption q-mb-sm">
+        Aktywny plan:
+        <strong>{{ activeSavedPlanName }}</strong>
+      </div>
+      <div class="row q-col-gutter-sm items-center">
+        <div class="col-12 col-sm-6 col-md-6">
           <q-btn
             type="button"
             color="primary"
@@ -267,45 +271,42 @@
             @click="handleSavePlan"
           />
         </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-btn
-            type="button"
-            color="secondary"
-            class="full-width"
-            label="Wczytaj"
-            :disable="!hasSelectedSavedPlan"
-            @click="handleLoadPlan"
-          />
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-btn
-            type="button"
-            color="accent"
-            class="full-width"
-            label="Nadpisz"
-            :disable="!hasSelectedSavedPlan"
-            @click="handleOverwritePlan"
-          />
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
+        <div class="col-12 col-sm-6 col-md-6">
           <q-btn
             type="button"
             color="negative"
             class="full-width"
             label="Usuń"
             :disable="!hasSelectedSavedPlan"
-            @click="handleDeletePlan"
+            @click="openDeleteDialog"
           />
         </div>
       </div>
     </FormSection>
+
+    <q-dialog v-model="isDeletePlanDialogOpen">
+      <q-card class="q-pa-sm" style="max-width: 420px; width: 100%">
+        <q-card-section class="text-h6">Usuń plan</q-card-section>
+        <q-card-section class="q-pt-none">
+          Czy na pewno chcesz usunąć aktywny plan
+          <strong v-if="selectedSavedPlanName">
+            "{{ selectedSavedPlanName }}"
+          </strong>
+          ?
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat color="primary" label="Anuluj" />
+          <q-btn color="negative" label="Usuń plan" @click="handleDeletePlan" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <SubmitButton />
   </q-form>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { InputFields } from 'components/savingsPlan/interfaces/InputFields'
 import { defaultSavingsPlanInputFields } from 'components/savingsPlan/logic/SavingsPlanStorage'
@@ -438,6 +439,7 @@ const activeTool = useLocalStorage<SavingsPlanTool>(
 
 const savedPlanName = ref('')
 const selectedSavedPlanId = ref<string | null>(store.activePlanId)
+const isDeletePlanDialogOpen = ref(false)
 
 const isSelfEmployment = computed(
   () => employmentForm.value === SavingsPlanEmploymentForm.SelfEmployment,
@@ -459,12 +461,32 @@ const currentIkzeLimit = computed(() =>
 
 const savedPlanOptions = computed(() =>
   store.savedPlans.map((savedPlan) => ({
-    label: `${savedPlan.name} (${new Date(savedPlan.updatedAt).toLocaleString('pl-PL')})`,
+    label: savedPlan.name,
     value: savedPlan.id,
   })),
 )
 
 const hasSelectedSavedPlan = computed(() => selectedSavedPlanId.value !== null)
+
+const activeSavedPlanName = computed(() => {
+  const activePlan = store.savedPlans.find(
+    (savedPlan) => savedPlan.id === store.activePlanId,
+  )
+
+  return activePlan?.name ?? null
+})
+
+const selectedSavedPlanName = computed(() => {
+  if (selectedSavedPlanId.value === null) {
+    return null
+  }
+
+  const selectedPlan = store.savedPlans.find(
+    (savedPlan) => savedPlan.id === selectedSavedPlanId.value,
+  )
+
+  return selectedPlan?.name ?? null
+})
 
 const conservativeRateRule = (value: number): string | boolean => {
   if (value > baseReturnRate.value) {
@@ -524,42 +546,54 @@ const applyInputFields = (inputFields: InputFields) => {
   activeTool.value = inputFields.activeTool
 }
 
+const getPlanById = (planId: string | null) => {
+  if (planId === null) {
+    return undefined
+  }
+
+  return store.savedPlans.find((savedPlan) => savedPlan.id === planId)
+}
+
 const handleSavePlan = () => {
-  const planId = store.savePlan(savedPlanName.value, getInputFields())
+  const activePlan = getPlanById(store.activePlanId)
+  const trimmedName = savedPlanName.value.trim()
+
+  const planId =
+    activePlan !== undefined && trimmedName === activePlan.name
+      ? store.overwritePlan(activePlan.id, activePlan.name, getInputFields())
+      : store.savePlan(savedPlanName.value, getInputFields())
+
+  if (planId === null) {
+    return
+  }
+
   selectedSavedPlanId.value = planId
-  savedPlanName.value = ''
+  savedPlanName.value = getPlanById(planId)?.name ?? ''
 }
 
-const handleOverwritePlan = () => {
-  if (selectedSavedPlanId.value === null) {
-    return
-  }
-
-  const overwrittenPlanId = store.overwritePlan(
-    selectedSavedPlanId.value,
-    savedPlanName.value,
-    getInputFields(),
-  )
-
-  if (overwrittenPlanId !== null) {
-    selectedSavedPlanId.value = overwrittenPlanId
+const handleSelectSavedPlan = (planId: string | null) => {
+  if (planId === null) {
     savedPlanName.value = ''
-  }
-}
-
-const handleLoadPlan = () => {
-  if (selectedSavedPlanId.value === null) {
     return
   }
 
-  const loadedPlan = store.loadPlan(selectedSavedPlanId.value)
+  const loadedPlan = store.loadPlan(planId)
 
   if (loadedPlan === undefined) {
     return
   }
 
   applyInputFields(loadedPlan)
+  savedPlanName.value = getPlanById(planId)?.name ?? ''
   emit('submit')
+}
+
+const openDeleteDialog = () => {
+  if (!hasSelectedSavedPlan.value) {
+    return
+  }
+
+  isDeletePlanDialogOpen.value = true
 }
 
 const handleDeletePlan = () => {
@@ -570,7 +604,16 @@ const handleDeletePlan = () => {
   store.deletePlan(selectedSavedPlanId.value)
   selectedSavedPlanId.value = null
   savedPlanName.value = ''
+  isDeletePlanDialogOpen.value = false
 }
+
+onMounted(() => {
+  if (store.inputFields !== undefined || selectedSavedPlanId.value === null) {
+    return
+  }
+
+  handleSelectSavedPlan(selectedSavedPlanId.value)
+})
 
 const handleFormSubmit = () => {
   store.setInputFields(getInputFields())

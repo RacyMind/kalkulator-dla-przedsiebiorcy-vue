@@ -70,6 +70,7 @@ describe('SavingsPlan statistics legend', () => {
     expect(chartOptions.plugins.legend.display).toBe(false)
     expect(wrapper.find('[data-test="line-legend"]').exists()).toBe(true)
     expect(legendItems).toHaveLength(3)
+    expect(wrapper.text()).toContain('Forma oszczędzania:')
     expect(wrapper.text()).toContain('Konserwatywny')
     expect(wrapper.text()).toContain('Bazowy')
     expect(wrapper.text()).toContain('Optymistyczny')

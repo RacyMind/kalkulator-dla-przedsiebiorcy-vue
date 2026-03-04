@@ -1,5 +1,5 @@
 // app global css in SCSS form
-@import "design-tokens";
+@import 'design-tokens';
 
 // Accessibility: Skip-to-content link
 .skip-to-content {
@@ -38,33 +38,58 @@
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
-@import "transitions";
-@import "objects/breadcrumbs";
-@import "objects/sectionHeader";
-@import "objects/chart";
-@import "objects/q-table-grid";
-@import "components/app";
-@import "components/business";
-@import "components/taxes";
-@import "components/currencies";
-@import "components/informator";
-@import "components/percentage";
-@import "components/work";
+@import 'transitions';
+@import 'objects/breadcrumbs';
+@import 'objects/sectionHeader';
+@import 'objects/chart';
+@import 'objects/q-table-grid';
+@import 'components/app';
+@import 'components/business';
+@import 'components/taxes';
+@import 'components/currencies';
+@import 'components/informator';
+@import 'components/percentage';
+@import 'components/work';
 
 // Dark-mode-aware utility classes (consume design tokens from _design-tokens.scss)
-.bg-surface { background: var(--color-surface) !important; }
-.bg-surface-variant { background: var(--color-surface-variant) !important; }
-.bg-surface-elevated { background: var(--color-surface-elevated) !important; }
-.bg-primary-brand { background: var(--color-primary) !important; }
-.text-on-surface { color: var(--color-text-primary) !important; }
-.footer-text { color: var(--color-text-secondary) !important; }
+.bg-surface {
+  background: var(--color-surface) !important;
+}
+.bg-surface-variant {
+  background: var(--color-surface-variant) !important;
+}
+.bg-surface-elevated {
+  background: var(--color-surface-elevated) !important;
+}
+.bg-primary-brand {
+  background: var(--color-primary) !important;
+}
+.text-on-surface {
+  color: var(--color-text-primary) !important;
+}
+.footer-text {
+  color: var(--color-text-secondary) !important;
+}
+.bg-row-highlight {
+  background: #e3f2fd !important;
+}
+.body--dark .bg-row-highlight {
+  background: var(--color-surface-elevated) !important;
+}
 
 .module-card {
   background: var(--color-surface) !important;
   border-radius: var(--radius-lg) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.06) !important;
   transition: box-shadow 0.2s ease;
   overflow-x: hidden;
+
+  .column > * {
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 
 .advert-card {
@@ -80,18 +105,31 @@
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  15% { transform: scale(1.25); }
-  30% { transform: scale(1); }
-  45% { transform: scale(1.15); }
-  60% { transform: scale(1); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.25);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+  60% {
+    transform: scale(1);
+  }
 }
 
 .body--dark .module-card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
-a{
+a {
   color: $primary;
   text-decoration: none;
 }
@@ -175,9 +213,8 @@ a{
     margin-left: 0;
     row-gap: 8px;
 
-    > [class*="col"] {
+    > [class*='col'] {
       padding-left: 0;
     }
   }
-
 }

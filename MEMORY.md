@@ -1113,3 +1113,90 @@ For each completed task, add one section:
   - `npx eslint src/components/savingsPlan/pages/Index.vue src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/Statistics.vue src/components/partials/statistics/LineChartLegend.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts` (passed)
 - Outcome: savingsPlan results UX now matches requested structure and interaction, with clearer chart reading and stable comparison section across tab changes.
 - Follow-ups: none.
+
+### 2026-03-04 - SavingsPlan: osobne wiersze podatków/ulg, polish porównań i uproszczone zarządzanie planami
+
+- Task: Rozdzielono ulgi i podatki na osobne wiersze w podsumowaniach, dopracowano UX sekcji `Ranking narzędzi (wariant bazowy)` i `Szczegóły scenariuszy`, uproszczono zarządzanie zapisanymi planami (mniej przycisków, auto-wczytanie po wyborze, menu usuwania z potwierdzeniem).
+- Key decisions:
+  - Zastąpiono łączone komunikaty podatkowe dedykowanymi wierszami (`Ulga podatkowa`, `Podatek przy wypłacie`, `Podatek Belki`).
+  - Uproszczono sekcję zapisanych planów do akcji `Zapisz` + `Więcej`; usunięto przyciski `Wczytaj` i `Nadpisz`.
+  - Wczytywanie istniejącego planu odbywa się automatycznie po wyborze oraz przy montowaniu formularza, jeśli aktywny plan jest dostępny.
+  - Lista zapisanych planów pokazuje wyłącznie nazwy (bez dat).
+- Files touched:
+  - `src/components/savingsPlan/components/Form.vue`
+  - `src/components/savingsPlan/components/ResultList.vue`
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanResultList.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan` (passed: 6 files, 19 tests)
+  - `npx eslint src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/ResultList.vue src/components/savingsPlan/components/ScenarioComparison.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanResultList.test.ts` (passed)
+- Outcome: Moduł `savingsPlan` realizuje nowy uproszczony flow zarządzania planami i czytelniejsze prezentowanie podatków/ulg, a zmiany są potwierdzone testami oraz ręcznym sprawdzeniem UI w MCP Chrome na desktop i mobile.
+- Follow-ups:
+  - Brak.
+
+### 2026-03-04 - SavingsPlan: finalne uproszczenie planów i dopracowanie copy/spacing
+
+- Task: Dokończono wdrożenie UX zapisanych planów i sekcji porównania: tylko dwa przyciski, aktywna nazwa planu w polu, logika nadpisz-vs-nowy po zmianie nazwy oraz zmiana copy na „forma oszczędzania”.
+- Decisions:
+  - W sekcji planów zostawiono wyłącznie akcje `Zapisz` i `Usuń` (usunięto wariant z menu `Więcej`).
+  - Zapis działa warunkowo: bez zmiany nazwy planu nadpisuje aktywny plan, po zmianie nazwy tworzy nowy plan.
+  - Po wyborze zapisanego planu pole `Nazwa planu` jest synchronizowane z nazwą aktywnego planu.
+  - Zmieniono copy: `narzędzie oszczędzania` -> `forma oszczędzania` (nagłówki i legenda).
+  - Zmniejszono odstęp między rankingiem i szczegółami scenariuszy w `ScenarioComparison`.
+- Files changed:
+  - `src/components/savingsPlan/components/Form.vue`
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `src/components/savingsPlan/components/Statistics.vue`
+  - `src/components/savingsPlan/pages/Index.vue`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanResultList.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan` (passed: 6 files, 19 tests)
+  - `npx eslint src/components/savingsPlan/components/Form.vue src/components/savingsPlan/components/ResultList.vue src/components/savingsPlan/components/ScenarioComparison.vue src/components/savingsPlan/components/Statistics.vue src/components/savingsPlan/pages/Index.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanForm.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanStatisticsLegend.test.ts test/vitest/__tests__/modules/savingsPlan/SavingsPlanResultList.test.ts` (passed)
+- Outcome: UX planów jest uproszczony i spójny z wymaganiami, copy sekcji oszczędzania jest ujednolicone, a layout porównania jest ciaśniejszy i czytelniejszy na desktop/mobile.
+- Follow-ups: none.
+
+### 2026-03-04 - SavingsPlan: ScenarioComparison bez local CSS, layout na klasach Quasara
+
+- Task: Usunięto custom CSS z `ScenarioComparison.vue` i przebudowano layout sekcji ranking/szczegóły scenariuszy na klasy utility Quasara.
+- Decisions:
+  - Zastąpiono lokalną siatkę CSS układem `row` + `col-*` (`col-12 col-sm-6 col-md-4`).
+  - Zastąpiono custom klasy spacing/typografii klasami Quasara (`q-gutter-*`, `text-*`, `rounded-borders`, `q-mx-*`, `q-my-*`).
+  - Highlight bazowego scenariusza oparto o klasę Quasara `bg-blue-1` zamiast własnego koloru RGBA.
+  - Dodano kontrakt testowy: `ScenarioComparison.vue` nie zawiera bloku `<style>`.
+- Files changed:
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/savingsPlan/components/ScenarioComparison.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts` (passed: 1 file, 2 tests)
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan` (passed: 6 files, 19 tests)
+- Outcome: `ScenarioComparison` używa głównie klas Quasara i nie ma lokalnego CSS, przy zachowaniu dotychczasowego kontraktu UI oraz zielonych testów modułu.
+- Follow-ups: none.
+
+### 2026-03-04 - SavingsPlan: UX polish sekcji wyników po walidacji MCP Chrome
+
+- Task: Dopracowano layout sekcji wyników (`podsumowanie`, `wykres`, `porównanie`) po ręcznym przeglądzie w MCP Chrome na desktop i mobile.
+- Decisions:
+  - Sekcję wyników w `Index.vue` zorganizowano jako 3 spójne karty `q-card` (tabs+summary, wykres, porównanie), aby poprawić hierarchię i skanowalność.
+  - Karta z tabami dostała `overflow-hidden` i lżejszy cień (`shadow-1`) dla lepszej czytelności i mniejszego wizualnego ciężaru.
+  - W `ScenarioComparison` zmieniono responsywny grid kart na `col-12 col-sm-6 col-md-6 col-xl-4` (2 kolumny na średnich desktopach, 3 dopiero na szerokich ekranach), co redukuje ścisk treści przy otwartym sidebarze.
+  - Rozszerzono test kontraktowy o asercje nowego layoutu sekcji wyników (`column q-gutter-md`, 3 karty w `Index.vue`, `col-xl-4` dla kart porównania).
+- Files changed:
+  - `src/components/savingsPlan/pages/Index.vue`
+  - `src/components/savingsPlan/components/ScenarioComparison.vue`
+  - `test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/savingsPlan/pages/Index.vue src/components/savingsPlan/components/ScenarioComparison.vue test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan/SavingsPlanTabsAndComparison.test.ts` (passed: 1 file, 2 tests)
+  - `npx vitest run test/vitest/__tests__/modules/savingsPlan` (passed: 6 files, 19 tests)
+- Outcome: Sekcja wyników ma czytelniejszą hierarchię, stabilniejszy layout kart i lepszą responsywność potwierdzoną ręcznym przeglądem MCP Chrome (desktop + mobile).
+- Follow-ups: none.

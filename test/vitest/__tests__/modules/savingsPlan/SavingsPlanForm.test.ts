@@ -113,33 +113,78 @@ describe('SavingsPlan form', () => {
     )
   })
 
-  it('persists saved plan through save and load actions from form controls', async () => {
+  it('keeps only save/delete actions and applies overwrite-or-create save behavior by plan name', async () => {
     const wrapper = createWrapper()
     const store = useSavingsPlanStore()
 
-    const saveButton = wrapper
-      .findAll('button')
-      .find((button) => button.text().includes('Zapisz'))
+    const getSaveButton = () =>
+      wrapper
+        .findAll('button')
+        .find((button) => button.text().includes('Zapisz'))
+    const getDeleteButton = () =>
+      wrapper.findAll('button').find((button) => button.text().includes('Usuń'))
 
-    await saveButton?.trigger('click')
+    const planNameInput = wrapper
+      .findAllComponents({ name: 'QInput' })
+      .find((component) => component.props('label') === 'Nazwa planu')
+
+    const goalAmountInput = wrapper
+      .findAllComponents({ name: 'QInput' })
+      .find((component) => component.props('label') === 'Kwota celu')
+
+    const savedPlanSelect = wrapper
+      .findAllComponents({ name: 'QSelect' })
+      .find((component) => component.props('label') === 'Wybierz zapisany plan')
+
+    expect(wrapper.text()).toContain('Zapisz')
+    expect(wrapper.text()).toContain('Usuń')
+    expect(wrapper.text()).not.toContain('Więcej')
+    expect(wrapper.text()).not.toContain('Wczytaj')
+    expect(wrapper.text()).not.toContain('Nadpisz')
+
+    await getSaveButton()?.trigger('click')
     await nextTick()
 
     expect(store.savedPlans.length).toBe(1)
-    const savedPlanId = store.savedPlans[0]?.id
-    expect(savedPlanId).toBeTruthy()
+    const firstPlanId = store.savedPlans[0]?.id
+    expect(firstPlanId).toBeTruthy()
+    expect(planNameInput?.props('modelValue')).toBe('Plan oszczędzania 1')
 
-    store.setInputFields({
-      ...(store.inputFields as NonNullable<typeof store.inputFields>),
-      goalAmount: 999,
-    })
+    const options = (savedPlanSelect?.props('options') ?? []) as Array<{
+      label: string
+      value: string
+    }>
+    expect(options[0]?.label).toBe('Plan oszczędzania 1')
+
+    goalAmountInput?.vm.$emit('update:modelValue', 999)
+    await nextTick()
+    await getSaveButton()?.trigger('click')
     await nextTick()
 
-    const loadButton = wrapper
-      .findAll('button')
-      .find((button) => button.text().includes('Wczytaj'))
-    await loadButton?.trigger('click')
+    expect(store.savedPlans.length).toBe(1)
+    expect(store.savedPlans[0]?.id).toBe(firstPlanId)
+    expect(store.savedPlans[0]?.payload.goalAmount).toBe(999)
+
+    planNameInput?.vm.$emit('update:modelValue', 'Plan oszczędzania 2')
+    goalAmountInput?.vm.$emit('update:modelValue', 777)
+    await nextTick()
+    await getSaveButton()?.trigger('click')
     await nextTick()
 
-    expect(store.inputFields?.goalAmount).toBe(200000)
+    expect(store.savedPlans.length).toBe(2)
+    expect(store.savedPlans[0]?.name).toBe('Plan oszczędzania 2')
+    expect(store.savedPlans[0]?.payload.goalAmount).toBe(777)
+    expect(store.savedPlans[0]?.id).not.toBe(firstPlanId)
+
+    savedPlanSelect?.vm.$emit('update:modelValue', firstPlanId)
+    await nextTick()
+
+    expect(store.inputFields?.goalAmount).toBe(999)
+    expect(planNameInput?.props('modelValue')).toBe('Plan oszczędzania 1')
+
+    await getDeleteButton()?.trigger('click')
+    await nextTick()
+
+    expect(store.savedPlans.length).toBe(2)
   })
 })

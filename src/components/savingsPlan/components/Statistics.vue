@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <div class="text-subtitle2 q-mb-sm">
-      Narzędzie: <strong>{{ chartToolLabel }}</strong>
+      Forma oszczędzania: <strong>{{ chartToolLabel }}</strong>
     </div>
     <div class="chartContainer">
       <LineChart
@@ -43,6 +43,7 @@ const chartToolLabel = computed(() =>
 )
 
 const chartOptions = {
+  aspectRatio: 1.3,
   interaction: {
     mode: 'index',
     intersect: false,
@@ -60,7 +61,7 @@ const chartOptions = {
     x: {
       ticks: {
         autoSkip: true,
-        maxTicksLimit: 8,
+        maxTicksLimit: 6,
         maxRotation: 0,
         minRotation: 0,
       },
@@ -107,6 +108,6 @@ const legendItems = computed(() => {
 
 <style lang="scss" scoped>
 .chartContainer {
-  min-height: 280px;
+  min-height: 200px;
 }
 </style>
