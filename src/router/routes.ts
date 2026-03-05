@@ -137,6 +137,10 @@ const routes: RouteRecordRaw[] = [
         path: 'kalkulator-ike',
       },
       {
+        component: () => import('components/savingsPlan/pages/Index.vue'),
+        path: 'plan-oszczedzania',
+      },
+      {
         component: () => import('components/rentalProfit/pages/Index.vue'),
         path: 'zysk-z-najmu',
       },

@@ -1,0 +1,99 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-vitest'
+import { InputFields } from 'components/savingsPlan/interfaces/InputFields'
+import { SavingsPlanCalculator } from 'components/savingsPlan/logic/SavingsPlanCalculator'
+import ScenarioComparison from 'components/savingsPlan/components/ScenarioComparison.vue'
+import {
+  getSavingsPlanToolLabel,
+  SavingsPlanEmploymentForm,
+  SavingsPlanTaxationForm,
+  SavingsPlanTool,
+} from 'components/savingsPlan/types/SavingsPlanTypes'
+
+installQuasarPlugin()
+
+const readTextFile = (relativePath: string): string => {
+  return readFileSync(resolve(process.cwd(), relativePath), 'utf8')
+}
+
+const getInput = (activeTool: SavingsPlanTool): InputFields => ({
+  goalAmount: 100000,
+  horizonYears: 15,
+  monthlyContribution: 1500,
+  initialCapital: 10000,
+  conservativeReturnRate: 3,
+  baseReturnRate: 6,
+  optimisticReturnRate: 9,
+  employmentForm: SavingsPlanEmploymentForm.EmploymentContract,
+  taxationForm: SavingsPlanTaxationForm.TaxScale,
+  annualTaxBase: 90000,
+  annualLimitGrowthRate: 2,
+  activeTool,
+})
+
+const getResult = (activeTool: SavingsPlanTool) =>
+  new SavingsPlanCalculator()
+    .setInputData(getInput(activeTool))
+    .calculate()
+    .getResult()
+
+describe('SavingsPlan tabs and comparison', () => {
+  it('uses tabs wired to savingsPlanToolOrder and keeps comparison section outside tab panels', () => {
+    const pageSource = readTextFile(
+      'src/components/savingsPlan/pages/Index.vue',
+    )
+    const scenarioComparisonSource = readTextFile(
+      'src/components/savingsPlan/components/ScenarioComparison.vue',
+    )
+
+    expect(pageSource).toContain('<QTabs')
+    expect(pageSource).toContain('ref="scrollTarget"')
+    expect(pageSource).toContain('v-for="tool in toolTabs"')
+    expect(pageSource).toContain('savingsPlanToolOrder')
+    expect(pageSource).toContain('store.setActiveTool(nextTool)')
+    expect(pageSource).toContain(':swipeable="isMobileTabMode"')
+    expect(pageSource).toContain(':key="tabPanelsKey"')
+    expect(pageSource).toContain('class="bg-primary text-white shadow-1"')
+    expect(pageSource).toContain('class="column q-gutter-md"')
+    expect((pageSource.match(/<q-card/g) ?? []).length).toBe(3)
+    expect(pageSource).toContain('Porównanie form oszczędzania')
+    expect(pageSource).not.toContain('Podsumowanie')
+
+    const scenarioComparisonMatches = pageSource.match(
+      /<ScenarioComparison[\s\S]*:result="store\.result"[\s\S]*\/>/g,
+    )
+
+    expect(scenarioComparisonMatches?.length ?? 0).toBe(1)
+
+    const tabPanelsEndIndex = pageSource.indexOf('</q-tab-panels>')
+    const scenarioComparisonIndex = pageSource.indexOf('<ScenarioComparison')
+
+    expect(tabPanelsEndIndex).toBeGreaterThan(-1)
+    expect(scenarioComparisonIndex).toBeGreaterThan(tabPanelsEndIndex)
+    expect(scenarioComparisonSource).not.toContain('<style')
+  })
+
+  it('exposes no-relief tool label and keeps comparison in card form', () => {
+    expect(getSavingsPlanToolLabel(SavingsPlanTool.NoRelief)).toBe('Bez ulg')
+
+    const wrapper = mount(ScenarioComparison, {
+      props: {
+        result: getResult(SavingsPlanTool.NoRelief),
+      },
+    })
+
+    expect(wrapper.text()).toContain('Ranking form oszczędzania')
+    expect(wrapper.text()).toContain('Szczegóły scenariuszy')
+    expect(wrapper.text()).toContain('Ulga podatkowa')
+    expect(wrapper.text()).toContain('Podatek przy wypłacie')
+    expect(wrapper.text()).toContain('Podatek Belki')
+    expect(wrapper.text()).not.toContain('Ulga:')
+    expect(wrapper.find('table').exists()).toBe(false)
+    expect(wrapper.findAllComponents({ name: 'QCard' }).length).toBe(6)
+    expect(wrapper.findAll('.col-xl-4').length).toBe(6)
+    expect(wrapper.findAll('.bg-row-highlight').length).toBe(3)
+  })
+})
