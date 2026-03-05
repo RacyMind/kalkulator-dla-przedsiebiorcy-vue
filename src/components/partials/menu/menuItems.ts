@@ -176,7 +176,7 @@ export default {
     } as MenuItem,
     {
       caption:
-        'Ustal cel, symuluj DCA i porównaj IKE, IKZE oraz lokatę na czysto',
+        'Ustal cel oszczędzania, symuluj regularne wpłaty i porównaj IKE, IKZE oraz inne formy oszczędzania.',
       className: 'c-savings',
       link: '/plan-oszczedzania',
       title: 'Plan oszczędzania',

@@ -24,7 +24,7 @@
         {{ pln(activeToolAnnualLimit) }}
       </template>
     </ListRow>
-    <ListRow>
+    <ListRow v-if="activeToolAnnualLimit !== null">
       <template #name> Założony roczny wzrost limitów </template>
       <template #value>
         {{ growthRateLabel }}

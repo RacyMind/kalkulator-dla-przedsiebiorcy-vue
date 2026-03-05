@@ -65,4 +65,30 @@ describe('SavingsPlan ResultList tax rows', () => {
     expect(wrapper.text()).toContain('Podatek Belki (wariant bazowy)')
     expect(wrapper.text()).not.toContain('Podatki i ulgi (wariant bazowy)')
   })
+
+  it('hides annual limit growth row for no-relief tool', () => {
+    const wrapper = mount(ResultList, {
+      props: {
+        result: getResult(SavingsPlanTool.NoRelief),
+      },
+    })
+
+    expect(wrapper.text()).not.toContain('Założony roczny wzrost limitów')
+  })
+
+  it('shows annual limit growth row for IKE and IKZE tools', () => {
+    const ikeWrapper = mount(ResultList, {
+      props: {
+        result: getResult(SavingsPlanTool.Ike),
+      },
+    })
+    const ikzeWrapper = mount(ResultList, {
+      props: {
+        result: getResult(SavingsPlanTool.Ikze),
+      },
+    })
+
+    expect(ikeWrapper.text()).toContain('Założony roczny wzrost limitów')
+    expect(ikzeWrapper.text()).toContain('Założony roczny wzrost limitów')
+  })
 })
