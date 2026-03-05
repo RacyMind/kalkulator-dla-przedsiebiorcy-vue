@@ -1,17 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'
 import { mount } from '@vue/test-utils'
+import { routeLocationKey } from 'vue-router'
 import { AnalyticsEventName } from 'src/types/Analytics'
 
-const { mockEventStore, mockAnalytics, mockRoute } = vi.hoisted(() => ({
+const { mockEventStore, mockAnalytics } = vi.hoisted(() => ({
   mockEventStore: {
     $reset: vi.fn(),
   },
   mockAnalytics: {
     logEvent: vi.fn(),
-  },
-  mockRoute: {
-    path: '/samozatrudnienie',
   },
 }))
 
@@ -21,10 +19,6 @@ vi.mock('stores/eventStore', () => ({
 
 vi.mock('src/logic/analytics', () => ({
   default: mockAnalytics,
-}))
-
-vi.mock('vue-router', () => ({
-  useRoute: () => mockRoute,
 }))
 
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
@@ -46,16 +40,23 @@ const RouterLinkStub = defineComponent({
   template: '<a :data-to="to"><slot /></a>',
 })
 
+const createMountOptions = () => ({
+  global: {
+    stubs: {
+      'q-btn': QBtnStub,
+      'router-link': RouterLinkStub,
+    },
+    provide: {
+      [routeLocationKey as symbol]: {
+        path: '/samozatrudnienie',
+      },
+    },
+  },
+})
+
 describe('SubmitButton legal links', () => {
   it('renders links to regulations and privacy policy', () => {
-    const wrapper = mount(SubmitButton, {
-      global: {
-        stubs: {
-          'q-btn': QBtnStub,
-          'router-link': RouterLinkStub,
-        },
-      },
-    })
+    const wrapper = mount(SubmitButton, createMountOptions())
 
     const legalLinks = wrapper
       .findAll('a')
@@ -66,14 +67,7 @@ describe('SubmitButton legal links', () => {
   })
 
   it('resets event store on submit button click', async () => {
-    const wrapper = mount(SubmitButton, {
-      global: {
-        stubs: {
-          'q-btn': QBtnStub,
-          'router-link': RouterLinkStub,
-        },
-      },
-    })
+    const wrapper = mount(SubmitButton, createMountOptions())
 
     await wrapper.find('button').trigger('click')
 

@@ -1046,3 +1046,22 @@ For each completed task, add one section:
 - Follow-ups:
   - In GA4 Admin, create custom dimensions for `calculator_slug` and `error_code`.
   - In Google Ads/GA4 linking, import `first_open`, `calculation_submit`, and `premium_purchase_success` as planned conversions.
+
+### 2026-03-05 - Fix Vitest regressions after analytics wiring in shared SubmitButton
+
+- Task: Repaired failing unit suites caused by importing analytics in `SubmitButton` and indirect loading of Capacitor Firebase plugin during tests.
+- Decisions:
+  - Added Vitest alias for `@capacitor-firebase/analytics` to a local mock module to prevent node-module plugin resolution failures (`Cannot find module '@capacitor/core'`).
+  - Replaced `useRoute()` in `SubmitButton` with safe `inject(routeLocationKey, null)` and fallback path to avoid router-injection warnings and keep analytics slug tracking stable.
+  - Updated SubmitButton unit test to provide route through `routeLocationKey` instead of mocking `useRoute`.
+- Files changed:
+  - `vitest.config.ts`
+  - `src/services/admob/__mocks__/capacitor-firebase-analytics.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/modules/pfronRefund/PfronRefundForm.test.ts test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts` (passed: 3 files, 7 tests)
+  - `npm run test:unit:ci` (passed: 102 files, 631 tests)
+- Outcome: Previously failing suites now pass, and full unit test pipeline is green again.
+- Follow-ups: none.
