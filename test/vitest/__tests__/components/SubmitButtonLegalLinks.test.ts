@@ -1,13 +1,30 @@
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'
 import { mount } from '@vue/test-utils'
+import { AnalyticsEventName } from 'src/types/Analytics'
 
-const mockEventStore = {
-  $reset: vi.fn(),
-}
+const { mockEventStore, mockAnalytics, mockRoute } = vi.hoisted(() => ({
+  mockEventStore: {
+    $reset: vi.fn(),
+  },
+  mockAnalytics: {
+    logEvent: vi.fn(),
+  },
+  mockRoute: {
+    path: '/samozatrudnienie',
+  },
+}))
 
 vi.mock('stores/eventStore', () => ({
   useEventStore: () => mockEventStore,
+}))
+
+vi.mock('src/logic/analytics', () => ({
+  default: mockAnalytics,
+}))
+
+vi.mock('vue-router', () => ({
+  useRoute: () => mockRoute,
 }))
 
 import SubmitButton from 'components/partials/form/SubmitButton.vue'
@@ -61,5 +78,11 @@ describe('SubmitButton legal links', () => {
     await wrapper.find('button').trigger('click')
 
     expect(mockEventStore.$reset).toHaveBeenCalledTimes(1)
+    expect(mockAnalytics.logEvent).toHaveBeenCalledWith(
+      AnalyticsEventName.CalculationSubmit,
+      {
+        calculator_slug: 'samozatrudnienie',
+      },
+    )
   })
 })

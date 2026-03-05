@@ -10,7 +10,7 @@
           label="Oblicz"
           unelevated
           style="border-radius: var(--radius-md)"
-          @click="eventStore.$reset()"
+          @click="handleSubmit"
         />
       </div>
     </div>
@@ -37,6 +37,26 @@
 </template>
 <script setup lang="ts">
 import { useEventStore } from 'stores/eventStore'
+import { useRoute } from 'vue-router'
+import ga from 'src/logic/analytics'
+import { AnalyticsEventName } from 'src/types/Analytics'
 
 const eventStore = useEventStore()
+const route = useRoute()
+
+const resolveCalculatorSlug = (path: string): string => {
+  const normalizedPath = path.replace(/^\/+|\/+$/g, '')
+  if (normalizedPath.length === 0) {
+    return 'home'
+  }
+
+  return normalizedPath.replace(/\//g, '-')
+}
+
+const handleSubmit = () => {
+  eventStore.$reset()
+  ga.logEvent(AnalyticsEventName.CalculationSubmit, {
+    calculator_slug: resolveCalculatorSlug(route.path),
+  })
+}
 </script>

@@ -1017,3 +1017,32 @@ For each completed task, add one section:
 - Outcome: Commit messages are no longer constrained by repository hooks/config, and regression coverage now protects this policy.
 - Follow-ups:
   - Resolve existing repo-wide lint errors unrelated to this change if full lint green is required in CI.
+
+### 2026-03-05 - Implement GA4 app-install quality event model for Google Ads optimization
+
+- Task: Implemented analytics refactor for Google Ads app-install efficiency monitoring by migrating to typed GA4 event names/params, adding install-quality conversion events in app flows, and preventing SPA pageview double counting.
+- Decisions:
+  - Kept landing-page GA4 behavior unchanged and scoped `send_page_view: false` only to SPA `index.html` where router-driven `page_view` is already emitted.
+  - Introduced typed analytics event contracts in `src/types/Analytics.ts` and migrated app emitters to GA4-style event names (`calculation_submit`, `premium_*`, `support_modal_open`).
+  - Replaced `cid` event parameter with `kf_cid` while retaining legacy `logEvent(category, action, label, value)` adapter for backward compatibility.
+  - Instrumented conversion-quality signals in shared submit flow and premium funnel (`offer_open`, `purchase_success/cancel/error`).
+- Files changed:
+  - `src/types/Analytics.ts`
+  - `src/logic/analytics.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `src/components/partials/PremiumActions.vue`
+  - `src/components/partials/SupportAuthor.vue`
+  - `src/components/partials/SupportProject.vue`
+  - `index.html`
+  - `test/vitest/__tests__/logic/Analytics.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `test/vitest/__tests__/components/PremiumActions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/components/PremiumActions.test.ts` (passed: 4 files, 19 tests)
+  - `npx eslint src/logic/analytics.ts src/types/Analytics.ts src/components/partials/form/SubmitButton.vue src/components/partials/PremiumActions.vue src/components/partials/SupportAuthor.vue src/components/partials/SupportProject.vue test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/components/PremiumActions.test.ts` (passed with warnings; no errors)
+- Outcome: App now emits deterministic GA4 events suitable for import into Google Ads as install-quality conversions, SPA no longer risks duplicate automatic+manual pageviews, and behavior is test-covered.
+- Follow-ups:
+  - In GA4 Admin, create custom dimensions for `calculator_slug` and `error_code`.
+  - In Google Ads/GA4 linking, import `first_open`, `calculation_submit`, and `premium_purchase_success` as planned conversions.

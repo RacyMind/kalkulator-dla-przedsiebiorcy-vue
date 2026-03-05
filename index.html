@@ -133,6 +133,7 @@
       }
 
       gtag('config', '<%= process.env.VITE_GA_MEASUREMENT_ID %>', {
+        send_page_view: false,
         anonymize_ip: true,
         allow_google_signals: false,
       })

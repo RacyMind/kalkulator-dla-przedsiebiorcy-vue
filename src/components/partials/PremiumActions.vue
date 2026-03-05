@@ -91,6 +91,9 @@ import { useQuasar } from 'quasar'
 import { adMobService } from 'boot/admob'
 import { usePremiumStore } from 'stores/premiumStore'
 import { PremiumStatus, PurchaseStatus } from 'src/services/billing/types'
+import ga from 'src/logic/analytics'
+import type { AnalyticsCurrency } from 'src/types/Analytics'
+import { AnalyticsEventName } from 'src/types/Analytics'
 
 const $q = useQuasar()
 const premiumStore = usePremiumStore()
@@ -119,6 +122,7 @@ const hideAds = async () => {
 const openModal = async () => {
   await premiumStore.refreshBillingReadiness()
   isModalOpen.value = true
+  ga.logEvent(AnalyticsEventName.PremiumOfferOpen, {})
 }
 
 const yesNo = (value: boolean | undefined) => {
@@ -152,11 +156,69 @@ const getDetailedErrorMessage = (
   return `${fallbackMessage} (${codePart}${messagePart})`
 }
 
+const getAnalyticsPurchaseValue = (priceLabel: string): number => {
+  const cleanedPrice = priceLabel.replace(/[^\d,.\s]/g, '').replace(/\s+/g, '')
+  if (cleanedPrice.length === 0) {
+    return 0
+  }
+
+  const lastCommaIndex = cleanedPrice.lastIndexOf(',')
+  const lastDotIndex = cleanedPrice.lastIndexOf('.')
+  const usesCommaAsDecimal = lastCommaIndex > lastDotIndex
+  const normalizedPrice = usesCommaAsDecimal
+    ? cleanedPrice.replace(/\./g, '').replace(',', '.')
+    : cleanedPrice.replace(/,/g, '')
+
+  const parsedPrice = Number.parseFloat(normalizedPrice)
+  if (!Number.isFinite(parsedPrice)) {
+    return 0
+  }
+
+  return Number(parsedPrice.toFixed(2))
+}
+
+const getAnalyticsPurchaseCurrency = (
+  priceLabel: string,
+): AnalyticsCurrency => {
+  if (/usd|\$/i.test(priceLabel)) {
+    return 'USD'
+  }
+
+  if (/eur|€/i.test(priceLabel)) {
+    return 'EUR'
+  }
+
+  if (/gbp|£/i.test(priceLabel)) {
+    return 'GBP'
+  }
+
+  return 'PLN'
+}
+
+const resolvePurchaseErrorCode = (errorData: {
+  code?: string | number
+  message?: string
+}) => {
+  if (errorData.code !== undefined && errorData.code !== null) {
+    return String(errorData.code)
+  }
+
+  if (errorData.message && errorData.message.length > 0) {
+    return errorData.message
+  }
+
+  return 'unknown'
+}
+
 const handleBuy = async () => {
   isBuying.value = true
   const result = await premiumStore.buyPremium()
 
   if (result.status === PurchaseStatus.Purchased) {
+    ga.logEvent(AnalyticsEventName.PremiumPurchaseSuccess, {
+      value: getAnalyticsPurchaseValue(premiumStore.premiumPriceLabel),
+      currency: getAnalyticsPurchaseCurrency(premiumStore.premiumPriceLabel),
+    })
     await hideAds()
     isModalOpen.value = false
     $q.notify({
@@ -164,11 +226,15 @@ const handleBuy = async () => {
       message: 'Zakup aktywowany',
     })
   } else if (result.status === PurchaseStatus.Cancelled) {
+    ga.logEvent(AnalyticsEventName.PremiumPurchaseCancel, {})
     $q.notify({
       type: 'warning',
       message: 'Zakup anulowany',
     })
   } else {
+    ga.logEvent(AnalyticsEventName.PremiumPurchaseError, {
+      error_code: resolvePurchaseErrorCode(result),
+    })
     $q.notify({
       type: 'negative',
       message: getDetailedErrorMessage(
