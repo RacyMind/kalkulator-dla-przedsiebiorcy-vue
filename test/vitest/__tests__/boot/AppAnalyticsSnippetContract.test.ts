@@ -60,5 +60,6 @@ describe('App analytics snippet contract', () => {
     expect(appIndex).toContain(
       "gtag('config', '<%= process.env.VITE_GA_MEASUREMENT_ID %>', {",
     )
+    expect(appIndex).toContain('send_page_view: false')
   })
 })

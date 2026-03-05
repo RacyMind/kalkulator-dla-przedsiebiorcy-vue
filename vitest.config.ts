@@ -9,21 +9,34 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      'src': fileURLToPath(new URL('./src', import.meta.url)),
-      'api': fileURLToPath(new URL('./src/api', import.meta.url)),
-      'assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
-      'boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
-      'components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      'composables': fileURLToPath(new URL('./src/composables', import.meta.url)),
-      'css': fileURLToPath(new URL('./src/css', import.meta.url)),
-      'layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
-      'logic': fileURLToPath(new URL('./src/logic', import.meta.url)),
-      'pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
-      'router': fileURLToPath(new URL('./src/router', import.meta.url)),
-      'services': fileURLToPath(new URL('./src/services', import.meta.url)),
-      'stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
-      '@capacitor-community/admob': fileURLToPath(new URL('./src/services/admob/__mocks__/admob.ts', import.meta.url)),
-      '@capacitor/core': fileURLToPath(new URL('./src/services/admob/__mocks__/capacitor-core.ts', import.meta.url)),
+      src: fileURLToPath(new URL('./src', import.meta.url)),
+      api: fileURLToPath(new URL('./src/api', import.meta.url)),
+      assets: fileURLToPath(new URL('./src/assets', import.meta.url)),
+      boot: fileURLToPath(new URL('./src/boot', import.meta.url)),
+      components: fileURLToPath(new URL('./src/components', import.meta.url)),
+      composables: fileURLToPath(new URL('./src/composables', import.meta.url)),
+      css: fileURLToPath(new URL('./src/css', import.meta.url)),
+      layouts: fileURLToPath(new URL('./src/layouts', import.meta.url)),
+      logic: fileURLToPath(new URL('./src/logic', import.meta.url)),
+      pages: fileURLToPath(new URL('./src/pages', import.meta.url)),
+      router: fileURLToPath(new URL('./src/router', import.meta.url)),
+      services: fileURLToPath(new URL('./src/services', import.meta.url)),
+      stores: fileURLToPath(new URL('./src/stores', import.meta.url)),
+      '@capacitor-community/admob': fileURLToPath(
+        new URL('./src/services/admob/__mocks__/admob.ts', import.meta.url),
+      ),
+      '@capacitor/core': fileURLToPath(
+        new URL(
+          './src/services/admob/__mocks__/capacitor-core.ts',
+          import.meta.url,
+        ),
+      ),
+      '@capacitor-firebase/analytics': fileURLToPath(
+        new URL(
+          './src/services/admob/__mocks__/capacitor-firebase-analytics.ts',
+          import.meta.url,
+        ),
+      ),
       '~': fileURLToPath(new URL('./', import.meta.url)),
     },
   },
@@ -37,12 +50,12 @@ export default defineConfig({
       'test/vitest/__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
     ],
   },
-  plugins: ([
+  plugins: [
     vue({
       template: { transformAssetUrls },
     }),
     quasar({
       sassVariables: 'src/css/quasar.variables.scss',
     }),
-  ] as unknown) as any,
+  ] as unknown as any,
 })

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { AnalyticsEventName } from 'src/types/Analytics'
 
 type AnalyticsModule = typeof import('logic/analytics')
 
@@ -56,20 +57,36 @@ describe('analytics logic', () => {
     }
   })
 
-  it('sends custom event to GA4 on web when consent is granted', async () => {
+  it('sends typed custom event to GA4 on web when consent is granted', async () => {
     const gtagSpy = vi.fn()
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
     localStorage.cid = 'web-cid'
 
     const { analytics, firebaseLogEvent } = await importAnalytics(false, true)
-    analytics.logEvent('Modal', 'Open', 'Wsparcie autora', 3)
+    analytics.logEvent(AnalyticsEventName.CalculationSubmit, {
+      calculator_slug: 'samozatrudnienie',
+    })
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
-    expect(gtagSpy).toHaveBeenCalledWith('event', 'Open', {
-      cid: 'web-cid',
-      event_category: 'Modal',
-      event_label: 'Wsparcie autora',
+    expect(gtagSpy).toHaveBeenCalledWith('event', 'calculation_submit', {
+      calculator_slug: 'samozatrudnienie',
+      kf_cid: 'web-cid',
+    })
+  })
+
+  it('maps legacy signature to normalized GA4 event', async () => {
+    const gtagSpy = vi.fn()
+    ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
+    localStorage.cid = 'legacy-cid'
+
+    const { analytics } = await importAnalytics(false, true)
+    analytics.logEvent('Modal', 'Open', 'Wsparcie autora', 3)
+
+    expect(gtagSpy).toHaveBeenCalledWith('event', 'open', {
+      legacy_category: 'Modal',
+      legacy_label: 'Wsparcie autora',
       value: 3,
+      kf_cid: 'legacy-cid',
     })
   })
 
@@ -78,7 +95,7 @@ describe('analytics logic', () => {
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
 
     const { analytics, firebaseLogEvent } = await importAnalytics(false, false)
-    analytics.logEvent('Modal', 'Open', 'Wsparcie autora', 3)
+    analytics.logEvent(AnalyticsEventName.PremiumOfferOpen, {})
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
     expect(gtagSpy).not.toHaveBeenCalled()
@@ -94,7 +111,7 @@ describe('analytics logic', () => {
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
     expect(gtagSpy).toHaveBeenCalledWith('event', 'page_view', {
-      cid: 'page-cid',
+      kf_cid: 'page-cid',
       page_path: 'app/umowa-o-prace',
     })
   })
@@ -102,7 +119,11 @@ describe('analytics logic', () => {
   it('does not throw on web when gtag is unavailable', async () => {
     const { analytics, firebaseLogEvent } = await importAnalytics(false, true)
 
-    expect(() => analytics.logEvent('Modal', 'Open', 'Wsparcie')).not.toThrow()
+    expect(() =>
+      analytics.logEvent(AnalyticsEventName.SupportModalOpen, {
+        support_target: 'author',
+      }),
+    ).not.toThrow()
     expect(() => analytics.logPage('app/porownywarka-b2b')).not.toThrow()
     expect(firebaseLogEvent).not.toHaveBeenCalled()
   })
@@ -113,23 +134,25 @@ describe('analytics logic', () => {
     localStorage.cid = 'native-cid'
 
     const { analytics, firebaseLogEvent } = await importAnalytics(true, true)
-    analytics.logEvent('Modal', 'Open', 'Wsparcie')
+    analytics.logEvent(AnalyticsEventName.PremiumPurchaseSuccess, {
+      value: 29.99,
+      currency: 'PLN',
+    })
     analytics.logPage('app/kalkulator-ike')
 
     expect(gtagSpy).not.toHaveBeenCalled()
     expect(firebaseLogEvent).toHaveBeenNthCalledWith(1, {
-      name: 'Open',
+      name: 'premium_purchase_success',
       params: {
-        category: 'Modal',
-        cid: 'native-cid',
-        label: 'Wsparcie',
-        value: null,
+        value: 29.99,
+        currency: 'PLN',
+        kf_cid: 'native-cid',
       },
     })
     expect(firebaseLogEvent).toHaveBeenNthCalledWith(2, {
       name: 'screen_view',
       params: {
-        cid: 'native-cid',
+        kf_cid: 'native-cid',
         screen_name: 'app/kalkulator-ike',
       },
     })
@@ -139,7 +162,7 @@ describe('analytics logic', () => {
     localStorage.cid = 'native-cid'
 
     const { analytics, firebaseLogEvent } = await importAnalytics(true, false)
-    analytics.logEvent('Modal', 'Open', 'Wsparcie')
+    analytics.logEvent(AnalyticsEventName.PremiumOfferOpen, {})
     analytics.logPage('app/kalkulator-ike')
 
     expect(firebaseLogEvent).not.toHaveBeenCalled()
@@ -151,11 +174,11 @@ describe('analytics logic', () => {
     ;(window as Window & { gtag?: (...args: unknown[]) => void }).gtag = gtagSpy
 
     const webAnalytics = await importAnalytics(false, true)
-    webAnalytics.analytics.logEvent('Modal', 'Open', 'Wsparcie autora')
+    webAnalytics.analytics.logEvent(AnalyticsEventName.PremiumOfferOpen, {})
     webAnalytics.analytics.logPage('app/umowa-zlecenie')
 
     const nativeAnalytics = await importAnalytics(true, true)
-    nativeAnalytics.analytics.logEvent('Modal', 'Open', 'Wsparcie autora')
+    nativeAnalytics.analytics.logEvent(AnalyticsEventName.PremiumOfferOpen, {})
     nativeAnalytics.analytics.logPage('app/umowa-zlecenie')
 
     expect(gtagSpy).not.toHaveBeenCalled()
