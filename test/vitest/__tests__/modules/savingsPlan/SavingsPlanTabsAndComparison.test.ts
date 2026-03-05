@@ -94,6 +94,6 @@ describe('SavingsPlan tabs and comparison', () => {
     expect(wrapper.find('table').exists()).toBe(false)
     expect(wrapper.findAllComponents({ name: 'QCard' }).length).toBe(6)
     expect(wrapper.findAll('.col-xl-4').length).toBe(6)
-    expect(wrapper.findAll('.bg-blue-1').length).toBe(3)
+    expect(wrapper.findAll('.bg-row-highlight').length).toBe(3)
   })
 })
