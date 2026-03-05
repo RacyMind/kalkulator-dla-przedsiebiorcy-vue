@@ -11,7 +11,7 @@
     <div class="col">
       <slot name="name"></slot>
     </div>
-    <div v-if="$slots.value" class="col-shrink">
+    <div v-if="$slots.value" class="col-shrink text-right text-no-wrap q-ml-sm">
       <slot name="value"></slot>
     </div>
     <div v-if="$slots.description" class="footer-text text-body2 q-mt-xs">
