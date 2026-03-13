@@ -54,7 +54,9 @@ describe('Landing head performance contract', () => {
 
     expect(htaccess).toContain('AddType font/woff2 .woff2')
     expect(htaccess).toContain('ExpiresByType font/woff2 "access 1 year"')
-    expect(htaccess).toContain('(ico|flv|jpg|jpeg|png|gif|css|swf|webp|woff2)')
+    expect(htaccess).toContain(
+      '(ico|flv|jpg|jpeg|png|gif|css|swf|webp|woff2|svg)',
+    )
   })
 
   it('ships required local Roboto font files', () => {

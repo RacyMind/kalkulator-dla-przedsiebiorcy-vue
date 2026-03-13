@@ -24,6 +24,8 @@ DirectoryIndex index.php index.html
 
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+  AddType application/manifest+json .webmanifest
 </IfModule>
 
 <IfModule mod_expires.c>
@@ -32,7 +34,9 @@ DirectoryIndex index.php index.html
   ExpiresByType image/jpeg "access 1 year"
   ExpiresByType image/gif "access 1 year"
   ExpiresByType image/png "access 1 year"
+  ExpiresByType image/svg+xml "access 1 year"
   ExpiresByType image/webp "access 1 year"
+  ExpiresByType application/manifest+json "access 1 day"
   ExpiresByType text/css "access 1 day"
   ExpiresByType text/html "access 1 day"
   ExpiresByType application/pdf "access 1 month"
@@ -43,8 +47,11 @@ DirectoryIndex index.php index.html
   ExpiresDefault "access 1 day"
 </IfModule>
 <IfModule mod_headers.c>
-  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf|webp|woff2)$">
+  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf|webp|woff2|svg)$">
   Header set Cache-Control "max-age=2678400, public"
+  </filesmatch>
+  <filesmatch "\.(webmanifest)$">
+  Header set Cache-Control "max-age=86400, public"
   </filesmatch>
   <filesmatch "\.(html|htm|php)$">
   Header set Cache-Control "max-age=7200, private, must-revalidate"
