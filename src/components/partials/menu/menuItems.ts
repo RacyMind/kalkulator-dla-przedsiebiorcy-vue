@@ -175,6 +175,13 @@ export default {
       title: 'Kalkulator IKE',
     } as MenuItem,
     {
+      caption:
+        'Ustal cel oszczędzania, symuluj regularne wpłaty i porównaj IKE, IKZE oraz inne formy oszczędzania.',
+      className: 'c-savings',
+      link: '/plan-oszczedzania',
+      title: 'Plan oszczędzania',
+    } as MenuItem,
+    {
       caption: 'Oblicz zysk z lokaty bankowej po odliczeniu podatku Belki',
       className: 'c-savings',
       link: '/lokata',

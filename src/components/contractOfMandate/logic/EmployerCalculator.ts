@@ -17,6 +17,15 @@ export class EmployerCalculator extends BasicCalculator<InputFields, EmployerRes
     this.zusContribution = new EmployerZusContribution()
   }
 
+  setSumUpContributionBasis(sumUpContributionBasis: number): this {
+    this.sumUpContributionBasis = sumUpContributionBasis
+    return this
+  }
+
+  getSumUpContributionBasis(): number {
+    return this.sumUpContributionBasis
+  }
+
   calculate(): this {
     const contributionBasis = this.zusContribution.getContributionBasisWithinLimit(this.getInputData().grossAmount, this.sumUpContributionBasis)
 

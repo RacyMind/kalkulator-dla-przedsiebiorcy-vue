@@ -238,6 +238,35 @@ describe('Chart options', () => {
     expect(options.scales.x.ticks.maxTicksLimit).toBe(5)
   })
 
+  it('keeps container style without overflow clipping and does not bind window resize', () => {
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+
+    const wrapper = mount(Chart, {
+      props: {
+        type: 'line',
+        chartData: {
+          labels: ['I', 'II'],
+          datasets: [
+            {
+              data: [1000, 1200],
+            },
+          ],
+        },
+      },
+    })
+
+    const resizeListenerCalls = addEventListenerSpy.mock.calls.filter(
+      ([eventName]) => eventName === 'resize',
+    )
+    const style = wrapper.attributes('style') || ''
+
+    expect(resizeListenerCalls).toHaveLength(0)
+    expect(style).toContain('width: 100%')
+    expect(style).not.toContain('overflow: hidden')
+
+    addEventListenerSpy.mockRestore()
+  })
+
   it('uses external tooltip label callback when provided', () => {
     const customLabel = vi.fn(() => 'Niestandardowy tooltip')
 

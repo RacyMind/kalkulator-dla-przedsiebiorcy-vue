@@ -15,9 +15,11 @@ describe('Release metadata', () => {
     const latestLog = logs[0]
 
     expect(latestLog.version).toBe(packageVersion)
-    expect(latestLog.publish_date).toBe('2026-02-18')
-    expect(latestLog.content).toContain('Poprawiono interfejs.')
-    expect(latestLog.content).toContain('Zaktualizowano wyświetlenie wykresów.')
+    expect(latestLog.publish_date).toBe('2026-03-05')
+    expect(latestLog.content).toContain(
+      'Dodano nadgodziny w module Umowa o pracę.',
+    )
+    expect(latestLog.content).toContain('Dodano nowy moduł: Plan oszczędzania.')
   })
 
   it('keeps constants store app version aligned with package version', () => {

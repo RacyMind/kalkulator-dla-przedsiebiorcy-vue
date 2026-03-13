@@ -784,3 +784,284 @@ For each completed task, add one section:
   - `npm run test:unit:ci` (passed: 93 files, 600 tests)
 - Outcome: Drawer now exposes one non-duplicated installation CTA with correct platform behavior and hides itself after installation detection.
 - Follow-ups: none.
+
+### 2026-02-20 - Remove landing-page render-blocking Google Fonts via local Roboto hosting
+
+- Task: Eliminated render-blocking Google Fonts requests on landing pages while preserving Roboto typography and validating delivery contracts with tests.
+- Decisions:
+  - Removed external Google Fonts/preconnect tags from shared landing head include and kept local `/dist/style.css` as the critical stylesheet.
+  - Self-hosted Roboto in `landing-page/fonts/roboto/` using local `woff2` assets (latin + latin-ext) and defined `@font-face` for weights `400`, `500`, `700` with `font-display: swap`.
+  - Added Apache `woff2` MIME/cache directives in `.htaccess` to make font delivery explicit and cacheable.
+  - Added a dedicated landing performance contract test to prevent regressions in head/font loading.
+- Files changed:
+  - `landing-page/_includes/head-common.php`
+  - `landing-page/style.css`
+  - `landing-page/.htaccess`
+  - `landing-page/fonts/roboto/roboto-latin-ext.woff2`
+  - `landing-page/fonts/roboto/roboto-latin.woff2`
+  - `landing-page/fonts/roboto/LICENSE`
+  - `test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `.\landing-page\tailwindcss.exe --input .\landing-page\style.css --output .\landing-page\dist\style.css --minify` (passed)
+  - `php -l landing-page/_includes/head-common.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 21 tests)
+- Outcome: Landing templates no longer depend on `fonts.googleapis.com`/`fonts.gstatic.com` in the critical path, and Roboto is served locally with regression coverage.
+- Follow-ups: none.
+
+### 2026-02-20 - Assert generated landing dist CSS includes local Roboto
+
+- Task: Addressed follow-up concern by explicitly validating that generated `landing-page/dist/style.css` contains local Roboto references and no Google Fonts URLs.
+- Decisions:
+  - Kept `landing-page/dist/` ignored in git as repository policy currently defines.
+  - Added a dedicated contract assertion for generated dist output instead of relying only on source CSS checks.
+- Files changed:
+  - `test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `.\landing-page\tailwindcss.exe --input .\landing-page\style.css --output .\landing-page\dist\style.css --minify` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingHeadPerformanceContract.test.ts` (passed: 1 file, 5 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 22 tests)
+- Outcome: Contract now guarantees generated dist CSS references local Roboto assets and avoids external Google Fonts regressions.
+- Follow-ups: none.
+
+### 2026-02-20 - Defer GA4 gtag script loading to post-load idle on landing and SPA
+
+- Task: Reduced render-path impact of GA4 by removing immediate head load of `gtag.js` and introducing deferred dynamic loading after `window.load` + idle, while keeping consent-mode behavior and analytics contracts.
+- Decisions:
+  - Preserved policy to always initialize GA consent defaults (`denied`) and queue `gtag` commands immediately via local stub.
+  - Replaced static `<script async src=...>` with idempotent dynamic loader (`loadGaScriptOnce`) scheduled on `load` and `requestIdleCallback` (with `setTimeout` fallback).
+  - Kept landing-page consent integration contract unchanged via `window.kfApplyAnalyticsConsent`.
+  - Extended contract tests to enforce deferred-loading pattern and no static head inclusion of `gtag.js`.
+- Files changed:
+  - `index.html`
+  - `landing-page/_includes/ga4.php`
+  - `test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `php -l landing-page/_includes/ga4.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/AnalyticsSnippetContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 2 files, 5 tests)
+  - `npx vitest run test/vitest/__tests__/landingPage` (passed: 4 files, 22 tests)
+  - `npm run test:unit:ci` (passed: 95 files, 606 tests)
+- Outcome: GA4 script download is moved out of the critical rendering path for both landing page and SPA while preserving consent-mode and analytics event contracts.
+- Follow-ups: none.
+
+### 2026-02-20 - Deliver responsive landing images to reduce oversized image transfer
+
+- Task: Implemented responsive image delivery for landing hero and calculator screenshots to reduce LCP image transfer and remove oversized WebP payloads.
+- Decisions:
+  - Added generated WebP breakpoints (`400w`, `640w`, `960w`) for hero and all SEO landing module screenshots.
+  - Updated homepage and shared landing layout `<picture>` sources to use `srcset` + explicit `sizes` matching actual render widths.
+  - Kept PNG fallback in `<img>` for compatibility while serving smaller WebP candidates to modern browsers.
+  - Added contract tests that validate markup, dynamic layout templating, and existence of generated image variants.
+- Files changed:
+  - `scripts/generate-landing-responsive-images.mjs`
+  - `package.json`
+  - `landing-page/index.php`
+  - `landing-page/_includes/layout.php`
+  - `landing-page/images/hero-screenshot-400.webp`
+  - `landing-page/images/hero-screenshot-640.webp`
+  - `landing-page/images/hero-screenshot-960.webp`
+  - `landing-page/images/modules/*-400.webp`
+  - `landing-page/images/modules/*-640.webp`
+  - `landing-page/images/modules/*-960.webp`
+  - `test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `php -l landing-page/index.php` (passed)
+  - `php -l landing-page/_includes/layout.php` (passed)
+  - `npx eslint test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/landingPage/LandingResponsiveImagesContract.test.ts` (passed: 1 file, 3 tests)
+- Outcome: Landing pages now ship responsive screenshot variants and select smaller assets per viewport, with automated regression coverage for markup and generated files.
+- Follow-ups: none.
+
+### 2026-02-21 - Add SoftwareApplication JSON-LD to SPA/PWA app entry
+
+- Task: Added structured data JSON-LD for the `/app` web application/PWA so crawlers can classify the SPA as a `SoftwareApplication`.
+- Decisions:
+  - Limited scope to `index.html` (`/app`) and did not modify landing-page schema blocks.
+  - Used `SoftwareApplication` schema (not `WebApplication`) to stay consistent with existing SEO approach.
+  - Kept a contract test in the existing app head snippet suite to prevent schema regression.
+- Files changed:
+  - `index.html`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: SPA/PWA head now includes JSON-LD with app identity, category, platform, free-offer metadata, URL, and author; contract coverage enforces continued presence.
+- Follow-ups: none.
+
+### 2026-02-21 - Normalize JSON-LD Polish characters to literal UTF-8
+
+- Task: Replaced Unicode escape sequences in SPA JSON-LD (`\u...`) with literal Polish characters to keep source text human-readable and consistent with repository conventions.
+- Decisions:
+  - Kept file encoding as UTF-8 and used direct diacritics (`Ł`, `ą`, `ę`, `ż`, etc.) in JSON-LD values.
+  - Retained the same schema fields and contract assertions.
+- Files changed:
+  - `index.html`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: JSON-LD now uses readable Polish text in source while preserving behavior and passing regression checks.
+- Follow-ups: none.
+
+### 2026-02-21 - Persist UTF-8/Polish glyph rule in AGENTS.md
+
+- Task: Added an explicit repository rule for encoding and Polish diacritics handling in source files.
+- Decisions:
+  - Documented UTF-8 as required text encoding for source files.
+  - Documented that Polish characters must stay literal and must not be converted to `\uXXXX` escapes.
+- Files changed:
+  - `AGENTS.md`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 1 file, 2 tests)
+- Outcome: Agent guidance now explicitly prevents future regressions in Polish text encoding style.
+- Follow-ups: none.
+
+### 2026-02-21 - Unblock /app crawling and enforce SPA canonical consistency
+
+- Task: Enabled crawling for the SPA shell, added `/app` to sitemap discovery, and aligned SPA metadata signals to one canonical URL.
+- Decisions:
+  - Removed `/app/` disallow from `robots.txt` to allow bot access to the SPA shell.
+  - Added `https://kalkulatorfinansowy.app/app` to sitemap with monthly cadence and lower priority than homepage.
+  - Standardized SPA metadata URL to `https://kalkulatorfinansowy.app/app` across canonical, `og:url`, and JSON-LD.
+  - Added SEO contract test coverage for robots/sitemap plus metadata consistency assertions in existing SPA head contract.
+- Files changed:
+  - `landing-page/robots.txt`
+  - `landing-page/sitemap.xml`
+  - `index.html`
+  - `test/vitest/__tests__/landingPage/SeoIndexingContract.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/landingPage/SeoIndexingContract.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts` (passed: 2 files, 6 tests)
+- Outcome: `/app` is crawlable, discoverable via sitemap, and canonicalized consistently for SPA metadata signals with regression tests in place.
+- Follow-ups: none.
+
+### 2026-02-21 - Add reverse mode based on employer cost for UoP and mandate
+
+- Task: Added a new amount input mode that estimates `grossAmount` from `Suma kosztów pracodawcy`, analogicznie do istniejącego trybu szacowania z netto, for `Umowa o pracę` and `Umowa zlecenie`.
+- Decisions:
+  - Extended `AmountTypes` with `EmployerCost` and kept `AmountTypeSelect` backward compatible via optional `showEmployerCost` prop.
+  - Generalized reverse-search logic into `findGrossAmountUsingTargetAmount` and preserved `findGrossAmountUsingNetAmount` as a compatibility wrapper.
+  - Added `setSumUpContributionBasis` / `getSumUpContributionBasis` to employer calculators to correctly carry annual ZUS basis in monthly reverse estimation.
+  - Enabled the new UI option only in modules that expose employer-cost outputs (UoP + mandate), leaving `contractWork` unchanged.
+- Files changed:
+  - `src/stores/constants/types.ts`
+  - `src/logic/findGrossAmountUsingNetAmount.ts`
+  - `src/components/partials/form/AmountTypeSelect.vue`
+  - `src/components/contractOfEmployment/components/Form.vue`
+  - `src/components/contractOfMandate/components/Form.vue`
+  - `src/components/contractOfEmployment/logic/EmployerCalculator.ts`
+  - `src/components/contractOfMandate/logic/EmployerCalculator.ts`
+  - `test/vitest/__tests__/components/AmountTypeSelect.test.ts`
+  - `test/vitest/__tests__/logic/findGrossAmountUsingTargetAmount.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/findGrossAmountUsingEmployerCost.test.ts`
+  - `test/vitest/__tests__/modules/contractOfMandate/findGrossAmountUsingEmployerCost.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/EmployerCalculator.test.ts`
+  - `test/vitest/__tests__/modules/contractOfMandate/EmployerCalculator.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/stores/constants/types.ts src/logic/findGrossAmountUsingNetAmount.ts src/components/partials/form/AmountTypeSelect.vue src/components/contractOfEmployment/logic/EmployerCalculator.ts src/components/contractOfMandate/logic/EmployerCalculator.ts src/components/contractOfEmployment/components/Form.vue src/components/contractOfMandate/components/Form.vue test/vitest/__tests__/components/AmountTypeSelect.test.ts test/vitest/__tests__/logic/findGrossAmountUsingTargetAmount.test.ts test/vitest/__tests__/modules/contractOfEmployment/findGrossAmountUsingEmployerCost.test.ts test/vitest/__tests__/modules/contractOfMandate/findGrossAmountUsingEmployerCost.test.ts test/vitest/__tests__/modules/contractOfEmployment/EmployerCalculator.test.ts test/vitest/__tests__/modules/contractOfMandate/EmployerCalculator.test.ts` (passed)
+  - `npm run test:unit:ci` (passed: 101 files, 624 tests)
+- Outcome: Users can now estimate salary inputs from employer cost in UoP and mandate calculators with full test coverage and no regression in existing net-based estimation.
+- Follow-ups: none.
+
+### 2026-02-23 - Add overtime option in contract of employment form
+
+- Task: Added overtime input support in `Umowa o pracę` form as an additive gross component, with configurable overtime percentage and optional per-month overtime hours.
+- Decisions:
+  - Implemented overtime only for `AmountTypes.Gross` to avoid ambiguity in reverse solvers for net/employer-cost modes.
+  - Kept calculator interfaces unchanged (`InputFields` still carries only final `grossAmount`), applying overtime at form preprocessing level.
+  - Added one overtime model (`hours + percent`) with `0-300%` validation and explanatory tooltip.
+  - Reused existing monthly storage pattern via `useMonthlyAmounts` for overtime-hours-per-month.
+- Files changed:
+  - `src/components/contractOfEmployment/components/Form.vue`
+  - `test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts`
+  - `test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx eslint src/components/contractOfEmployment/components/Form.vue test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts` (passed)
+  - `npx vitest run test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployeeCalculator.test.ts test/vitest/__tests__/modules/contractOfEmployment/AnnualEmployerCalculator.test.ts` (passed: 3 files, 24 tests)
+  - `npm run test:unit:ci` (passed: 102 files, 629 tests)
+  - `npm run lint` (fails due pre-existing unrelated lint errors in other modules/files)
+- Outcome: UoP now supports overtime additions in gross mode, monthly inputs are correctly expanded with overtime gross, and behavior is covered by form-level and annual regression tests.
+- Follow-ups:
+  - Resolve existing repo-wide lint debt unrelated to this change to restore `npm run lint` green status.
+
+### 2026-02-23 - Remove commit message naming restrictions from repository tooling
+
+- Task: Removed commit message format enforcement so commits are no longer blocked by Conventional Commits validation.
+- Decisions:
+  - Kept GitHub Actions workflow unchanged because `.github/workflows/ci.yml` does not contain commit message checks.
+  - Removed the Husky `commit-msg` hook and `commitlint` configuration as the only active source of commit name restrictions.
+  - Removed direct `@commitlint/*` devDependencies from project metadata.
+  - Added a regression contract test to ensure commit message restrictions are not reintroduced accidentally.
+- Files changed:
+  - `.husky/commit-msg`
+  - `commitlint.config.js`
+  - `package.json`
+  - `package-lock.json`
+  - `test/vitest/__tests__/release/CommitMessagePolicy.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/release/CommitMessagePolicy.test.ts` (passed: 1 file, 2 tests)
+  - `npm run test:unit:ci` (passed: 103 files, 631 tests)
+  - `npm run lint` (fails due pre-existing unrelated lint errors in multiple existing files)
+- Outcome: Commit messages are no longer constrained by repository hooks/config, and regression coverage now protects this policy.
+- Follow-ups:
+  - Resolve existing repo-wide lint errors unrelated to this change if full lint green is required in CI.
+
+### 2026-03-05 - Implement GA4 app-install quality event model for Google Ads optimization
+
+- Task: Implemented analytics refactor for Google Ads app-install efficiency monitoring by migrating to typed GA4 event names/params, adding install-quality conversion events in app flows, and preventing SPA pageview double counting.
+- Decisions:
+  - Kept landing-page GA4 behavior unchanged and scoped `send_page_view: false` only to SPA `index.html` where router-driven `page_view` is already emitted.
+  - Introduced typed analytics event contracts in `src/types/Analytics.ts` and migrated app emitters to GA4-style event names (`calculation_submit`, `premium_*`, `support_modal_open`).
+  - Replaced `cid` event parameter with `kf_cid` while retaining legacy `logEvent(category, action, label, value)` adapter for backward compatibility.
+  - Instrumented conversion-quality signals in shared submit flow and premium funnel (`offer_open`, `purchase_success/cancel/error`).
+- Files changed:
+  - `src/types/Analytics.ts`
+  - `src/logic/analytics.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `src/components/partials/PremiumActions.vue`
+  - `src/components/partials/SupportAuthor.vue`
+  - `src/components/partials/SupportProject.vue`
+  - `index.html`
+  - `test/vitest/__tests__/logic/Analytics.test.ts`
+  - `test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `test/vitest/__tests__/components/PremiumActions.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/components/PremiumActions.test.ts` (passed: 4 files, 19 tests)
+  - `npx eslint src/logic/analytics.ts src/types/Analytics.ts src/components/partials/form/SubmitButton.vue src/components/partials/PremiumActions.vue src/components/partials/SupportAuthor.vue src/components/partials/SupportProject.vue test/vitest/__tests__/logic/Analytics.test.ts test/vitest/__tests__/boot/AppAnalyticsSnippetContract.test.ts test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/components/PremiumActions.test.ts` (passed with warnings; no errors)
+- Outcome: App now emits deterministic GA4 events suitable for import into Google Ads as install-quality conversions, SPA no longer risks duplicate automatic+manual pageviews, and behavior is test-covered.
+- Follow-ups:
+  - In GA4 Admin, create custom dimensions for `calculator_slug` and `error_code`.
+  - In Google Ads/GA4 linking, import `first_open`, `calculation_submit`, and `premium_purchase_success` as planned conversions.
+
+### 2026-03-05 - Fix Vitest regressions after analytics wiring in shared SubmitButton
+
+- Task: Repaired failing unit suites caused by importing analytics in `SubmitButton` and indirect loading of Capacitor Firebase plugin during tests.
+- Decisions:
+  - Added Vitest alias for `@capacitor-firebase/analytics` to a local mock module to prevent node-module plugin resolution failures (`Cannot find module '@capacitor/core'`).
+  - Replaced `useRoute()` in `SubmitButton` with safe `inject(routeLocationKey, null)` and fallback path to avoid router-injection warnings and keep analytics slug tracking stable.
+  - Updated SubmitButton unit test to provide route through `routeLocationKey` instead of mocking `useRoute`.
+- Files changed:
+  - `vitest.config.ts`
+  - `src/services/admob/__mocks__/capacitor-firebase-analytics.ts`
+  - `src/components/partials/form/SubmitButton.vue`
+  - `test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts`
+  - `MEMORY.md`
+- Tests run:
+  - `npx vitest run test/vitest/__tests__/components/SubmitButtonLegalLinks.test.ts test/vitest/__tests__/modules/pfronRefund/PfronRefundForm.test.ts test/vitest/__tests__/modules/contractOfEmployment/ContractOfEmploymentFormOvertime.test.ts` (passed: 3 files, 7 tests)
+  - `npm run test:unit:ci` (passed: 102 files, 631 tests)
+- Outcome: Previously failing suites now pass, and full unit test pipeline is green again.
+- Follow-ups: none.

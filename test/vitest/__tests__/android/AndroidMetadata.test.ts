@@ -38,7 +38,7 @@ describe('Android metadata', () => {
 
     expect(versionCodeMatch).toBeTruthy()
     expect(versionNameMatch).toBeTruthy()
-    expect(Number(versionCodeMatch?.[1])).toBeGreaterThanOrEqual(60008)
+    expect(Number(versionCodeMatch?.[1])).toBeGreaterThanOrEqual(60010)
     expect(versionNameMatch?.[1]).toBe(packageVersion)
   })
 })

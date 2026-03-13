@@ -135,5 +135,31 @@ describe('Employer Calculator of Contract of Mandate on 1.11.2023', () => {
       expect(result.grossAmount).toBe(5000)
       expect(result.totalAmount).toBe(5000)
     })
+
+    it('Tracks and applies sum of contribution basis', () => {
+      const highAmountInput = {
+        ...input,
+        grossAmount: 300000,
+      }
+      const carriedContributionBasis = new EmployerCalculator()
+        .setInputData(highAmountInput)
+        .calculate()
+        .getSumUpContributionBasis()
+
+      expect(carriedContributionBasis).toBeGreaterThan(0)
+
+      const resultWithoutCarry = new EmployerCalculator()
+        .setInputData(highAmountInput)
+        .calculate()
+        .getResult()
+      const resultWithCarry = new EmployerCalculator()
+        .setSumUpContributionBasis(carriedContributionBasis)
+        .setInputData(highAmountInput)
+        .calculate()
+        .getResult()
+
+      expect(resultWithCarry.pensionContribution).toBeLessThan(resultWithoutCarry.pensionContribution)
+      expect(resultWithCarry.disabilityContribution).toBeLessThan(resultWithoutCarry.disabilityContribution)
+    })
   })
 })

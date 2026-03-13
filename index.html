@@ -30,9 +30,28 @@
     <meta name="twitter:title" content="Kalkulator finansowy – Twój darmowy kalkulator wynagrodzeń" />
     <meta name="twitter:description" content="Darmowy kalkulator wynagrodzeń z umowy o pracę, umowy zlecenie, B2B i umowy o dzieło. Oblicz składki ZUS, podatek PIT, VAT i więcej." />
     <meta name="twitter:image" content="https://kalkulatorfinansowy.app/app/images/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kalkulator finansowy",
+        "description": "Kalkulator finansowy – darmowe obliczanie wynagrodzeń z umowy o pracę, umowy zlecenie, B2B, umowy o dzieło. Sprawdź składki ZUS, podatek PIT, VAT i więcej.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web, Android",
+        "url": "https://kalkulatorfinansowy.app/app",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "PLN"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Łukasz Socha"
+        }
+      }
+    </script>
     <% if (process.env.VITE_GA_MEASUREMENT_ID && !ctx.mode.capacitor && !ctx.mode.cordova) { %>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= process.env.VITE_GA_MEASUREMENT_ID %>"></script>
     <script>
       window.dataLayer = window.dataLayer || []
       function gtag(){dataLayer.push(arguments)}
@@ -60,20 +79,66 @@
         ad_personalization: 'denied',
       }
 
+      const updateAnalyticsConsent = (decision) => {
+        if (decision !== 'granted' && decision !== 'denied') {
+          return
+        }
+
+        gtag('consent', 'update', {
+          ...defaultConsentState,
+          analytics_storage: decision,
+        })
+      }
+
+      let hasRequestedGaScript = false
+      const loadGaScriptOnce = () => {
+        if (hasRequestedGaScript) {
+          return
+        }
+
+        hasRequestedGaScript = true
+        const script = document.createElement('script')
+        script.async = true
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=<%= process.env.VITE_GA_MEASUREMENT_ID %>'
+        document.head.appendChild(script)
+      }
+
+      const scheduleGaScriptLoad = () => {
+        const loadWhenIdle = () => {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(() => {
+              loadGaScriptOnce()
+            }, { timeout: 3000 })
+            return
+          }
+
+          setTimeout(() => {
+            loadGaScriptOnce()
+          }, 0)
+        }
+
+        if (document.readyState === 'complete') {
+          loadWhenIdle()
+          return
+        }
+
+        window.addEventListener('load', loadWhenIdle, { once: true })
+      }
+
       gtag('consent', 'default', defaultConsentState)
 
       const storedAnalyticsConsent = getStoredAnalyticsConsent()
       if (storedAnalyticsConsent === 'granted' || storedAnalyticsConsent === 'denied') {
-        gtag('consent', 'update', {
-          ...defaultConsentState,
-          analytics_storage: storedAnalyticsConsent,
-        })
+        updateAnalyticsConsent(storedAnalyticsConsent)
       }
 
       gtag('config', '<%= process.env.VITE_GA_MEASUREMENT_ID %>', {
+        send_page_view: false,
         anonymize_ip: true,
         allow_google_signals: false,
       })
+
+      scheduleGaScriptLoad()
     </script>
     <% } %>
   </head>
@@ -92,3 +157,4 @@
     <!-- quasar:entry-point -->
   </body>
 </html>
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Oo<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="utf-8">
@@ -171,7 +171,11 @@
             <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app</span>
           </div>
           <picture>
-              <source srcset="/images/hero-screenshot.webp" type="image/webp">
+              <source
+                srcset="/images/hero-screenshot-400.webp 400w, /images/hero-screenshot-640.webp 640w, /images/hero-screenshot-960.webp 960w"
+                sizes="(min-width: 768px) 512px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/hero-screenshot.png" alt="Kalkulator finansowy — dashboard z listą wszystkich kalkulatorów i narzędzi finansowych" width="1280" height="800" fetchpriority="high" class="w-full h-auto">
             </picture>
         </div>
@@ -227,7 +231,11 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/samozatrudnienie</span>
             </div>
             <picture>
-              <source srcset="/images/modules/samozatrudnienie.webp" type="image/webp">
+              <source
+                srcset="/images/modules/samozatrudnienie-400.webp 400w, /images/modules/samozatrudnienie-640.webp 640w, /images/modules/samozatrudnienie-960.webp 960w"
+                sizes="(min-width: 768px) 552px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/modules/samozatrudnienie.png" alt="Kalkulator samozatrudnienia B2B — formularz obliczania dochodu z działalności gospodarczej" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
@@ -247,7 +255,11 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/porownywarka-b2b</span>
             </div>
             <picture>
-              <source srcset="/images/modules/porownywarka-b2b.webp" type="image/webp">
+              <source
+                srcset="/images/modules/porownywarka-b2b-400.webp 400w, /images/modules/porownywarka-b2b-640.webp 640w, /images/modules/porownywarka-b2b-960.webp 960w"
+                sizes="(min-width: 768px) 552px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/modules/porownywarka-b2b.png" alt="Porównywarka form opodatkowania B2B — porównanie skali podatkowej, podatku liniowego i ryczałtu" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
@@ -289,7 +301,11 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/umowa-o-prace</span>
             </div>
             <picture>
-              <source srcset="/images/modules/umowa-o-prace.webp" type="image/webp">
+              <source
+                srcset="/images/modules/umowa-o-prace-400.webp 400w, /images/modules/umowa-o-prace-640.webp 640w, /images/modules/umowa-o-prace-960.webp 960w"
+                sizes="(min-width: 768px) 552px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/modules/umowa-o-prace.png" alt="Kalkulator wynagrodzenia z umowy o pracę — obliczanie netto, składek ZUS i kosztów pracodawcy" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>
@@ -309,7 +325,11 @@
               <span class="ml-2 flex-1 h-5 bg-gray-700 rounded text-[10px] text-gray-400 leading-5 px-2 truncate">kalkulatorfinansowy.app/#/kalkulator-ike</span>
             </div>
             <picture>
-              <source srcset="/images/modules/kalkulator-ike.webp" type="image/webp">
+              <source
+                srcset="/images/modules/kalkulator-ike-400.webp 400w, /images/modules/kalkulator-ike-640.webp 640w, /images/modules/kalkulator-ike-960.webp 960w"
+                sizes="(min-width: 768px) 552px, calc(100vw - 32px)"
+                type="image/webp"
+              >
               <img src="/images/modules/kalkulator-ike.png" alt="Kalkulator oszczędności IKE — symulacja długoterminowych oszczędności emerytalnych" width="640" height="400" loading="lazy" class="w-full h-auto">
             </picture>
           </div>

@@ -2,8 +2,6 @@
 $gaMeasurementId = getenv('GA_MEASUREMENT_ID') ?: 'G-9P7ZTHLC47';
 $escapedGaMeasurementId = htmlspecialchars($gaMeasurementId, ENT_QUOTES, 'UTF-8');
 ?>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= $escapedGaMeasurementId ?>"></script>
   <script>
     window.dataLayer = window.dataLayer || []
     function gtag(){dataLayer.push(arguments)}
@@ -42,6 +40,41 @@ $escapedGaMeasurementId = htmlspecialchars($gaMeasurementId, ENT_QUOTES, 'UTF-8'
       })
     }
 
+    let hasRequestedGaScript = false
+    const loadGaScriptOnce = () => {
+      if (hasRequestedGaScript) {
+        return
+      }
+
+      hasRequestedGaScript = true
+      const script = document.createElement('script')
+      script.async = true
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=<?= $escapedGaMeasurementId ?>'
+      document.head.appendChild(script)
+    }
+
+    const scheduleGaScriptLoad = () => {
+      const loadWhenIdle = () => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            loadGaScriptOnce()
+          }, { timeout: 3000 })
+          return
+        }
+
+        setTimeout(() => {
+          loadGaScriptOnce()
+        }, 0)
+      }
+
+      if (document.readyState === 'complete') {
+        loadWhenIdle()
+        return
+      }
+
+      window.addEventListener('load', loadWhenIdle, { once: true })
+    }
+
     gtag('consent', 'default', defaultConsentState)
 
     const storedAnalyticsConsent = getStoredAnalyticsConsent()
@@ -55,4 +88,6 @@ $escapedGaMeasurementId = htmlspecialchars($gaMeasurementId, ENT_QUOTES, 'UTF-8'
       anonymize_ip: true,
       allow_google_signals: false,
     })
+
+    scheduleGaScriptLoad()
   </script>

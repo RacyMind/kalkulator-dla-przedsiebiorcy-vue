@@ -1,6 +1,12 @@
 export default [
   {
     content:
+      '<ul><li>Dodano nadgodziny w module Umowa o pracę.</li><li>Dodano nowy moduł: Plan oszczędzania.</li></ul>',
+    publish_date: '2026-03-05',
+    version: '6.2.0',
+  },
+  {
+    content:
       '<ul><li>Poprawiono interfejs.</li><li>Zaktualizowano wyświetlenie wykresów.</li></ul>',
     publish_date: '2026-02-18',
     version: '6.1.1',
