@@ -135,7 +135,7 @@ $e = function($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); };
       <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Powiązane kalkulatory</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-<?php foreach ($page['related'] as $rel): ?>
+<?php foreach (array_slice($page['related'], 0, 3) as $rel): ?>
           <a href="<?= $domain ?>/<?= $e($rel['slug']) ?>/" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden no-underline">
             <div class="h-36 bg-gradient-to-br <?= $e($rel['gradient']) ?> flex items-center justify-center">
               <?= $rel['icon'] ?>
