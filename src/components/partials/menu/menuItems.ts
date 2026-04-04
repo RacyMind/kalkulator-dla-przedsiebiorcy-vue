@@ -105,6 +105,13 @@ export default {
       link: '/refundacja-skladek-spolecznych-pfron',
       title: 'Refundacja składek społecznych PFRON',
     } as MenuItem,
+    {
+      caption:
+        'Oblicz ratę, koszty i harmonogram leasingu operacyjnego z uwzględnieniem VAT i KUP',
+      className: 'c-company',
+      link: '/leasing-operacyjny',
+      title: 'Leasing operacyjny',
+    } as MenuItem,
   ],
   taxes: [
     {

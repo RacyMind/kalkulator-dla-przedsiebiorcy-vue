@@ -1,6 +1,12 @@
 export default [
   {
     content:
+      '<ul><li>Dodano nowy moduł: Kalkulator leasingu operacyjnego.</li></ul>',
+    publish_date: '2026-04-04',
+    version: '6.3.0',
+  },
+  {
+    content:
       '<ul><li>Dodano nadgodziny w module Umowa o pracę.</li><li>Dodano nowy moduł: Plan oszczędzania.</li></ul>',
     publish_date: '2026-03-05',
     version: '6.2.0',
