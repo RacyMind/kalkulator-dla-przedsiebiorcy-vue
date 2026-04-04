@@ -399,6 +399,21 @@ Oo<!DOCTYPE html>
             </div>
           </div>
 
+          <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+            <a href="https://kalkulatorfinansowy.app/app/#/leasing-operacyjny" class="block no-underline">
+              <div class="h-36 bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center">
+                <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M3.75 5.25h16.5A1.5 1.5 0 0 1 21.75 6.75v10.5a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V6.75a1.5 1.5 0 0 1 1.5-1.5Zm3 9h2.25m-2.25 0v2.25m0-2.25h2.25m4.5-1.5h4.5m-4.5 3h3"/></svg>
+              </div>
+              <div class="p-5 pb-2">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Leasing operacyjny</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">Policz ratę, wykup, koszt całkowity, VAT do odliczenia i koszty podatkowe.</p>
+              </div>
+            </a>
+            <div class="px-5 pb-4">
+              <a href="/leasing-operacyjny/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
+            </div>
+          </div>
+
           <a href="https://kalkulatorfinansowy.app/app/#/kursy-walut" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden no-underline">
             <div class="h-36 bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
               <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
