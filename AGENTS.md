@@ -77,3 +77,7 @@ For manual checks of the PHP landing page:
 - Keep responses concise.
 - Focus explanations on business logic, architecture decisions, and tradeoffs.
 - Skip obvious details and avoid filler.
+
+## Repo Skills
+
+- `kalkulator-feature-planner`: plan new features or feature extensions for this repository and save the output in `plans/<feature-slug>-YYYY-MM-DD.md`. Shared workflow lives in `agents/kalkulator-feature-planner/`, the Codex wrapper is `agents/kalkulator-feature-planner/codex/SKILL.md`, and the Claude adapter is `agents/kalkulator-feature-planner/claude/CLAUDE.md`.

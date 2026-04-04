@@ -148,6 +148,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('components/maternityBenefit/pages/Index.vue'),
         path: 'zasilek-macierzynski',
       },
+      {
+        component: () => import('components/leasing/pages/Index.vue'),
+        path: 'leasing-operacyjny',
+      },
     ],
     component: () => import('layouts/MainLayout.vue'),
     path: '/',

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Kalkulator Feature Planner"
+  short_description: "Planuj nowe funkcje repo kalkulator-finansowy"
+  default_prompt: "Use $kalkulator-feature-planner to prepare a Polish feature plan for this repository and save it in plans/."
+
+policy:
+  allow_implicit_invocation: false

@@ -40,7 +40,7 @@ vi.mock('stores/constantsStore', () => ({
   useConstantsStore: () => ({
     app: {
       name: 'Kalkulator finansowy',
-      version: '6.2.0',
+      version: '6.3.0',
     },
   }),
 }))

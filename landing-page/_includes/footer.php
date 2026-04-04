@@ -11,6 +11,7 @@
             <li><a href="/kalkulator-umowa-zlecenie/" class="hover:text-white transition-colors no-underline">Kalkulator umowy zlecenie</a></li>
             <li><a href="/kalkulator-umowa-o-dzielo/" class="hover:text-white transition-colors no-underline">Kalkulator umowy o dzieło</a></li>
             <li><a href="/kalkulator-zasilek-macierzynski/" class="hover:text-white transition-colors no-underline">Zasiłek macierzyński</a></li>
+            <li><a href="/leasing-operacyjny/" class="hover:text-white transition-colors no-underline">Leasing operacyjny</a></li>
           </ul>
         </div>
         <div>

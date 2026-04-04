@@ -385,17 +385,17 @@ Oo<!DOCTYPE html>
           </div>
 
           <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-            <a href="https://kalkulatorfinansowy.app/app/#/faktura-vat" class="block no-underline">
-              <div class="h-36 bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center">
-                <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"/></svg>
+            <a href="https://kalkulatorfinansowy.app/app/#/leasing-operacyjny" class="block no-underline">
+              <div class="h-36 bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center">
+                <svg class="w-16 h-16 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M3.75 5.25h16.5A1.5 1.5 0 0 1 21.75 6.75v10.5a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V6.75a1.5 1.5 0 0 1 1.5-1.5Zm3 9h2.25m-2.25 0v2.25m0-2.25h2.25m4.5-1.5h4.5m-4.5 3h3"/></svg>
               </div>
               <div class="p-5 pb-2">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Faktura VAT</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Przelicz kwoty netto ↔ brutto z uwzględnieniem stawki VAT.</p>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#1565C0] dark:group-hover:text-[#42A5F5] transition-colors">Leasing operacyjny</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">Policz ratę, wykup, koszt całkowity, VAT do odliczenia i koszty podatkowe.</p>
               </div>
             </a>
             <div class="px-5 pb-4">
-              <a href="/kalkulator-vat/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
+              <a href="/leasing-operacyjny/" class="text-xs text-gray-500 dark:text-gray-400 hover:text-[#1565C0] dark:hover:text-[#42A5F5] no-underline">Dowiedz się więcej →</a>
             </div>
           </div>
 
